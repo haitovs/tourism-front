@@ -36,3 +36,12 @@
 .tier-bronze {
     color: #9c6b3d;
 }
+
+/* Optional: hide horizontal scrollbar but keep scroll functionality */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

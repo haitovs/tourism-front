@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from typing import Generator, Literal, Optional
+from urllib.parse import urljoin
 
 from sqlalchemy import asc, select
 from sqlalchemy.exc import DataError
@@ -29,16 +30,30 @@ def _db_session() -> Generator[Session, None, None]:
 
 
 def _resolve_logo_url(logo: str | None) -> str:
+    """
+    Build a publicly accessible URL for the sponsor logo.
+    - If logo is absolute (http/https), return as-is.
+    - If logo starts with '/', prefix with MEDIA_BASE_URL.
+    - Else, prefix with MEDIA_BASE_URL + '/' + MEDIA_PREFIX + '/' + logo.
+    """
     if not logo:
         return ""
-    # already absolute or root-relative
-    if logo.startswith("http://") or logo.startswith("https://") or logo.startswith("/"):
+
+    # Absolute URL -> leave unchanged
+    low = logo.lower()
+    if low.startswith("http://") or low.startswith("https://"):
         return logo
-    # join MEDIA_BASE_URL + MEDIA_PREFIX + logo
-    base = settings.MEDIA_BASE_URL.rstrip("/")
+
+    base = settings.MEDIA_BASE_URL.rstrip("/") + "/"
+
+    if logo.startswith("/"):
+        # root-relative path from backend (e.g. /uploads/...)
+        return urljoin(base, logo.lstrip("/"))
+
+    # bare relative (e.g. sponsors/abc.png)
     pref = settings.MEDIA_PREFIX.strip("/")
-    path = logo.lstrip("/")
-    return f"{base}/{pref}/{path}"
+    path = f"{pref}/{logo.lstrip('/')}"
+    return urljoin(base, path)
 
 
 def _project(sp: Sponsor) -> dict:

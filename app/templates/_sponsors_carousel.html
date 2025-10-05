@@ -4,8 +4,8 @@ tier_class = "tier-gold" if tier == "gold" else ("tier-silver" if tier == "silve
 <div x-data="hloop({ speed: 0.5 })" x-init="init($refs.track)" class="relative w-full overflow-hidden">
     <div
         x-ref="track"
-        class="flex gap-4 w-max cursor-grab active:cursor-grabbing"
-        x-on:wheel.passive="wheel($event)"
+        class="flex gap-4 w-max overflow-x-auto cursor-grab active:cursor-grabbing"
+        x-on:wheel="wheel($event)"
         x-on:mousedown="dragStart($event)"
         x-on:mouseup="dragEnd"
         x-on:mouseleave="dragEnd"
