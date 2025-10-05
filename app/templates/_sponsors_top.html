@@ -1,59 +1,73 @@
-{% set order = ["premier", "general", "diamond", "platinum"] %} {% set top = sponsors_top | default({}) %}
+{# app/templates/_sponsors_top.html #}
+{% set order = ["premier", "general", "diamond", "platinum"] %}
+{% set top = sponsors_top | default({}) %}
 
-<div x-data="hloop({ speed: 0.6 })" x-init="init($refs.track)" class="relative w-full overflow-hidden">
-    <div
-        x-ref="track"
-        class="flex gap-5 w-max cursor-grab active:cursor-grabbing"
-        x-on:wheel="wheel($event)"
-        x-on:mousedown="dragStart($event)"
-        x-on:mouseup="dragEnd"
-        x-on:mouseleave="dragEnd"
-        x-on:mousemove="dragMove($event)"
-    >
-        {% for tier in order %} {% set items = top.get(tier, []) %}
-        <div class="w-[250px]">
-            <div class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-between h-[276px]">
-                {% if items and items[0].logo_url %}
-                <img
-                    src="{{ items[0].logo_url }}"
-                    alt="{{ items[0].name }}"
-                    title="{{ items[0].name }}"
-                    class="w-[202px] h-[202px] object-contain select-none pointer-events-none"
-                />
-                {% else %}
-                <img
-                    src="/static/img/sponsor_logo.png"
-                    alt="No sponsor yet"
-                    class="w-[202px] h-[202px] object-contain select-none pointer-events-none opacity-70"
-                />
-                {% endif %}
-                <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">{{ tier }} sponsor</div>
-            </div>
-        </div>
-        {% endfor %}
+{# Build a flat ordered list: [premier, general, diamond, platinum] (skip missing) #}
+{% set flat = [] %}
+{% for t in order %}
+  {% set entry = (top.get(t, []) and top.get(t, [])[0]) or None %}
+  {% set _ = flat.append(entry) %}
+{% endfor %}
+{% set items = flat | reject('equalto', None) | list %}
 
-        <!-- clone once for seamless loop -->
-        {% for tier in order %} {% set items = top.get(tier, []) %}
-        <div class="w-[250px] opacity-40">
-            <div class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-between h-[276px]">
-                {% if items and items[0].logo_url %}
-                <img
-                    src="{{ items[0].logo_url }}"
-                    alt="{{ items[0].name }}"
-                    title="{{ items[0].name }}"
-                    class="w-[202px] h-[202px] object-contain"
-                />
-                {% else %}
-                <img
-                    src="/static/img/sponsor_logo.png"
-                    alt="No sponsor yet"
-                    class="w-[202px] h-[202px] object-contain opacity-70"
-                />
-                {% endif %}
-                <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">{{ tier }} sponsor</div>
+{# Single page; if later you want paging, replace with: items|batch(4, None)|list #}
+{% set pages = [ items ] %}
+
+<div
+    x-data="hpager()"
+    x-init="
+    pageCount = {{ pages|length }};
+    init($refs.wrap, $refs.track);
+    goTo(0, false);
+  "
+    class="relative w-full"
+>
+    <div x-ref="wrap" class="overflow-hidden w-full">
+        <div
+            x-ref="track"
+            class="flex w-full overflow-x-auto no-scrollbar snap-x snap-mandatory"
+            x-on:wheel="onWheel($event)"
+            x-on:mousedown="dragStart($event)"
+            x-on:mousemove="dragMove($event)"
+            x-on:mouseup="dragEnd"
+            x-on:mouseleave="dragEnd"
+            x-on:touchstart.passive="dragStart($event)"
+            x-on:touchmove.passive="dragMove($event)"
+            x-on:touchend.passive="dragEnd"
+        >
+            {% for page in pages %}
+            <div class="snap-start shrink-0 w-full px-1">
+                <div class="flex justify-center gap-5">
+                    {% for sp in page %}
+                    <div class="w-[250px]">
+                        <div class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-between h-[276px]">
+                            {% if sp and sp.logo_url %}
+                            <img
+                                src="{{ sp.logo_url }}"
+                                alt="{{ sp.name }}"
+                                title="{{ sp.name }}"
+                                class="w-[202px] h-[202px] object-contain select-none pointer-events-none"
+                                draggable="false"
+                            />
+                            {% else %}
+                            <img
+                                src="/static/img/sponsor_logo.png"
+                                alt="No sponsor yet"
+                                class="w-[202px] h-[202px] object-contain opacity-70 select-none pointer-events-none"
+                                draggable="false"
+                            />
+                            {% endif %}
+                            <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">
+                                {{ loop.index0 == 0 and 'premier' or loop.index0 == 1 and 'general' or loop.index0 == 2 and
+                                'diamond' or 'platinum' }} sponsor
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </div>
 

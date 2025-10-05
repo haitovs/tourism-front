@@ -1,58 +1,133 @@
-{% set tier = data["tier"] %} {% set items = data["items"] %} {% set tier_label = (tier|capitalize) ~ " Sponsor" %} {% set
-tier_class = "tier-gold" if tier == "gold" else ("tier-silver" if tier == "silver" else "tier-bronze") %}
+{# Inputs: data = { tier, items } #}
 
-<div x-data="hloop({ speed: 0.5 })" x-init="init($refs.track)" class="relative w-full overflow-hidden">
-    <div
-        x-ref="track"
-        class="flex gap-4 w-max overflow-x-auto no-scrollbar cursor-grab active:cursor-grabbing"
-        x-on:wheel="wheel($event)"
-        x-on:mousedown="dragStart($event)"
-        x-on:mouseup="dragEnd"
-        x-on:mouseleave="dragEnd"
-        x-on:mousemove="dragMove($event)"
-    >
-        {% for sp in items %}
-        <article class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start">
-            {% if sp.logo_url %}
-            <img
-                src="{{ sp.logo_url }}"
-                alt="{{ sp.name }}"
-                title="{{ sp.name }}"
-                class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
-            />
-            {% else %}
-            <img
-                src="/static/img/sponsor_logo.png"
-                alt="Sponsor"
-                title="Sponsor"
-                class="w-[150px] h-[150px] object-contain select-none pointer-events-none opacity-70"
-            />
-            {% endif %}
-            <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">{{ tier_label }}</div>
-        </article>
-        {% endfor %}
+{% set tier = data["tier"] %}
+{% set all = data["items"] %}
+{% set tier_label = (tier | capitalize) ~ " Sponsor" %}
+{% set tier_class =
+    "tier-gold"
+    if tier == "gold"
+    else (
+        "tier-silver"
+        if tier == "silver"
+        else "tier-bronze"
+    )
+%}
 
-        <!-- clone once for seamless loop -->
-        {% for sp in items %}
-        <article class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start opacity-40">
-            {% if sp.logo_url %}
-            <img
-                src="{{ sp.logo_url }}"
-                alt="{{ sp.name }}"
-                title="{{ sp.name }}"
-                class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
-            />
-            {% else %}
-            <img
-                src="/static/img/sponsor_logo.png"
-                alt="Sponsor"
-                title="Sponsor"
-                class="w-[150px] h-[150px] object-contain select-none pointer-events-none opacity-70"
-            />
-            {% endif %}
-            <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">{{ tier_label }}</div>
-        </article>
-        {% endfor %}
+{# Build pages of 10 (5x2). Jinja's batch returns lists of fixed size; we filter None later. #}
+{% set pages = (all|default([]))|batch(10, None)|list %}
+
+
+<div
+    x-data="hpager()"
+    x-init="
+    pageCount = {{ pages|length }};
+    init($refs.wrap, $refs.track);
+    // Start from page 0
+    goTo(0, false);
+  "
+    class="relative w-full"
+>
+    <!-- outer (page viewport) -->
+    <div x-ref="wrap" class="overflow-hidden w-full">
+        <!-- inner track (horizontal scroller of full-width pages) -->
+        <div
+            x-ref="track"
+            class="flex w-full overflow-x-auto no-scrollbar snap-x snap-mandatory"
+            x-on:wheel="onWheel($event)"
+            x-on:mousedown="dragStart($event)"
+            x-on:mousemove="dragMove($event)"
+            x-on:mouseup="dragEnd"
+            x-on:mouseleave="dragEnd"
+            x-on:touchstart.passive="dragStart($event)"
+            x-on:touchmove.passive="dragMove($event)"
+            x-on:touchend.passive="dragEnd"
+        >
+            {% for page in pages %} {# Filter out None placeholders produced by batch #} {% set items = page|reject('equalto',
+            None)|list %}
+            <div class="snap-start shrink-0 w-full px-1">
+                {# For <=5 items: single centered row. For 6..10: two rows. #} {% set n = items|length %} {% if n == 0 %}
+                <div class="h-[225px]"></div>
+                {% elif n <= 5 %}
+                <div class="grid [grid-template-columns:repeat(5,190px)] justify-center gap-4 min-h-[225px]">
+                    {% for sp in items %}
+                    <article class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start">
+                        {% if sp.logo_url %}
+                        <img
+                            src="{{ sp.logo_url }}"
+                            alt="{{ sp.name }}"
+                            title="{{ sp.name }}"
+                            class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
+                            draggable="false"
+                        />
+                        {% else %}
+                        <img
+                            src="/static/img/sponsor_logo.png"
+                            alt="Sponsor"
+                            title="Sponsor"
+                            class="w-[150px] h-[150px] object-contain opacity-70 select-none pointer-events-none"
+                            draggable="false"
+                        />
+                        {% endif %}
+                        <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">
+                            {{ tier_label }}
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="grid [grid-template-columns:repeat(5,190px)] justify-center gap-4">
+                    {# first row (0..4) #} {% for sp in items[:5] %}
+                    <article class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start">
+                        {% if sp.logo_url %}
+                        <img
+                            src="{{ sp.logo_url }}"
+                            alt="{{ sp.name }}"
+                            title="{{ sp.name }}"
+                            class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
+                            draggable="false"
+                        />
+                        {% else %}
+                        <img
+                            src="/static/img/sponsor_logo.png"
+                            alt="Sponsor"
+                            title="Sponsor"
+                            class="w-[150px] h-[150px] object-contain opacity-70 select-none pointer-events-none"
+                            draggable="false"
+                        />
+                        {% endif %}
+                        <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">
+                            {{ tier_label }}
+                        </div>
+                    </article>
+                    {% endfor %} {# second row (5..9) #} {% for sp in items[5:10] %}
+                    <article class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start">
+                        {% if sp.logo_url %}
+                        <img
+                            src="{{ sp.logo_url }}"
+                            alt="{{ sp.name }}"
+                            title="{{ sp.name }}"
+                            class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
+                            draggable="false"
+                        />
+                        {% else %}
+                        <img
+                            src="/static/img/sponsor_logo.png"
+                            alt="Sponsor"
+                            title="Sponsor"
+                            class="w-[150px] h-[150px] object-contain opacity-70 select-none pointer-events-none"
+                            draggable="false"
+                        />
+                        {% endif %}
+                        <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">
+                            {{ tier_label }}
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 

@@ -28,78 +28,88 @@
             <div class="max-w-[var(--container)] mx-auto px-4 py-8 text-sm text-slate-600">© 2025</div>
         </footer>
         <script>
-            // Smooth infinite horizontal loop + drag + wheel + ensure overflow
-            function hloop({ speed = 0.6 } = {}) {
+            // Horizontal pager with pages = full-width "slides".
+            // Features: mouse wheel horizontal scroll, drag, auto-advance, infinite loop (jump to 1st page).
+            function hpager({ intervalMs = 10000, dragFactor = 1.0 } = {}) {
                 return {
-                    el: null,
-                    raf: null,
+                    wrap: null, // outer container (has overflow-hidden)
+                    track: null, // inner scroller (overflow-x-auto)
+                    pageCount: 0,
+                    pageIndex: 0,
+                    timer: null,
                     dragging: false,
                     lastX: 0,
-                    vx: speed,
-                    vxSaved: speed,
 
-                    init(el) {
-                        this.el = el;
+                    init(wrap, track) {
+                        this.wrap = wrap;
+                        this.track = track;
 
-                        // 1) Ensure we have horizontal overflow; if not, keep duplicating until we do
-                        this.ensureOverflow();
+                        // Snap to page boundaries on resize
+                        const ro = new ResizeObserver(() => this.goTo(this.pageIndex, false));
+                        ro.observe(this.wrap);
 
-                        // 2) Kick off smooth auto loop
-                        this.start();
-                    },
-
-                    ensureOverflow() {
-                        // If content width <= container width, duplicate until it overflows
-                        // Also duplicate once more for seamless looping
-                        const maxDup = 6; // safety guard
-                        let dup = 0;
-                        while (this.el.scrollWidth <= this.el.clientWidth + 100 && dup < maxDup) {
-                            this.el.innerHTML += this.el.innerHTML;
-                            dup++;
+                        // Auto-advance only if > 1 page
+                        if (this.pageCount > 1) {
+                            this.timer = setInterval(() => this.next(), intervalMs);
                         }
-                        // Always duplicate once to create a looping buffer
-                        this.el.innerHTML += this.el.innerHTML;
                     },
 
-                    start() {
-                        const step = () => {
-                            if (!this.dragging) {
-                                this.el.scrollLeft += this.vx;
-                                const half = Math.floor(this.el.scrollWidth / 2);
-                                if (this.el.scrollLeft >= half) this.el.scrollLeft = 0;
-                            }
-                            this.raf = requestAnimationFrame(step);
-                        };
-                        this.raf = requestAnimationFrame(step);
+                    // Compute current page index from scrollLeft
+                    get width() {
+                        return this.wrap.clientWidth;
+                    },
+                    get maxPageIndex() {
+                        return Math.max(0, this.pageCount - 1);
                     },
 
-                    // Mouse wheel: use vertical wheel to move horizontally
-                    wheel(e) {
-                        e.preventDefault(); // stop page from scrolling
-                        this.el.scrollLeft += e.deltaY || e.deltaX || 0;
+                    goTo(i, smooth = true) {
+                        this.pageIndex = i < 0 ? this.maxPageIndex : i > this.maxPageIndex ? 0 : i;
+                        this.track.scrollTo({ left: this.pageIndex * this.width, behavior: smooth ? "smooth" : "auto" });
+                    },
+                    next() {
+                        this.goTo(this.pageIndex + 1, true);
+                    },
+                    prev() {
+                        this.goTo(this.pageIndex - 1, true);
                     },
 
+                    // Wheel -> horizontal paging feel
+                    onWheel(e) {
+                        e.preventDefault();
+                        const delta = e.deltaY || e.deltaX || 0;
+                        this.track.scrollLeft += delta;
+                        // If crossing page thresholds, snap after short delay
+                        clearTimeout(this._snapT);
+                        this._snapT = setTimeout(() => {
+                            const idx = Math.round(this.track.scrollLeft / this.width);
+                            if (idx !== this.pageIndex) this.goTo(idx, true);
+                        }, 120);
+                    },
+
+                    // Drag
                     dragStart(e) {
+                        if (this.pageCount <= 1) return;
                         this.dragging = true;
-                        this.lastX = e.pageX ?? (e.touches && e.touches[0].pageX) ?? 0;
-                        this.vxSaved = this.vx;
-                        this.vx = 0;
-                        cancelAnimationFrame(this.raf);
-                        // prevent image drag ghost + selection
+                        this.lastX = (e.touches ? e.touches[0].pageX : e.pageX) || 0;
+                        clearInterval(this.timer);
                         e.preventDefault();
                     },
                     dragMove(e) {
                         if (!this.dragging) return;
-                        const pageX = e.pageX ?? (e.touches && e.touches[0].pageX) ?? 0;
-                        const dx = this.lastX - pageX;
-                        this.el.scrollLeft += dx;
-                        this.lastX = pageX;
+                        const x = (e.touches ? e.touches[0].pageX : e.pageX) || 0;
+                        const dx = (this.lastX - x) * dragFactor;
+                        this.track.scrollLeft += dx;
+                        this.lastX = x;
                     },
                     dragEnd() {
                         if (!this.dragging) return;
                         this.dragging = false;
-                        this.vx = this.vxSaved;
-                        this.start(); // resume auto loop
+                        // Snap to nearest page
+                        const idx = Math.round(this.track.scrollLeft / this.width);
+                        this.goTo(idx, true);
+                        if (this.pageCount > 1) {
+                            this.timer = setInterval(() => this.next(), intervalMs);
+                        }
                     },
                 };
             }

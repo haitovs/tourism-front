@@ -1,0 +1,2 @@
+# Jinja/HTML templates (skip Prettier)
+app/templates/**
