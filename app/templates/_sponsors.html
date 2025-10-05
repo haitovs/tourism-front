@@ -14,21 +14,10 @@
         <div class="hidden sm:block h-px w-[300px] bg-[#F2C75C]"></div>
     </div>
 
-    <!-- Gold -->
-    <div class="space-y-3">
-        <h3 class="font-['Roboto'] font-semibold text-2xl text-[#DDAC17]">Gold Sponsors</h3>
+    <!-- Bottom carousels (Gold → Silver → Bronze), no headings, stacked -->
+    <div class="space-y-6">
         <div id="carousel-gold">{% with data=gold %}{% include "_sponsors_carousel.html" %}{% endwith %}</div>
-    </div>
-
-    <!-- Silver -->
-    <div class="space-y-3">
-        <h3 class="font-['Roboto'] font-semibold text-2xl text-slate-500">Silver Sponsors</h3>
         <div id="carousel-silver">{% with data=silver %}{% include "_sponsors_carousel.html" %}{% endwith %}</div>
-    </div>
-
-    <!-- Bronze -->
-    <div class="space-y-3">
-        <h3 class="font-['Roboto'] font-semibold text-2xl text-[#9c6b3d]">Bronze Sponsors</h3>
         <div id="carousel-bronze">{% with data=bronze %}{% include "_sponsors_carousel.html" %}{% endwith %}</div>
     </div>
 </section>

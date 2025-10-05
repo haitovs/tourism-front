@@ -1,6 +1,22 @@
 {% set order = ["premier", "general", "diamond", "platinum"] %} {% set top = sponsors_top if sponsors_top is defined else data %}
 
-<div x-data class="relative">
+<div
+    x-data="{
+    step: 270,
+    autoscroll() {
+      const rail = this.$refs.rail
+      if (!rail) return
+      const overflow = rail.scrollWidth > rail.clientWidth
+      if (!overflow) return
+      setInterval(() => {
+        const atEnd = Math.ceil(rail.scrollLeft + rail.clientWidth + 4) >= rail.scrollWidth
+        rail.scrollTo({ left: atEnd ? 0 : rail.scrollLeft + this.step, behavior: 'smooth' })
+      }, 10000)
+    }
+  }"
+    x-init="autoscroll()"
+    class="relative"
+>
     <!-- rail -->
     <div
         x-ref="rail"
@@ -29,11 +45,5 @@
             </div>
         </div>
         {% endfor %}
-    </div>
-
-    <!-- controls -->
-    <div class="mt-3 flex items-center justify-between">
-        <button class="px-3 py-1 border rounded" @click="$refs.rail.scrollBy({left: -270, behavior: 'smooth'})">‹ Prev</button>
-        <button class="px-3 py-1 border rounded" @click="$refs.rail.scrollBy({left: 270, behavior: 'smooth'})">Next ›</button>
     </div>
 </div>

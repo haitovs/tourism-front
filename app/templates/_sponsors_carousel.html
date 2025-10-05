@@ -1,14 +1,25 @@
-{% set tier = data["tier"] %} {% set page = data["page"] %}
-<div class="relative">
-    <!-- rail -->
-    <div
-        class="overflow-x-auto snap-x snap-mandatory flex gap-4 pb-2"
-        x-data
-        x-on:wheel.passive="$el.scrollLeft += $event.deltaY"
-    >
-        <!-- one 'page' (snap) -->
+{% set tier = data["tier"] %} {% set page = data["page"] %} {% set per = data["per_page"] %} {% set count = data["items"]|length
+%}
+
+<div
+    x-data
+    x-init="
+    (() => {
+      // Only auto-advance if the page is 'full' -> likely more pages
+      if ({{ count }} < {{ per }}) return;
+      const go = () => {
+        const btn = $refs.nextBtn;
+        if (!btn) return;
+        btn.click();
+      };
+      setInterval(go, 10000);
+    })()
+  "
+    class="relative"
+>
+    <!-- rail (one snap page containing a 2x2 grid) -->
+    <div class="overflow-x-auto snap-x snap-mandatory flex gap-4 pb-2">
         <div class="snap-start shrink-0 w-full">
-            <!-- fixed 2 columns @ 190px each, 2 rows -->
             <div class="grid [grid-template-columns:repeat(2,190px)] justify-center gap-4">
                 {% for sp in data["items"] %}
                 <article class="bg-white rounded-2xl shadow p-4 flex items-center justify-center w-[190px] h-[225px]">
@@ -35,23 +46,14 @@
         </div>
     </div>
 
-    <!-- controls -->
-    <div class="mt-3 flex items-center justify-between">
-        <button
-            class="px-3 py-1 border rounded"
-            hx-get="/x/sponsors/{{ tier }}?page={{ page - 1 if page > 1 else 1 }}"
-            hx-target="#carousel-{{ tier }}"
-            hx-swap="outerHTML"
-        >
-            ‹ Prev
-        </button>
-        <button
-            class="px-3 py-1 border rounded"
-            hx-get="/x/sponsors/{{ tier }}?page={{ page + 1 }}"
-            hx-target="#carousel-{{ tier }}"
-            hx-swap="outerHTML"
-        >
-            Next ›
-        </button>
-    </div>
+    <!-- hidden next trigger for HTMX; we 'click' it via Alpine every 10s -->
+    <button
+        x-ref="nextBtn"
+        class="hidden"
+        hx-get="/x/sponsors/{{ tier }}?page={{ page + 1 }}"
+        hx-target="#carousel-{{ tier }}"
+        hx-swap="outerHTML"
+        aria-hidden="true"
+        tabindex="-1"
+    ></button>
 </div>
