@@ -1,116 +1,54 @@
-{# app/templates/_sponsors_top.html #}
-{% set order = ["premier", "general", "diamond", "platinum"] %}
-{% set top = sponsors_top | default({}) %}
-
-{# Build a flat ordered list: [premier, general, diamond, platinum] (skip missing) #}
-{% set flat = [] %}
-{% for t in order %}
-  {% set entry = (top.get(t, []) and top.get(t, [])[0]) or None %}
-  {% set _ = flat.append(entry) %}
-{% endfor %}
-{% set items = flat | reject('equalto', None) | list %}
-
-{# Single page; if later you want paging, replace with: items|batch(4, None)|list #}
-{% set pages = [ items ] %}
+{# Build ordered list: premier, general, diamond, platinum #} {% set order = ["premier", "general", "diamond", "platinum"] %} {%
+set top = sponsors_top | default({}) %} {% set flat = [] %} {% for t in order %} {% set entry = (top.get(t, []) and top.get(t,
+[])[0]) or None %} {% if entry %}{% set _ = flat.append(entry) %}{% endif %} {% endfor %} {% set count = flat|length %}
 
 <div
-    x-data="hpager()"
-    x-init="
-    pageCount = {{ pages|length }};
-    init($refs.wrap, $refs.track);
-    goTo(0, false);
-  "
-    class="relative w-full"
+    id="splide-{{ tier }}"
+    class="splide w-full"
+    aria-label="{{ tier }} sponsors"
+    data-splide="{}"
+    data-count="{{ count }}"
+    data-type="{{ 'loop' if count > 10 else 'slide' }}"
+    data-autoplay="{{ 'true' if count > 10 else 'false' }}"
+    data-interval="10000"
+    data-speed="600"
+    data-gap="1rem"
+    data-rows="2"
+    data-cols="5"
+    data-row-gap="1rem"
+    data-col-gap="1rem"
+    data-breakpoints='{
+    "1024": { "grid": { "rows": 2, "cols": 3, "gap": { "row": "0.75rem", "col": "0.75rem" } } },
+    "640":  { "grid": { "rows": 2, "cols": 2, "gap": { "row": "0.5rem",  "col": "0.5rem"  } } }
+  }'
 >
-    <div x-ref="wrap" class="overflow-hidden w-full">
-        <div
-            x-ref="track"
-            class="flex w-full overflow-x-auto no-scrollbar snap-x snap-mandatory"
-            x-on:wheel="onWheel($event)"
-            x-on:mousedown="dragStart($event)"
-            x-on:mousemove="dragMove($event)"
-            x-on:mouseup="dragEnd"
-            x-on:mouseleave="dragEnd"
-            x-on:touchstart.passive="dragStart($event)"
-            x-on:touchmove.passive="dragMove($event)"
-            x-on:touchend.passive="dragEnd"
-        >
-            {% for page in pages %}
-            <div class="snap-start shrink-0 w-full px-1">
-                <div class="flex justify-center gap-5">
-                    {% for sp in page %}
-                    <div class="w-[250px]">
-                        <div class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-between h-[276px]">
-                            {% if sp and sp.logo_url %}
-                            <img
-                                src="{{ sp.logo_url }}"
-                                alt="{{ sp.name }}"
-                                title="{{ sp.name }}"
-                                class="w-[202px] h-[202px] object-contain select-none pointer-events-none"
-                                draggable="false"
-                            />
-                            {% else %}
-                            <img
-                                src="/static/img/sponsor_logo.png"
-                                alt="No sponsor yet"
-                                class="w-[202px] h-[202px] object-contain opacity-70 select-none pointer-events-none"
-                                draggable="false"
-                            />
-                            {% endif %}
-                            <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">
-                                {{ loop.index0 == 0 and 'premier' or loop.index0 == 1 and 'general' or loop.index0 == 2 and
-                                'diamond' or 'platinum' }} sponsor
-                            </div>
-                        </div>
+    <div class="splide__track">
+        <ul class="splide__list">
+            {% for sp in flat %}
+            <li class="splide__slide flex justify-center">
+                <div class="w-[250px]">
+                    <div class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-between h-[276px]">
+                        {% if sp.logo_url %}
+                        <img
+                            src="{{ sp.logo_url }}"
+                            alt="{{ sp.name }}"
+                            title="{{ sp.name }}"
+                            class="w-[202px] h-[202px] object-fill select-none pointer-events-none"
+                            draggable="false"
+                        />
+                        {% else %}
+                        <img
+                            src="/static/img/sponsor_logo.png"
+                            alt="No sponsor yet"
+                            class="w-[202px] h-[202px] object-fill opacity-70 select-none pointer-events-none"
+                            draggable="false"
+                        />
+                        {% endif %}
+                        <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">{{ sp.tier }} sponsor</div>
                     </div>
-                    {% endfor %}
                 </div>
-            </div>
+            </li>
             {% endfor %}
-        </div>
+        </ul>
     </div>
 </div>
-
-<script>
-    function hloop({ speed = 0.6 } = {}) {
-        return {
-            el: null,
-            raf: null,
-            dragging: false,
-            lastX: 0,
-            vx: speed,
-
-            init(el) {
-                this.el = el;
-                const step = () => {
-                    if (!this.dragging) {
-                        this.el.scrollLeft += this.vx;
-                        const half = Math.floor(this.el.scrollWidth / 2);
-                        if (this.el.scrollLeft >= half) this.el.scrollLeft = 0;
-                    }
-                    this.raf = requestAnimationFrame(step);
-                };
-                this.raf = requestAnimationFrame(step);
-            },
-            wheel(e) {
-                this.el.scrollLeft += e.deltaY;
-            },
-            dragStart(e) {
-                this.dragging = true;
-                this.lastX = e.pageX;
-                cancelAnimationFrame(this.raf);
-            },
-            dragMove(e) {
-                if (!this.dragging) return;
-                const dx = this.lastX - e.pageX;
-                this.el.scrollLeft += dx;
-                this.lastX = e.pageX;
-            },
-            dragEnd() {
-                if (!this.dragging) return;
-                this.dragging = false;
-                this.raf = requestAnimationFrame(() => this.init(this.el)); // resume
-            },
-        };
-    }
-</script>

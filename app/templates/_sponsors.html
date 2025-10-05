@@ -23,18 +23,22 @@
 
     <!-- Bottom carousels; render only if tier has items; no headings, stacked -->
     <div class="space-y-6">
-        {% if gold["items"]|length > 0 %}
-        <div id="carousel-gold" class="flex justify-center">
-            {% with data=gold %}{% include "_sponsors_carousel.html" %}{% endwith %}
-        </div>
-        {% endif %} {% if silver["items"]|length > 0 %}
-        <div id="carousel-silver" class="flex justify-center">
-            {% with data=silver %}{% include "_sponsors_carousel.html" %}{% endwith %}
-        </div>
-        {% endif %} {% if bronze["items"]|length > 0 %}
-        <div id="carousel-bronze" class="flex justify-center">
-            {% with data=bronze %}{% include "_sponsors_carousel.html" %}{% endwith %}
-        </div>
-        {% endif %}
+    {% if gold["items"]|length > 0 %}
+    <div id="carousel-gold" class="w-full">
+        {% with data=gold %}{% include "_sponsors_carousel.html" %}{% endwith %}
     </div>
+    {% endif %}
+
+    {% if silver["items"]|length > 0 %}
+    <div id="carousel-silver" class="w-full">
+        {% with data=silver %}{% include "_sponsors_carousel.html" %}{% endwith %}
+    </div>
+    {% endif %}
+
+    {% if bronze["items"]|length > 0 %}
+    <div id="carousel-bronze" class="w-full">
+        {% with data=bronze %}{% include "_sponsors_carousel.html" %}{% endwith %}
+    </div>
+    {% endif %}
+</div>
 </section>

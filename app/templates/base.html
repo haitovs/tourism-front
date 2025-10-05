@@ -16,6 +16,9 @@
         <link rel="stylesheet" href="{{ url_for('static', path='/css/navpill.css') }}" />
         <link rel="stylesheet" href="{{ url_for('static', path='/css/hero.css') }}" />
 
+        <!-- Splide CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" />
+
         <!-- Fonts -->
         <link
             href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500;700&display=swap"
@@ -24,95 +27,84 @@
     </head>
     <body class="bg-[var(--c-bg)] text-[var(--c-text)]">
         {% block content %}{% endblock %}
+
         <footer class="mt-16 border-t">
             <div class="max-w-[var(--container)] mx-auto px-4 py-8 text-sm text-slate-600">© 2025</div>
         </footer>
+
+        <!-- Splide JS (defer) -->
+        <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" defer></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-grid@0.4.1/dist/js/splide-extension-grid.min.js"
+            defer
+        ></script>
+
+        <!-- One global bootstraper that initializes all Splides AFTER load -->
         <script>
-            // Horizontal pager with pages = full-width "slides".
-            // Features: mouse wheel horizontal scroll, drag, auto-advance, infinite loop (jump to 1st page).
-            function hpager({ intervalMs = 10000, dragFactor = 1.0 } = {}) {
-                return {
-                    wrap: null, // outer container (has overflow-hidden)
-                    track: null, // inner scroller (overflow-x-auto)
-                    pageCount: 0,
-                    pageIndex: 0,
-                    timer: null,
-                    dragging: false,
-                    lastX: 0,
+            window.addEventListener("load", () => {
+                if (typeof Splide === "undefined") {
+                    console.error("Splide not loaded!");
+                    return;
+                }
 
-                    init(wrap, track) {
-                        this.wrap = wrap;
-                        this.track = track;
+                document.querySelectorAll(".splide[data-splide]").forEach((el) => {
+                    const cfg = (() => {
+                        // Basic options via dataset (strings)
+                        const d = el.dataset;
 
-                        // Snap to page boundaries on resize
-                        const ro = new ResizeObserver(() => this.goTo(this.pageIndex, false));
-                        ro.observe(this.wrap);
+                        // Count can control loop/autoplay defaults
+                        const count = Number(d.count || "0");
 
-                        // Auto-advance only if > 1 page
-                        if (this.pageCount > 1) {
-                            this.timer = setInterval(() => this.next(), intervalMs);
+                        // Common options
+                        const opts = {
+                            type: d.type || (count > 1 ? "loop" : "slide"),
+                            arrows: false,
+                            pagination: false,
+                            autoplay: d.autoplay === "true" || (d.autoplay === undefined && count > 1),
+                            interval: Number(d.interval || "10000"),
+                            pauseOnHover: true,
+                            speed: Number(d.speed || "600"),
+                            easing: d.easing || "cubic-bezier(0.22,1,0.36,1)",
+                            drag: true,
+                            gap: d.gap || "1rem",
+                        };
+
+                        // perPage (for top), optional
+                        if (d.perPage) {
+                            opts.perPage = Number(d.perPage);
                         }
-                    },
 
-                    // Compute current page index from scrollLeft
-                    get width() {
-                        return this.wrap.clientWidth;
-                    },
-                    get maxPageIndex() {
-                        return Math.max(0, this.pageCount - 1);
-                    },
-
-                    goTo(i, smooth = true) {
-                        this.pageIndex = i < 0 ? this.maxPageIndex : i > this.maxPageIndex ? 0 : i;
-                        this.track.scrollTo({ left: this.pageIndex * this.width, behavior: smooth ? "smooth" : "auto" });
-                    },
-                    next() {
-                        this.goTo(this.pageIndex + 1, true);
-                    },
-                    prev() {
-                        this.goTo(this.pageIndex - 1, true);
-                    },
-
-                    // Wheel -> horizontal paging feel
-                    onWheel(e) {
-                        e.preventDefault();
-                        const delta = e.deltaY || e.deltaX || 0;
-                        this.track.scrollLeft += delta;
-                        // If crossing page thresholds, snap after short delay
-                        clearTimeout(this._snapT);
-                        this._snapT = setTimeout(() => {
-                            const idx = Math.round(this.track.scrollLeft / this.width);
-                            if (idx !== this.pageIndex) this.goTo(idx, true);
-                        }, 120);
-                    },
-
-                    // Drag
-                    dragStart(e) {
-                        if (this.pageCount <= 1) return;
-                        this.dragging = true;
-                        this.lastX = (e.touches ? e.touches[0].pageX : e.pageX) || 0;
-                        clearInterval(this.timer);
-                        e.preventDefault();
-                    },
-                    dragMove(e) {
-                        if (!this.dragging) return;
-                        const x = (e.touches ? e.touches[0].pageX : e.pageX) || 0;
-                        const dx = (this.lastX - x) * dragFactor;
-                        this.track.scrollLeft += dx;
-                        this.lastX = x;
-                    },
-                    dragEnd() {
-                        if (!this.dragging) return;
-                        this.dragging = false;
-                        // Snap to nearest page
-                        const idx = Math.round(this.track.scrollLeft / this.width);
-                        this.goTo(idx, true);
-                        if (this.pageCount > 1) {
-                            this.timer = setInterval(() => this.next(), intervalMs);
+                        // GRID (for bottom)
+                        if (d.rows || d.cols) {
+                            const rows = Number(d.rows || "1");
+                            const cols = Number(d.cols || "1");
+                            const rowGap = d.rowGap || "1rem";
+                            const colGap = d.colGap || "1rem";
+                            opts.grid = { rows, cols, gap: { row: rowGap, col: colGap } };
                         }
-                    },
-                };
-            }
+
+                        // Breakpoints (optional)
+                        try {
+                            if (d.breakpoints) {
+                                opts.breakpoints = JSON.parse(d.breakpoints);
+                            }
+                        } catch (e) {
+                            console.warn("Invalid breakpoints JSON on", el, e);
+                        }
+
+                        return opts;
+                    })();
+
+                    // Mount with grid extension if grid is present
+                    const useGrid = !!cfg.grid;
+                    const splide = new Splide(el, cfg);
+                    if (useGrid && window.splide && window.splide.Extensions) {
+                        splide.mount(window.splide.Extensions);
+                    } else {
+                        splide.mount();
+                    }
+                });
+            });
         </script>
     </body>
 </html>

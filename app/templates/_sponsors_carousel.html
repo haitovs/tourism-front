@@ -1,176 +1,54 @@
-{# Inputs: data = { tier, items } #}
-
-{% set tier = data["tier"] %}
-{% set all = data["items"] %}
-{% set tier_label = (tier | capitalize) ~ " Sponsor" %}
-{% set tier_class =
-    "tier-gold"
-    if tier == "gold"
-    else (
-        "tier-silver"
-        if tier == "silver"
-        else "tier-bronze"
-    )
-%}
-
-{# Build pages of 10 (5x2). Jinja's batch returns lists of fixed size; we filter None later. #}
-{% set pages = (all|default([]))|batch(10, None)|list %}
-
-
+{# Inputs: data = { tier, items } #} {% set tier = data["tier"] %} {% set all = data["items"]|default([]) %} {% set count =
+all|length %} {% set tier_label = (tier | capitalize) ~ " Sponsor" %} {% set tier_class = "tier-gold" if tier == "gold" else
+("tier-silver" if tier == "silver" else "tier-bronze") %} {# Bottom: 10 per page (5x2). If >10 => loop + autoplay. #}
 <div
-    x-data="hpager()"
-    x-init="
-    pageCount = {{ pages|length }};
-    init($refs.wrap, $refs.track);
-    // Start from page 0
-    goTo(0, false);
-  "
-    class="relative w-full"
+    id="splide-{{ tier }}"
+    class="splide w-full"
+    aria-label="{{ tier }} sponsors"
+    data-splide="{}"
+    data-count="{{ count }}"
+    data-type="{{ 'loop' if count > 10 else 'slide' }}"
+    data-autoplay="{{ 'true' if count > 10 else 'false' }}"
+    data-interval="10000"
+    data-speed="600"
+    data-gap="1rem"
+    data-rows="2"
+    data-cols="5"
+    data-row-gap="1rem"
+    data-col-gap="1rem"
+    data-breakpoints='{
+    "1024": { "grid": { "rows": 2, "cols": 3, "gap": { "row": "0.75rem", "col": "0.75rem" } } },
+    "640":  { "grid": { "rows": 2, "cols": 2, "gap": { "row": "0.5rem",  "col": "0.5rem"  } } }
+  }'
 >
-    <!-- outer (page viewport) -->
-    <div x-ref="wrap" class="overflow-hidden w-full">
-        <!-- inner track (horizontal scroller of full-width pages) -->
-        <div
-            x-ref="track"
-            class="flex w-full overflow-x-auto no-scrollbar snap-x snap-mandatory"
-            x-on:wheel="onWheel($event)"
-            x-on:mousedown="dragStart($event)"
-            x-on:mousemove="dragMove($event)"
-            x-on:mouseup="dragEnd"
-            x-on:mouseleave="dragEnd"
-            x-on:touchstart.passive="dragStart($event)"
-            x-on:touchmove.passive="dragMove($event)"
-            x-on:touchend.passive="dragEnd"
-        >
-            {% for page in pages %} {# Filter out None placeholders produced by batch #} {% set items = page|reject('equalto',
-            None)|list %}
-            <div class="snap-start shrink-0 w-full px-1">
-                {# For <=5 items: single centered row. For 6..10: two rows. #} {% set n = items|length %} {% if n == 0 %}
-                <div class="h-[225px]"></div>
-                {% elif n <= 5 %}
-                <div class="grid [grid-template-columns:repeat(5,190px)] justify-center gap-4 min-h-[225px]">
-                    {% for sp in items %}
-                    <article class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start">
-                        {% if sp.logo_url %}
-                        <img
-                            src="{{ sp.logo_url }}"
-                            alt="{{ sp.name }}"
-                            title="{{ sp.name }}"
-                            class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
-                            draggable="false"
-                        />
-                        {% else %}
-                        <img
-                            src="/static/img/sponsor_logo.png"
-                            alt="Sponsor"
-                            title="Sponsor"
-                            class="w-[150px] h-[150px] object-contain opacity-70 select-none pointer-events-none"
-                            draggable="false"
-                        />
-                        {% endif %}
-                        <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">
-                            {{ tier_label }}
-                        </div>
-                    </article>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <div class="grid [grid-template-columns:repeat(5,190px)] justify-center gap-4">
-                    {# first row (0..4) #} {% for sp in items[:5] %}
-                    <article class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start">
-                        {% if sp.logo_url %}
-                        <img
-                            src="{{ sp.logo_url }}"
-                            alt="{{ sp.name }}"
-                            title="{{ sp.name }}"
-                            class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
-                            draggable="false"
-                        />
-                        {% else %}
-                        <img
-                            src="/static/img/sponsor_logo.png"
-                            alt="Sponsor"
-                            title="Sponsor"
-                            class="w-[150px] h-[150px] object-contain opacity-70 select-none pointer-events-none"
-                            draggable="false"
-                        />
-                        {% endif %}
-                        <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">
-                            {{ tier_label }}
-                        </div>
-                    </article>
-                    {% endfor %} {# second row (5..9) #} {% for sp in items[5:10] %}
-                    <article class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start">
-                        {% if sp.logo_url %}
-                        <img
-                            src="{{ sp.logo_url }}"
-                            alt="{{ sp.name }}"
-                            title="{{ sp.name }}"
-                            class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
-                            draggable="false"
-                        />
-                        {% else %}
-                        <img
-                            src="/static/img/sponsor_logo.png"
-                            alt="Sponsor"
-                            title="Sponsor"
-                            class="w-[150px] h-[150px] object-contain opacity-70 select-none pointer-events-none"
-                            draggable="false"
-                        />
-                        {% endif %}
-                        <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">
-                            {{ tier_label }}
-                        </div>
-                    </article>
-                    {% endfor %}
-                </div>
-                {% endif %}
-            </div>
+    <div class="splide__track">
+        <ul class="splide__list">
+            {% for sp in all %}
+            <li class="splide__slide flex justify-center">
+                <article class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start">
+                    {% if sp.logo_url %}
+                    <img
+                        src="{{ sp.logo_url }}"
+                        alt="{{ sp.name }}"
+                        title="{{ sp.name }}"
+                        class="w-[150px] h-[150px] object-fill select-none pointer-events-none"
+                        draggable="false"
+                    />
+                    {% else %}
+                    <img
+                        src="/static/img/sponsor_logo.png"
+                        alt="Sponsor"
+                        title="Sponsor"
+                        class="w-[150px] h-[150px] object-fill opacity-70 select-none pointer-events-none"
+                        draggable="false"
+                    />
+                    {% endif %}
+                    <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">
+                        {{ tier_label }}
+                    </div>
+                </article>
+            </li>
             {% endfor %}
-        </div>
+        </ul>
     </div>
 </div>
-
-<script>
-    function hloop({ speed = 0.6 } = {}) {
-        return {
-            el: null,
-            raf: null,
-            dragging: false,
-            lastX: 0,
-            vx: speed,
-
-            init(el) {
-                this.el = el;
-                const step = () => {
-                    if (!this.dragging) {
-                        this.el.scrollLeft += this.vx;
-                        const half = Math.floor(this.el.scrollWidth / 2);
-                        if (this.el.scrollLeft >= half) this.el.scrollLeft = 0;
-                    }
-                    this.raf = requestAnimationFrame(step);
-                };
-                this.raf = requestAnimationFrame(step);
-            },
-            wheel(e) {
-                this.el.scrollLeft += e.deltaY;
-            },
-            dragStart(e) {
-                this.dragging = true;
-                this.lastX = e.pageX;
-                cancelAnimationFrame(this.raf);
-            },
-            dragMove(e) {
-                if (!this.dragging) return;
-                const dx = this.lastX - e.pageX;
-                this.el.scrollLeft += dx;
-                this.lastX = e.pageX;
-            },
-            dragEnd() {
-                if (!this.dragging) return;
-                this.dragging = false;
-                this.raf = requestAnimationFrame(() => this.init(this.el));
-            },
-        };
-    }
-</script>

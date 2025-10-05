@@ -91,19 +91,29 @@ def get_top_sponsors(*, lang: str = "en", site_id: Optional[int] = None) -> dict
     return out
 
 
-def list_sponsors_by_tier(*, tier: ListTier, page: int = 1, per_page: int = 10, lang: str = "en", site_id: Optional[int] = None) -> dict:
-    offset = (max(page, 1) - 1) * per_page
+def list_all_sponsors_by_tier(
+    *,
+    tier: ListTier,
+    lang: str = "en",
+    site_id: Optional[int] = None,
+) -> dict:
+    """
+    Return *all* sponsors for a given tier (no paging).
+    The template/Splide will chunk them into 10-per-page (5x2) slides.
+    """
     try:
         enum_val = SponsorTier(tier)
     except ValueError:
-        return {"items": [], "page": max(page, 1), "per_page": per_page, "tier": tier}
+        return {"items": [], "tier": tier}
+
     with _db_session() as db:
         stmt = select(Sponsor).where(Sponsor.tier == enum_val)
         if site_id is not None:
             stmt = stmt.where(Sponsor.site_id == site_id)
-        stmt = stmt.order_by(asc(Sponsor.id)).offset(offset).limit(per_page)
+        stmt = stmt.order_by(asc(Sponsor.id))
         try:
             items = db.execute(stmt).scalars().all()
         except DataError:
             items = []
-    return {"items": [_project(sp) for sp in items], "page": max(page, 1), "per_page": per_page, "tier": tier}
+
+    return {"items": [_project(sp) for sp in items], "tier": tier}
