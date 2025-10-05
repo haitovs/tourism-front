@@ -5,9 +5,12 @@
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>Expo Site</title>
 
-        <!-- Tailwind / HTMX / Alpine via CDN -->
+        <!-- Tailwind / HTMX -->
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+
+        <!-- Alpine.js plugins (load BEFORE core) -->
+        <script defer src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
         <!-- CSS: variables first, then components -->

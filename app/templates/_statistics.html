@@ -1,15 +1,11 @@
-{# app/templates/_statistics.html #} {% if stats %}
 <section
     id="statistics"
     class="relative w-full h-[500px] mt-16"
     style="background-image:url('{{ settings.STATS_BG_IMAGE }}'); background-size:cover; background-position:center;"
 >
-    <!-- Dark overlay -->
     <div class="absolute inset-0 bg-black/40"></div>
 
-    <!-- Content -->
     <div class="relative h-full max-w-[var(--container)] mx-auto px-4 flex flex-col items-center justify-center text-white">
-        <!-- header -->
         <header class="text-center mb-6">
             <div class="flex items-center justify-center gap-4 mb-1">
                 <span class="hidden sm:block h-px w-[60px] bg-white"></span>
@@ -21,7 +17,6 @@
             </h2>
         </header>
 
-        <!-- figures -->
         <div
             x-data="countup({
         values: {
@@ -31,13 +26,12 @@
           companies: {{ stats.companies|default(0) }},
         }
       })"
-            x-intersect.once="start()"
+            x-init="start()"
             class="w-full max-w-[1280px] grid grid-cols-2 md:grid-cols-4 gap-x-[78px] gap-y-10 place-items-center"
         >
-            <!-- item -->
             <div class="flex items-center gap-4 h-[150px]">
                 <img src="/static/img/stat_sessions.png" alt="" class="w-[130px] h-[130px] object-contain hidden sm:block" />
-                <div class="relative">
+                <div>
                     <div class="font-['Roboto'] font-medium text-[70px] leading-[82px]" x-text="display.episodes">0</div>
                     <div class="font-['Roboto'] font-medium text-[20px] leading-[23px] text-white/85">Sessions</div>
                 </div>
@@ -45,7 +39,7 @@
 
             <div class="flex items-center gap-4 h-[150px]">
                 <img src="/static/img/stat_delegates.png" alt="" class="w-[130px] h-[130px] object-contain hidden sm:block" />
-                <div class="relative">
+                <div>
                     <div class="font-['Roboto'] font-medium text-[70px] leading-[82px]" x-text="display.delegates">0</div>
                     <div class="font-['Roboto'] font-medium text-[20px] leading-[23px] text-white/85">Delegates</div>
                 </div>
@@ -53,7 +47,7 @@
 
             <div class="flex items-center gap-4 h-[150px]">
                 <img src="/static/img/stat_speakers.png" alt="" class="w-[130px] h-[130px] object-contain hidden sm:block" />
-                <div class="relative">
+                <div>
                     <div class="font-['Roboto'] font-medium text-[70px] leading-[82px]" x-text="display.speakers">0</div>
                     <div class="font-['Roboto'] font-medium text-[20px] leading-[23px] text-white/85">Speakers</div>
                 </div>
@@ -61,7 +55,7 @@
 
             <div class="flex items-center gap-4 h-[150px]">
                 <img src="/static/img/stat_companies.png" alt="" class="w-[130px] h-[130px] object-contain hidden sm:block" />
-                <div class="relative">
+                <div>
                     <div class="font-['Roboto'] font-medium text-[70px] leading-[82px]" x-text="display.companies">0</div>
                     <div class="font-['Roboto'] font-medium text-[20px] leading-[23px] text-white/85">Companies</div>
                 </div>
@@ -69,10 +63,8 @@
         </div>
     </div>
 </section>
-{% endif %}
 
 <script>
-    // Alpine: simple count-up on intersection
     function countup({ values, duration = 1200 }) {
         return {
             target: values,
@@ -87,8 +79,7 @@
 
                 const tick = (now) => {
                     const t = Math.min(1, (now - startTime) / duration);
-                    // ease-out cubic
-                    const e = 1 - Math.pow(1 - t, 3);
+                    const e = 1 - Math.pow(1 - t, 3); // ease-out cubic
                     keys.forEach((k) => {
                         this.display[k] = Math.floor(e * this.target[k]);
                     });

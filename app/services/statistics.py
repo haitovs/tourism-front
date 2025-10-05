@@ -1,34 +1,37 @@
-# app/services/statistics.py
-from __future__ import annotations
+from contextlib import contextmanager
+from typing import Generator, Optional
 
-from typing import TypedDict
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
-import httpx
-
-from app.core.settings import settings
-
-
-class StatsOut(TypedDict, total=False):
-    episodes: int
-    delegates: int
-    speakers: int
-    companies: int
+from app.core.db import get_db
+from app.models.statistics_model import Statistics
 
 
-async def get_statistics() -> StatsOut | None:
-    url = f"{settings.BACKEND_BASE_URL.rstrip('/')}/statistics"
+@contextmanager
+def _db_session() -> Generator[Session, None, None]:
+    gen = get_db()
+    db = next(gen)
     try:
-        async with httpx.AsyncClient(timeout=5.0) as client:
-            r = await client.get(url)
-            if r.status_code == 404:
-                return None
-            r.raise_for_status()
-            data = r.json() or {}
-            return {
-                "episodes": int(data.get("episodes", 0)),
-                "delegates": int(data.get("delegates", 0)),
-                "speakers": int(data.get("speakers", 0)),
-                "companies": int(data.get("companies", 0)),
-            }
-    except Exception:
-        return None
+        yield db
+    finally:
+        try:
+            gen.close()
+        except Exception:
+            pass
+
+
+def get_statistics(site_id: Optional[int] = None) -> dict:
+    with _db_session() as db:
+        stmt = select(Statistics)
+        if site_id:
+            stmt = stmt.where(Statistics.site_id == site_id)
+        row = db.execute(stmt).scalars().first()
+        if not row:
+            return None
+        return {
+            "episodes": row.episodes,
+            "delegates": row.delegates,
+            "speakers": row.speakers,
+            "companies": row.companies,
+        }
