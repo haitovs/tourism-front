@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="{{ lang or 'en' }}">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Expo Site</title>
+
+        <!-- Tailwind / HTMX / Alpine via CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+        <!-- CSS: variables first, then components -->
+        <link rel="stylesheet" href="{{ url_for('static', path='/css/extra.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', path='/css/detailbar.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', path='/css/navpill.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', path='/css/hero.css') }}" />
+
+        <!-- Fonts -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500;700&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body class="bg-[var(--c-bg)] text-[var(--c-text)]">
+        {% block content %}{% endblock %}
+        <footer class="mt-16 border-t">
+            <div class="max-w-[var(--container)] mx-auto px-4 py-8 text-sm text-slate-600">© 2025</div>
+        </footer>
+    </body>
+</html>

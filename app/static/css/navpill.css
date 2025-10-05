@@ -1,0 +1,84 @@
+/* NAV PILL */
+:root {
+    --z-pill: 60;
+    --z-dd: 100;
+}
+
+.pill-rail {
+    position: absolute;
+    top: var(--pill-top);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--pill-w);
+    height: auto;
+    z-index: var(--z-pill);
+}
+
+/* NAV PILL fills the rail */
+.navpill {
+    height: 70px;
+    width: 100%;
+    background: var(--c-surface);
+    border-radius: 10px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 12px;
+    box-sizing: border-box;
+}
+
+/* dropdown styles (glass) */
+.glass {
+    background: linear-gradient(180deg, rgba(0, 122, 61, 0.65) 0%, rgba(0, 122, 61, 0.55) 100%);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+}
+.menu-dd {
+    position: absolute;
+    top: 2.75rem;
+    left: 0;
+    /* z-index: var(--z-dd); */
+}
+.menu-panel {
+    padding: 12px;
+    width: 260px;
+}
+.menu-title {
+    color: #fff;
+    font: 700 1rem/1.2 Roboto, system-ui, sans-serif;
+    text-align: center;
+}
+.menu-item {
+    display: block;
+    padding: 8px 12px;
+    color: #fff;
+}
+.menu-item:hover {
+    opacity: 0.9;
+}
+.menu-sep {
+    border-color: rgba(255, 255, 255, 0.4);
+    margin: 8px 0;
+}
+
+.z-pill {
+    z-index: 50;
+}
+
+.sticky-pill {
+    position: sticky;
+    top: 12px;
+}
+
+@media (max-width: 1400px) {
+    .pill-rail {
+        width: min(92vw, var(--container));
+    }
+}

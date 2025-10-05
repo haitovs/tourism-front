@@ -1,0 +1,16 @@
+{% set order = ["premier", "general", "diamond", "platinum"] %} {% set top = sponsors_top if sponsors_top is defined else data %}
+
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    {% for tier in order %} {% set items = top.get(tier, []) %}
+    <div class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-between h-[276px]">
+        {% if items and items[0].logo_url %}
+        <img src="{{ items[0].logo_url }}" alt="{{ items[0].name }}" class="w-[202px] h-[202px] object-contain" />
+        {% else %}
+        <div class="w-[202px] h-[202px] bg-slate-100 rounded-xl flex items-center justify-center text-slate-400">
+            No sponsor yet
+        </div>
+        {% endif %}
+        <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">{{ tier }} sponsor</div>
+    </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,51 @@
+{% set tier = data["tier"] %} {% set page = data["page"] %}
+<div class="relative">
+    <!-- rail -->
+    <div
+        class="overflow-x-auto snap-x snap-mandatory flex gap-4 pb-2"
+        x-data
+        x-on:wheel.passive="$el.scrollLeft += $event.deltaY"
+    >
+        <!-- one 'page' (snap) -->
+        <div class="snap-start shrink-0 w-full">
+            <div class="grid grid-cols-2 gap-4">
+                {% for sp in data["items"] %}
+                <article class="bg-white rounded-2xl shadow p-4 flex items-center justify-center h-[225px]">
+                    {% if sp.logo_url %}
+                    <img
+                        src="{{ sp.logo_url }}"
+                        alt="{{ sp.name }}"
+                        title="{{ sp.name }}"
+                        class="w-[150px] h-[150px] object-contain"
+                    />
+                    {% else %}
+                    <div class="w-[150px] h-[150px] bg-slate-100 rounded"></div>
+                    {% endif %}
+                </article>
+                {% else %} {% for _ in range(4) %}
+                <div class="bg-white rounded-2xl shadow p-4 h-[225px] animate-pulse"></div>
+                {% endfor %} {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- controls -->
+    <div class="mt-3 flex items-center justify-between">
+        <button
+            class="px-3 py-1 border rounded"
+            hx-get="/x/sponsors/{{ tier }}?page={{ page - 1 if page > 1 else 1 }}"
+            hx-target="#carousel-{{ tier }}"
+            hx-swap="outerHTML"
+        >
+            ‹ Prev
+        </button>
+        <button
+            class="px-3 py-1 border rounded"
+            hx-get="/x/sponsors/{{ tier }}?page={{ page + 1 }}"
+            hx-target="#carousel-{{ tier }}"
+            hx-swap="outerHTML"
+        >
+            Next ›
+        </button>
+    </div>
+</div>

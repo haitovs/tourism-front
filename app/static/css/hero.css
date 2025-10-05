@@ -1,0 +1,17 @@
+/* hero is one block INCLUDING the wave */
+.hero-bg {
+    position: relative;
+    background: var(--c-hero);
+    min-height: 600px;
+    overflow: hidden;
+    background-image: url("/static/img/wave.png");
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+}
+
+@media (max-width: 1024px) {
+    .hero-bg {
+        min-height: 460px;
+    }
+}

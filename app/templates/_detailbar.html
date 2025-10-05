@@ -1,0 +1,114 @@
+<header class="detailbar relative z-detail" x-data="{ langOpen:false }">
+    <div class="max-w-[var(--container)] mx-auto px-4 row flex items-center justify-between">
+        <!-- left: logo only -->
+        <div class="flex items-center gap-4">
+            <img src="/static/img/logo.svg" alt="Logo" class="h-8 w-auto" />
+        </div>
+
+        <!-- right: email + phone + lang + user -->
+        <div class="flex items-center gap-6">
+            <div class="hidden md:flex items-center gap-3">
+                <img src="/static/img/ic-mail.svg" class="w-6 h-6" alt="" />
+                <span class="font-['Roboto'] font-medium text-[20px] md:text-[24px]"> info@ciet-turkmenistan.com </span>
+            </div>
+
+            <div class="hidden md:flex items-center gap-2">
+                <img src="/static/img/ic-phone.svg" class="w-6 h-6" alt="" />
+                <span class="font-['Roboto'] font-medium text-[20px] md:text-[24px]"> +99361 480 080 </span>
+            </div>
+
+            <div class="relative">
+                <button
+                    class="flex items-center gap-1 font-['Roboto'] font-medium text-[20px] md:text-[24px]"
+                    @click="langOpen=!langOpen"
+                    @keydown.escape="langOpen=false"
+                    aria-haspopup="true"
+                    :aria-expanded="langOpen"
+                >
+                    EN
+                    <svg class="w-4 h-4 -rotate-90" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" stroke="#F4F4F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <div
+                    x-show="langOpen"
+                    x-transition
+                    @click.outside="langOpen=false"
+                    class="absolute right-0 mt-2 w-24 p-2 glass text-white text-center z-[70]"
+                >
+                    <a href="/?lang=ru" class="block py-2">RU</a>
+                    <a href="/?lang=tm" class="block py-2">TM</a>
+                    <a href="/?lang=en" class="block py-2">EN</a>
+                </div>
+            </div>
+
+            <img src="/static/img/ic-user.svg" class="w-6 h-6 hidden md:block" alt="" />
+        </div>
+    </div>
+
+    <!-- NavPill -->
+    <div class="pill-rail">
+        <nav class="navpill px-4 md:px-6">
+            <ul
+                class="flex flex-wrap items-center gap-3 md:gap-6 font-['Roboto'] font-bold text-[18px] md:text-[22px] text-[var(--c-primary)]"
+            >
+                <li><a class="px-3 py-1 rounded-full bg-white text-[var(--c-text)]" href="/">Home</a></li>
+
+                <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
+                    <button class="flex items-center gap-2 hover:text-[var(--c-text)]">
+                        About the Forum <span class="text-[var(--c-text)]/40">›</span>
+                    </button>
+                    <div x-show="m" x-transition class="menu-dd">
+                        <div class="glass menu-panel">
+                            <h4 class="menu-title">Forum</h4>
+                            <hr class="menu-sep" />
+                            <a href="/expo" class="menu-item">Expo</a>
+                            <a href="/official-support" class="menu-item">Official support</a>
+                            <a href="/brochure" class="menu-item">Brochure</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
+                    <button class="flex items-center gap-2 hover:text-[var(--c-text)]">
+                        Participants <span class="text-[var(--c-text)]/40">›</span>
+                    </button>
+                    <div x-show="m" x-transition class="menu-dd">
+                        <div class="glass menu-panel">
+                            <h4 class="menu-title">Forum</h4>
+                            <a href="/agenda" class="menu-item">Agenda</a>
+                            <a href="/speakers" class="menu-item">Speakers</a>
+                            <a href="/meeting-request" class="menu-item">Meeting request</a>
+                            <hr class="menu-sep" />
+                            <a href="/expo" class="menu-item">Expo</a>
+                            <hr class="menu-sep" />
+                            <a href="/official-support" class="menu-item">Official support</a>
+                            <a href="/brochure" class="menu-item">Brochure</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li><a href="/news" class="hover:text-[var(--c-text)]">News</a></li>
+
+                <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
+                    <button class="flex items-center gap-2 hover:text-[var(--c-text)]">
+                        Travel &amp; Accommodation Guide <span class="text-[var(--c-text)]/40">›</span>
+                    </button>
+                    <div x-show="m" x-transition class="menu-dd w-[360px]">
+                        <div class="glass menu-panel">
+                            <h4 class="menu-title">Travel & Accommodation Guide</h4>
+                            <hr class="menu-sep" />
+                            <a href="/visa" class="menu-item">Apply for Visa</a>
+                            <a href="/hotel" class="menu-item">Book Your Hotel</a>
+                            <a href="/flight" class="menu-item">Book Your Flight</a>
+                            <hr class="menu-sep" />
+                            <a href="/faq" class="menu-item">FAQ</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li><a href="/registration" class="hover:text-[var(--c-text)]">Registration</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>

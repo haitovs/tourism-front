@@ -1,0 +1,27 @@
+<section class="max-w-[var(--container)] mx-auto px-4 py-14 space-y-10" id="sponsors">
+    <header class="text-center">
+        <p class="text-[var(--c-primary)] font-['Montserrat'] text-2xl">Sponsors</p>
+        <h2 class="font-['Montserrat'] text-3xl md:text-4xl font-semibold mt-2">With Gratitude to Our Sponsors</h2>
+    </header>
+
+    <!-- Top Sponsors (unique tiers) -->
+    <div id="sponsors-top">{% include "_sponsors_top.html" with context %}</div>
+
+    <!-- Gold -->
+    <div class="space-y-3">
+        <h3 class="font-['Roboto'] font-semibold text-2xl text-[#DDAC17]">Gold Sponsors</h3>
+        <div id="carousel-gold">{% with data=gold %}{% include "_sponsors_carousel.html" %}{% endwith %}</div>
+    </div>
+
+    <!-- Silver -->
+    <div class="space-y-3">
+        <h3 class="font-['Roboto'] font-semibold text-2xl text-slate-500">Silver Sponsors</h3>
+        <div id="carousel-silver">{% with data=silver %}{% include "_sponsors_carousel.html" %}{% endwith %}</div>
+    </div>
+
+    <!-- Bronze -->
+    <div class="space-y-3">
+        <h3 class="font-['Roboto'] font-semibold text-2xl text-[#9c6b3d]">Bronze Sponsors</h3>
+        <div id="carousel-bronze">{% with data=bronze %}{% include "_sponsors_carousel.html" %}{% endwith %}</div>
+    </div>
+</section>

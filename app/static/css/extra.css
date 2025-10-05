@@ -1,0 +1,27 @@
+:root {
+    --c-bg: #f4f4f2;
+    --c-hero: #8dbc81;
+    --c-primary: #007a3d;
+    --c-dark: #1a392a;
+    --c-text: #1e1e1e;
+    --c-surface: #ffffff;
+    --radius-sm: 10px;
+    --container: 1310px;
+    --bar-h: 112px;
+    --h1-lh: 73px;
+    --pill-w: 1180px;
+    --pill-top: 80px;
+}
+
+/* soft shadow for the pill */
+.shadow-soft {
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* snap carousels */
+.snap-x {
+    scroll-snap-type: x mandatory;
+}
+.snap-start {
+    scroll-snap-align: start;
+}

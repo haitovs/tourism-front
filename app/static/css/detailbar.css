@@ -1,0 +1,15 @@
+.detailbar {
+    height: var(--bar-h);
+    background: var(--c-primary);
+    color: #f4f4f2;
+    position: relative;
+}
+
+.detailbar .row {
+    height: 70px;
+}
+
+/* z-index so the pill can stack above */
+.z-detail {
+    z-index: 20;
+}
