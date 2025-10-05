@@ -26,7 +26,7 @@
           companies: {{ stats.companies|default(0) }},
         }
       })"
-            x-init="start()"
+            x-intersect.once="start()"
             class="w-full max-w-[1280px] grid grid-cols-2 md:grid-cols-4 gap-x-[78px] gap-y-10 place-items-center"
         >
             <div class="flex items-center gap-4 h-[150px]">
@@ -65,7 +65,7 @@
 </section>
 
 <script>
-    function countup({ values, duration = 1200 }) {
+    function countup({ values, duration = 1500 }) {
         return {
             target: values,
             display: { episodes: 0, delegates: 0, speakers: 0, companies: 0 },
@@ -79,7 +79,7 @@
 
                 const tick = (now) => {
                     const t = Math.min(1, (now - startTime) / duration);
-                    const e = 1 - Math.pow(1 - t, 3); // ease-out cubic
+                    const e = 1 - Math.pow(1 - t, 3);
                     keys.forEach((k) => {
                         this.display[k] = Math.floor(e * this.target[k]);
                     });

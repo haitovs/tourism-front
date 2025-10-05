@@ -29,7 +29,7 @@ async def home(req: Request):
         "gold": sponsor_srv.list_all_sponsors_by_tier(tier="gold", lang=lang),
         "silver": sponsor_srv.list_all_sponsors_by_tier(tier="silver", lang=lang),
         "bronze": sponsor_srv.list_all_sponsors_by_tier(tier="bronze", lang=lang),
-        "sectors": sectors_srv.list_all_sectors(),
+        "sectors": sectors_srv.list_home_sectors(limit=3, latest_first=True),
         "stats": stats_srv.get_statistics(),
     }
     resp = templates.TemplateResponse("index.html", ctx)
