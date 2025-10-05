@@ -3,6 +3,7 @@ from fastapi import APIRouter, Request
 from starlette.responses import HTMLResponse
 
 from app.services import sponsors as sponsor_srv
+from app.services.statistics import get_statistics
 
 from ..core.settings import settings
 from ..core.templates import templates
@@ -18,14 +19,19 @@ def _resolve_lang(req: Request) -> str:
 @router.get("/", response_class=HTMLResponse)
 async def home(req: Request):
     lang = _resolve_lang(req)
+
+    stats = await get_statistics()
+
     ctx = {
         "request": req,
         "lang": lang,
         "sponsors_top": sponsor_srv.get_top_sponsors(lang=lang),
-        # ⬇️ send ALL items to the template; Splide will page them.
         "gold": sponsor_srv.list_all_sponsors_by_tier(tier="gold", lang=lang),
         "silver": sponsor_srv.list_all_sponsors_by_tier(tier="silver", lang=lang),
         "bronze": sponsor_srv.list_all_sponsors_by_tier(tier="bronze", lang=lang),
+
+        # stats context (None -> block hidden)
+        "stats": stats,
     }
     resp = templates.TemplateResponse("index.html", ctx)
     resp.set_cookie("lang", lang, max_age=60 * 60 * 24 * 365, httponly=False, samesite="lax")
