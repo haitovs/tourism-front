@@ -25,3 +25,14 @@
 .snap-start {
     scroll-snap-align: start;
 }
+
+/* Tier label colors for bottom sponsor cards */
+.tier-gold {
+    color: #ddac17;
+}
+.tier-silver {
+    color: #64748b;
+} /* slate-500ish */
+.tier-bronze {
+    color: #9c6b3d;
+}

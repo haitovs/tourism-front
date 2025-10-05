@@ -1,59 +1,91 @@
-{% set tier = data["tier"] %} {% set page = data["page"] %} {% set per = data["per_page"] %} {% set count = data["items"]|length
-%}
+{% set tier = data["tier"] %} {% set items = data["items"] %} {% set tier_label = (tier|capitalize) ~ " Sponsor" %} {% set
+tier_class = "tier-gold" if tier == "gold" else ("tier-silver" if tier == "silver" else "tier-bronze") %}
 
-<div
-    x-data
-    x-init="
-    (() => {
-      // Only auto-advance if the page is 'full' -> likely more pages
-      if ({{ count }} < {{ per }}) return;
-      const go = () => {
-        const btn = $refs.nextBtn;
-        if (!btn) return;
-        btn.click();
-      };
-      setInterval(go, 10000);
-    })()
-  "
-    class="relative"
->
-    <!-- rail (one snap page containing a 2x2 grid) -->
-    <div class="overflow-x-auto snap-x snap-mandatory flex gap-4 pb-2">
-        <div class="snap-start shrink-0 w-full">
-            <div class="grid [grid-template-columns:repeat(2,190px)] justify-center gap-4">
-                {% for sp in data["items"] %}
-                <article class="bg-white rounded-2xl shadow p-4 flex items-center justify-center w-[190px] h-[225px]">
-                    {% if sp.logo_url %}
-                    <img
-                        src="{{ sp.logo_url }}"
-                        alt="{{ sp.name }}"
-                        title="{{ sp.name }}"
-                        class="w-[150px] h-[150px] object-contain"
-                    />
-                    {% else %}
-                    <img
-                        src="/static/img/sponsor_logo.png"
-                        alt="Sponsor"
-                        title="Sponsor"
-                        class="w-[150px] h-[150px] object-contain opacity-70"
-                    />
-                    {% endif %}
-                </article>
-                {% else %} {% for _ in range(4) %}
-                <div class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] animate-pulse"></div>
-                {% endfor %} {% endfor %}
-            </div>
-        </div>
+<div x-data="hloop({ speed: 0.5 })" x-init="init($refs.track)" class="relative w-full overflow-hidden">
+    <div
+        x-ref="track"
+        class="flex gap-4 w-max cursor-grab active:cursor-grabbing"
+        x-on:wheel.passive="wheel($event)"
+        x-on:mousedown="dragStart($event)"
+        x-on:mouseup="dragEnd"
+        x-on:mouseleave="dragEnd"
+        x-on:mousemove="dragMove($event)"
+    >
+        {% for sp in items %}
+        <article class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start">
+            {% if sp.logo_url %}
+            <img src="{{ sp.logo_url }}" alt="{{ sp.name }}" title="{{ sp.name }}" class="w-[150px] h-[150px] object-contain" />
+            {% else %}
+            <img
+                src="/static/img/sponsor_logo.png"
+                alt="Sponsor"
+                title="Sponsor"
+                class="w-[150px] h-[150px] object-contain opacity-70"
+            />
+            {% endif %}
+            <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">{{ tier_label }}</div>
+        </article>
+        {% endfor %}
+
+        <!-- clone once for seamless loop -->
+        {% for sp in items %}
+        <article class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start opacity-40">
+            {% if sp.logo_url %}
+            <img src="{{ sp.logo_url }}" alt="{{ sp.name }}" title="{{ sp.name }}" class="w-[150px] h-[150px] object-contain" />
+            {% else %}
+            <img
+                src="/static/img/sponsor_logo.png"
+                alt="Sponsor"
+                title="Sponsor"
+                class="w-[150px] h-[150px] object-contain opacity-70"
+            />
+            {% endif %}
+            <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">{{ tier_label }}</div>
+        </article>
+        {% endfor %}
     </div>
-
-    <!-- hidden next trigger for HTMX; we 'click' it via Alpine every 10s -->
-    <button
-        x-ref="nextBtn"
-        class="hidden"
-        hx-get="/x/sponsors/{{ tier }}?page={{ page + 1 }}"
-        hx-target="#carousel-{{ tier }}"
-        hx-swap="outerHTML"
-        aria-hidden="true"
-        tabindex="-1"
-    ></button>
 </div>
+
+<script>
+    function hloop({ speed = 0.6 } = {}) {
+        return {
+            el: null,
+            raf: null,
+            dragging: false,
+            lastX: 0,
+            vx: speed,
+
+            init(el) {
+                this.el = el;
+                const step = () => {
+                    if (!this.dragging) {
+                        this.el.scrollLeft += this.vx;
+                        const half = Math.floor(this.el.scrollWidth / 2);
+                        if (this.el.scrollLeft >= half) this.el.scrollLeft = 0;
+                    }
+                    this.raf = requestAnimationFrame(step);
+                };
+                this.raf = requestAnimationFrame(step);
+            },
+            wheel(e) {
+                this.el.scrollLeft += e.deltaY;
+            },
+            dragStart(e) {
+                this.dragging = true;
+                this.lastX = e.pageX;
+                cancelAnimationFrame(this.raf);
+            },
+            dragMove(e) {
+                if (!this.dragging) return;
+                const dx = this.lastX - e.pageX;
+                this.el.scrollLeft += dx;
+                this.lastX = e.pageX;
+            },
+            dragEnd() {
+                if (!this.dragging) return;
+                this.dragging = false;
+                this.raf = requestAnimationFrame(() => this.init(this.el));
+            },
+        };
+    }
+</script>

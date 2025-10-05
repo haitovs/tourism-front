@@ -1,16 +1,19 @@
 from __future__ import annotations
-from typing import Literal, Optional, Generator
-from contextlib import contextmanager
 
-from sqlalchemy import select, asc
-from sqlalchemy.orm import Session
+from contextlib import contextmanager
+from typing import Generator, Literal, Optional
+
+from sqlalchemy import asc, select
 from sqlalchemy.exc import DataError
+from sqlalchemy.orm import Session
 
 from app.core.db import get_db
+from app.core.settings import settings
 from app.models.sponsor_model import Sponsor, SponsorTier
 
 TopTier = Literal["premier", "general", "diamond", "platinum"]
 ListTier = Literal["gold", "silver", "bronze"]
+
 
 @contextmanager
 def _db_session() -> Generator[Session, None, None]:
@@ -24,6 +27,20 @@ def _db_session() -> Generator[Session, None, None]:
         except Exception:
             pass
 
+
+def _resolve_logo_url(logo: str | None) -> str:
+    if not logo:
+        return ""
+    # already absolute or root-relative
+    if logo.startswith("http://") or logo.startswith("https://") or logo.startswith("/"):
+        return logo
+    # join MEDIA_BASE_URL + MEDIA_PREFIX + logo
+    base = settings.MEDIA_BASE_URL.rstrip("/")
+    pref = settings.MEDIA_PREFIX.strip("/")
+    path = logo.lstrip("/")
+    return f"{base}/{pref}/{path}"
+
+
 def _project(sp: Sponsor) -> dict:
     if not sp:
         return {}
@@ -31,9 +48,10 @@ def _project(sp: Sponsor) -> dict:
         "id": sp.id,
         "name": sp.name,
         "website": sp.website or "",
-        "logo_url": sp.logo or "",
+        "logo_url": _resolve_logo_url(sp.logo),
         "tier": sp.tier.value if isinstance(sp.tier, SponsorTier) else str(sp.tier),
     }
+
 
 def get_top_sponsors(*, lang: str = "en", site_id: Optional[int] = None) -> dict[TopTier, list[dict]]:
     tiers: list[TopTier] = ["premier", "general", "diamond", "platinum"]
@@ -41,9 +59,8 @@ def get_top_sponsors(*, lang: str = "en", site_id: Optional[int] = None) -> dict
     with _db_session() as db:
         for t in tiers:
             try:
-                enum_val = SponsorTier(t)  # use Python enum to bind correctly
+                enum_val = SponsorTier(t)
             except ValueError:
-                # not a valid Python enum member; skip
                 continue
             stmt = select(Sponsor).where(Sponsor.tier == enum_val)
             if site_id is not None:
@@ -58,9 +75,8 @@ def get_top_sponsors(*, lang: str = "en", site_id: Optional[int] = None) -> dict
                 out[t] = [_project(row)]
     return out
 
-def list_sponsors_by_tier(
-    *, tier: ListTier, page: int = 1, per_page: int = 4, lang: str = "en", site_id: Optional[int] = None
-) -> dict:
+
+def list_sponsors_by_tier(*, tier: ListTier, page: int = 1, per_page: int = 10, lang: str = "en", site_id: Optional[int] = None) -> dict:
     offset = (max(page, 1) - 1) * per_page
     try:
         enum_val = SponsorTier(tier)
@@ -74,6 +90,5 @@ def list_sponsors_by_tier(
         try:
             items = db.execute(stmt).scalars().all()
         except DataError:
-            # DB enum missing this value -> empty
             items = []
     return {"items": [_project(sp) for sp in items], "page": max(page, 1), "per_page": per_page, "tier": tier}

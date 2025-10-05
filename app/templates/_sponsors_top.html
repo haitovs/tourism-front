@@ -1,31 +1,40 @@
-{% set order = ["premier", "general", "diamond", "platinum"] %} {% set top = sponsors_top if sponsors_top is defined else data %}
+{% set order = ["premier", "general", "diamond", "platinum"] %} {% set top = sponsors_top | default({}) %}
 
-<div
-    x-data="{
-    step: 270,
-    autoscroll() {
-      const rail = this.$refs.rail
-      if (!rail) return
-      const overflow = rail.scrollWidth > rail.clientWidth
-      if (!overflow) return
-      setInterval(() => {
-        const atEnd = Math.ceil(rail.scrollLeft + rail.clientWidth + 4) >= rail.scrollWidth
-        rail.scrollTo({ left: atEnd ? 0 : rail.scrollLeft + this.step, behavior: 'smooth' })
-      }, 10000)
-    }
-  }"
-    x-init="autoscroll()"
-    class="relative"
->
-    <!-- rail -->
+<div x-data="hloop({ speed: 0.6 })" x-init="init($refs.track)" class="relative w-full overflow-hidden">
     <div
-        x-ref="rail"
-        class="overflow-x-auto snap-x snap-mandatory flex gap-5 pb-2"
-        x-on:wheel.passive="$el.scrollLeft += $event.deltaY"
-        style="scroll-behavior: smooth"
+        x-ref="track"
+        class="flex gap-5 w-max cursor-grab active:cursor-grabbing"
+        x-on:wheel.passive="wheel($event)"
+        x-on:mousedown="dragStart($event)"
+        x-on:mouseup="dragEnd"
+        x-on:mouseleave="dragEnd"
+        x-on:mousemove="dragMove($event)"
     >
         {% for tier in order %} {% set items = top.get(tier, []) %}
-        <div class="snap-start shrink-0 w-[250px]">
+        <div class="w-[250px]">
+            <div class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-between h-[276px]">
+                {% if items and items[0].logo_url %}
+                <img
+                    src="{{ items[0].logo_url }}"
+                    alt="{{ items[0].name }}"
+                    title="{{ items[0].name }}"
+                    class="w-[202px] h-[202px] object-contain"
+                />
+                {% else %}
+                <img
+                    src="/static/img/sponsor_logo.png"
+                    alt="No sponsor yet"
+                    class="w-[202px] h-[202px] object-contain opacity-70"
+                />
+                {% endif %}
+                <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">{{ tier }} sponsor</div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- clone once for seamless loop -->
+        {% for tier in order %} {% set items = top.get(tier, []) %}
+        <div class="w-[250px] opacity-40">
             <div class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-between h-[276px]">
                 {% if items and items[0].logo_url %}
                 <img
@@ -47,3 +56,47 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+    function hloop({ speed = 0.6 } = {}) {
+        return {
+            el: null,
+            raf: null,
+            dragging: false,
+            lastX: 0,
+            vx: speed,
+
+            init(el) {
+                this.el = el;
+                const step = () => {
+                    if (!this.dragging) {
+                        this.el.scrollLeft += this.vx;
+                        const half = Math.floor(this.el.scrollWidth / 2);
+                        if (this.el.scrollLeft >= half) this.el.scrollLeft = 0;
+                    }
+                    this.raf = requestAnimationFrame(step);
+                };
+                this.raf = requestAnimationFrame(step);
+            },
+            wheel(e) {
+                this.el.scrollLeft += e.deltaY;
+            },
+            dragStart(e) {
+                this.dragging = true;
+                this.lastX = e.pageX;
+                cancelAnimationFrame(this.raf);
+            },
+            dragMove(e) {
+                if (!this.dragging) return;
+                const dx = this.lastX - e.pageX;
+                this.el.scrollLeft += dx;
+                this.lastX = e.pageX;
+            },
+            dragEnd() {
+                if (!this.dragging) return;
+                this.dragging = false;
+                this.raf = requestAnimationFrame(() => this.init(this.el)); // resume
+            },
+        };
+    }
+</script>

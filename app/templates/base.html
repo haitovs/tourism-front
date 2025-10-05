@@ -27,5 +27,48 @@
         <footer class="mt-16 border-t">
             <div class="max-w-[var(--container)] mx-auto px-4 py-8 text-sm text-slate-600">© 2025</div>
         </footer>
+        <script>
+            // Smooth infinite horizontal loop + drag + wheel
+            function hloop({ speed = 0.6 } = {}) {
+                return {
+                    el: null,
+                    raf: null,
+                    dragging: false,
+                    lastX: 0,
+                    vx: speed,
+                    init(el) {
+                        this.el = el;
+                        const step = () => {
+                            if (!this.dragging) {
+                                this.el.scrollLeft += this.vx;
+                                const half = Math.floor(this.el.scrollWidth / 2);
+                                if (this.el.scrollLeft >= half) this.el.scrollLeft = 0;
+                            }
+                            this.raf = requestAnimationFrame(step);
+                        };
+                        this.raf = requestAnimationFrame(step);
+                    },
+                    wheel(e) {
+                        this.el.scrollLeft += e.deltaY;
+                    },
+                    dragStart(e) {
+                        this.dragging = true;
+                        this.lastX = e.pageX;
+                        cancelAnimationFrame(this.raf);
+                    },
+                    dragMove(e) {
+                        if (!this.dragging) return;
+                        const dx = this.lastX - e.pageX;
+                        this.el.scrollLeft += dx;
+                        this.lastX = e.pageX;
+                    },
+                    dragEnd() {
+                        if (!this.dragging) return;
+                        this.dragging = false;
+                        this.raf = requestAnimationFrame(() => this.init(this.el));
+                    },
+                };
+            }
+        </script>
     </body>
 </html>

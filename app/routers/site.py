@@ -22,9 +22,9 @@ async def home(req: Request):
         "request": req,
         "lang": lang,
         "sponsors_top": sponsor_srv.get_top_sponsors(lang=lang),
-        "gold": sponsor_srv.list_sponsors_by_tier(tier="gold", page=1, per_page=4, lang=lang),
-        "silver": sponsor_srv.list_sponsors_by_tier(tier="silver", page=1, per_page=4, lang=lang),
-        "bronze": sponsor_srv.list_sponsors_by_tier(tier="bronze", page=1, per_page=4, lang=lang),
+        "gold": sponsor_srv.list_sponsors_by_tier(tier="gold", page=1, per_page=10, lang=lang),
+        "silver": sponsor_srv.list_sponsors_by_tier(tier="silver", page=1, per_page=10, lang=lang),
+        "bronze": sponsor_srv.list_sponsors_by_tier(tier="bronze", page=1, per_page=10, lang=lang),
     }
     resp = templates.TemplateResponse("index.html", ctx)
     resp.set_cookie("lang", lang, max_age=60 * 60 * 24 * 365, httponly=False, samesite="lax")

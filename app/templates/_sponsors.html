@@ -1,23 +1,40 @@
 <section class="max-w-[var(--container)] mx-auto px-4 py-14 space-y-10" id="sponsors">
+    <!-- HEADER: green mini title + lines, then big title -->
     <header class="text-center">
-        <p class="text-[var(--c-primary)] font-['Montserrat'] text-2xl">Sponsors</p>
-        <h2 class="font-['Montserrat'] text-3xl md:text-4xl font-semibold mt-2">With Gratitude to Our Sponsors</h2>
+        <div class="flex items-center justify-center gap-4">
+            <span class="hidden sm:block h-px w-[50px] bg-[var(--c-primary)]"></span>
+            <span class="font-['Montserrat'] text-[30px] leading-[75px] text-[var(--c-primary)]">Sponsors</span>
+            <span class="hidden sm:block h-px w-[50px] bg-[var(--c-primary)]"></span>
+        </div>
+        <h2 class="font-['Montserrat'] text-[clamp(28px,4vw,60px)] leading-[75px] font-medium mt-1 text-center text-[#1E1E1E]">
+            With Gratitude to Our Sponsors
+        </h2>
     </header>
 
-    <!-- Top Sponsors (unique tiers) as carousel -->
-    <div id="sponsors-top">{% include "_sponsors_top.html" with context %}</div>
+    <!-- Top Sponsors (unique tiers) as centered carousel -->
+    <div id="sponsors-top" class="flex justify-center">{% include "_sponsors_top.html" with context %}</div>
 
-    <!-- decorative separator: two lines + wetka image in center -->
+    <!-- decorative separator: two lines + wetka image in center (gold lines) -->
     <div class="flex items-center justify-center gap-6 my-6">
         <div class="hidden sm:block h-px w-[300px] bg-[#F2C75C]"></div>
         <img src="/static/img/wetka.png" alt="" class="w-[150px] h-[50px] object-contain" />
         <div class="hidden sm:block h-px w-[300px] bg-[#F2C75C]"></div>
     </div>
 
-    <!-- Bottom carousels (Gold → Silver → Bronze), no headings, stacked -->
+    <!-- Bottom carousels; render only if tier has items; no headings, stacked -->
     <div class="space-y-6">
-        <div id="carousel-gold">{% with data=gold %}{% include "_sponsors_carousel.html" %}{% endwith %}</div>
-        <div id="carousel-silver">{% with data=silver %}{% include "_sponsors_carousel.html" %}{% endwith %}</div>
-        <div id="carousel-bronze">{% with data=bronze %}{% include "_sponsors_carousel.html" %}{% endwith %}</div>
+        {% if gold["items"]|length > 0 %}
+        <div id="carousel-gold" class="flex justify-center">
+            {% with data=gold %}{% include "_sponsors_carousel.html" %}{% endwith %}
+        </div>
+        {% endif %} {% if silver["items"]|length > 0 %}
+        <div id="carousel-silver" class="flex justify-center">
+            {% with data=silver %}{% include "_sponsors_carousel.html" %}{% endwith %}
+        </div>
+        {% endif %} {% if bronze["items"]|length > 0 %}
+        <div id="carousel-bronze" class="flex justify-center">
+            {% with data=bronze %}{% include "_sponsors_carousel.html" %}{% endwith %}
+        </div>
+        {% endif %}
     </div>
 </section>
