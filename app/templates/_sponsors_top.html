@@ -4,7 +4,7 @@
     <div
         x-ref="track"
         class="flex gap-5 w-max cursor-grab active:cursor-grabbing"
-        x-on:wheel.passive="wheel($event)"
+        x-on:wheel="wheel($event)"
         x-on:mousedown="dragStart($event)"
         x-on:mouseup="dragEnd"
         x-on:mouseleave="dragEnd"
@@ -18,13 +18,13 @@
                     src="{{ items[0].logo_url }}"
                     alt="{{ items[0].name }}"
                     title="{{ items[0].name }}"
-                    class="w-[202px] h-[202px] object-contain"
+                    class="w-[202px] h-[202px] object-contain select-none pointer-events-none"
                 />
                 {% else %}
                 <img
                     src="/static/img/sponsor_logo.png"
                     alt="No sponsor yet"
-                    class="w-[202px] h-[202px] object-contain opacity-70"
+                    class="w-[202px] h-[202px] object-contain select-none pointer-events-none opacity-70"
                 />
                 {% endif %}
                 <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">{{ tier }} sponsor</div>

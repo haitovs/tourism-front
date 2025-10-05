@@ -4,7 +4,7 @@ tier_class = "tier-gold" if tier == "gold" else ("tier-silver" if tier == "silve
 <div x-data="hloop({ speed: 0.5 })" x-init="init($refs.track)" class="relative w-full overflow-hidden">
     <div
         x-ref="track"
-        class="flex gap-4 w-max overflow-x-auto cursor-grab active:cursor-grabbing"
+        class="flex gap-4 w-max overflow-x-auto no-scrollbar cursor-grab active:cursor-grabbing"
         x-on:wheel="wheel($event)"
         x-on:mousedown="dragStart($event)"
         x-on:mouseup="dragEnd"
@@ -14,13 +14,18 @@ tier_class = "tier-gold" if tier == "gold" else ("tier-silver" if tier == "silve
         {% for sp in items %}
         <article class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start">
             {% if sp.logo_url %}
-            <img src="{{ sp.logo_url }}" alt="{{ sp.name }}" title="{{ sp.name }}" class="w-[150px] h-[150px] object-contain" />
+            <img
+                src="{{ sp.logo_url }}"
+                alt="{{ sp.name }}"
+                title="{{ sp.name }}"
+                class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
+            />
             {% else %}
             <img
                 src="/static/img/sponsor_logo.png"
                 alt="Sponsor"
                 title="Sponsor"
-                class="w-[150px] h-[150px] object-contain opacity-70"
+                class="w-[150px] h-[150px] object-contain select-none pointer-events-none opacity-70"
             />
             {% endif %}
             <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">{{ tier_label }}</div>
@@ -31,13 +36,18 @@ tier_class = "tier-gold" if tier == "gold" else ("tier-silver" if tier == "silve
         {% for sp in items %}
         <article class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start opacity-40">
             {% if sp.logo_url %}
-            <img src="{{ sp.logo_url }}" alt="{{ sp.name }}" title="{{ sp.name }}" class="w-[150px] h-[150px] object-contain" />
+            <img
+                src="{{ sp.logo_url }}"
+                alt="{{ sp.name }}"
+                title="{{ sp.name }}"
+                class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
+            />
             {% else %}
             <img
                 src="/static/img/sponsor_logo.png"
                 alt="Sponsor"
                 title="Sponsor"
-                class="w-[150px] h-[150px] object-contain opacity-70"
+                class="w-[150px] h-[150px] object-contain select-none pointer-events-none opacity-70"
             />
             {% endif %}
             <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">{{ tier_label }}</div>

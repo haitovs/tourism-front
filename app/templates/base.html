@@ -28,7 +28,7 @@
             <div class="max-w-[var(--container)] mx-auto px-4 py-8 text-sm text-slate-600">© 2025</div>
         </footer>
         <script>
-            // Smooth infinite horizontal loop + drag + wheel
+            // Smooth infinite horizontal loop + drag + wheel + ensure overflow
             function hloop({ speed = 0.6 } = {}) {
                 return {
                     el: null,
@@ -36,8 +36,32 @@
                     dragging: false,
                     lastX: 0,
                     vx: speed,
+                    vxSaved: speed,
+
                     init(el) {
                         this.el = el;
+
+                        // 1) Ensure we have horizontal overflow; if not, keep duplicating until we do
+                        this.ensureOverflow();
+
+                        // 2) Kick off smooth auto loop
+                        this.start();
+                    },
+
+                    ensureOverflow() {
+                        // If content width <= container width, duplicate until it overflows
+                        // Also duplicate once more for seamless looping
+                        const maxDup = 6; // safety guard
+                        let dup = 0;
+                        while (this.el.scrollWidth <= this.el.clientWidth + 100 && dup < maxDup) {
+                            this.el.innerHTML += this.el.innerHTML;
+                            dup++;
+                        }
+                        // Always duplicate once to create a looping buffer
+                        this.el.innerHTML += this.el.innerHTML;
+                    },
+
+                    start() {
                         const step = () => {
                             if (!this.dragging) {
                                 this.el.scrollLeft += this.vx;
@@ -48,24 +72,34 @@
                         };
                         this.raf = requestAnimationFrame(step);
                     },
+
+                    // Mouse wheel: use vertical wheel to move horizontally
                     wheel(e) {
-                        this.el.scrollLeft += e.deltaY;
+                        e.preventDefault(); // stop page from scrolling
+                        this.el.scrollLeft += e.deltaY || e.deltaX || 0;
                     },
+
                     dragStart(e) {
                         this.dragging = true;
-                        this.lastX = e.pageX;
+                        this.lastX = e.pageX ?? (e.touches && e.touches[0].pageX) ?? 0;
+                        this.vxSaved = this.vx;
+                        this.vx = 0;
                         cancelAnimationFrame(this.raf);
+                        // prevent image drag ghost + selection
+                        e.preventDefault();
                     },
                     dragMove(e) {
                         if (!this.dragging) return;
-                        const dx = this.lastX - e.pageX;
+                        const pageX = e.pageX ?? (e.touches && e.touches[0].pageX) ?? 0;
+                        const dx = this.lastX - pageX;
                         this.el.scrollLeft += dx;
-                        this.lastX = e.pageX;
+                        this.lastX = pageX;
                     },
                     dragEnd() {
                         if (!this.dragging) return;
                         this.dragging = false;
-                        this.raf = requestAnimationFrame(() => this.init(this.el));
+                        this.vx = this.vxSaved;
+                        this.start(); // resume auto loop
                     },
                 };
             }
