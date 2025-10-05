@@ -4,8 +4,15 @@
         <h2 class="font-['Montserrat'] text-3xl md:text-4xl font-semibold mt-2">With Gratitude to Our Sponsors</h2>
     </header>
 
-    <!-- Top Sponsors (unique tiers) -->
+    <!-- Top Sponsors (unique tiers) as carousel -->
     <div id="sponsors-top">{% include "_sponsors_top.html" with context %}</div>
+
+    <!-- decorative separator: two lines + wetka image in center -->
+    <div class="flex items-center justify-center gap-6 my-6">
+        <div class="hidden sm:block h-px w-[300px] bg-[#F2C75C]"></div>
+        <img src="/static/img/wetka.png" alt="" class="w-[150px] h-[50px] object-contain" />
+        <div class="hidden sm:block h-px w-[300px] bg-[#F2C75C]"></div>
+    </div>
 
     <!-- Gold -->
     <div class="space-y-3">

@@ -8,9 +8,10 @@
     >
         <!-- one 'page' (snap) -->
         <div class="snap-start shrink-0 w-full">
-            <div class="grid grid-cols-2 gap-4">
+            <!-- fixed 2 columns @ 190px each, 2 rows -->
+            <div class="grid [grid-template-columns:repeat(2,190px)] justify-center gap-4">
                 {% for sp in data["items"] %}
-                <article class="bg-white rounded-2xl shadow p-4 flex items-center justify-center h-[225px]">
+                <article class="bg-white rounded-2xl shadow p-4 flex items-center justify-center w-[190px] h-[225px]">
                     {% if sp.logo_url %}
                     <img
                         src="{{ sp.logo_url }}"
@@ -19,11 +20,16 @@
                         class="w-[150px] h-[150px] object-contain"
                     />
                     {% else %}
-                    <div class="w-[150px] h-[150px] bg-slate-100 rounded"></div>
+                    <img
+                        src="/static/img/sponsor_logo.png"
+                        alt="Sponsor"
+                        title="Sponsor"
+                        class="w-[150px] h-[150px] object-contain opacity-70"
+                    />
                     {% endif %}
                 </article>
                 {% else %} {% for _ in range(4) %}
-                <div class="bg-white rounded-2xl shadow p-4 h-[225px] animate-pulse"></div>
+                <div class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] animate-pulse"></div>
                 {% endfor %} {% endfor %}
             </div>
         </div>
