@@ -1,6 +1,5 @@
 {% if sectors %}
 <section id="expo-sectors" class="max-w-[var(--container)] mx-auto px-4 py-20 space-y-12">
-    <!-- Header -->
     <header class="text-center">
         <div class="flex items-center justify-center gap-4">
             <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
@@ -12,7 +11,7 @@
         </h2>
     </header>
 
-    <!-- Cards -->
+    <!-- ✅ Start loop -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         {% for s in sectors %}
         <div class="bg-white rounded-[15px] shadow-md overflow-hidden flex flex-col">
@@ -22,12 +21,13 @@
             <div class="flex-1 p-6 flex flex-col">
                 <h3 class="font-['Roboto'] font-medium text-[25px] text-center mb-3 text-[#1E1E1E]">{{ s.header }}</h3>
                 <p class="text-[18px] text-[#000000] leading-[24px] text-center flex-1">{{ s.description }}</p>
+                <!-- ✅ s.id works only here -->
                 <a
                     href="/expo-sectors/{{ s.id }}"
-                    class="mt-6 bg-[#D3F2E2] hover:bg-[#b9ead4] transition rounded-md py-3 flex items-center justify-center gap-2 text-[#007A3D] font-medium text-[18px]"
+                    class="mt-6 mx-auto inline-flex items-center justify-center w-[358px] h-[51px] rounded-[5px] bg-[#D3F2E2] text-[#007A3D] gap-2"
                 >
-                    More information
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16" class="w-4 h-4">
+                    <span class="font-['Roboto'] text-[18px] leading-[21px]">More information</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="w-4 h-4" fill="none">
                         <path
                             d="M2 8h12M10 4l4 4-4 4"
                             stroke="#007A3D"
@@ -41,16 +41,24 @@
         </div>
         {% endfor %}
     </div>
+    <!-- ✅ End loop -->
 
-    <!-- More details button -->
+    <!-- page-level button (no s here) -->
     <div class="flex justify-center mt-10">
         <a
             href="/expo-sectors"
-            class="bg-[#007A3D] hover:bg-[#006834] transition rounded-[15px] px-8 py-4 text-white font-semibold text-[22px] underline flex items-center gap-2"
+            class="inline-flex items-center justify-center w-[227px] h-[65px] rounded-[15px] bg-[#007A3D] text-white gap-3"
         >
-            More details
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 22" class="w-[22px] h-[22px]">
-                <path d="M2 11h18M14 6l6 5-6 5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            <span class="font-['Roboto'] text-[25px] leading-[29px] underline">More details</span>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-[22px] h-[22px]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.6"
+            >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
             </svg>
         </a>
     </div>
