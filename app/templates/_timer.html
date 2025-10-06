@@ -1,0 +1,249 @@
+{# app/templates/_timer.html #}
+<section class="max-w-[var(--container)] mx-auto px-4 py-14 space-y-10" id="timer">
+    <!-- HEADER: green mini title + lines, then big title -->
+    <header class="text-center">
+        <div class="flex items-center justify-center gap-4">
+            <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
+            <span class="font-['Montserrat'] text-[30px] leading-[75px] text-[var(--c-primary)]">Timer</span>
+            <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
+        </div>
+        <h2 class="font-['Montserrat'] text-[clamp(28px,4vw,50px)] leading-[1.22] font-medium mt-1 text-center text-[#1E1E1E]">
+            Countdown to the official start of the forum
+        </h2>
+    </header>
+
+    <!-- Picture with timer -->
+    <div
+        x-data="timerWidget({
+    apiBase: '{{ settings.BACKEND_BASE_URL }}',
+    bgUrl: '/static/img/timer_bg.png',
+    logoUrl: '/static/img/logo.svg'
+  })"
+        x-init="init()"
+        class="w-full flex justify-center"
+    >
+        <div
+            class="relative w-[1310px] h-[460px] rounded-[20px] overflow-hidden"
+            :style="`background-image:url('${bgUrl}'); background-size:cover; background-position:center;`"
+        >
+            <!-- Left dark overlay: 564 × 460 -->
+            <div class="absolute left-0 top-0 h-[460px] w-[564px] bg-black/30 backdrop-blur-[2.5px] rounded-l-[20px]"></div>
+
+            <!-- Left content: logo + multi-line title, top-aligned, fits within 564px -->
+            <div class="absolute left-0 top-0 h-[460px] w-[564px] z-20">
+                <div class="pl-[28px] pr-[24px] pt-[18px] text-white flex items-center gap-3 w-full">
+                    <img :src="logoUrl" alt="logo" class="w-[80px] h-auto shrink-0" />
+                    <div
+                        class="font-['Montserrat'] font-medium text-[22px] leading-[28px] text-gray-100 whitespace-normal line-clamp-3"
+                        style="max-width: calc(564px - 28px - 24px - 80px - 12px)"
+                        x-text="eventName || 'International Turkmenistan-China forum and exhibition'"
+                    ></div>
+                </div>
+            </div>
+
+            <!-- Red rounded timer bar: centered, UNDER the left content -->
+            <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[922px] h-[215px] z-10">
+                <div class="w-full h-full bg-[#BD280D] rounded-[40px] flex items-center justify-center px-8">
+                    <div class="flex items-center gap-[42px] text-white select-none">
+                        <!-- DAYS -->
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums" x-text="dd">
+                                00
+                            </div>
+                            <div class="mt-1 font-['Roboto'] text-[20px] leading-[24px]">DAYS</div>
+                        </div>
+
+                        <!-- colon (two dots) -->
+                        <div class="flex flex-col items-center justify-center gap-[22px]">
+                            <span class="block w-4 h-4 rounded-full bg-white"></span>
+                            <span class="block w-4 h-4 rounded-full bg-white"></span>
+                        </div>
+
+                        <!-- HOURS -->
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums" x-text="hh">
+                                00
+                            </div>
+                            <div class="mt-1 font-['Roboto'] text-[20px] leading-[24px]">HOURS</div>
+                        </div>
+
+                        <!-- colon -->
+                        <div class="flex flex-col items-center justify-center gap-[22px]">
+                            <span class="block w-4 h-4 rounded-full bg-white"></span>
+                            <span class="block w-4 h-4 rounded-full bg-white"></span>
+                        </div>
+
+                        <!-- MINUTES -->
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums" x-text="mm">
+                                00
+                            </div>
+                            <div class="mt-1 font-['Roboto'] text-[20px] leading-[24px]">MINUTES</div>
+                        </div>
+
+                        <!-- colon -->
+                        <div class="flex flex-col items-center justify-center gap-[22px]">
+                            <span class="block w-4 h-4 rounded-full bg-white"></span>
+                            <span class="block w-4 h-4 rounded-full bg-white"></span>
+                        </div>
+
+                        <!-- SECONDS -->
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums" x-text="ss">
+                                00
+                            </div>
+                            <div class="mt-1 font-['Roboto'] text-[20px] leading-[24px]">SECONDS</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    /**
+     * Alpine component: timerWidget
+     * - Fetches active timer from backend: GET {apiBase}/timer/active
+     * - Syncs to server time to avoid client clock drift
+     * - Listens to WS {apiBase->wsBase}/ws/timer for live updates (e.g., new timer created)
+     * - mode: UNTIL_START uses start_time; UNTIL_END uses end_time
+     */
+    function timerWidget({ apiBase, bgUrl, logoUrl }) {
+        return {
+            // props
+            apiBase,
+            bgUrl,
+            logoUrl,
+
+            // state
+            eventName: "",
+            mode: "UNTIL_START",
+            targetISO: null, // ISO string from API start_time / end_time
+            serverISO: null, // server_time ISO string
+            deltaMs: 0, // client_now - server_now (for drift correction)
+
+            // display values
+            dd: "00",
+            hh: "00",
+            mm: "00",
+            ss: "00",
+            _tickHandle: null,
+
+            async init() {
+                await this.fetchTimer();
+                this.openWS();
+                this.startTicking();
+            },
+
+            wsUrlFromBase() {
+                try {
+                    const u = new URL(this.apiBase);
+                    u.protocol = u.protocol === "https:" ? "wss:" : "ws:";
+                    u.pathname = "/ws/timer";
+                    u.search = "";
+                    return u.toString();
+                } catch (e) {
+                    // fallback to same host if parsing fails
+                    const loc = window.location;
+                    return (loc.protocol === "https:" ? "wss://" : "ws://") + loc.host + "/ws/timer";
+                }
+            },
+
+            async fetchTimer() {
+                const url = this.apiBase.replace(/\/+$/, "") + "/timer/active";
+                try {
+                    const res = await fetch(url, { credentials: "include" });
+                    if (!res.ok) {
+                        console.warn("[timer] fetch failed:", res.status, res.statusText);
+                        // Keep zeros; try again in 10s in case admin activates later
+                        setTimeout(() => this.fetchTimer(), 10000);
+                        return;
+                    }
+                    const data = await res.json().catch((e) => {
+                        console.error("[timer] bad JSON:", e);
+                        return null;
+                    });
+                    if (!data) return;
+
+                    this.eventName = data.event_name || "";
+                    this.mode = data.mode || "UNTIL_START";
+                    this.serverISO = data.server_time || null;
+                    this.targetISO = (this.mode === "UNTIL_END" ? data.end_time : data.start_time) || null;
+
+                    if (this.serverISO) {
+                        const serverMs = Date.parse(this.serverISO);
+                        this.deltaMs = Date.now() - serverMs;
+                    } else {
+                        this.deltaMs = 0;
+                    }
+
+                    // If target is missing or in the past, keep ticking but show 00s
+                    if (!this.targetISO) console.warn("[timer] no target time in response");
+                } catch (err) {
+                    console.error("[timer] fetch error:", err);
+                    setTimeout(() => this.fetchTimer(), 10000);
+                }
+            },
+
+            openWS() {
+                const wsURL = this.wsUrlFromBase();
+                let ws;
+                try {
+                    ws = new WebSocket(wsURL);
+                } catch (e) {
+                    return; // no WS, timer still works by fetch()
+                }
+                ws.onmessage = (ev) => {
+                    try {
+                        const msg = JSON.parse(ev.data);
+                        if (msg && msg.event === "TIMER_CREATED" && msg.data) {
+                            const d = msg.data;
+                            this.eventName = d.event_name || "";
+                            this.mode = d.mode || "UNTIL_START";
+                            this.targetISO = (this.mode === "UNTIL_END" ? d.end_time : d.start_time) || null;
+                            // reset drift using client clock (no server_time in WS payload)
+                            this.deltaMs = 0;
+                        }
+                    } catch {}
+                };
+                ws.onerror = () => {};
+                ws.onclose = () => {};
+            },
+
+            startTicking() {
+                const update = () => {
+                    if (!this.targetISO) {
+                        // no timer -> keep zeros
+                        this.dd = this.hh = this.mm = this.ss = "00";
+                        this._tickHandle = setTimeout(update, 1000);
+                        return;
+                    }
+                    // derive server-synced "now"
+                    const nowMs = Date.now() - this.deltaMs;
+                    const targetMs = Date.parse(this.targetISO);
+                    let remain = targetMs - nowMs;
+
+                    if (isNaN(targetMs) || remain <= 0) {
+                        this.dd = this.hh = this.mm = this.ss = "00";
+                        this._tickHandle = setTimeout(update, 1000);
+                        return;
+                    }
+                    const sec = Math.floor(remain / 1000);
+                    const days = Math.floor(sec / 86400);
+                    const hrs = Math.floor((sec % 86400) / 3600);
+                    const mins = Math.floor((sec % 3600) / 60);
+                    const secs = sec % 60;
+
+                    this.dd = String(days).padStart(2, "0");
+                    this.hh = String(hrs).padStart(2, "0");
+                    this.mm = String(mins).padStart(2, "0");
+                    this.ss = String(secs).padStart(2, "0");
+
+                    this._tickHandle = setTimeout(update, 1000);
+                };
+                update();
+            },
+        };
+    }
+</script>
