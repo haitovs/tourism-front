@@ -3,6 +3,7 @@ from fastapi import APIRouter, Request
 from starlette.responses import HTMLResponse
 
 from app.services import expo_sectors as sectors_srv
+from app.services import faq as faq_srv
 from app.services import news as news_srv
 from app.services import speakers as speakers_srv
 from app.services import sponsors as sponsor_srv
@@ -35,6 +36,7 @@ async def home(req: Request):
         "stats": stats_srv.get_statistics(),
         "speakers": speakers_srv.get_featured_speakers(limit=3),
         "news": news_srv.get_latest_news(limit=5),
+        "faqs": faq_srv.list_faqs(limit=20),
     }
     resp = templates.TemplateResponse("index.html", ctx)
     resp.set_cookie("lang", lang, max_age=60 * 60 * 24 * 365, httponly=False, samesite="lax")
