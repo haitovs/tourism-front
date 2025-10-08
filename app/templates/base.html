@@ -31,11 +31,9 @@
         />
     </head>
     <body class="bg-[var(--c-bg)] text-[var(--c-text)]">
-        {% block content %}{% endblock %}
-
-        <footer class="mt-16 border-t">
-            <div class="max-w-[var(--container)] mx-auto px-4 py-8 text-sm text-slate-600">© 2025</div>
-        </footer>
+        {% include "_detailbar.html" %}
+        <main class="flex-1">{% block content %}{% endblock %}</main>
+        {% include "_footer.html" %}
 
         <!-- Splide JS (defer) -->
         <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" defer></script>
