@@ -3,13 +3,14 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from typing import Generator, Optional
+from urllib.parse import urljoin
 
 from sqlalchemy import desc, select
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
-from app.models.partner_model import \
-    Partner  # ensure file name matches your project
+from app.core.settings import settings
+from app.models.partner_model import Partner  # file you already have
 
 
 @contextmanager
@@ -25,19 +26,30 @@ def _db_session() -> Generator[Session, None, None]:
             pass
 
 
-def _logo_url(path: Optional[str]) -> Optional[str]:
+def _resolve_media(path: str | None) -> str:
+    """
+    Align with speakers.py:
+    - http(s) -> as-is
+    - else join: MEDIA_BASE_URL + MEDIA_PREFIX + path
+    """
     if not path:
-        return None
-    if path.startswith(("http://", "https://", "/")):
+        return ""
+    low = path.lower()
+    if low.startswith("http://") or low.startswith("https://"):
         return path
-    # naive fallback to a common media prefix
-    return f"/media/{path}"
+
+    base = settings.MEDIA_BASE_URL.rstrip("/") + "/"
+    if path.startswith("/"):
+        return urljoin(base, path.lstrip("/"))
+
+    pref = settings.MEDIA_PREFIX.strip("/")
+    return urljoin(base, f"{pref}/{path.lstrip('/')}")
 
 
 def list_partners(*, site_id: Optional[int] = None, limit: int | None = None) -> list[dict]:
     """
-    Returns organizers/partners as simple view dicts.
-    Order: sort by id DESC (latest first). Add more ordering if needed.
+    Return partners as simple view dicts.
+    Order: newest first (id DESC). No default limit (fits a carousel).
     """
     out: list[dict] = []
     with _db_session() as db:
@@ -47,13 +59,23 @@ def list_partners(*, site_id: Optional[int] = None, limit: int | None = None) ->
         stmt = stmt.order_by(desc(Partner.id))
         if limit:
             stmt = stmt.limit(max(1, limit))
-        rows = db.execute(stmt).scalars().all()
 
+        rows = db.execute(stmt).scalars().all()
         for r in rows:
             out.append({
                 "id": r.id,
                 "name": r.name,
-                "website": r.website,
-                "logo_url": _logo_url(r.logo),
+                "website": r.website or "",
+                "logo_url": _resolve_media(getattr(r, "logo", None)),
             })
     return out
+
+
+def as_carousel_data(*, site_id: Optional[int] = None) -> dict:
+    """
+    Optional helper if you want a dedicated partners carousel include.
+    """
+    return {
+        "items": list_partners(site_id=site_id),
+        "kind": "partners",
+    }

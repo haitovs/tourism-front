@@ -1,0 +1,116 @@
+{# templates/_partners.html #} {% set _partners = partners or [] %} {% set count = _partners|length %}
+
+<section id="partners" class="max-w-[1440px] mx-auto py-14">
+    <!-- 1440 - (2 * 86) = 1268 ≈ 1269 Figma inner width -->
+    <div class="mx-[86px]">
+        <!-- Header: green mini title + lines, then big centered title -->
+        <header class="text-center mb-8">
+            <div class="flex items-center justify-center gap-4">
+                <span class="hidden sm:block h-px w-[60px] bg-[#007A3D]"></span>
+                <span class="font-['Montserrat'] text-[30px] leading-[75px] text-[#007A3D]">Partners</span>
+                <span class="hidden sm:block h-px w-[60px] bg-[#007A3D]"></span>
+            </div>
+            <h2 class="font-['Montserrat'] text-[50px] leading-[75px] font-medium mt-1 text-center text-[#1E1E1E]">
+                Our official partners
+            </h2>
+        </header>
+
+        {% if count == 0 %}
+        <div class="text-center text-slate-500">No partners added yet</div>
+
+        {% elif count <= 6 %} {# ---- Static centered row: each logo 170x123; Figma horizontal gap ~50px ---- #}
+        <ul class="flex flex-wrap justify-center gap-x-[50px] gap-y-6">
+            {% for p in _partners %}
+            <li class="flex justify-center">
+                {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block"
+                    >{% endif %}
+                    <div class="w-[170px] h-[123px] flex items-center justify-center">
+                        {% if p.logo_url %}
+                        <img
+                            src="{{ p.logo_url }}"
+                            alt="{{ p.name }}"
+                            title="{{ p.name }}"
+                            class="w-[170px] h-[123px] object-contain select-none pointer-events-none"
+                            loading="lazy"
+                        />
+                        {% else %}
+                        <img
+                            src="/static/img/sponsor_logo.png"
+                            alt="{{ p.name }}"
+                            title="{{ p.name }}"
+                            class="w-[170px] h-[123px] object-contain opacity-70 select-none pointer-events-none"
+                            loading="lazy"
+                        />
+                        {% endif %}
+                    </div>
+                    {% if p.website %}</a
+                >{% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+
+        {% else %} {# ---- Splide carousel: single row, exactly 6 per page; autoplay disabled ---- #}
+        <div
+            id="splide-partners"
+            class="splide w-full"
+            aria-label="Partners"
+            data-splide="{}"
+            data-count="{{ count }}"
+            data-type="{{ 'loop' if count > 6 else 'slide' }}"
+            data-autoplay="false"
+            data-interval="9000"
+            data-speed="600"
+            data-gap="50px"
+            {#
+            Figma
+            gap
+            ≈
+            50px
+            between
+            170px
+            logos
+            #}
+            data-rows="1"
+            data-cols="6"
+            data-row-gap="0"
+            data-col-gap="50px"
+            data-breakpoints='{
+          "1024": { "grid": { "rows": 1, "cols": 4, "gap": { "col": "40px" } } },
+          "640":  { "grid": { "rows": 1, "cols": 2, "gap": { "col": "24px" } } }
+        }'
+        >
+            <div class="splide__track">
+                <ul class="splide__list">
+                    {% for p in _partners %}
+                    <li class="splide__slide flex justify-center">
+                        {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block"
+                            >{% endif %}
+                            <div class="w-[170px] h-[123px] flex items-center justify-center">
+                                {% if p.logo_url %}
+                                <img
+                                    src="{{ p.logo_url }}"
+                                    alt="{{ p.name }}"
+                                    title="{{ p.name }}"
+                                    class="w-[170px] h-[123px] object-contain select-none pointer-events-none"
+                                    loading="lazy"
+                                />
+                                {% else %}
+                                <img
+                                    src="/static/img/sponsor_logo.png"
+                                    alt="{{ p.name }}"
+                                    title="{{ p.name }}"
+                                    class="w-[170px] h-[123px] object-contain opacity-70 select-none pointer-events-none"
+                                    loading="lazy"
+                                />
+                                {% endif %}
+                            </div>
+                            {% if p.website %}</a
+                        >{% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>

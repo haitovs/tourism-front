@@ -6,6 +6,7 @@ from app.services import expo_sectors as sectors_srv
 from app.services import faqs as faq_srv
 from app.services import news as news_srv
 from app.services import organizers as org_srv
+from app.services import partners as partners_srv
 from app.services import speakers as speakers_srv
 from app.services import sponsors as sponsor_srv
 from app.services import statistics as stats_srv
@@ -42,6 +43,7 @@ async def home(req: Request):
         "organizers_data": {
             "items": org_srv.list_organizers()
         },
+        "partners": partners_srv.list_partners(),
     }
     resp = templates.TemplateResponse("index.html", ctx)
     resp.set_cookie("lang", lang, max_age=60 * 60 * 24 * 365, httponly=False, samesite="lax")
