@@ -1,0 +1,97 @@
+{# templates/_organizers_carousel.html #} {# Inputs: data = { items } #} {% set all = data["items"]|default([]) %} {%
+set count = all|length %} {% if count == 0 %}
+<div class="text-center text-slate-500">No organizers added yet</div>
+
+{% elif count < 8 %}
+<!-- Centered static grid when fewer than 8 -->
+<div class="w-full flex justify-center">
+    <ul class="grid grid-cols-2 md:grid-cols-4 gap-x-[30px] gap-y-[30px]">
+        {% for p in all %}
+        <li class="flex justify-center">
+            {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block"
+                >{% endif %}
+                <article
+                    class="bg-[#F4F4F2] rounded-[5px] shadow-[0_4px_4px_rgba(0,0,0,0.25)] w-[280px] h-[180px] flex items-center justify-center transition hover:shadow-md"
+                >
+                    {% if p.logo_url %}
+                    <img
+                        src="{{ p.logo_url }}"
+                        alt="{{ p.name }}"
+                        title="{{ p.name }}"
+                        class="max-w-[213.14px] max-h-[154.51px] object-contain select-none pointer-events-none"
+                        loading="lazy"
+                    />
+                    {% else %}
+                    <img
+                        src="/static/img/sponsor_logo.png"
+                        alt="{{ p.name }}"
+                        title="{{ p.name }}"
+                        class="max-w-[213.14px] max-h-[154.51px] object-contain opacity-70 select-none pointer-events-none"
+                        loading="lazy"
+                    />
+                    {% endif %}
+                </article>
+                {% if p.website %}</a
+            >{% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% else %}
+<!-- Splide carousel: exactly 8 per page (4x2) -->
+<div
+    id="splide-organizers"
+    class="splide w-full"
+    aria-label="Organizers"
+    data-splide="{}"
+    data-count="{{ count }}"
+    data-type="{{ 'loop' if count > 8 else 'slide' }}"
+    data-autoplay="{{ 'true' if count > 8 else 'false' }}"
+    data-interval="9000"
+    data-speed="600"
+    data-gap="1rem"
+    data-rows="2"
+    data-cols="4"
+    data-row-gap="1rem"
+    data-col-gap="1rem"
+    data-breakpoints='{
+      "1024": { "grid": { "rows": 2, "cols": 3, "gap": { "row": "0.75rem", "col": "0.75rem" } } },
+      "640":  { "grid": { "rows": 2, "cols": 2, "gap": { "row": "0.5rem",  "col": "0.5rem"  } } }
+    }'
+>
+    <div class="splide__track">
+        <ul class="splide__list">
+            {% for p in all %}
+            <li class="splide__slide flex justify-center">
+                {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block"
+                    >{% endif %}
+                    <article
+                        class="bg-[#F4F4F2] rounded-[5px] shadow-[0_4px_4px_rgba(0,0,0,0.25)] w-[280px] h-[180px] flex items-center justify-center transition hover:shadow-md"
+                    >
+                        {% if p.logo_url %}
+                        <img
+                            src="{{ p.logo_url }}"
+                            alt="{{ p.name }}"
+                            title="{{ p.name }}"
+                            class="max-w-[213.14px] max-h-[154.51px] object-contain select-none pointer-events-none"
+                            loading="lazy"
+                        />
+                        {% else %}
+                        <img
+                            src="/static/img/sponsor_logo.png"
+                            alt="{{ p.name }}"
+                            title="{{ p.name }}"
+                            class="max-w-[213.14px] max-h-[154.51px] object-contain opacity-70 select-none pointer-events-none"
+                            loading="lazy"
+                        />
+                        {% endif %}
+                    </article>
+                    {% if p.website %}</a
+                >{% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
