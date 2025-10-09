@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+
+from app.routers.speaker_router import router as speaker_router
 
 from .core.settings import settings
 from .routers import htmx, site
@@ -11,3 +12,4 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 app.include_router(site.router)
 app.include_router(htmx.router)
+app.include_router(speaker_router)

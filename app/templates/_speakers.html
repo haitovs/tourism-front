@@ -7,7 +7,9 @@
             <span class="font-['Montserrat'] text-[30px] leading-[75px] text-[var(--c-primary)]">Speakers</span>
             <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
         </div>
-        <h2 class="font-['Montserrat'] text-[clamp(28px,4vw,50px)] leading-[1.22] font-medium mt-1 text-center text-[#1E1E1E]">
+        <h2
+            class="font-['Montserrat'] text-[clamp(28px,4vw,50px)] leading-[1.22] font-medium mt-1 text-center text-[#1E1E1E]"
+        >
             Our respected speakers
         </h2>
     </header>
@@ -19,7 +21,11 @@
             <a href="/speakers/{{ sp.id }}" class="block group">
                 <div class="relative w-[380px] h-[450px] rounded-[35px] overflow-hidden shadow">
                     {% if sp.photo_url %}
-                    <img src="{{ sp.photo_url }}" alt="{{ sp.name }}" class="absolute inset-0 w-full h-full object-cover" />
+                    <img
+                        src="{{ sp.photo_url }}"
+                        alt="{{ sp.name }}"
+                        class="absolute inset-0 w-full h-full object-cover"
+                    />
                     {% else %}
                     <img
                         src="/static/img/person_placeholder.jpg"
@@ -33,12 +39,18 @@
                         class="absolute bottom-0 left-0 right-0 h-[160px] bg-[rgba(30,30,30,0.65)] backdrop-blur-sm rounded-b-[35px] p-5"
                     >
                         <div class="text-white">
-                            <div class="font-['Roboto'] font-bold text-[25px] leading-[29px] truncate" title="{{ sp.name }}">
+                            <div
+                                class="font-['Roboto'] font-bold text-[25px] leading-[29px] truncate"
+                                title="{{ sp.name }}"
+                            >
                                 {{ sp.name }}
                             </div>
-                            <div class="mt-2 font-['Roboto'] text-[20px] leading-[23px] line-clamp-2">{{ sp.position }}</div>
+                            <div class="mt-2 font-['Roboto'] text-[20px] leading-[23px] line-clamp-2">
+                                {{ sp.position }}
+                            </div>
                         </div>
 
+                        <!-- arrow (bottom-right of dark panel) -->
                         <!-- arrow (bottom-right of dark panel) -->
                         <div class="absolute right-5 bottom-5">
                             <svg
@@ -48,14 +60,11 @@
                                 viewBox="0 0 24 24"
                                 class="transition-transform group-hover:translate-x-[2px]"
                             >
-                                <!-- circle stroke -->
-                                <circle cx="12" cy="12" r="11.25" fill="none" stroke="white" stroke-width="1.5" />
-                                <!-- chevron -->
                                 <path
-                                    d="M9 6l6 6-6 6"
+                                    d="M5 12h14M13 6l6 6-6 6"
                                     fill="none"
                                     stroke="white"
-                                    stroke-width="1.5"
+                                    stroke-width="2"
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
                                 />

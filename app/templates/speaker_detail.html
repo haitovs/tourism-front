@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block content %}
+<section class="max-w-[var(--container)] mx-auto px-4 py-12">
+    <a href="/speakers" class="inline-flex items-center gap-2 text-[var(--c-primary)] underline mb-6">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="1.6"
+        >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        Back to speakers
+    </a>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="md:col-span-1">
+            <div class="aspect-[3/4] rounded-2xl overflow-hidden shadow bg-white">
+                {% if speaker.photo_url %}
+                <img src="{{ speaker.photo_url }}" alt="{{ speaker.name }}" class="w-full h-full object-cover" />
+                {% else %}
+                <img src="/static/img/person_placeholder.jpg" alt="" class="w-full h-full object-cover opacity-80" />
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="md:col-span-2">
+            <h1 class="font-['Montserrat'] text-[clamp(28px,4vw,42px)] leading-tight text-[#1E1E1E]">
+                {{ speaker.name }}
+            </h1>
+            {% if speaker.position %}
+            <p class="mt-2 text-[18px] text-black/70">{{ speaker.position }}</p>
+            {% endif %}
+
+            <div class="mt-6 prose max-w-none">
+                <!-- Placeholder bio/description for now -->
+                <p class="text-[16px] text-black/70">Speaker biography or detailed info will go here.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

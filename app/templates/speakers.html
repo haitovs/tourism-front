@@ -1,0 +1,57 @@
+{% extends "base.html" %} {% block content %}
+<section class="max-w-[var(--container)] mx-auto px-4 py-12">
+    <header class="text-center mb-8">
+        <div class="flex items-center justify-center gap-4">
+            <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
+            <span class="font-['Montserrat'] text-[30px] leading-[75px] text-[var(--c-primary)]">Speakers</span>
+            <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
+        </div>
+        <h1 class="font-['Montserrat'] text-[clamp(28px,4vw,50px)] leading-[1.15] mt-1 text-[#1E1E1E]">
+            Meet all speakers
+        </h1>
+    </header>
+
+    {% if speakers|length == 0 %}
+    <div class="text-center text-slate-500 py-16">No speakers yet.</div>
+    {% else %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for sp in speakers %}
+        <a href="/speakers/{{ sp.id }}" class="block group">
+            <div class="relative w-full h-[420px] rounded-[28px] overflow-hidden shadow">
+                {% if sp.photo_url %}
+                <img src="{{ sp.photo_url }}" alt="{{ sp.name }}" class="absolute inset-0 w-full h-full object-cover" />
+                {% else %}
+                <img
+                    src="/static/img/person_placeholder.jpg"
+                    alt=""
+                    class="absolute inset-0 w-full h-full object-cover opacity-80"
+                />
+                {% endif %}
+                <div class="absolute bottom-0 left-0 right-0 bg-black/55 p-5">
+                    <div class="text-white">
+                        <div class="font-['Roboto'] font-bold text-[22px] leading-[26px] truncate">{{ sp.name }}</div>
+                        <div class="mt-1 font-['Roboto'] text-[18px] leading-[22px] line-clamp-2">
+                            {{ sp.position }}
+                        </div>
+                    </div>
+                    <div class="absolute right-5 bottom-5">
+                        <!-- right chevron only -->
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="w-[22px] h-[22px] transition-transform group-hover:translate-x-[2px]"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="white"
+                            stroke-width="1.6"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
