@@ -71,3 +71,24 @@ def get_latest_news(*, limit: int = 5, site_id: Optional[int] = None) -> list[di
                 "date_human": dt.strftime("%d %b %y") if dt else "",
             })
     return out
+
+
+def get_news(news_id: int, site_id: Optional[int] = None) -> Optional[dict]:
+    with _db_session() as db:
+        stmt = select(News).where(News.id == news_id, News.is_published.is_(True))
+        if site_id is not None:
+            stmt = stmt.where(News.site_id == site_id)
+        r = db.execute(stmt).scalars().first()
+        if not r:
+            return None
+        dt = getattr(r, "created_at", None)
+        return {
+            "id": r.id,
+            "title": getattr(r, "header", "") or "",
+            "summary": getattr(r, "description", "") or "",
+            "body": getattr(r, "body", None) or "",
+            "category": getattr(r, "category", "") or "News",
+            "image_url": _resolve_media(getattr(r, "photo", None)),
+            "date_iso": dt.isoformat() if dt else None,
+            "date_human": dt.strftime("%d %b %y") if dt else "",
+        }

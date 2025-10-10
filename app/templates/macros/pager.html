@@ -1,0 +1,64 @@
+{# Pagination component with accessibility + prev/next #} {% macro pager(current_page, total_pages, q=None) -%} {% if
+total_pages and total_pages > 1 %}
+<nav class="mt-12" aria-label="Pagination">
+    <div class="border-t-2 border-[#007A3D] max-w-[1200px] mx-auto"></div>
+
+    <div class="mt-4 flex items-center justify-center gap-4 flex-wrap">
+        {# Previous #} {% if current_page > 1 %}
+        <a
+            rel="prev"
+            href="/news?page={{ current_page - 1 }}{% if q %}&q={{ q|urlencode }}{% endif %}"
+            class="font-['Montserrat'] text-[24px] text-[#258C58]"
+            >Previous</a
+        >
+        {% else %}
+        <span class="font-['Montserrat'] text-[24px] text-[#258C58]/40 select-none">Previous</span>
+        {% endif %} {# Page buttons (windowed) #}
+        <div class="flex items-center gap-2">
+            {% set start = 1 if current_page - 2 < 1 else current_page - 2 %} {% set end = total_pages if current_page +
+            2 > total_pages else current_page + 2 %} {# Always show page 1 if window doesn’t include it #} {% if start >
+            1 %}
+            <a
+                href="/news?page=1{% if q %}&q={{ q|urlencode }}{% endif %}"
+                class="w-[41px] h-[41px] inline-flex items-center justify-center rounded-[5px] bg-[rgba(0,122,61,0.25)] font-['Roboto'] text-[25px] text-[#1E1E1E]"
+                >1</a
+            >
+            {% if start > 2 %}
+            <span class="px-1 text-[#1E1E1E]/60">…</span>
+            {% endif %} {% endif %} {% for p in range(start, end + 1) %} {% if p == current_page %}
+            <span
+                aria-current="page"
+                class="w-[41px] h-[41px] inline-flex items-center justify-center rounded-[5px] bg-[#258C58] text-white font-['Roboto'] text-[25px]"
+                >{{ p }}</span
+            >
+            {% else %}
+            <a
+                href="/news?page={{ p }}{% if q %}&q={{ q|urlencode }}{% endif %}"
+                class="w-[41px] h-[41px] inline-flex items-center justify-center rounded-[5px] bg-[rgba(0,122,61,0.25)] font-['Roboto'] text-[25px] text-[#1E1E1E]"
+                >{{ p }}</a
+            >
+            {% endif %} {% endfor %} {# Always show last page if window doesn’t include it #} {% if end < total_pages %}
+            {% if end < total_pages - 1 %}
+            <span class="px-1 text-[#1E1E1E]/60">…</span>
+            {% endif %}
+            <a
+                href="/news?page={{ total_pages }}{% if q %}&q={{ q|urlencode }}{% endif %}"
+                class="w-[41px] h-[41px] inline-flex items-center justify-center rounded-[5px] bg-[rgba(0,122,61,0.25)] font-['Roboto'] text-[25px] text-[#1E1E1E]"
+                >{{ total_pages }}</a
+            >
+            {% endif %}
+        </div>
+
+        {# Next #} {% if current_page < total_pages %}
+        <a
+            rel="next"
+            href="/news?page={{ current_page + 1 }}{% if q %}&q={{ q|urlencode }}{% endif %}"
+            class="font-['Montserrat'] text-[24px] text-[#258C58]"
+            >Next</a
+        >
+        {% else %}
+        <span class="font-['Montserrat'] text-[24px] text-[#258C58]/40 select-none">Next</span>
+        {% endif %}
+    </div>
+</nav>
+{% endif %} {%- endmacro %}

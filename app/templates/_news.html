@@ -2,57 +2,67 @@
 set others = _news[1:5] %}
 
 <section id="news" class="max-w-[1310px] mx-auto px-4 py-20">
-    <!-- Header -->
+    {# Header #}
     <div class="flex items-end justify-between mb-6">
-        <!-- Left block: small and big titles -->
         <div>
-            <!-- small green title with line -->
             <div class="flex items-center gap-3">
-                <span class="font-['Montserrat'] text-[30px] leading-[75px] text-[var(--c-primary)]">News</span>
+                <span class="font-['Montserrat'] text-[24px] md:text-[30px] leading-[1] text-[var(--c-primary)]"
+                    >News</span
+                >
                 <span class="h-px w-[60px] bg-[var(--c-primary)]"></span>
             </div>
-
-            <!-- big title -->
-            <h2 class="mt-[-10px] font-['Montserrat'] font-light text-[50px] leading-[75px] text-[#1E1E1E]">
+            <h2
+                class="mt-2 md:mt-[-6px] font-['Montserrat'] font-light text-[36px] md:text-[50px] leading-[1.2] text-[#1E1E1E]"
+            >
                 Daily news
             </h2>
         </div>
 
-        <!-- right link -->
         <a
             href="/news"
-            class="font-['Montserrat'] text-[20px] underline text-[rgba(0,122,61,0.75)] translate-y-[-10px]"
+            class="font-['Montserrat'] text-[18px] md:text-[20px] underline text-[rgba(0,122,61,0.75)] -translate-y-1"
         >
             More details
         </a>
     </div>
 
-    <!-- divider line -->
     <div class="h-[3px] bg-[rgba(0,122,61,0.35)] w-full mb-8"></div>
 
-    <!-- Layout: left featured + right grid -->
+    {# Layout: featured + grid #}
     <div class="flex flex-col lg:flex-row gap-8">
-        <!-- Featured (582 x 781) -->
-        <article class="bg-white rounded-[14px] w-full max-w-[582px] h-[781px] mx-auto lg:mx-0 shadow-sm">
+        {# Featured #}
+        <article class="bg-white rounded-[14px] w-full max-w-[582px] mx-auto lg:mx-0 shadow-sm">
             <div class="p-6 h-full flex flex-col">
-                <div class="w-full h-[248px] rounded-[10px] overflow-hidden">
+                <div class="w-full aspect-[16/7] rounded-[10px] overflow-hidden bg-slate-100">
                     {% if featured.image_url %}
-                    <img src="{{ featured.image_url }}" alt="{{ featured.title }}" class="w-full h-full object-cover" />
+                    <img
+                        src="{{ featured.image_url }}"
+                        alt="{{ featured.title }}"
+                        loading="lazy"
+                        class="w-full h-full object-cover"
+                    />
                     {% else %}
-                    <img src="/static/img/news_placeholder.jpg" alt="" class="w-full h-full object-cover opacity-80" />
+                    <img
+                        src="/static/img/news_placeholder.jpg"
+                        alt=""
+                        loading="lazy"
+                        class="w-full h-full object-cover opacity-80"
+                    />
                     {% endif %}
                 </div>
 
-                <!-- meta -->
                 <div class="mt-4 flex items-center gap-4">
-                    <span class="inline-flex items-center justify-center h-[36px] px-4 rounded-[10px] bg-[#007A3D]">
-                        <span class="font-['Roboto'] font-bold text-[16px] leading-[20px] text-white"
-                            >{{ featured.category }}</span
-                        >
+                    {% if featured.category %}
+                    <span
+                        class="inline-flex items-center justify-center h-[32px] md:h-[36px] px-3 md:px-4 rounded-[10px] bg-[#007A3D]"
+                    >
+                        <span class="font-['Roboto'] font-bold text-[14px] md:text-[16px] leading-[20px] text-white">
+                            {{ featured.category }}
+                        </span>
                     </span>
-
+                    {% endif %} {% if featured.date_human %}
                     <span class="flex items-center gap-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
+                        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
                             <circle cx="12" cy="12" r="9" fill="none" stroke="#007A3D" stroke-width="2" />
                             <path
                                 d="M12 7v5l3 2"
@@ -63,29 +73,36 @@ set others = _news[1:5] %}
                                 stroke-linejoin="round"
                             />
                         </svg>
-                        <span class="font-['Inter'] font-semibold text-[16px] text-[rgba(0,122,61,0.45)]"
-                            >{{ featured.date_human }}</span
+                        <span
+                            class="font-['Inter'] font-semibold text-[14px] md:text-[16px] text-[rgba(0,122,61,0.45)]"
                         >
+                            {{ featured.date_human }}
+                        </span>
                     </span>
+                    {% endif %}
                 </div>
 
-                <!-- title -->
-                <h3 class="mt-4 font-['Montserrat'] font-semibold text-[35px] leading-[43px] text-[#1E1E1E]">
+                <h3
+                    class="mt-4 font-['Montserrat'] font-semibold text-[28px] md:text-[35px] leading-[1.2] text-[#1E1E1E]"
+                >
                     {{ featured.title }}
                 </h3>
 
-                <!-- summary (grow to push read-more to bottom) -->
-                <p class="mt-4 font-['Roboto'] text-[25px] leading-[30px] text-black/70 max-w-[534px] flex-1">
+                {% if featured.summary %}
+                <p
+                    class="mt-3 md:mt-4 font-['Roboto'] text-[16px] md:text-[18px] leading-[1.5] text-black/70 max-w-[534px] line-clamp-5"
+                >
                     {{ featured.summary }}
                 </p>
+                {% endif %}
 
-                <!-- read more -->
                 <a
                     href="/news/{{ featured.id }}"
-                    class="mt-6 inline-flex items-center gap-2 font-['Roboto'] text-[20px] leading-[30px] underline text-[#007A3D]"
+                    class="mt-5 md:mt-6 inline-flex items-center gap-2 font-['Roboto'] text-[16px] md:text-[18px] underline text-[#007A3D]"
+                    aria-label="Read more: {{ featured.title }}"
                 >
                     READ MORE
-                    <svg width="20" height="20" viewBox="0 0 24 24">
+                    <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
                         <path
                             d="M5 12h14M13 6l6 6-6 6"
                             fill="none"
@@ -99,31 +116,41 @@ set others = _news[1:5] %}
             </div>
         </article>
 
-        <!-- Right 2x2 grid: 347 x 380 cards, row-gap = 21px to make total 781 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-[21px] flex-1">
+        {# Right grid #}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-[21px] flex-1">
             {% for n in others %}
-            <article class="bg-white rounded-[14px] w-full max-w-[347px] h-[380px] mx-auto shadow-sm">
+            <article class="bg-white rounded-[14px] w-full max-w-[347px] mx-auto shadow-sm">
                 <div class="p-4 h-full flex flex-col">
-                    <div class="w-full h-[162px] rounded-[10px] overflow-hidden">
+                    <div class="w-full aspect-[16/9] rounded-[10px] overflow-hidden bg-slate-100">
                         {% if n.image_url %}
-                        <img src="{{ n.image_url }}" alt="{{ n.title }}" class="w-full h-full object-cover" />
+                        <img
+                            src="{{ n.image_url }}"
+                            alt="{{ n.title }}"
+                            loading="lazy"
+                            class="w-full h-full object-cover"
+                        />
                         {% else %}
                         <img
                             src="/static/img/news_placeholder.jpg"
                             alt=""
+                            loading="lazy"
                             class="w-full h-full object-cover opacity-80"
                         />
                         {% endif %}
                     </div>
 
                     <div class="mt-3 flex items-center gap-3">
-                        <span class="inline-flex items-center justify-center h-[36px] px-4 rounded-[10px] bg-[#007A3D]">
-                            <span class="font-['Roboto'] font-bold text-[16px] leading-[20px] text-white"
+                        {% if n.category %}
+                        <span
+                            class="inline-flex items-center justify-center h-[32px] md:h-[36px] px-3 md:px-4 rounded-[10px] bg-[#007A3D]"
+                        >
+                            <span class="font-['Roboto'] font-bold text-[14px] md:text-[16px] text-white"
                                 >{{ n.category }}</span
                             >
                         </span>
+                        {% endif %} {% if n.date_human %}
                         <span class="flex items-center gap-2">
-                            <svg width="24" height="24" viewBox="0 0 24 24">
+                            <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
                                 <circle cx="12" cy="12" r="9" fill="none" stroke="#007A3D" stroke-width="2" />
                                 <path
                                     d="M12 7v5l3 2"
@@ -134,22 +161,26 @@ set others = _news[1:5] %}
                                     stroke-linejoin="round"
                                 />
                             </svg>
-                            <span class="font-['Inter'] font-semibold text-[16px] text-[#8CC3A8]"
-                                >{{ n.date_human }}</span
-                            >
+                            <span class="font-['Inter'] font-semibold text-[14px] md:text-[16px] text-[#8CC3A8]">
+                                {{ n.date_human }}
+                            </span>
                         </span>
+                        {% endif %}
                     </div>
 
-                    <h4 class="mt-3 font-['Montserrat'] font-semibold text-[20px] leading-[24px] text-[#1E1E1E]">
+                    <h4
+                        class="mt-3 font-['Montserrat'] font-semibold text-[18px] md:text-[20px] leading-[1.25] text-[#1E1E1E] line-clamp-3"
+                    >
                         {{ n.title }}
                     </h4>
 
                     <a
                         href="/news/{{ n.id }}"
-                        class="mt-auto inline-flex items-center gap-2 font-['Roboto'] text-[20px] leading-[30px] underline text-[#007A3D]"
+                        class="mt-auto inline-flex items-center gap-2 font-['Roboto'] text-[16px] md:text-[18px] underline text-[#007A3D]"
+                        aria-label="Read more: {{ n.title }}"
                     >
                         READ MORE
-                        <svg width="20" height="20" viewBox="0 0 24 24">
+                        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
                             <path
                                 d="M5 12h14M13 6l6 6-6 6"
                                 fill="none"
@@ -166,12 +197,12 @@ set others = _news[1:5] %}
         </div>
     </div>
 
-    <!-- mobile more -->
     <div class="mt-6 text-center md:hidden">
-        <a href="/news" class="font-['Montserrat'] text-[20px] underline text-[rgba(0,122,61,0.75)]">More details</a>
+        <a href="/news" class="font-['Montserrat'] text-[18px] md:text-[20px] underline text-[rgba(0,122,61,0.75)]">
+            More details
+        </a>
     </div>
 </section>
-
 {% else %}
 <section id="news" class="max-w-[1310px] mx-auto px-4 py-20">
     <div class="text-center text-slate-500">No news yet</div>
