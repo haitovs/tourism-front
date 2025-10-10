@@ -1,22 +1,26 @@
 # app/routers/htmx.py
 from fastapi import APIRouter, Request
 from starlette.responses import HTMLResponse
-from ..core.templates import templates
+
+from app.services import sponsors as sponsor_srv
+
 from ..core.settings import settings
-from app.services import sponsors as sponsor_srv 
+from ..core.templates import templates
 
 router = APIRouter(prefix="/x")
+
 
 def _lang(req: Request) -> str:
     l = req.query_params.get("lang") or req.cookies.get("lang") or settings.DEFAULT_LANG
     return l if l in settings.SUPPORTED_LANGS else settings.DEFAULT_LANG
 
+
 @router.get("/sponsors/top", response_class=HTMLResponse)
 async def sponsors_top(req: Request):
     lang = _lang(req)
-    # If you can resolve current tenant/site_id here, pass it: site_id=...
     data = sponsor_srv.get_top_sponsors(lang=lang)
     return templates.TemplateResponse("_sponsors_top.html", {"request": req, "data": data, "lang": lang})
+
 
 @router.get("/sponsors/{tier}", response_class=HTMLResponse)
 async def sponsors_tier(req: Request, tier: str, page: int = 1):
