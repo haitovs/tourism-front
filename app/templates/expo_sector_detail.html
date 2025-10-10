@@ -1,0 +1,163 @@
+{% extends "base.html" %} {% block content %} {% set sec = sector or expo_sector %}
+
+<main>
+    {# ---------- HERO ---------- #} {% set hero_src = (sec.hero_url or sec.logo_url) if sec else None %}
+    <section class="relative w-full h-[320px] md:h-[380px]">
+        {% if hero_src %}
+        <img src="{{ hero_src }}" alt="" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-black/40"></div>
+        {% else %}
+        <div class="absolute inset-0 bg-gradient-to-br from-[#0B703C] to-[#0e8450]"></div>
+        {% endif %}
+
+        <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
+            <h1 class="font-['Montserrat'] font-bold text-white text-[clamp(28px,5vw,56px)] leading-tight">
+                {{ sec.header if sec and sec.header else "Sector" }}
+            </h1>
+            {% if sec and (sec.subtitle or sec.tagline) %}
+            <p class="mt-2 font-['Roboto'] text-white/90 text-[clamp(16px,2.4vw,20px)]">
+                {{ sec.subtitle or sec.tagline }}
+            </p>
+            {% endif %}
+        </div>
+
+        {# Breadcrumb-like buttons (left) #}
+        <div class="relative z-[1]">
+            <div class="absolute left-4 md:left-[65px] bottom-4 flex flex-wrap items-center gap-3">
+                <a
+                    href="/"
+                    class="inline-flex w-[52px] h-[52px] rounded-md bg-white/95 items-center justify-center shadow"
+                    aria-label="Go to homepage"
+                >
+                    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" aria-hidden="true">
+                        <path
+                            d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z"
+                            stroke="#0B703C"
+                            stroke-width="2.2"
+                        />
+                    </svg>
+                </a>
+
+                <a
+                    href="/expo-sectors"
+                    class="h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow hover:bg-white"
+                >
+                    Expo Sectors
+                </a>
+
+                <a
+                    href="#sector-body"
+                    class="h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow hover:bg-white"
+                >
+                    Sector Details
+                </a>
+            </div>
+        </div>
+    </section>
+
+    {# ---------- BODY ---------- #}
+    <section id="sector-body" class="max-w-[var(--container)] mx-auto px-4 py-10">
+        <div class="bg-white rounded-[20px] p-6 md:p-8 shadow-sm">
+            {% if sec and sec.header %}
+            <h2 class="font-['Montserrat'] text-[clamp(22px,3.5vw,50px)] leading-tight text-[#1E1E1E]">
+                {{ sec.header }}
+            </h2>
+            {% endif %} {# 1) INTRO (first paragraph) #} {% if sec and sec.intro_html %}
+            <article
+                class="prose prose-slate lg:prose-lg max-w-none mt-4 prose-headings:font-['Montserrat'] prose-p:font-['Roboto'] prose-li:font-['Roboto'] prose-a:text-[#007A3D] hover:prose-a:underline prose-img:rounded-2xl prose-img:shadow"
+            >
+                {{ sec.intro_html | safe }}
+            </article>
+            {% elif sec and sec.description %}
+            <p class="mt-4 text-[17px] leading-7 text-slate-800">{{ sec.description }}</p>
+            {% endif %} {# 2) 1–3 IMAGES beneath intro #} {% set hero_imgs = sec.images_hero or [] %} {% if
+            hero_imgs|length > 0 %}
+            <div class="mt-6">
+                {% if hero_imgs|length == 1 %}
+                <div class="w-full aspect-[7/3] rounded-[20px] overflow-hidden bg-slate-100">
+                    <img src="{{ hero_imgs[0] }}" class="w-full h-full object-cover" alt="" />
+                </div>
+                {% elif hero_imgs|length == 2 %}
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    {% for u in hero_imgs %}
+                    <div class="w-full aspect-[4/3] rounded-[20px] overflow-hidden bg-slate-100">
+                        <img src="{{ u }}" class="w-full h-full object-cover" alt="" />
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                    {% for u in hero_imgs[:3] %}
+                    <div class="w-full aspect-[4/3] rounded-[20px] overflow-hidden bg-slate-100">
+                        <img src="{{ u }}" class="w-full h-full object-cover" alt="" />
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %} {# 3) EXTENDED BODY (Markdown → HTML) #} {% if sec and sec.body_html %}
+            <article
+                class="prose prose-slate lg:prose-lg max-w-none mt-8 prose-headings:font-['Montserrat'] prose-p:font-['Roboto'] prose-li:font-['Roboto'] prose-a:text-[#007A3D] hover:prose-a:underline prose-img:rounded-2xl prose-img:shadow"
+            >
+                {{ sec.body_html | safe }}
+            </article>
+            {% endif %} {# 4) Optional two-column bullets (if provided later by model) #} {% if sec and (sec.points_left
+            or sec.points_right) %}
+            <div class="mt-8 grid gap-6 md:grid-cols-2">
+                {% if sec.points_left %}
+                <div>
+                    <h3 class="font-['Roboto'] font-medium text-[20px] mb-2 text-[#1E1E1E]">Key Professions</h3>
+                    <ul class="space-y-2 list-disc pl-6 text-slate-800">
+                        {% for item in sec.points_left %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %} {% if sec.points_right %}
+                <div>
+                    <h3 class="font-['Roboto'] font-medium text-[20px] mb-2 text-[#1E1E1E]">Types</h3>
+                    <ul class="space-y-2 list-disc pl-6 text-slate-800">
+                        {% for item in sec.points_right %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %} {# 5) BOTTOM GALLERY (remaining images) #} {% set rest = sec.images_rest or [] %} {% if
+            rest|length > 0 %}
+            <div class="mt-10">
+                {# Desktop: compact mosaic #}
+                <div class="hidden lg:grid lg:grid-cols-12 lg:grid-rows-12 gap-4 h-[320px]">
+                    <div class="col-span-4 row-span-12 rounded-2xl overflow-hidden bg-slate-100">
+                        <img src="{{ rest[0] }}" class="w-full h-full object-cover" alt="" />
+                    </div>
+                    {% if rest|length > 1 %}
+                    <div class="col-span-4 row-span-6 rounded-2xl overflow-hidden bg-slate-100">
+                        <img src="{{ rest[1] }}" class="w-full h-full object-cover" alt="" />
+                    </div>
+                    {% endif %} {% if rest|length > 2 %}
+                    <div class="col-span-4 row-span-6 rounded-2xl overflow-hidden bg-slate-100">
+                        <img src="{{ rest[2] }}" class="w-full h-full object-cover" alt="" />
+                    </div>
+                    {% endif %} {% if rest|length > 3 %}
+                    <div class="col-span-8 row-span-6 rounded-2xl overflow-hidden bg-slate-100">
+                        <img src="{{ rest[3] }}" class="w-full h-full object-cover" alt="" />
+                    </div>
+                    {% endif %}
+                </div>
+
+                {# Mobile/tablet: simple grid #}
+                <div class="grid lg:hidden grid-cols-1 sm:grid-cols-2 gap-4">
+                    {% for u in rest %}
+                    <div class="w-full rounded-2xl overflow-hidden bg-slate-100 aspect-[4/3]">
+                        <img src="{{ u }}" class="w-full h-full object-cover" alt="" />
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+</main>
+{% endblock %}

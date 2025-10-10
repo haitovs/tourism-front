@@ -5,15 +5,15 @@
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>Expo Site</title>
 
-        <!-- Tailwind / HTMX -->
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500;700&display=swap"
+            rel="stylesheet"
+        />
 
-        <!-- Alpine.js plugins -->
-        <script defer src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
-        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-        <!-- CSS: variables first, then components -->
+        <!-- Your CSS FIRST (so Tailwind's Typography can override generic resets) -->
         <link rel="stylesheet" href="{{ url_for('static', path='/css/extra.css') }}" />
         <link rel="stylesheet" href="{{ url_for('static', path='/css/detailbar.css') }}" />
         <link rel="stylesheet" href="{{ url_for('static', path='/css/navpill.css') }}" />
@@ -22,14 +22,12 @@
         <!-- Splide CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" />
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500;700&display=swap"
-            rel="stylesheet"
-        />
+        <!-- HTMX / Alpine (safe anywhere) -->
+        <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+        <script defer src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
+
     <body class="bg-[var(--c-bg)] text-[var(--c-text)]">
         {% include "_detailbar.html" %}
         <main class="flex-1">{% block content %}{% endblock %}</main>
@@ -41,6 +39,26 @@
             src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-grid@0.4.1/dist/js/splide-extension-grid.min.js"
             defer
         ></script>
+        <!-- Tailwind with plugins -->
+        <script src="https://cdn.tailwindcss.com?plugins=typography,line-clamp,aspect-ratio"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        typography: {
+                            DEFAULT: {
+                                css: {
+                                    "h1,h2,h3,h4": { fontFamily: "Montserrat, ui-sans-serif, system-ui" },
+                                    "p,li": { fontFamily: "Roboto, ui-sans-serif, system-ui" },
+                                    img: { borderRadius: "1rem" },
+                                    a: { color: "#007A3D", textDecoration: "none" },
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+        </script>
 
         <!-- One global bootstraper that initializes all Splides AFTER load -->
         <script>

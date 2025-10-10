@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block content %}
 <main>
-    {# ---------- HERO ---------- #}
+    <!-- HERO -->
     <section class="relative w-full h-[320px] md:h-[380px]">
         <img src="/static/img/expo_sectors_hero.png" alt="" class="absolute inset-0 w-full h-full object-cover" />
         <div class="absolute inset-0 bg-black/40"></div>
@@ -14,14 +14,15 @@
             </p>
         </div>
 
-        {# Breadcrumb-like buttons (left) #}
+        <!-- Breadcrumb buttons -->
         <div class="relative z-[1]">
             <div class="absolute left-4 md:left-[65px] bottom-4 flex flex-wrap items-center gap-3">
                 <a
                     href="/"
                     class="inline-flex w-[52px] h-[52px] rounded-md bg-white/95 items-center justify-center shadow"
+                    aria-label="Go to homepage"
                 >
-                    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none">
+                    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" aria-hidden="true">
                         <path
                             d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z"
                             stroke="#0B703C"
@@ -39,13 +40,13 @@
         </div>
     </section>
 
-    {# ---------- SECTORS GRID ---------- #}
+    <!-- GRID -->
     <section class="max-w-[var(--container)] mx-auto px-4 py-12">
         {% if sectors and sectors|length > 0 %}
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {% for s in sectors %}
             <article class="bg-white rounded-[15px] shadow hover:shadow-md transition overflow-hidden flex flex-col">
-                {# Cover image #}
+                <!-- Cover -->
                 <div class="h-[200px] w-full bg-slate-100">
                     {% if s.logo_url %}
                     <img src="{{ s.logo_url }}" alt="{{ s.header }}" class="w-full h-full object-cover" />
@@ -54,19 +55,22 @@
                     {% endif %}
                 </div>
 
-                {# Content #}
+                <!-- Content -->
                 <div class="p-5 flex-1 flex flex-col">
                     <h3 class="font-['Roboto'] font-medium text-[22px] leading-7 text-[#1E1E1E]">{{ s.header }}</h3>
+
                     {% if s.description %}
                     <p class="mt-2 text-[16px] leading-6 text-slate-800 line-clamp-5">{{ s.description }}</p>
                     {% else %}
                     <p class="mt-2 text-[16px] leading-6 text-slate-600">More information coming soon.</p>
-                    {% endif %} {# CTA row #}
+                    {% endif %}
+
+                    <!-- CTA -->
                     <div class="mt-5">
                         <a
-                            href="#"
-                            aria-disabled="true"
-                            class="inline-flex items-center justify-between w-full sm:w-auto gap-3 px-4 h-[46px] rounded-md bg-[#D3F2E2] text-[#007A3D] font-['Roboto'] font-medium text-[16px]"
+                            href="/expo-sectors/{{ s.id }}"
+                            title="Open {{ s.header }}"
+                            class="inline-flex items-center justify-between w-full sm:w-auto gap-3 px-4 h-[46px] rounded-md bg-[#D3F2E2] text-[#007A3D] font-['Roboto'] font-medium text-[16px] hover:bg-[#c8ecd9] transition"
                         >
                             <span>More information</span>
                             <svg
@@ -80,7 +84,6 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                             </svg>
                         </a>
-                        {# NOTE: When sector detail is ready, replace href with /expo-sectors/{{ s.id }} #}
                     </div>
                 </div>
             </article>
