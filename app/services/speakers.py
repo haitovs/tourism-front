@@ -36,7 +36,7 @@ def _resolve_media(path: str | None) -> str:
     if path.startswith("/"):
         return urljoin(base, path.lstrip("/"))
     pref = settings.MEDIA_PREFIX.strip("/")
-    return urljoin(base, f"{pref}/{path.lstrip('/')}")  # <-- the line that was cut off before
+    return urljoin(base, f"{pref}/{path.lstrip('/')}")
 
 
 def _row_to_dict(r: Speaker) -> dict:

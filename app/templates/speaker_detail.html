@@ -1,43 +1,148 @@
-{% extends "base.html" %} {% block content %}
-<section class="max-w-[var(--container)] mx-auto px-4 py-12">
-    <a href="/speakers" class="inline-flex items-center gap-2 text-[var(--c-primary)] underline mb-6">
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="1.6"
-        >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-        </svg>
-        Back to speakers
-    </a>
+{# app/templates/speaker_detail.html #} {% extends "base.html" %} {% block content %}
+<main>
+    {# ---------- HERO ---------- #}
+    <section class="relative w-full h-[320px] md:h-[380px]">
+        <img src="/static/img/speaker_hero.png" alt="" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-black/40"></div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="md:col-span-1">
-            <div class="aspect-[3/4] rounded-2xl overflow-hidden shadow bg-white">
+        <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
+            <h1 class="font-['Montserrat'] font-bold text-white text-[clamp(30px,5vw,56px)] leading-tight">
+                Speaker Profile
+            </h1>
+            <p class="mt-2 font-['Roboto'] text-white/90 text-[clamp(16px,2.4vw,20px)]">
+                A brief overview of the speaker’s professional background and achievements.
+            </p>
+        </div>
+
+        {# 🔹 Breadcrumb buttons #}
+        <div class="relative z-[1]">
+            <div class="absolute left-4 md:left-[65px] bottom-4 flex flex-wrap items-center gap-3">
+                {# Home icon #}
+                <a
+                    href="/"
+                    class="inline-flex w-[52px] h-[52px] rounded-md bg-white/95 items-center justify-center shadow"
+                >
+                    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none">
+                        <path
+                            d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z"
+                            stroke="#0B703C"
+                            stroke-width="2.2"
+                        />
+                    </svg>
+                </a>
+
+                {# All Speakers button #}
+                <a
+                    href="/speakers"
+                    class="h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow"
+                >
+                    All Speakers
+                </a>
+
+                {# Speaker Profile button #}
+                <div
+                    class="h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow"
+                >
+                    Speaker Profile
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# ---------- BODY ---------- #}
+    <section class="max-w-[1200px] mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+        {# Left: portrait #}
+        <aside class="md:col-span-1">
+            <div class="rounded-[20px] overflow-hidden shadow bg-white">
                 {% if speaker.photo_url %}
-                <img src="{{ speaker.photo_url }}" alt="{{ speaker.name }}" class="w-full h-full object-cover" />
+                <img src="{{ speaker.photo_url }}" alt="{{ speaker.name }}" class="w-full h-[420px] object-cover" />
                 {% else %}
-                <img src="/static/img/person_placeholder.jpg" alt="" class="w-full h-full object-cover opacity-80" />
+                <img
+                    src="/static/img/person_placeholder.jpg"
+                    alt="Speaker"
+                    class="w-full h-[420px] object-cover opacity-80"
+                />
                 {% endif %}
             </div>
-        </div>
 
-        <div class="md:col-span-2">
-            <h1 class="font-['Montserrat'] text-[clamp(28px,4vw,42px)] leading-tight text-[#1E1E1E]">
-                {{ speaker.name }}
-            </h1>
-            {% if speaker.position %}
-            <p class="mt-2 text-[18px] text-black/70">{{ speaker.position }}</p>
-            {% endif %}
-
-            <div class="mt-6 prose max-w-none">
-                <!-- Placeholder bio/description for now -->
-                <p class="text-[16px] text-black/70">Speaker biography or detailed info will go here.</p>
+            {# Optional meta info #}
+            <div class="mt-4 space-y-2 text-sm text-slate-600">
+                {% if speaker.company %}
+                <div><span class="font-medium text-slate-800">Company:</span> {{ speaker.company }}</div>
+                {% endif %} {% if speaker.country %}
+                <div><span class="font-medium text-slate-800">Country:</span> {{ speaker.country }}</div>
+                {% endif %} {% if speaker.website %}
+                <div>
+                    <span class="font-medium text-slate-800">Website:</span>
+                    <a
+                        href="{{ speaker.website }}"
+                        class="text-[#007A3D] hover:underline"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        {{ speaker.website }}
+                    </a>
+                </div>
+                {% endif %}
             </div>
-        </div>
-    </div>
-</section>
+        </aside>
+
+        {# Right: content #}
+        <article class="md:col-span-2">
+            <header class="pb-4 border-b border-slate-200">
+                <div class="text-[#151938] font-['Roboto'] text-[14px] tracking-wide opacity-80">SPEAKER</div>
+                <h2 class="mt-2 font-['Roboto'] font-semibold text-[clamp(26px,4vw,40px)] text-[#151938]">
+                    {{ speaker.name }}
+                </h2>
+                {% if speaker.position %}
+                <p class="mt-2 font-['Roboto'] text-[18px] md:text-[20px] text-[#151938]">{{ speaker.position }}</p>
+                {% endif %}
+            </header>
+
+            <section class="mt-6">
+                {% set _bio = speaker.bio or '' %} {% if _bio %}
+                <div class="prose prose-slate max-w-none">{{ _bio | safe }}</div>
+                {% else %}
+                <p class="font-['Roboto'] text-[18px] leading-8 text-slate-800">
+                    Biography coming soon. This section will include the speaker’s background, notable achievements, and
+                    session highlights. Check back for updates.
+                </p>
+                {% endif %}
+            </section>
+
+            {% if speaker.sessions or speaker.links %}
+            <section class="mt-8 grid gap-6 md:grid-cols-2">
+                {% if speaker.sessions %}
+                <div class="bg-white rounded-xl shadow p-5">
+                    <h3 class="font-['Montserrat'] text-[20px] text-[#1E1E1E] mb-3">Sessions</h3>
+                    <ul class="space-y-2 list-disc pl-5">
+                        {% for s in speaker.sessions %}
+                        <li>{{ s }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %} {% if speaker.links %}
+                <div class="bg-white rounded-xl shadow p-5">
+                    <h3 class="font-['Montserrat'] text-[20px] text-[#1E1E1E] mb-3">Links</h3>
+                    <ul class="space-y-2">
+                        {% for link in speaker.links %}
+                        <li>
+                            <a
+                                href="{{ link.url }}"
+                                target="_blank"
+                                rel="noopener"
+                                class="text-[#007A3D] hover:underline"
+                            >
+                                {{ link.title or link.url }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </section>
+            {% endif %}
+        </article>
+    </section>
+</main>
 {% endblock %}
