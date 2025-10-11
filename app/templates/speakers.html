@@ -1,4 +1,4 @@
-{# app/templates/speakers.html #} {% extends "base.html" %} {% block content %}
+{# app/templates/speakers.html #} {% extends "base.html" %}{% from "_macros.html" import pager %} {% block content %}
 <main>
     <!-- HERO -->
     <section class="relative w-full h-[420px]">
@@ -131,6 +131,18 @@
                 {% endif %}
             </ul>
         </div>
+
+        <div class="mt-6 bg-white rounded-[12px] p-5 md:p-8">
+            <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 place-items-center">
+                {% set items = speakers or [] %} {% for sp in items %}
+                <!-- existing <li> card -->
+                {% endfor %} {% if items|length == 0 %}
+                <li class="col-span-full text-center text-slate-500 py-10">No speakers yet.</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        {# Pagination (server-side) #} {{ pager(current_page or 1, total_pages or 1, q, base='/speakers') }}
     </section>
 </main>
 {% endblock %}

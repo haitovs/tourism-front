@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from typing import Generator, Optional
 from urllib.parse import urljoin
 
-from sqlalchemy import desc, select
+from sqlalchemy import desc, func, select
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
@@ -49,9 +49,6 @@ def _row_to_dict(r: Speaker) -> dict:
 
 
 def get_featured_speakers(*, limit: int = 3, site_id: Optional[int] = None) -> list[dict]:
-    """
-    Latest-added speakers (by id desc), limited to `limit`.
-    """
     out: list[dict] = []
     with _db_session() as db:
         stmt = select(Speaker)
@@ -70,9 +67,7 @@ def list_speakers(
     limit: Optional[int] = None,
     latest_first: bool = True,
 ) -> list[dict]:
-    """
-    Full speaker listing (optionally limited). Ordered by id.
-    """
+
     out: list[dict] = []
     with _db_session() as db:
         stmt = select(Speaker)
@@ -88,12 +83,36 @@ def list_speakers(
 
 
 def get_speaker(*, speaker_id: int, site_id: Optional[int] = None) -> Optional[dict]:
-    """
-    Fetch a single speaker by id. Returns None if not found.
-    """
     with _db_session() as db:
         stmt = select(Speaker).where(Speaker.id == speaker_id)
         if site_id is not None:
             stmt = stmt.where(Speaker.site_id == site_id)
         r = db.execute(stmt).scalars().first()
         return _row_to_dict(r) if r else None
+
+
+def list_speakers_page(
+    *,
+    site_id: Optional[int] = None,
+    page: int = 1,
+    per_page: int = 9,
+    latest_first: bool = True,
+) -> tuple[list[dict], int, int]:
+    page = max(1, page)
+    per_page = max(1, per_page)
+
+    with _db_session() as db:
+        base = select(Speaker)
+        if site_id is not None:
+            base = base.where(Speaker.site_id == site_id)
+
+        total_items = db.execute(select(func.count()).select_from(base.subquery())).scalar_one()
+
+        stmt = base.order_by(desc(Speaker.id) if latest_first else Speaker.id.asc()) \
+                   .offset((page - 1) * per_page).limit(per_page)
+
+        rows = db.execute(stmt).scalars().all()
+        items = [_row_to_dict(r) for r in rows]
+
+        total_pages = max(1, (total_items + per_page - 1) // per_page)
+        return items, total_pages, total_items

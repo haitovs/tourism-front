@@ -14,15 +14,22 @@ router = APIRouter()
 
 # ---------- Speakers: list page ----------
 @router.get("/speakers", response_class=HTMLResponse)
-async def speakers_page(req: Request):
+async def speakers_page(req: Request, page: int = 1):
     lang = _resolve_lang(req)
-    speakers = speakers_srv.list_speakers()  # all speakers (ordered latest first)
+
+    q = req.query_params.get("q") or ""
+
+    items, total_pages, total_items = speakers_srv.list_speakers_page(page=page, per_page=9)
 
     ctx = {
         "request": req,
         "lang": lang,
         "settings": settings,
-        "speakers": speakers,
+        "speakers": items,
+        "current_page": page,
+        "total_pages": total_pages,
+        "total_items": total_items,
+        "q": q,
     }
     return templates.TemplateResponse("speakers.html", ctx)
 

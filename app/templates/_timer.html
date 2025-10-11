@@ -7,7 +7,9 @@
             <span class="font-['Montserrat'] text-[30px] leading-[75px] text-[var(--c-primary)]">Timer</span>
             <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
         </div>
-        <h2 class="font-['Montserrat'] text-[clamp(28px,4vw,50px)] leading-[1.22] font-medium mt-1 text-center text-[#1E1E1E]">
+        <h2
+            class="font-['Montserrat'] text-[clamp(28px,4vw,50px)] leading-[1.22] font-medium mt-1 text-center text-[#1E1E1E]"
+        >
             Countdown to the official start of the forum
         </h2>
     </header>
@@ -27,7 +29,9 @@
             :style="`background-image:url('${bgUrl}'); background-size:cover; background-position:center;`"
         >
             <!-- Left dark overlay: 564 × 460 -->
-            <div class="absolute left-0 top-0 h-[460px] w-[564px] bg-black/30 backdrop-blur-[2.5px] rounded-l-[20px]"></div>
+            <div
+                class="absolute left-0 top-0 h-[460px] w-[564px] bg-black/30 backdrop-blur-[2.5px] rounded-l-[20px]"
+            ></div>
 
             <!-- Left content: logo + multi-line title, top-aligned, fits within 564px -->
             <div class="absolute left-0 top-0 h-[460px] w-[564px] z-20">
@@ -47,7 +51,10 @@
                     <div class="flex items-center gap-[42px] text-white select-none">
                         <!-- DAYS -->
                         <div class="flex flex-col items-center justify-center">
-                            <div class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums" x-text="dd">
+                            <div
+                                class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums"
+                                x-text="dd"
+                            >
                                 00
                             </div>
                             <div class="mt-1 font-['Roboto'] text-[20px] leading-[24px]">DAYS</div>
@@ -61,7 +68,10 @@
 
                         <!-- HOURS -->
                         <div class="flex flex-col items-center justify-center">
-                            <div class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums" x-text="hh">
+                            <div
+                                class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums"
+                                x-text="hh"
+                            >
                                 00
                             </div>
                             <div class="mt-1 font-['Roboto'] text-[20px] leading-[24px]">HOURS</div>
@@ -75,7 +85,10 @@
 
                         <!-- MINUTES -->
                         <div class="flex flex-col items-center justify-center">
-                            <div class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums" x-text="mm">
+                            <div
+                                class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums"
+                                x-text="mm"
+                            >
                                 00
                             </div>
                             <div class="mt-1 font-['Roboto'] text-[20px] leading-[24px]">MINUTES</div>
@@ -89,7 +102,10 @@
 
                         <!-- SECONDS -->
                         <div class="flex flex-col items-center justify-center">
-                            <div class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums" x-text="ss">
+                            <div
+                                class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums"
+                                x-text="ss"
+                            >
                                 00
                             </div>
                             <div class="mt-1 font-['Roboto'] text-[20px] leading-[24px]">SECONDS</div>
@@ -102,28 +118,18 @@
 </section>
 
 <script>
-    /**
-     * Alpine component: timerWidget
-     * - Fetches active timer from backend: GET {apiBase}/timer/active
-     * - Syncs to server time to avoid client clock drift
-     * - Listens to WS {apiBase->wsBase}/ws/timer for live updates (e.g., new timer created)
-     * - mode: UNTIL_START uses start_time; UNTIL_END uses end_time
-     */
     function timerWidget({ apiBase, bgUrl, logoUrl }) {
         return {
-            // props
             apiBase,
             bgUrl,
             logoUrl,
 
-            // state
             eventName: "",
             mode: "UNTIL_START",
-            targetISO: null, // ISO string from API start_time / end_time
-            serverISO: null, // server_time ISO string
-            deltaMs: 0, // client_now - server_now (for drift correction)
+            targetISO: null,
+            serverISO: null,
+            deltaMs: 0,
 
-            // display values
             dd: "00",
             hh: "00",
             mm: "00",
