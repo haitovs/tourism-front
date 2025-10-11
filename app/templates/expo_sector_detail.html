@@ -1,9 +1,10 @@
-{% extends "base.html" %} {% block content %} {% set sec = sector or expo_sector %}
+{% extends "base.html" %}{% from "_hero_macros.html" import hero_buttons %} {% block content %} {% set sec = sector or
+expo_sector %}
 
 <main>
     {# ---------- HERO ---------- #} {% set hero_src = (sec.hero_url or sec.logo_url) if sec else None %}
     <section class="relative w-full h-[320px] md:h-[380px]">
-        {% if hero_src %}
+        {% set hero_src = (sec.hero_url or sec.logo_url) if sec else None %} {% if hero_src %}
         <img src="{{ hero_src }}" alt="" class="absolute inset-0 w-full h-full object-cover" />
         <div class="absolute inset-0 bg-black/40"></div>
         {% else %}
@@ -21,38 +22,9 @@
             {% endif %}
         </div>
 
-        {# Breadcrumb-like buttons (left) #}
-        <div class="relative z-[1]">
-            <div class="absolute left-4 md:left-[65px] bottom-4 flex flex-wrap items-center gap-3">
-                <a
-                    href="/"
-                    class="inline-flex w-[52px] h-[52px] rounded-md bg-white/95 items-center justify-center shadow"
-                    aria-label="Go to homepage"
-                >
-                    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" aria-hidden="true">
-                        <path
-                            d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z"
-                            stroke="#0B703C"
-                            stroke-width="2.2"
-                        />
-                    </svg>
-                </a>
-
-                <a
-                    href="/expo-sectors"
-                    class="h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow hover:bg-white"
-                >
-                    Expo Sectors
-                </a>
-
-                <a
-                    href="#sector-body"
-                    class="h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow hover:bg-white"
-                >
-                    Sector Details
-                </a>
-            </div>
-        </div>
+        {{ hero_buttons( home_href = '/', section_label = 'Expo Sectors', section_href = '/expo-sectors', is_detail =
+        True, current_path = request.url.path, detail_label = 'Sector Details', detail_href = '#sector-body',
+        detail_refresh = False ) }}
     </section>
 
     {# ---------- BODY ---------- #}

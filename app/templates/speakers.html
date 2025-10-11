@@ -1,4 +1,5 @@
-{# app/templates/speakers.html #} {% extends "base.html" %}{% from "_macros.html" import pager %} {% block content %}
+{# app/templates/speakers.html #} {% extends "base.html" %} {% from "_hero_macros.html" import hero_buttons %} {% from
+"_macros.html" import pager %} {% block content %}
 <main>
     <!-- HERO -->
     <section class="relative w-full h-[420px]">
@@ -14,34 +15,15 @@
             </p>
         </div>
 
-        <div class="relative z-[1]">
-            <div class="absolute left-6 md:left-[65px] bottom-4 flex items-center gap-3">
-                <a
-                    href="/"
-                    class="inline-flex w-12 h-12 md:w-[52px] md:h-[52px] rounded-md bg-white/95 items-center justify-center"
-                >
-                    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none">
-                        <path
-                            d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z"
-                            stroke="#0B703C"
-                            stroke-width="2.5"
-                        />
-                    </svg>
-                </a>
-                <div class="h-12">
-                    <div class="inline-flex items-center h-full px-4 rounded-md bg-white/95">
-                        <span class="font-['Roboto'] text-[18px] md:text-[20px] text-[#1E1E1E]">All Speakers</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {{ hero_buttons( home_href = '/', section_label = 'All Speakers', section_href = '/speakers', is_detail = False
+        ) }}
     </section>
 
     <!-- BODY -->
     <section
         class="max-w-[1310px] mx-auto px-4 md:px-0 py-8"
         x-data="{
-      q: '',
+      q: '{{ (q or '')|e }}',
       norm(s){ return (s||'').toString().toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,''); }
     }"
     >
@@ -106,7 +88,6 @@
                                     </div>
                                 </div>
                                 <div class="absolute right-4 md:right-5 bottom-4 md:bottom-5">
-                                    <!-- plain right arrow (no circle) -->
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="w-[22px] h-[22px] md:w-[24px] md:h-[24px] transition-transform group-hover:translate-x-[2px]"
@@ -132,17 +113,7 @@
             </ul>
         </div>
 
-        <div class="mt-6 bg-white rounded-[12px] p-5 md:p-8">
-            <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 place-items-center">
-                {% set items = speakers or [] %} {% for sp in items %}
-                <!-- existing <li> card -->
-                {% endfor %} {% if items|length == 0 %}
-                <li class="col-span-full text-center text-slate-500 py-10">No speakers yet.</li>
-                {% endif %}
-            </ul>
-        </div>
-
-        {# Pagination (server-side) #} {{ pager(current_page or 1, total_pages or 1, q, base='/speakers') }}
+        {{ pager(current_page or 1, total_pages or 1, q, base='/speakers') }}
     </section>
 </main>
 {% endblock %}

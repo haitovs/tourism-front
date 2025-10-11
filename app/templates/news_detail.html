@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}{% from "_hero_macros.html" import hero_buttons %} {% block content %}
 <main>
     {# ---------- HERO ---------- #}
     <section class="relative w-full h-[320px] md:h-[450px]">
@@ -14,36 +14,8 @@
             </p>
         </div>
 
-        {# Breadcrumb-like buttons #}
-        <div class="relative z-[1]">
-            <div class="absolute left-4 md:left-[65px] bottom-4 flex items-center gap-3">
-                <a
-                    href="/"
-                    class="inline-flex w-[68px] h-[68px] rounded-[10px] bg-[#F1F1F6] items-center justify-center shadow"
-                >
-                    <svg viewBox="0 0 24 24" class="w-[30px] h-[30px]" fill="none" aria-hidden="true">
-                        <path
-                            d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z"
-                            stroke="#0B703C"
-                            stroke-width="3"
-                        />
-                        <path d="M9 15v6" stroke="#0B703C" stroke-width="3" />
-                    </svg>
-                </a>
-
-                <div
-                    class="h-[68px] inline-flex items-center px-5 rounded-[10px] bg-[#F1F1F6] text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[24px] shadow"
-                >
-                    News
-                </div>
-
-                <div
-                    class="h-[68px] inline-flex items-center px-5 rounded-[10px] bg-[#F1F1F6] text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[24px] shadow"
-                >
-                    News Details
-                </div>
-            </div>
-        </div>
+        {{ hero_buttons( home_href = '/', section_label = 'News', section_href = '/news', is_detail = True, current_path
+        = request.url.path, detail_label = 'News Details', detail_href = '#news-body', detail_refresh = False ) }}
     </section>
 
     {# ---------- BODY CARD ---------- #} {% set has_item = item is defined and item %}

@@ -1,5 +1,5 @@
-{% extends "base.html" %} {% import "macros/news_macros.html" as nm %} {% import "macros/pager.html" as pg %} {% block
-content %}
+{% extends "base.html" %} {% from "_hero_macros.html" import hero_buttons %}{% import "macros/news_macros.html" as nm %}
+{% import "macros/pager.html" as pg %} {% block content %}
 <main>
     {# ---------- HERO ---------- #}
     <section class="relative w-full h-[320px] md:h-[380px]">
@@ -13,29 +13,7 @@ content %}
             </p>
         </div>
 
-        {# Breadcrumb-like buttons #}
-        <div class="relative z-[1]">
-            <div class="absolute left-4 md:left-[65px] bottom-4 flex items-center gap-3">
-                <a
-                    href="/"
-                    class="inline-flex w-[52px] h-[52px] rounded-md bg-white items-center justify-center shadow"
-                    aria-label="Home"
-                >
-                    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" aria-hidden="true">
-                        <path
-                            d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z"
-                            stroke="#0B703C"
-                            stroke-width="2.2"
-                        />
-                    </svg>
-                </a>
-                <div
-                    class="h-[52px] inline-flex items-center px-4 rounded-md bg-white text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow"
-                >
-                    News
-                </div>
-            </div>
-        </div>
+        {{ hero_buttons( home_href = '/', section_label = 'News', section_href = '/news', is_detail = False ) }}
     </section>
 
     {# ---------- SEARCH BAR (matches "Group 944") ---------- #}
