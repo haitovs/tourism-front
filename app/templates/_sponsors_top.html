@@ -12,29 +12,27 @@ in order %} {% for sp in grouped.get(t, []) %} {% if ns.flat|length < MAX %} {% 
     <ul class="flex flex-wrap justify-center gap-4">
         {% for sp in flat %}
         <li class="flex justify-center">
-            <article
-                class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start"
-            >
-                {% if sp.logo_url %}
-                <img
-                    src="{{ sp.logo_url }}"
-                    alt="{{ sp.name }}"
-                    title="{{ sp.name }}"
-                    class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
-                    draggable="false"
-                />
-                {% else %}
-                <img
-                    src="/static/img/sponsor_logo.png"
-                    alt="No sponsor yet"
-                    class="w-[150px] h-[150px] object-contain opacity-70 select-none pointer-events-none"
-                    draggable="false"
-                />
-                {% endif %}
-                <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] text-slate-500/70">
-                    {{ sp.tier }} sponsor
-                </div>
-            </article>
+            <div class="w-[250px]">
+                <article class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-between h-[276px]">
+                    {% if sp.logo_url %}
+                    <img
+                        src="{{ sp.logo_url }}"
+                        alt="{{ sp.name }}"
+                        title="{{ sp.name }}"
+                        class="w-[202px] h-[202px] object-contain select-none pointer-events-none"
+                        draggable="false"
+                    />
+                    {% else %}
+                    <img
+                        src="/static/img/sponsor_logo.png"
+                        alt="No sponsor yet"
+                        class="w-[202px] h-[202px] object-contain opacity-70 select-none pointer-events-none"
+                        draggable="false"
+                    />
+                    {% endif %}
+                    <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">{{ sp.tier }} sponsor</div>
+                </article>
+            </div>
         </li>
         {% endfor %}
     </ul>
@@ -45,29 +43,31 @@ in order %} {% for sp in grouped.get(t, []) %} {% if ns.flat|length < MAX %} {% 
             <ul class="marquee__track">
                 {% for sp in flat %}
                 <li class="marquee__item">
-                    <article
-                        class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start"
-                    >
-                        {% if sp.logo_url %}
-                        <img
-                            src="{{ sp.logo_url }}"
-                            alt="{{ sp.name }}"
-                            title="{{ sp.name }}"
-                            class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
-                            draggable="false"
-                        />
-                        {% else %}
-                        <img
-                            src="/static/img/sponsor_logo.png"
-                            alt="No sponsor yet"
-                            class="w-[150px] h-[150px] object-contain opacity-70 select-none pointer-events-none"
-                            draggable="false"
-                        />
-                        {% endif %}
-                        <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] text-slate-500/70">
-                            {{ sp.tier }} sponsor
-                        </div>
-                    </article>
+                    <div class="w-[250px]">
+                        <article
+                            class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-between h-[276px]"
+                        >
+                            {% if sp.logo_url %}
+                            <img
+                                src="{{ sp.logo_url }}"
+                                alt="{{ sp.name }}"
+                                title="{{ sp.name }}"
+                                class="w-[202px] h-[202px] object-contain select-none pointer-events-none"
+                                draggable="false"
+                            />
+                            {% else %}
+                            <img
+                                src="/static/img/sponsor_logo.png"
+                                alt="No sponsor yet"
+                                class="w-[202px] h-[202px] object-contain opacity-70 select-none pointer-events-none"
+                                draggable="false"
+                            />
+                            {% endif %}
+                            <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">
+                                {{ sp.tier }} sponsor
+                            </div>
+                        </article>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>
