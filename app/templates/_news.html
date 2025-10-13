@@ -2,30 +2,25 @@
 set others = _news[1:5] %}
 
 <section id="news" class="max-w-[1310px] mx-auto px-4 py-20">
-    {# Header #}
-    <div class="flex items-end justify-between mb-6">
-        <div>
-            <div class="flex items-center gap-3">
+    {# Header (centered like Speakers) + top-right CTA kept in place #}
+    <div class="relative mb-6">
+        <header class="text-center">
+            <div class="flex items-center justify-center gap-4">
+                <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
                 <span class="font-['Montserrat'] text-[24px] md:text-[30px] leading-[1] text-[var(--c-primary)]"
                     >News</span
                 >
-                <span class="h-px w-[60px] bg-[var(--c-primary)]"></span>
+                <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
             </div>
             <h2
-                class="mt-2 md:mt-[-6px] font-['Montserrat'] font-light text-[36px] md:text-[50px] leading-[1.2] text-[#1E1E1E]"
+                class="font-['Montserrat'] font-light text-[36px] md:text-[50px] leading-[1.2] text-[#1E1E1E] mt-2 md:mt-1"
             >
                 Daily news
             </h2>
-        </div>
-
-        <a
-            href="/news"
-            class="font-['Montserrat'] text-[18px] md:text-[20px] underline text-[rgba(0,122,61,0.75)] -translate-y-1"
-        >
-            More details
-        </a>
+        </header>
     </div>
 
+    {# subtle divider remains #}
     <div class="h-[3px] bg-[rgba(0,122,61,0.35)] w-full mb-8"></div>
 
     {# Layout: featured + grid #}
@@ -197,9 +192,23 @@ set others = _news[1:5] %}
         </div>
     </div>
 
-    <div class="mt-6 text-center md:hidden">
-        <a href="/news" class="font-['Montserrat'] text-[18px] md:text-[20px] underline text-[rgba(0,122,61,0.75)]">
-            More details
+    <div class="mt-6 flex justify-center">
+        <a
+            href="/news"
+            class="inline-flex items-center justify-center w-[227px] h-[56px] rounded-[15px] bg-[#007A3D] text-white gap-3"
+            aria-label="View all news"
+        >
+            <span class="font-['Roboto'] text-[20px] leading-[24px] underline">More details</span>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-[20px] h-[20px]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.6"
+            >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
         </a>
     </div>
 </section>
