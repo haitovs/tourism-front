@@ -28,12 +28,28 @@
         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
         <script src="{{ url_for('static', path='/js/marquee.js') }}" defer></script>
         <script src="{{ url_for('static', path='/js/headerHide.js') }}" defer></script>
+        <script src="{{ url_for('static', path='/js/scrollTop.js') }}" defer></script>
     </head>
 
     <body class="bg-[var(--c-bg)] text-[var(--c-text)]">
         {% include "_detailbar.html" %}
         <main class="flex-1">{% block content %}{% endblock %}</main>
         {% include "_footer.html" %}
+
+        <button id="to-top" type="button" aria-label="Scroll to top" title="Back to top">
+            <!-- Up arrow (white stroke) -->
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <!-- outer circle look via background already; draw a simple up arrow -->
+                <path d="M12 18V6" stroke="#F4F4F2" stroke-width="3" stroke-linecap="round" />
+                <path
+                    d="M6 12l6-6 6 6"
+                    stroke="#F4F4F2"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </svg>
+        </button>
 
         <!-- Splide JS (defer) -->
         <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" defer></script>
