@@ -1,15 +1,57 @@
-.detailbar {
-    height: var(--bar-h);
-    background: var(--c-primary);
-    color: #f4f4f2;
-    position: relative;
-}
-
+/* Height for the top info row inside the header */
 .detailbar .row {
-    height: 70px;
+    height: 70px; /* matches figma top bar; adjust if needed */
 }
 
-/* z-index so the pill can stack above */
-.z-detail {
-    z-index: 20;
+/* Keep a single styling source: the .detailbar class. JS toggles modifier classes. */
+.detailbar {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-detail, 70);
+    /* Base look (figma tone translated to production) */
+    background: var(--c-primary, #007a3d);
+    color: #f4f4f2;
+
+    /* Motion/FX */
+    will-change: transform, box-shadow, backdrop-filter;
+    transition: transform 200ms ease, box-shadow 200ms ease, backdrop-filter 200ms ease;
+    /* We’ll add blur only when scrolled to avoid text frosting at the top */
+    backdrop-filter: none;
+}
+
+/* Hidden while scrolling down */
+.detailbar--hidden {
+    transform: translateY(-100%);
+}
+
+/* Scrolled state: subtle shadow + mild blur to separate from content */
+.detailbar--scrolled {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    backdrop-filter: saturate(120%) blur(6px);
+    background: #0b703c;
+}
+
+/* At top: no shadow, visible */
+.detailbar--at-top {
+    box-shadow: none;
+    backdrop-filter: none;
+    transform: translateY(0);
+}
+
+/* Ensure the pill rail doesn't visually “jump” when header hides/shows */
+.pill-rail {
+    background: rgba(244, 244, 242, 0.12); /* faint film; adjust or remove if you prefer */
+}
+
+/* Make sure dropdown panels appear above content when header is sticky */
+.menu-dd,
+.menu-panel {
+    z-index: 75;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .detailbar {
+        transition: none;
+    }
 }

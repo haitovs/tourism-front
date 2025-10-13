@@ -1,44 +1,47 @@
-// Hide on scroll down, show on any scroll up (no need to reach top)
+// Hide header when scrolling down; show as soon as the user scrolls up (by ~1px).
 (function () {
-    const header = document.querySelector(".detailbar");
+    const header = document.getElementById("site-header"); // single source of truth
     if (!header) return;
 
     let lastY = window.scrollY || window.pageYOffset;
     let ticking = false;
 
-    // Tweak these if you like
-    const HIDE_THRESHOLD = 8; // how much downward movement before hiding
-    const SHOW_THRESHOLD = 1; // how much upward movement before showing
+    const HIDE_DELTA = 6; // how much down-movement before hide
+    const SHOW_DELTA = 1; // how much up-movement before show
+    const TOP_LOCK = 0; // y<=TOP_LOCK => force visible & reset state
 
     function update() {
         ticking = false;
-
         const y = window.scrollY || window.pageYOffset;
         const delta = y - lastY;
 
-        // Always show & clear styles when fully at top
-        if (y <= 0) {
-            header.classList.remove("detailbar--hidden");
-            header.classList.remove("detailbar--scrolled");
+        // Fully at top: reset styles and show header
+        if (y <= TOP_LOCK) {
+            header.classList.remove("detailbar--hidden", "detailbar--scrolled");
             header.classList.add("detailbar--at-top");
             lastY = 0;
             return;
         }
 
-        // When away from top, add scrolled styling once
+        // Mark scrolled state (shadow/blur) once away from top
         header.classList.add("detailbar--scrolled");
         header.classList.remove("detailbar--at-top");
 
-        // Hide if scrolling down past threshold
-        if (delta > HIDE_THRESHOLD) {
+        // Downward movement beyond threshold => hide
+        if (delta > HIDE_DELTA) {
             header.classList.add("detailbar--hidden");
-        }
-        // Show immediately on any upward movement (tiny threshold)
-        else if (delta < -SHOW_THRESHOLD) {
-            header.classList.remove("detailbar--hidden");
+            lastY = y;
+            return;
         }
 
-        // Always update lastY so tiny direction changes are detected quickly
+        // Any tiny upward movement => show
+        if (delta < -SHOW_DELTA) {
+            header.classList.remove("detailbar--hidden");
+            lastY = y;
+            return;
+        }
+
+        // keep tracking to react quickly to next small change
         lastY = y;
     }
 
@@ -49,9 +52,8 @@
         }
     }
 
-    // Initial state
+    // Init now and on changes
     update();
-
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", () => requestAnimationFrame(update), { passive: true });
 })();
