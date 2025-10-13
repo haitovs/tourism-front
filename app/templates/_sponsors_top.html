@@ -1,89 +1,77 @@
-{# templates/_sponsors_top.html #} {# Build ordered list: premier, general, diamond, platinum (unique picks) #} {% set
-order = ["premier", "general", "diamond", "platinum"] %} {% set top = sponsors_top | default({}) %} {% set flat = [] %}
-{% for t in order %} {% set entry = (top.get(t, []) and top.get(t, [None])[0]) %} {% if entry %}{% set _ =
-flat.append(entry) %}{% endif %} {% endfor %} {% set count = flat|length %} {% if count == 0 %}
-<div class="text-slate-500">No top sponsors yet</div>
+{# templates/_sponsors_top.html #} {% set MAX = 5 %} {% if sponsors_top_flat is defined and sponsors_top_flat and
+sponsors_top_flat.get('items') %} {% set flat = sponsors_top_flat['items'] %} {% else %} {% set order = ["premier",
+"general", "diamond", "platinum"] %} {% set grouped = sponsors_top or {} %} {% set ns = namespace(flat=[]) %} {% for t
+in order %} {% for sp in grouped.get(t, []) %} {% if ns.flat|length < MAX %} {% set _ = ns.flat.append(sp) %} {% endif
+%} {% endfor %} {% endfor %} {% set flat = ns.flat %} {% endif %} {% set count = flat|length %}
 
-{% elif count < 5 %} {# --- Static centered row when fewer than 5 --- #}
-<ul class="flex flex-wrap justify-center gap-4">
-    {% for sp in flat %}
-    <li class="flex justify-center">
-        <div class="w-[250px]">
-            <div class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-between h-[276px]">
+<div class="w-full max-w-[var(--container)] mx-auto">
+    {% if count == 0 %}
+    <div class="text-slate-500">No top sponsors yet</div>
+
+    {% elif count < MAX %}
+    <ul class="flex flex-wrap justify-center gap-4">
+        {% for sp in flat %}
+        <li class="flex justify-center">
+            <article
+                class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start"
+            >
                 {% if sp.logo_url %}
                 <img
                     src="{{ sp.logo_url }}"
                     alt="{{ sp.name }}"
                     title="{{ sp.name }}"
-                    class="w-[202px] h-[202px] object-contain select-none pointer-events-none"
+                    class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
                     draggable="false"
                 />
                 {% else %}
                 <img
                     src="/static/img/sponsor_logo.png"
                     alt="No sponsor yet"
-                    class="w-[202px] h-[202px] object-contain opacity-70 select-none pointer-events-none"
+                    class="w-[150px] h-[150px] object-contain opacity-70 select-none pointer-events-none"
                     draggable="false"
                 />
                 {% endif %}
-                <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">{{ sp.tier }} sponsor</div>
-            </div>
-        </div>
-    </li>
-    {% endfor %}
-</ul>
+                <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] text-slate-500/70">
+                    {{ sp.tier }} sponsor
+                </div>
+            </article>
+        </li>
+        {% endfor %}
+    </ul>
 
-{% else %} {# --- Splide single-row: exactly 5 per page --- #}
-<div
-    id="splide-top"
-    class="splide w-full"
-    aria-label="Top sponsors"
-    data-splide="{}"
-    data-count="{{ count }}"
-    data-type="{{ 'loop' if count > 5 else 'slide' }}"
-    data-autoplay="{{ 'true' if count > 5 else 'false' }}"
-    data-interval="9000"
-    data-speed="600"
-    data-gap="1rem"
-    data-rows="1"
-    data-cols="5"
-    data-row-gap="0"
-    data-col-gap="1rem"
-    data-breakpoints='{
-      "1024": { "grid": { "rows": 1, "cols": 3, "gap": { "col": "0.75rem" } } },
-      "640":  { "grid": { "rows": 1, "cols": 2, "gap": { "col": "0.5rem"  } } }
-    }'
->
-    <div class="splide__track">
-        <ul class="splide__list">
-            {% for sp in flat %}
-            <li class="splide__slide flex justify-center">
-                <div class="w-[250px]">
-                    <div class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-between h-[276px]">
+    {% else %}
+    <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: 1rem">
+        <div class="marquee__viewport">
+            <ul class="marquee__track">
+                {% for sp in flat %}
+                <li class="marquee__item">
+                    <article
+                        class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start"
+                    >
                         {% if sp.logo_url %}
                         <img
                             src="{{ sp.logo_url }}"
                             alt="{{ sp.name }}"
                             title="{{ sp.name }}"
-                            class="w-[202px] h-[202px] object-contain select-none pointer-events-none"
+                            class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
                             draggable="false"
                         />
                         {% else %}
                         <img
                             src="/static/img/sponsor_logo.png"
                             alt="No sponsor yet"
-                            class="w-[202px] h-[202px] object-contain opacity-70 select-none pointer-events-none"
+                            class="w-[150px] h-[150px] object-contain opacity-70 select-none pointer-events-none"
                             draggable="false"
                         />
                         {% endif %}
-                        <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">
+                        <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] text-slate-500/70">
                             {{ sp.tier }} sponsor
                         </div>
-                    </div>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
+                    </article>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
+    {% endif %}
 </div>
-{% endif %}

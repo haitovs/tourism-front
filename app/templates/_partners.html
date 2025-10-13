@@ -49,40 +49,12 @@
             {% endfor %}
         </ul>
 
-        {% else %} {# ---- Splide carousel: single row, exactly 6 per page; autoplay disabled ---- #}
-        <div
-            id="splide-partners"
-            class="splide w-full"
-            aria-label="Partners"
-            data-splide="{}"
-            data-count="{{ count }}"
-            data-type="{{ 'loop' if count > 6 else 'slide' }}"
-            data-autoplay="false"
-            data-interval="9000"
-            data-speed="600"
-            data-gap="50px"
-            {#
-            Figma
-            gap
-            ≈
-            50px
-            between
-            170px
-            logos
-            #}
-            data-rows="1"
-            data-cols="6"
-            data-row-gap="0"
-            data-col-gap="50px"
-            data-breakpoints='{
-          "1024": { "grid": { "rows": 1, "cols": 4, "gap": { "col": "40px" } } },
-          "640":  { "grid": { "rows": 1, "cols": 2, "gap": { "col": "24px" } } }
-        }'
-        >
-            <div class="splide__track">
-                <ul class="splide__list">
+        {% else %}
+        <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: 1rem">
+            <div class="marquee__viewport">
+                <ul class="marquee__track">
                     {% for p in _partners %}
-                    <li class="splide__slide flex justify-center">
+                    <li class="marquee__item">
                         {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block"
                             >{% endif %}
                             <div class="w-[170px] h-[123px] flex items-center justify-center">

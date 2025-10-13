@@ -1,10 +1,11 @@
+# app/services/sponsors.py
 from __future__ import annotations
 
 from contextlib import contextmanager
 from typing import Generator, Literal, Optional
 from urllib.parse import urljoin
 
-from sqlalchemy import asc, select
+from sqlalchemy import asc, func, select
 from sqlalchemy.exc import DataError
 from sqlalchemy.orm import Session
 
@@ -30,27 +31,14 @@ def _db_session() -> Generator[Session, None, None]:
 
 
 def _resolve_logo_url(logo: str | None) -> str:
-    """
-    Build a publicly accessible URL for the sponsor logo.
-    - If logo is absolute (http/https), return as-is.
-    - If logo starts with '/', prefix with MEDIA_BASE_URL.
-    - Else, prefix with MEDIA_BASE_URL + '/' + MEDIA_PREFIX + '/' + logo.
-    """
     if not logo:
         return ""
-
-    # Absolute URL -> leave unchanged
     low = logo.lower()
     if low.startswith("http://") or low.startswith("https://"):
         return logo
-
     base = settings.MEDIA_BASE_URL.rstrip("/") + "/"
-
     if logo.startswith("/"):
-        # root-relative path from backend (e.g. /uploads/...)
         return urljoin(base, logo.lstrip("/"))
-
-    # bare relative (e.g. sponsors/abc.png)
     pref = settings.MEDIA_PREFIX.strip("/")
     path = f"{pref}/{logo.lstrip('/')}"
     return urljoin(base, path)
@@ -68,7 +56,12 @@ def _project(sp: Sponsor) -> dict:
     }
 
 
-def get_top_sponsors(*, lang: str = "en", site_id: Optional[int] = None) -> dict[TopTier, list[dict]]:
+def get_top_sponsors(
+    *,
+    lang: str = "en",
+    site_id: Optional[int] = None,
+    per_tier_limit: Optional[int] = None,
+) -> dict[TopTier, list[dict]]:
     tiers: list[TopTier] = ["premier", "general", "diamond", "platinum"]
     out: dict[TopTier, list[dict]] = {t: [] for t in tiers}
     with _db_session() as db:
@@ -80,15 +73,32 @@ def get_top_sponsors(*, lang: str = "en", site_id: Optional[int] = None) -> dict
             stmt = select(Sponsor).where(Sponsor.tier == enum_val)
             if site_id is not None:
                 stmt = stmt.where(Sponsor.site_id == site_id)
-            stmt = stmt.order_by(asc(Sponsor.id)).limit(1)
+            stmt = stmt.order_by(asc(Sponsor.id))
+            if per_tier_limit and per_tier_limit > 0:
+                stmt = stmt.limit(per_tier_limit)
             try:
-                row = db.execute(stmt).scalars().first()
+                rows = db.execute(stmt).scalars().all()
             except DataError:
-                # DB enum may be missing this value; skip gracefully
-                row = None
-            if row:
-                out[t] = [_project(row)]
+                rows = []
+            out[t] = [_project(sp) for sp in rows] if rows else []
     return out
+
+
+def get_top_sponsors_flat(
+    *,
+    lang: str = "en",
+    site_id: Optional[int] = None,
+    max_items: int = 5,
+) -> dict:
+    order: list[TopTier] = ["premier", "general", "diamond", "platinum"]
+    grouped = get_top_sponsors(lang=lang, site_id=site_id)
+    flat: list[dict] = []
+    for t in order:
+        for sp in grouped.get(t, []):
+            flat.append(sp)
+            if len(flat) >= max_items:
+                return {"items": flat[:max_items]}
+    return {"items": flat[:max_items]}
 
 
 def list_all_sponsors_by_tier(
@@ -97,10 +107,6 @@ def list_all_sponsors_by_tier(
     lang: str = "en",
     site_id: Optional[int] = None,
 ) -> dict:
-    """
-    Return *all* sponsors for a given tier (no paging).
-    The template/Splide will chunk them into 10-per-page (5x2) slides.
-    """
     try:
         enum_val = SponsorTier(tier)
     except ValueError:

@@ -126,3 +126,31 @@
     will-change: transform;
     image-rendering: auto;
 }
+
+/* Seamless marquee (rAF-driven, no CSS keyframes) */
+.marquee {
+    --gap: 1rem;
+}
+.marquee__viewport {
+    overflow: hidden;
+    width: 100%;
+}
+.marquee__track {
+    display: flex;
+    gap: var(--gap);
+    will-change: transform;
+}
+.marquee__item {
+    flex: 0 0 auto;
+}
+.marquee--tight {
+    --gap: 0.75rem;
+}
+.marquee--loose {
+    --gap: 2rem;
+}
+@media (prefers-reduced-motion: reduce) {
+    .marquee__track {
+        transform: translate3d(0, 0, 0) !important;
+    }
+}

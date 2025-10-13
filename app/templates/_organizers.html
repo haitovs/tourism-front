@@ -57,31 +57,11 @@ data.get('items')) or [] %} {% set count = all|length %}
         </div>
 
         {% else %}
-        <!-- Splide carousel: exactly 8 per page (4x2) -->
-        <div
-            id="splide-organizers"
-            class="splide w-full"
-            aria-label="Organizers"
-            data-splide="{}"
-            data-count="{{ count }}"
-            data-type="{{ 'loop' if count > 8 else 'slide' }}"
-            data-autoplay="false"
-            data-interval="9000"
-            data-speed="600"
-            data-gap="1rem"
-            data-rows="2"
-            data-cols="4"
-            data-row-gap="1rem"
-            data-col-gap="1rem"
-            data-breakpoints='{
-          "1024": { "grid": { "rows": 2, "cols": 3, "gap": { "row": "0.75rem", "col": "0.75rem" } } },
-          "640":  { "grid": { "rows": 2, "cols": 2, "gap": { "row": "0.5rem",  "col": "0.5rem"  } } }
-        }'
-        >
-            <div class="splide__track">
-                <ul class="splide__list">
+        <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: 1rem">
+            <div class="marquee__viewport">
+                <ul class="marquee__track">
                     {% for p in all %}
-                    <li class="splide__slide flex justify-center">
+                    <li class="marquee__item">
                         {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block"
                             >{% endif %}
                             <article

@@ -22,21 +22,34 @@ def _resolve_lang(req: Request) -> str:
     return lang if lang in settings.SUPPORTED_LANGS else settings.DEFAULT_LANG
 
 
+def _resolve_site_id(req: Request) -> int | None:
+    site = getattr(req.state, "site", None)
+    return getattr(site, "id", None) if site else None
+
+
 @router.get("/", response_class=HTMLResponse)
 async def home(req: Request):
     lang = _resolve_lang(req)
+    site_id = _resolve_site_id(req)
 
     ctx = {
         "request": req,
         "lang": lang,
         "settings": settings,
-        "sponsors_top": sponsor_srv.get_top_sponsors(lang=lang),
-        "gold": sponsor_srv.list_all_sponsors_by_tier(tier="gold", lang=lang),
-        "silver": sponsor_srv.list_all_sponsors_by_tier(tier="silver", lang=lang),
-        "bronze": sponsor_srv.list_all_sponsors_by_tier(tier="bronze", lang=lang),
+
+        # TOP sponsors (grouped + flat, tenant-scoped)
+        "sponsors_top": sponsor_srv.get_top_sponsors(lang=lang, site_id=site_id),
+        "sponsors_top_flat": sponsor_srv.get_top_sponsors_flat(lang=lang, site_id=site_id, max_items=5),
+
+        # LIST tiers (tenant-scoped)
+        "gold": sponsor_srv.list_all_sponsors_by_tier(tier="gold", lang=lang, site_id=site_id),
+        "silver": sponsor_srv.list_all_sponsors_by_tier(tier="silver", lang=lang, site_id=site_id),
+        "bronze": sponsor_srv.list_all_sponsors_by_tier(tier="bronze", lang=lang, site_id=site_id),
+
+        # other sections (left as-is; add site_id where you want strict tenancy)
         "sectors": sectors_srv.list_home_sectors(limit=3, latest_first=True),
         "stats": stats_srv.get_statistics(),
-        "speakers": speakers_srv.get_featured_speakers(limit=3),
+        "speakers": speakers_srv.get_featured_speakers(limit=3, site_id=site_id),
         "news": news_srv.get_latest_news(limit=5),
         "faqs": faq_srv.list_faqs(limit=20),
         "organizers": org_srv.list_organizers(),

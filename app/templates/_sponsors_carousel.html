@@ -1,125 +1,63 @@
-{# templates/_sponsors_carousel.html #} {# Inputs: data = { tier, items } #} {% set tier = data["tier"] %} {% set all =
-data["items"]|default([]) %} {% set count = all|length %} {% set tier_label = (tier | capitalize) ~ " Sponsor" %} {% set
-tier_class = "tier-gold" if tier == "gold" else ("tier-silver" if tier == "silver" else "tier-bronze") %} {% if count ==
-0 %}
+{# templates/_sponsors_carousel.html #} {% set tier = data["tier"] %} {% set all = data["items"]|default([]) %} {% set
+count = all|length %} {% set tier_label = (tier | capitalize) ~ " Sponsor" %} {% set tier_class = "tier-gold" if tier ==
+"gold" else ("tier-silver" if tier == "silver" else "tier-bronze") %} {% macro card(sp) -%}
+<article class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start">
+    {% if sp.logo_url %}
+    <img
+        src="{{ sp.logo_url }}"
+        alt="{{ sp.name }}"
+        title="{{ sp.name }}"
+        class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
+        loading="lazy"
+    />
+    {% else %}
+    <img
+        src="/static/img/sponsor_logo.png"
+        alt="Sponsor"
+        class="w-[150px] h-[150px] object-contain opacity-70 select-none pointer-events-none"
+        loading="lazy"
+    />
+    {% endif %}
+    <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">{{ tier_label }}</div>
+</article>
+{%- endmacro %} {% if count == 0 %}
 <div class="text-center text-slate-400">No {{ tier }} sponsors yet</div>
 
-{% elif count <= 10 %} {# ---- Static layout, centered per row ---- #} {% set r1 = all[:5] %} {% set r2 = all[5:10] %}
-<div class="space-y-4">
-    <ul class="flex flex-wrap justify-center gap-4">
+{% elif count <= 10 %} {% set r1 = all[:5] %} {% set r2 = all[5:10] %}
+<div class="space-y-4 w-full max-w-[var(--container)] mx-auto">
+    <div class="flex flex-wrap justify-center gap-4">
         {% for sp in r1 %}
-        <li class="flex justify-center">
-            <article
-                class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start"
-            >
-                {% if sp.logo_url %}
-                <img
-                    src="{{ sp.logo_url }}"
-                    alt="{{ sp.name }}"
-                    title="{{ sp.name }}"
-                    class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
-                    draggable="false"
-                />
-                {% else %}
-                <img
-                    src="/static/img/sponsor_logo.png"
-                    alt="Sponsor"
-                    class="w-[150px] h-[150px] object-contain opacity-70 select-none pointer-events-none"
-                    draggable="false"
-                />
-                {% endif %}
-                <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">
-                    {{ tier_label }}
-                </div>
-            </article>
-        </li>
+        <div class="flex justify-center">{{ card(sp) }}</div>
         {% endfor %}
-    </ul>
-
-    {% if r2|length > 0 %}
-    <ul class="flex flex-wrap justify-center gap-4">
+    </div>
+    {% if r2 %}
+    <div class="flex flex-wrap justify-center gap-4">
         {% for sp in r2 %}
-        <li class="flex justify-center">
-            <article
-                class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start"
-            >
-                {% if sp.logo_url %}
-                <img
-                    src="{{ sp.logo_url }}"
-                    alt="{{ sp.name }}"
-                    title="{{ sp.name }}"
-                    class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
-                    draggable="false"
-                />
-                {% else %}
-                <img
-                    src="/static/img/sponsor_logo.png"
-                    alt="Sponsor"
-                    class="w-[150px] h-[150px] object-contain opacity-70 select-none pointer-events-none"
-                    draggable="false"
-                />
-                {% endif %}
-                <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">
-                    {{ tier_label }}
-                </div>
-            </article>
-        </li>
+        <div class="flex justify-center">{{ card(sp) }}</div>
         {% endfor %}
-    </ul>
+    </div>
     {% endif %}
 </div>
 
-{% else %} {# ---- Splide carousel: 10 per page (5x2). Natural when >10 ---- #}
-<div
-    id="splide-{{ tier }}"
-    class="splide w-full"
-    aria-label="{{ tier }} sponsors"
-    data-splide="{}"
-    data-count="{{ count }}"
-    data-type="{{ 'loop' if count > 10 else 'slide' }}"
-    data-autoplay="false"
-    data-interval="10000"
-    data-speed="600"
-    data-gap="1rem"
-    data-rows="2"
-    data-cols="5"
-    data-row-gap="1rem"
-    data-col-gap="1rem"
-    data-breakpoints='{
-      "1024": { "grid": { "rows": 2, "cols": 3, "gap": { "row": "0.75rem", "col": "0.75rem" } } },
-      "640":  { "grid": { "rows": 2, "cols": 2, "gap": { "row": "0.5rem",  "col": "0.5rem"  } } }
-    }'
->
-    <div class="splide__track">
-        <ul class="splide__list">
-            {% for sp in all %}
-            <li class="splide__slide flex justify-center">
-                <article
-                    class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start"
-                >
-                    {% if sp.logo_url %}
-                    <img
-                        src="{{ sp.logo_url }}"
-                        alt="{{ sp.name }}"
-                        title="{{ sp.name }}"
-                        class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
-                        draggable="false"
-                    />
-                    {% else %}
-                    <img
-                        src="/static/img/sponsor_logo.png"
-                        alt="Sponsor"
-                        class="w-[150px] h-[150px] object-contain opacity-70 select-none pointer-events-none"
-                        draggable="false"
-                    />
-                    {% endif %}
-                    <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">
-                        {{ tier_label }}
-                    </div>
-                </article>
-            </li>
-            {% endfor %}
-        </ul>
+{% else %} {% set row1 = all[0::2] %} {% set row2 = all[1::2] %}
+<div class="space-y-4 w-full max-w-[var(--container)] mx-auto" data-marquee-group>
+    <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: 1rem">
+        <div class="marquee__viewport">
+            <ul class="marquee__track">
+                {% for sp in row1 %}
+                <li class="marquee__item">{{ card(sp) }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: 1rem">
+        <div class="marquee__viewport">
+            <ul class="marquee__track">
+                {% for sp in row2 %}
+                <li class="marquee__item">{{ card(sp) }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 </div>
 {% endif %}
