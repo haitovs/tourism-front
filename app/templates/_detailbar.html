@@ -2,21 +2,32 @@
     <div class="max-w-[var(--container)] mx-auto px-4 row flex items-center justify-between">
         <!-- left: logo only -->
         <div class="flex items-center gap-4">
-            <img src="/static/img/logo.svg" alt="Logo" class="h-8 w-auto" />
+            <a href="/" aria-label="Home">
+                <img src="/static/img/logo.svg" alt="Logo" class="h-8 w-auto" />
+            </a>
         </div>
 
         <!-- right: email + phone + lang + user -->
         <div class="flex items-center gap-6">
             <div class="hidden md:flex items-center gap-3">
                 <img src="/static/img/ic-mail.svg" class="w-6 h-6" alt="" />
-                <span class="font-['Roboto'] font-medium text-[20px] md:text-[24px]"> info@ciet-turkmenistan.com </span>
+                <a
+                    href="mailto:info@ciet-turkmenistan.com"
+                    class="font-['Roboto'] font-medium text-[20px] md:text-[24px]"
+                >
+                    info@ciet-turkmenistan.com
+                </a>
             </div>
 
             <div class="hidden md:flex items-center gap-2">
                 <img src="/static/img/ic-phone.svg" class="w-6 h-6" alt="" />
-                <span class="font-['Roboto'] font-medium text-[20px] md:text-[24px]"> +99361 480 080 </span>
+                <a href="tel:+99361480080" class="font-['Roboto'] font-medium text-[20px] md:text-[24px]">
+                    +99361 480 080
+                </a>
             </div>
 
+            {# --- Language switcher: preserve current path + other query params --- #} {% set _path = request.url.path
+            %} {% set _params = request.query_params %}
             <div class="relative">
                 <button
                     class="flex items-center gap-1 font-['Roboto'] font-medium text-[20px] md:text-[24px]"
@@ -25,9 +36,15 @@
                     aria-haspopup="true"
                     :aria-expanded="langOpen"
                 >
-                    EN
+                    {{ (lang or 'en')|upper }}
                     <svg class="w-4 h-4 -rotate-90" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M6 9l6 6 6-6" stroke="#F4F4F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path
+                            d="M6 9l6 6 6-6"
+                            stroke="#F4F4F2"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
                     </svg>
                 </button>
                 <div
@@ -36,9 +53,13 @@
                     @click.outside="langOpen=false"
                     class="absolute right-0 mt-2 w-24 p-2 glass text-white text-center z-[70]"
                 >
-                    <a href="/?lang=ru" class="block py-2">RU</a>
-                    <a href="/?lang=tm" class="block py-2">TM</a>
-                    <a href="/?lang=en" class="block py-2">EN</a>
+                    {% for code in ['ru','tm','en'] %}
+                    <a
+                        class="block py-2"
+                        href="{{ _path }}?lang={{ code }}{% for k,v in _params.items() if k!='lang' %}&{{k}}={{ v|urlencode }}{% endfor %}"
+                        >{{ code|upper }}</a
+                    >
+                    {% endfor %}
                 </div>
             </div>
 
@@ -47,12 +68,19 @@
     </div>
 
     <!-- NavPill -->
+    {% set p = request.url.path %}
     <div class="pill-rail">
         <nav class="navpill px-4 md:px-6">
             <ul
                 class="flex flex-wrap items-center gap-3 md:gap-6 font-['Roboto'] font-bold text-[18px] md:text-[22px] text-[var(--c-primary)]"
             >
-                <li><a class="px-3 py-1 rounded-full bg-white text-[var(--c-text)]" href="/">Home</a></li>
+                <li>
+                    <a
+                        class="px-3 py-1 rounded-full {{ 'bg-white text-[var(--c-text)]' if p=='/' else 'hover:text-[var(--c-text)]' }}"
+                        href="/"
+                        >Home</a
+                    >
+                </li>
 
                 <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
                     <button class="flex items-center gap-2 hover:text-[var(--c-text)]">
@@ -62,7 +90,7 @@
                         <div class="glass menu-panel">
                             <h4 class="menu-title">Forum</h4>
                             <hr class="menu-sep" />
-                            <a href="/expo" class="menu-item">Expo</a>
+                            <a href="/expo-sectors" class="menu-item">Expo</a> {# fixed path #}
                             <a href="/official-support" class="menu-item">Official support</a>
                             <a href="/brochure" class="menu-item">Brochure</a>
                         </div>
@@ -80,7 +108,7 @@
                             <a href="/speakers" class="menu-item">Speakers</a>
                             <a href="/meeting-request" class="menu-item">Meeting request</a>
                             <hr class="menu-sep" />
-                            <a href="/expo" class="menu-item">Expo</a>
+                            <a href="/expo-sectors" class="menu-item">Expo</a> {# fixed path #}
                             <hr class="menu-sep" />
                             <a href="/official-support" class="menu-item">Official support</a>
                             <a href="/brochure" class="menu-item">Brochure</a>
@@ -88,7 +116,13 @@
                     </div>
                 </li>
 
-                <li><a href="/news" class="hover:text-[var(--c-text)]">News</a></li>
+                <li>
+                    <a
+                        href="/news"
+                        class="{{ 'text-[var(--c-text)]' if p.startswith('/news') else 'hover:text-[var(--c-text)]' }}"
+                        >News</a
+                    >
+                </li>
 
                 <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
                     <button class="flex items-center gap-2 hover:text-[var(--c-text)]">
@@ -107,7 +141,13 @@
                     </div>
                 </li>
 
-                <li><a href="/registration" class="hover:text-[var(--c-text)]">Registration</a></li>
+                <li>
+                    <a
+                        href="/registration"
+                        class="{{ 'text-[var(--c-text)]' if p.startswith('/registration') else 'hover:text-[var(--c-text)]' }}"
+                        >Registration</a
+                    >
+                </li>
             </ul>
         </nav>
     </div>

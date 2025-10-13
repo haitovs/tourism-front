@@ -95,3 +95,34 @@
     margin-right: 0.4rem;
     font-weight: 700;
 }
+
+/* FOOTER */
+.icon-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 9999px;
+    background: #ffffff;
+    color: #007a3d;
+    display: grid;
+    place-items: center;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.icon-btn img {
+    filter: brightness(0) saturate(100%) invert(37%) sepia(77%) saturate(515%) hue-rotate(114deg) brightness(95%)
+        contrast(101%);
+}
+
+.icon-btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+    background-color: #eee;
+}
+
+.rotating-icon {
+    display: inline-block;
+    transform: scale(1.8);
+    transform-origin: center;
+    will-change: transform;
+    image-rendering: auto;
+}
