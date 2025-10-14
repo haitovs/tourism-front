@@ -1,5 +1,5 @@
-{# app/templates/speakers.html #} {% extends "base.html" %}{% from "_hero_macros.html" import hero_buttons %}{% from
-"_macros.html" import pager %} {% block content %}
+{# app/templates/speaker_detail.html #} {% extends "base.html" %} {% from "_hero_macros.html" import hero_buttons %} {%
+block content %}
 <main>
     <!-- HERO -->
     <section class="relative w-full h-[420px]">
@@ -20,100 +20,77 @@
         = False ) }}
     </section>
 
-    {# ---------- BODY ---------- #}
-    <section class="max-w-[1200px] mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
-        {# Left: portrait #}
-        <aside class="md:col-span-1">
-            <div class="rounded-[20px] overflow-hidden shadow bg-white">
-                {% if speaker.photo_url %}
-                <img src="{{ speaker.photo_url }}" alt="{{ speaker.name }}" class="w-full h-[420px] object-cover" />
-                {% else %}
-                <img
-                    src="/static/img/person_placeholder.jpg"
-                    alt="Speaker"
-                    class="w-full h-[420px] object-cover opacity-80"
-                />
-                {% endif %}
-            </div>
-
-            {# Optional meta info #}
-            <div class="mt-4 space-y-2 text-sm text-slate-600">
-                {% if speaker.company %}
-                <div><span class="font-medium text-slate-800">Company:</span> {{ speaker.company }}</div>
-                {% endif %} {% if speaker.country %}
-                <div><span class="font-medium text-slate-800">Country:</span> {{ speaker.country }}</div>
-                {% endif %} {% if speaker.website %}
-                <div>
-                    <span class="font-medium text-slate-800">Website:</span>
-                    <a
-                        href="{{ speaker.website }}"
-                        class="text-[#007A3D] hover:underline"
-                        target="_blank"
-                        rel="noopener"
-                    >
-                        {{ speaker.website }}
-                    </a>
+    <!-- BODY -->
+    <section id="speaker-body" class="max-w-[1440px] mx-auto px-4 py-10">
+        <!-- Exact desktop geometry: 380px | 40px gap | 800px -->
+        <div class="grid gap-8 md:gap-[40px] justify-center md:[grid-template-columns:380px_800px]">
+            <!-- Left: 380x450 image with 20px radius -->
+            <aside class="mx-auto md:mx-0">
+                <div class="relative w-[min(100%,380px)] h-[450px] rounded-[20px] overflow-hidden bg-white">
+                    {% if speaker.photo_url %}
+                    <img
+                        src="{{ speaker.photo_url }}"
+                        alt="{{speaker.fullname}}"
+                        class="absolute inset-0 w-full h-full object-cover"
+                    />
+                    {% else %}
+                    <img
+                        src="/static/img/person_placeholder.jpg"
+                        alt="Speaker"
+                        class="absolute inset-0 w-full h-full object-cover opacity-80"
+                    />
+                    {% endif %}
                 </div>
-                {% endif %}
-            </div>
-        </aside>
+            </aside>
 
-        {# Right: content #}
-        <article class="md:col-span-2">
-            <header class="pb-4 border-b border-slate-200">
-                <div class="text-[#151938] font-['Roboto'] text-[14px] tracking-wide opacity-80">SPEAKER</div>
-                <h2 class="mt-2 font-['Roboto'] font-semibold text-[clamp(26px,4vw,40px)] text-[#151938]">
-                    {{ speaker.name }}
+            <!-- Right: 800x704 white panel with 20px radius -->
+            <article class="bg-white rounded-[20px] shadow w-full md:w-[800px] min-h-[704px] p-6 md:p-8">
+                <!-- SPEAKER label -->
+                <div class="text-[rgba(21,25,56,0.85)] font-['Roboto'] text-[20px] leading-[23px]">SPEAKER</div>
+
+                <!-- Full name: name + surname -->
+                <h2
+                    class="mt-3 font-['Roboto'] font-semibold text-[#151938] text-[clamp(28px,4vw,45px)] leading-[1.18]"
+                >
+                    {{speaker.fullname}}
                 </h2>
-                {% if speaker.position %}
-                <p class="mt-2 font-['Roboto'] text-[18px] md:text-[20px] text-[#151938]">{{ speaker.position }}</p>
-                {% endif %}
-            </header>
 
-            <section class="mt-6">
-                {% set _bio = speaker.bio or '' %} {% if _bio %}
-                <div class="prose prose-slate max-w-none">{{ _bio | safe }}</div>
-                {% else %}
-                <p class="font-['Roboto'] text-[18px] leading-8 text-slate-800">
-                    Biography coming soon. This section will include the speaker’s background, notable achievements, and
-                    session highlights. Check back for updates.
-                </p>
-                {% endif %}
-            </section>
-
-            {% if speaker.sessions or speaker.links %}
-            <section class="mt-8 grid gap-6 md:grid-cols-2">
-                {% if speaker.sessions %}
-                <div class="bg-white rounded-xl shadow p-5">
-                    <h3 class="font-['Montserrat'] text-[20px] text-[#1E1E1E] mb-3">Sessions</h3>
-                    <ul class="space-y-2 list-disc pl-5">
-                        {% for s in speaker.sessions %}
-                        <li>{{ s }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %} {% if speaker.links %}
-                <div class="bg-white rounded-xl shadow p-5">
-                    <h3 class="font-['Montserrat'] text-[20px] text-[#1E1E1E] mb-3">Links</h3>
-                    <ul class="space-y-2">
-                        {% for link in speaker.links %}
-                        <li>
-                            <a
-                                href="{{ link.url }}"
-                                target="_blank"
-                                rel="noopener"
-                                class="text-[#007A3D] hover:underline"
-                            >
-                                {{ link.title or link.url }}
-                            </a>
-                        </li>
-                        {% endfor %}
-                    </ul>
+                {# Company logo | tight green divider | position #} {% if speaker.company_photo_url or speaker.position
+                or speaker.company %}
+                <div class="mt-4 flex items-center gap-3 md:gap-4">
+                    {% if speaker.company_photo_url %}
+                    <img
+                        src="{{ speaker.company_photo_url }}"
+                        alt="Company logo"
+                        class="h-[40px] md:h-[50px] w-auto object-contain shrink-0"
+                        loading="lazy"
+                    />
+                    {% endif %} {% if speaker.company_photo_url and (speaker.position or speaker.company) %}
+                    <span class="hidden md:inline-block w-[2px] h-[34px] bg-[#007A3D]"></span>
+                    {% endif %} {% if speaker.position or speaker.company %}
+                    <p
+                        class="font-['Roboto'] text-[#151938] text-[22px] md:text-[25px] leading-[28px] md:leading-[30px] max-w-[420px] md:max-w-[520px]"
+                    >
+                        {{ speaker.position }}{% if speaker.company %}{% if speaker.position %}, {% endif %}{{
+                        speaker.company }}{% endif %}
+                    </p>
+                    {% endif %}
                 </div>
                 {% endif %}
-            </section>
-            {% endif %}
-        </article>
+
+                <!-- Description paragraph (700px width, 25/40) -->
+                <section class="mt-6">
+                    {% set _desc = speaker.description or '' %} {% if _desc %}
+                    <div class="font-['Roboto'] text-[25px] leading-[40px] text-black max-w-[700px]">{{ _desc }}</div>
+                    {% else %}
+                    <p class="font-['Roboto'] text-[18px] leading-8 text-slate-800">
+                        Biography coming soon. This section will include the speaker’s background, notable achievements,
+                        and session highlights. Check back for updates.
+                    </p>
+                    {% endif %}
+                </section>
+            </article>
+        </div>
     </section>
 </main>
 {% endblock %}

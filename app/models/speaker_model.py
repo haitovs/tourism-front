@@ -12,10 +12,13 @@ class Speaker(Base):
     id = Column(Integer, primary_key=True, index=True)
 
     name = Column(String(255), nullable=False)
+    surname = Column(String(255), nullable=False)
+    company = Column(String(255), nullable=False)
     position = Column(String(255), nullable=False)
     description = Column(Text, nullable=False)
 
     photo = Column(String(255), nullable=True)
+    company_photo = Column(String(255), nullable=True)
     phone = Column(String(50), nullable=True)
     email = Column(String(255), nullable=True)
     website = Column(String(255), nullable=True)

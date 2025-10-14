@@ -39,12 +39,33 @@ def _resolve_media(path: str | None) -> str:
     return urljoin(base, f"{pref}/{path.lstrip('/')}")
 
 
+def _display_full_name(first: str, surname: str, full_name_db: str) -> str:
+    if full_name_db:
+        return full_name_db
+    parts = [p for p in [first, surname] if p]
+    return " ".join(parts)
+
+
 def _row_to_dict(r: Speaker) -> dict:
+    first = (getattr(r, "name", "") or "").strip()
+    surname = (getattr(r, "surname", "") or "").strip()
+    full_name_db = (getattr(r, "full_name", "") or "").strip()
+
     return {
         "id": r.id,
-        "name": getattr(r, "full_name", "") or getattr(r, "name", ""),
+        "fullname": _display_full_name(first, surname, full_name_db),
+        "name": first,
+        "surname": surname,
+        "company": getattr(r, "company", "") or "",
         "position": getattr(r, "position", "") or "",
+        "description": getattr(r, "description", "") or "",
         "photo_url": _resolve_media(getattr(r, "photo", None)),
+        "company_photo_url": _resolve_media(getattr(r, "company_photo", None)),
+        "website": getattr(r, "website", "") or "",
+        "email": getattr(r, "email", "") or "",
+        "phone": getattr(r, "phone", "") or "",
+        "links": getattr(r, "social_links", None) or [],
+        "sessions": getattr(r, "sessions", None) or [],
     }
 
 
@@ -56,8 +77,7 @@ def get_featured_speakers(*, limit: int = 3, site_id: Optional[int] = None) -> l
             stmt = stmt.where(Speaker.site_id == site_id)
         stmt = stmt.order_by(desc(Speaker.id)).limit(max(1, limit))
         rows = db.execute(stmt).scalars().all()
-        for r in rows:
-            out.append(_row_to_dict(r))
+        out = [_row_to_dict(r) for r in rows]
     return out
 
 
@@ -67,7 +87,6 @@ def list_speakers(
     limit: Optional[int] = None,
     latest_first: bool = True,
 ) -> list[dict]:
-
     out: list[dict] = []
     with _db_session() as db:
         stmt = select(Speaker)
@@ -77,8 +96,7 @@ def list_speakers(
         if limit:
             stmt = stmt.limit(max(1, limit))
         rows = db.execute(stmt).scalars().all()
-        for r in rows:
-            out.append(_row_to_dict(r))
+        out = [_row_to_dict(r) for r in rows]
     return out
 
 

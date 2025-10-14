@@ -49,7 +49,7 @@
             <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 place-items-center">
                 {% set items = speakers or [] %} {% for sp in items %}
                 <li
-                    x-show="!q || norm('{{ (sp.name or '')|e }} {{ (sp.position or '')|e }}').includes(norm(q))"
+                    x-show="!q || norm('{{ (sp.fullname or sp.name or '')|e }} {{ (sp.position or '')|e }} {{ (sp.company or '')|e }}').includes(norm(q))"
                     x-cloak
                     class="w-full flex justify-center"
                 >
@@ -60,7 +60,7 @@
                             {% if sp.photo_url %}
                             <img
                                 src="{{ sp.photo_url }}"
-                                alt="{{ sp.name }}"
+                                alt="{{ sp.fullname }}"
                                 class="absolute inset-0 w-full h-full object-cover"
                             />
                             {% else %}
@@ -77,14 +77,14 @@
                                 <div class="text-white">
                                     <div
                                         class="font-['Roboto'] font-bold text-[22px] md:text-[24px] truncate"
-                                        title="{{ sp.name }}"
+                                        title="{{ sp.fullname }}"
                                     >
-                                        {{ sp.name }}
+                                        {{ sp.fullname }}
                                     </div>
                                     <div
                                         class="mt-1.5 font-['Roboto'] text-[16px] md:text-[18px] line-clamp-2 opacity-95"
                                     >
-                                        {{ sp.position }}
+                                        {{ sp.position }} , {{ sp.company }}
                                     </div>
                                 </div>
                                 <div class="absolute right-4 md:right-5 bottom-4 md:bottom-5">
