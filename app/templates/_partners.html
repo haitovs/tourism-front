@@ -1,9 +1,7 @@
 {# templates/_partners.html #} {% set _partners = partners or [] %} {% set count = _partners|length %}
 
 <section id="partners" class="max-w-[1440px] mx-auto py-14">
-    <!-- 1440 - (2 * 86) = 1268 ≈ 1269 Figma inner width -->
     <div class="mx-[86px]">
-        <!-- Header: green mini title + lines, then big centered title -->
         <header class="text-center mb-8">
             <div class="flex items-center justify-center gap-4">
                 <span class="hidden sm:block h-px w-[60px] bg-[#007A3D]"></span>
@@ -15,68 +13,55 @@
             </h2>
         </header>
 
-        {% if count == 0 %}
+        {% macro partner_card(p) -%}
+        <article class="w-[190px] h-[225px] flex flex-col items-center justify-start">
+            <div class="w-[170px] h-[123px] flex items-center justify-center">
+                {% if p.logo_url %}
+                <img
+                    src="{{ p.logo_url }}"
+                    alt="{{ p.name }}"
+                    title="{{ p.name }}"
+                    class="w-[170px] h-[123px] object-contain select-none pointer-events-none"
+                    loading="lazy"
+                />
+                {% else %}
+                <img
+                    src="/static/img/img_placeholder.png"
+                    alt="{{ p.name }}"
+                    title="{{ p.name }}"
+                    class="w-[170px] h-[123px] object-contain opacity-70 select-none pointer-events-none"
+                    loading="lazy"
+                />
+                {% endif %}
+            </div>
+            {# NEW: neutral bottom text (location identical to sponsors' tier label spot) #} {% if p.type %}
+            <div class="mt-2 text-center font-['Roboto'] text-[18px] text-slate-700 leading-tight">{{ p.type }}</div>
+            {% else %}
+            <div class="mt-2 text-center font-['Roboto'] text-[16px] text-slate-400 leading-tight">&nbsp;</div>
+            {% endif %}
+        </article>
+        {%- endmacro %} {% if count == 0 %}
         <div class="text-center text-slate-500">No partners added yet</div>
 
-        {% elif count <= 6 %} {# ---- Static centered row: each logo 170x123; Figma horizontal gap ~50px ---- #}
+        {% elif count < 6 %} {# ---- Static centered row ---- #}
         <ul class="flex flex-wrap justify-center gap-x-[50px] gap-y-6">
             {% for p in _partners %}
             <li class="flex justify-center">
                 {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block"
-                    >{% endif %}
-                    <div class="w-[170px] h-[123px] flex items-center justify-center">
-                        {% if p.logo_url %}
-                        <img
-                            src="{{ p.logo_url }}"
-                            alt="{{ p.name }}"
-                            title="{{ p.name }}"
-                            class="w-[170px] h-[123px] object-contain select-none pointer-events-none"
-                            loading="lazy"
-                        />
-                        {% else %}
-                        <img
-                            src="/static/img/sponsor_logo.png"
-                            alt="{{ p.name }}"
-                            title="{{ p.name }}"
-                            class="w-[170px] h-[123px] object-contain opacity-70 select-none pointer-events-none"
-                            loading="lazy"
-                        />
-                        {% endif %}
-                    </div>
-                    {% if p.website %}</a
+                    >{% endif %} {{ partner_card(p) }} {% if p.website %}</a
                 >{% endif %}
             </li>
             {% endfor %}
         </ul>
 
-        {% else %}
+        {% else %} {# ---- Marquee ---- #}
         <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: 1rem">
             <div class="marquee__viewport">
                 <ul class="marquee__track">
                     {% for p in _partners %}
                     <li class="marquee__item">
                         {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block"
-                            >{% endif %}
-                            <div class="w-[170px] h-[123px] flex items-center justify-center">
-                                {% if p.logo_url %}
-                                <img
-                                    src="{{ p.logo_url }}"
-                                    alt="{{ p.name }}"
-                                    title="{{ p.name }}"
-                                    class="w-[170px] h-[123px] object-contain select-none pointer-events-none"
-                                    loading="lazy"
-                                />
-                                {% else %}
-                                <img
-                                    src="/static/img/sponsor_logo.png"
-                                    alt="{{ p.name }}"
-                                    title="{{ p.name }}"
-                                    class="w-[170px] h-[123px] object-contain opacity-70 select-none pointer-events-none"
-                                    loading="lazy"
-                                />
-                                {% endif %}
-                            </div>
-                            {% if p.website %}</a
+                            >{% endif %} {{ partner_card(p) }} {% if p.website %}</a
                         >{% endif %}
                     </li>
                     {% endfor %}

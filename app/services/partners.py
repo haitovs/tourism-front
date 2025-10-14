@@ -67,6 +67,7 @@ def list_partners(*, site_id: Optional[int] = None, limit: int | None = None) ->
                 "name": r.name,
                 "website": r.website or "",
                 "logo_url": _resolve_media(getattr(r, "logo", None)),
+                "type": getattr(r, "type", "") or "",  # NEW: expose partner type
             })
     return out
 
