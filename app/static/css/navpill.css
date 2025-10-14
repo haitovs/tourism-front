@@ -55,16 +55,28 @@
 
 /* Dropdown internals */
 .menu-panel {
+    display: inline-block;
     padding: 12px;
-    width: 260px;
-
+    inline-size: max-content;
+    max-inline-size: 92vw;
     text-align: center;
+    box-sizing: border-box;
 }
+
 .menu-items-item {
     color: #fff;
     font: 700 1rem/1.2 Roboto, system-ui, sans-serif;
     text-align: center;
 }
+.menu-item,
+.menu-items-item {
+    display: block;
+    padding: 8px 12px;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+}
+
 .menu-subcard {
     display: flex;
     flex-direction: column;
@@ -88,6 +100,23 @@
 .menu-sep {
     border-color: rgba(255, 255, 255, 0.4);
     margin: 8px 0;
+}
+
+/* Subcard inherits same “fit to content” behavior */
+.menu-subcard {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+    inline-size: max-content;
+    max-inline-size: 100vw;
+}
+
+.menu-subcard > a,
+.menu-subcard > div {
+    display: block;
+    inline-size: 100%;
+    white-space: nowrap;
 }
 
 /* Utility z-index helpers if used */
