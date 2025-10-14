@@ -88,7 +88,7 @@
                         About the Forum <span class="text-[var(--c-text)]/40">›</span>
                     </button>
 
-                    <div x-show="m" x-transition class="menu-dd">
+                    <div x-show="m" x-cloak x-transition class="menu-dd">
                         <div class="glass menu-panel menu-grid">
                             <!-- /forum row with right-side extender -->
                             <div
@@ -103,7 +103,7 @@
                                 </a>
 
                                 <!-- RIGHT EXTENSION CARD (extends current dropdown) -->
-                                <div x-show="open" x-transition.opacity class="menu-subcard">
+                                <div x-show="open" x-cloak x-transition.opacity class="menu-subcard">
                                     <a href="/agenda" class="menu-items-item menu-subitem">Agenda</a>
                                     <a href="/speakers" class="menu-items-item menu-subitem">Speakers</a>
                                     <a href="/meeting-request" class="menu-items-item menu-subitem">Meeting request</a>
@@ -124,7 +124,7 @@
                     <button class="flex items-center gap-2 hover:text-[var(--c-text)]">
                         Participants <span class="text-[var(--c-text)]/40">›</span>
                     </button>
-                    <div x-show="m" x-transition class="menu-dd">
+                    <div x-show="m" x-cloak x-transition class="menu-dd">
                         <div class="glass menu-panel">
                             <a href="/forum" class="menu-item">Forum</a>
                             <hr class="menu-sep" />
@@ -147,7 +147,7 @@
                     <button class="flex items-center gap-2 hover:text-[var(--c-text)]">
                         Travel &amp; Accommodation Guide <span class="text-[var(--c-text)]/40">›</span>
                     </button>
-                    <div x-show="m" x-transition class="menu-dd">
+                    <div x-show="m" x-cloak x-transition class="menu-dd">
                         <div class="glass menu-panel">
                             <a href="/visa" class="menu-item">Apply for Visa</a>
                             <hr class="menu-sep" />

@@ -68,6 +68,7 @@
     font: 700 1rem/1.2 Roboto, system-ui, sans-serif;
     text-align: center;
 }
+
 .menu-item,
 .menu-items-item {
     display: block;
@@ -75,6 +76,18 @@
     color: #fff;
     text-align: center;
     white-space: nowrap;
+
+    /* ✅ Added smooth hover animation base */
+    transition: all 0.25s ease;
+    border-radius: 8px;
+}
+
+/* ✅ New hover effect */
+.menu-item:hover,
+.menu-items-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.03);
+    opacity: 1;
 }
 
 .menu-subcard {
@@ -89,14 +102,20 @@
     display: block;
     width: 100%;
 }
+
 .menu-item {
     display: block;
     padding: 8px 12px;
     color: #fff;
 }
+
+/* Remove old opacity-only hover (merged above) */
+/*
 .menu-item:hover {
     opacity: 0.9;
 }
+*/
+
 .menu-sep {
     border-color: rgba(255, 255, 255, 0.4);
     margin: 8px 0;
