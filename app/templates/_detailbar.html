@@ -86,12 +86,34 @@
                     <button class="flex items-center gap-2 hover:text-[var(--c-text)]">
                         About the Forum <span class="text-[var(--c-text)]/40">›</span>
                     </button>
+
                     <div x-show="m" x-transition class="menu-dd">
-                        <div class="glass menu-panel">
-                            <h4 class="menu-title">Forum</h4>
+                        <div class="glass menu-panel menu-grid">
+                            <!-- /forum row with right-side extender -->
+                            <div
+                                class="menu-items relative"
+                                x-data="{open:false}"
+                                @mouseenter="open=true"
+                                @mouseleave="open=false"
+                            >
+                                <a href="/forum" class="menu-item">
+                                    <span>Forum</span>
+                                    <span class="menu-items-arrow" aria-hidden="true"></span>
+                                </a>
+
+                                <!-- RIGHT EXTENSION CARD (extends current dropdown) -->
+                                <div x-show="open" x-transition.opacity class="menu-subcard">
+                                    <a href="/agenda" class="menu-items-item menu-subitem">Agenda</a>
+                                    <a href="/speakers" class="menu-items-item menu-subitem">Speakers</a>
+                                    <a href="/meeting-request" class="menu-items-item menu-subitem">Meeting request</a>
+                                </div>
+                            </div>
+
                             <hr class="menu-sep" />
-                            <a href="/expo-sectors" class="menu-item">Expo</a> {# fixed path #}
+                            <a href="/expo-sectors" class="menu-item">Expo</a>
+                            <hr class="menu-sep" />
                             <a href="/official-support" class="menu-item">Official support</a>
+                            <hr class="menu-sep" />
                             <a href="/brochure" class="menu-item">Brochure</a>
                         </div>
                     </div>
@@ -103,15 +125,11 @@
                     </button>
                     <div x-show="m" x-transition class="menu-dd">
                         <div class="glass menu-panel">
-                            <h4 class="menu-title">Forum</h4>
-                            <a href="/agenda" class="menu-item">Agenda</a>
-                            <a href="/speakers" class="menu-item">Speakers</a>
-                            <a href="/meeting-request" class="menu-item">Meeting request</a>
+                            <a href="/forum" class="menu-item">Forum</a>
                             <hr class="menu-sep" />
-                            <a href="/expo-sectors" class="menu-item">Expo</a> {# fixed path #}
+                            <a href="/expo-sectors" class="menu-item">Expo</a>
                             <hr class="menu-sep" />
-                            <a href="/official-support" class="menu-item">Official support</a>
-                            <a href="/brochure" class="menu-item">Brochure</a>
+                            <a href="/expo-sectors" class="menu-item">All</a>
                         </div>
                     </div>
                 </li>
@@ -130,10 +148,10 @@
                     </button>
                     <div x-show="m" x-transition class="menu-dd w-[360px]">
                         <div class="glass menu-panel">
-                            <h4 class="menu-title">Travel & Accommodation Guide</h4>
-                            <hr class="menu-sep" />
                             <a href="/visa" class="menu-item">Apply for Visa</a>
+                            <hr class="menu-sep" />
                             <a href="/hotel" class="menu-item">Book Your Hotel</a>
+                            <hr class="menu-sep" />
                             <a href="/flight" class="menu-item">Book Your Flight</a>
                             <hr class="menu-sep" />
                             <a href="/faq" class="menu-item">FAQ</a>

@@ -1,22 +1,21 @@
+/* === DETAILBAR (site header) === */
+
 /* Height for the top info row inside the header */
 .detailbar .row {
     height: 70px; /* matches figma top bar; adjust if needed */
 }
 
-/* Keep a single styling source: the .detailbar class. JS toggles modifier classes. */
+/* Sticky header base */
 .detailbar {
     position: sticky;
     top: 0;
     z-index: var(--z-detail, 70);
-    /* Base look (figma tone translated to production) */
     background: var(--c-primary, #007a3d);
     color: #f4f4f2;
 
-    /* Motion/FX */
     will-change: transform, box-shadow, backdrop-filter;
     transition: transform 200ms ease, box-shadow 200ms ease, backdrop-filter 200ms ease;
-    /* We’ll add blur only when scrolled to avoid text frosting at the top */
-    backdrop-filter: none;
+    backdrop-filter: none; /* add blur only on scroll */
 }
 
 /* Hidden while scrolling down */
@@ -38,20 +37,30 @@
     transform: translateY(0);
 }
 
-/* Ensure the pill rail doesn't visually “jump” when header hides/shows */
-.pill-rail {
-    background: rgba(244, 244, 242, 0.12); /* faint film; adjust or remove if you prefer */
-}
-
-/* Make sure dropdown panels appear above content when header is sticky */
-.menu-dd,
-.menu-panel {
-    z-index: 75;
-}
-
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .detailbar {
         transition: none;
     }
+}
+
+/* Optional legacy ids for compatibility if used elsewhere */
+#site-header {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    background: rgba(0, 122, 61, 0.9);
+    backdrop-filter: saturate(120%) blur(6px);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+    will-change: transform;
+}
+
+#site-header.header--hidden {
+    transform: translateY(-100%);
+}
+#site-header.header--at-top {
+    box-shadow: none;
+}
+#site-header.header--scrolled {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }

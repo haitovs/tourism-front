@@ -1,9 +1,11 @@
-/* NAV PILL */
+/* === NAV PILL & DROPDOWNS === */
+
 :root {
     --z-pill: 60;
     --z-dd: 100;
 }
 
+/* Rail that centers the pill under the header */
 .pill-rail {
     position: absolute;
     top: var(--pill-top);
@@ -15,6 +17,8 @@
     width: var(--pill-w);
     height: auto;
     z-index: var(--z-pill);
+    /* faint film so it doesn't jump visually when header hides/shows */
+    background: rgba(244, 244, 242, 0.12);
 }
 
 /* NAV PILL fills the rail */
@@ -32,7 +36,7 @@
     box-sizing: border-box;
 }
 
-/* dropdown styles (glass) */
+/* Glass dropdown panel look */
 .glass {
     background: linear-gradient(180deg, rgba(0, 122, 61, 0.65) 0%, rgba(0, 122, 61, 0.55) 100%);
     -webkit-backdrop-filter: blur(6px);
@@ -40,20 +44,38 @@
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 12px;
 }
+
+/* Dropdown positioning */
 .menu-dd {
     position: absolute;
     top: 2.75rem;
     left: 0;
-    /* z-index: var(--z-dd); */
+    z-index: var(--z-dd);
 }
+
+/* Dropdown internals */
 .menu-panel {
     padding: 12px;
     width: 260px;
+
+    text-align: center;
 }
-.menu-title {
+.menu-items-item {
     color: #fff;
     font: 700 1rem/1.2 Roboto, system-ui, sans-serif;
     text-align: center;
+}
+.menu-subcard {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.menu-subcard > a,
+.menu-subcard > div {
+    display: block;
+    width: 100%;
 }
 .menu-item {
     display: block;
@@ -68,15 +90,16 @@
     margin: 8px 0;
 }
 
+/* Utility z-index helpers if used */
 .z-pill {
     z-index: 50;
 }
-
 .sticky-pill {
     position: sticky;
     top: 12px;
 }
 
+/* Responsive width constraint on smaller wide screens */
 @media (max-width: 1400px) {
     .pill-rail {
         width: min(92vw, var(--container));
