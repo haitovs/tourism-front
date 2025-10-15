@@ -1,0 +1,237 @@
+{% extends "base.html" %} {% from "_hero_macros.html" import hero_buttons %} {% block content %}
+<main>
+    <!-- HERO -->
+    <section class="relative w-full h-[320px] md:h-[380px]">
+        <img
+            src="/static/img/about-forum/abouttheforum-hero.png"
+            alt=""
+            class="absolute inset-0 w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-black/40"></div>
+
+        <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
+            <h1 class="font-['Montserrat'] font-bold text-white text-[clamp(30px,5vw,56px)] leading-tight">
+                Turkmen- China 2026 Forum
+            </h1>
+            <p class="mt-2 font-['Roboto'] text-white/90 text-[clamp(16px,2.4vw,20px)]">
+                Strengthening Strategic Partnership for Sustainable Development
+            </p>
+        </div>
+
+        {{ hero_buttons( home_href = '/', section_label = 'About the Forum', section_href = '/about-forum', is_detail =
+        False ) }}
+    </section>
+
+    <!-- FRAME 49 (Card 1) -->
+    <section class="max-w-[var(--container)] mx-auto px-4 py-10">
+        <div class="bg-white rounded-[20px] p-6 md:p-8 shadow-sm mx-auto max-w-[1310px]">
+            <!-- Title -->
+            <h2
+                class="font-['Montserrat'] font-medium text-[#1E1E1E] text-[clamp(26px,3.5vw,50px)] leading-[1.22] max-w-[936px]"
+            >
+                International Business and Forum of Turkmenistan
+            </h2>
+
+            <!-- Top paragraphs -->
+            <div class="mt-6 space-y-6 max-w-[1182px]">
+                <p class="font-['Lato','Roboto',ui-sans-serif] text-[25px] leading-10 text-[#1E1E1E]">
+                    Industry and construction play a vital role in the economic development of any country. Industry
+                    includes the production of goods in factories, such as automobiles, electronics, textiles, food
+                    products, and machinery. It can be divided into several sectors: heavy industry, light industry, and
+                    high-tech production. Construction, on the other hand, involves building structures such as houses,
+                    roads, bridges, factories, and skyscrapers. This sector includes residential, commercial, and
+                    infrastructure projects. It requires cooperation between engineers, architects, workers, and
+                    suppliers of materials like steel, concrete, and wood.
+                </p>
+
+                <p class="font-['Lato','Roboto',ui-sans-serif] text-[25px] leading-10 text-[#1E1E1E]">
+                    Turkish Airlines is widely recognized for offering award-winning in-flight catering and a strong
+                    focus on passenger comfort. The airline frequently ranks among the best in Europe and has received
+                    numerous international awards for its service.
+                </p>
+
+                <p class="font-['Lato','Roboto',ui-sans-serif] text-[25px] leading-10 text-[#1E1E1E]">
+                    In modern times, both industries are becoming more automated and eco-friendly. Technologies such as
+                    3D printing, smart construction tools, and green building materials are transforming the way we
+                    build and manufacture.
+                </p>
+            </div>
+
+            <!-- Divider -->
+            <div class="mt-6 h-[2px] w-full border-t-2 border-[#007A3D]"></div>
+
+            <!-- Mosaic (Group 992) -->
+            <div class="mt-6 hidden lg:grid lg:grid-cols-12 lg:grid-rows-12 gap-4 h-[571px] max-w-[1160px]">
+                <!-- Left tall: 400x571 -->
+                <div class="col-span-4 row-span-12 rounded-[10px] overflow-hidden bg-slate-100">
+                    <img src="/static/img/about-forum/abouttheforum1.png" alt="" class="w-full h-full object-cover" />
+                </div>
+                <!-- Top-right two: 350x261 each -->
+                <div class="col-span-4 row-span-6 rounded-[10px] overflow-hidden bg-slate-100">
+                    <img src="/static/img/about-forum/abouttheforum2.png" alt="" class="w-full h-full object-cover" />
+                </div>
+                <div class="col-span-4 row-span-6 rounded-[10px] overflow-hidden bg-slate-100">
+                    <img src="/static/img/about-forum/abouttheforum3.png" alt="" class="w-full h-full object-cover" />
+                </div>
+                <!-- Bottom-right wide: 730x280 -->
+                <div class="col-span-8 row-span-6 rounded-[10px] overflow-hidden bg-slate-100">
+                    <img src="/static/img/about-forum/abouttheforum4.png" alt="" class="w-full h-full object-cover" />
+                </div>
+            </div>
+
+            <!-- Mobile/tablet mosaic -->
+            <div class="mt-6 grid lg:hidden grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="rounded-[10px] overflow-hidden bg-slate-100 aspect-[4/3]">
+                    <img src="/static/img/about-forum/abouttheforum1.png" alt="" class="w-full h-full object-cover" />
+                </div>
+                <div class="rounded-[10px] overflow-hidden bg-slate-100 aspect-[4/3]">
+                    <img src="/static/img/about-forum/abouttheforum2.png" alt="" class="w-full h-full object-cover" />
+                </div>
+                <div class="rounded-[10px] overflow-hidden bg-slate-100 aspect-[4/3]">
+                    <img src="/static/img/about-forum/abouttheforum3.png" alt="" class="w-full h-full object-cover" />
+                </div>
+                <div class="rounded-[10px] overflow-hidden bg-slate-100 aspect-[4/3]">
+                    <img src="/static/img/about-forum/abouttheforum4.png" alt="" class="w-full h-full object-cover" />
+                </div>
+            </div>
+
+            <!-- Bottom group of paragraphs (Group 1394) -->
+            <div class="mt-10 space-y-6 max-w-[1160px]">
+                <p class="font-['Lato','Roboto',ui-sans-serif] text-[25px] leading-10 text-[#1E1E1E]">
+                    Together, industry and construction shape the environment we live in, provide millions of jobs, and
+                    contribute significantly to innovation and progress in society.Together, industry and construction
+                    shape the environment we live in, provide millions of jobs, and contribute significantly to
+                    innovation and progress in society.
+                </p>
+
+                <p class="font-['Lato','Roboto',ui-sans-serif] text-[25px] leading-10 text-[#1E1E1E]">
+                    Industry and construction play a vital role in the economic development of any country. Industry
+                    includes the production of goods in factories, such as automobiles, electronics, textiles, food
+                    products, and machinery. It can be divided into several sectors: heavy industry, light industry, and
+                    high-tech production. Construction, on the other hand, involves building structures such as houses,
+                    roads, bridges, factories, and skyscrapers. This sector includes residential, commercial, and
+                    infrastructure projects. It requires cooperation between engineers, architects, workers, and
+                    suppliers of materials like steel, concrete, and wood.
+                </p>
+
+                <p class="font-['Lato','Roboto',ui-sans-serif] text-[25px] leading-10 text-[#1E1E1E]">
+                    In modern times, both industries are becoming more automated and eco-friendly. Technologies such as
+                    3D printing, smart construction tools, and green building materials are transforming the way we
+                    build and manufacture.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FRAME 50 (Card 2: Why to participate?) -->
+    <section class="max-w-[var(--container)] mx-auto px-4 pb-10">
+        <div class="bg-white rounded-[20px] p-6 md:p-8 shadow-sm mx-auto max-w-[1310px]">
+            <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E] text-[clamp(26px,3.5vw,50px)] leading-[61px]">
+                Why to participate?
+            </h2>
+
+            <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+                <!-- Left column (bullets) ~600x580 -->
+                <div class="lg:col-span-7">
+                    <div class="max-w-[600px] min-h-[580px] space-y-6">
+                        <p class="font-['Roboto'] text-[25px] leading-10 text-black/70">
+                            • Turkmenistan offers diverse opportunities across sectors — including oil and gas,
+                            construction, telecommunications, tourism, healthcare, agriculture, and food industries.
+                        </p>
+                        <p class="font-['Roboto'] text-[25px] leading-10 text-black/70">
+                            • Turkmenistan is one of the fastest-growing economies in Central Asia, offering vast
+                            opportunities for investment and cooperation.
+                        </p>
+                        <p class="font-['Roboto'] text-[25px] leading-10 text-black/70">
+                            • With billion-dollar infrastructure and construction projects, Turkmenistan presents an
+                            attractive market for international business.
+                        </p>
+                        <p class="font-['Roboto'] text-[25px] leading-10 text-black/70">
+                            • The $14 billion Ashgabat City smart city project marks a significant leap toward
+                            innovation and sustainable urban development.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right column (stacked/overlapping images): 453×429 on top, 388×340 below-left -->
+                <div class="lg:col-span-5">
+                    <div class="relative h-[580px]">
+                        <!-- Rectangle 422 (no radius) -->
+                        <img
+                            src="/static/img/about-forum/abouttheforum5.png"
+                            alt=""
+                            class="absolute top-0 right-0 w-[453px] h-[429px] object-cover rounded-none"
+                        />
+                        <!-- Rectangle 423 (rounded 10px), shifted down and left -->
+                        <img
+                            src="/static/img/about-forum/abouttheforum6.png"
+                            alt=""
+                            class="absolute bottom-0 left-0 w-[388px] h-[340px] object-cover rounded-[10px]"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FRAME 51 (By the Numbers + Expo sectors 2026) -->
+    <section class="max-w-[var(--container)] mx-auto px-4 pb-14">
+        <div class="bg-white rounded-[20px] p-6 md:p-8 shadow-sm mx-auto max-w-[1310px]">
+            <!-- Title (50/61) -->
+            <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E] text-[50px] leading-[61px]">By the Numbers</h2>
+
+            <!-- Inner width = 1190px -->
+            <div class="mx-auto max-w-[1190px] mt-6">
+                <!-- Row: Total exhibition space -->
+                <div class="grid grid-cols-[330px_1fr] gap-8 items-start">
+                    <div class="font-['Roboto'] font-medium text-[30px] leading-[35px] text-[#1E1E1E]">
+                        Total exhibition space:
+                    </div>
+                    <div class="font-['Roboto'] text-[30px] leading-[26px] text-black/70">8,000 m²</div>
+                </div>
+                <div class="mt-4 h-px w-full border-t border-black/70"></div>
+
+                <!-- Row: Expo sectors 2026 -->
+                <div class="mt-8 grid grid-cols-[330px_1fr] gap-8 items-start">
+                    <div class="font-['Roboto'] font-medium text-[30px] leading-[35px] text-[#1E1E1E]">
+                        Expo sectors 2026:
+                    </div>
+                    <ul class="font-['Roboto'] text-[30px] leading-[45px] text-black/70">
+                        <li>Industry and Construction</li>
+                        <li>Energy Diversification</li>
+                        <li>Public–Private Partnership (PPP)</li>
+                        <li>Transport and Logistics</li>
+                        <li>Agriculture and Food Processing</li>
+                        <li>Information and Communication Technologies (ICT)</li>
+                        <li>Tourism and Hospitality</li>
+                        <li>Education and Research</li>
+                        <li>Healthcare and Pharmaceuticals</li>
+                        <li>Financial Services and Banking</li>
+                        <li>Trade and Export Development</li>
+                        <li>Environmental Sustainability</li>
+                    </ul>
+                </div>
+                <div class="mt-4 h-px w-full border-t border-black/70"></div>
+
+                <!-- Row: Expected attendance -->
+                <div class="mt-6 grid grid-cols-[330px_1fr] gap-8 items-start">
+                    <div class="font-['Roboto'] font-medium text-[30px] leading-[35px] text-[#1E1E1E]">
+                        Expected attendance:
+                    </div>
+                    <div class="font-['Roboto'] text-[30px] leading-[26px] text-black/70">5000+</div>
+                </div>
+                <div class="mt-4 h-px w-full border-t border-black/70"></div>
+
+                <!-- Row: Expected number of visitors -->
+                <div class="mt-6 grid grid-cols-[330px_1fr] gap-8 items-start">
+                    <div class="font-['Roboto'] font-medium text-[30px] leading-[35px] text-[#1E1E1E]">
+                        Expected number of visitors:
+                    </div>
+                    <div class="font-['Roboto'] text-[30px] leading-[26px] text-black/70">150</div>
+                </div>
+                <div class="mt-4 h-px w-full border-t border-black/70"></div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

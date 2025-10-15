@@ -97,7 +97,7 @@
                                 @mouseenter="open=true"
                                 @mouseleave="open=false"
                             >
-                                <a href="/forum" class="menu-item">
+                                <a href="/about-the-forum" class="menu-item">
                                     <span>Forum</span>
                                     <span class="menu-items-arrow" aria-hidden="true"></span>
                                 </a>
@@ -111,7 +111,7 @@
                             </div>
 
                             <hr class="menu-sep" />
-                            <a href="/expo-sectors" class="menu-item">Expo</a>
+                            <a href="/about-the-expo" class="menu-item">Expo</a>
                             <hr class="menu-sep" />
                             <a href="/official-support" class="menu-item">Official support</a>
                             <hr class="menu-sep" />
@@ -136,10 +136,6 @@
                                 href="/participants?role=forum{% if q %}&q={{ q|urlencode }}{% endif %}"
                                 class="menu-item"
                                 >Forum</a
-                            >
-                            <hr class="menu-sep" />
-                            <a href="/participants?role=both{% if q %}&q={{ q|urlencode }}{% endif %}" class="menu-item"
-                                >Both</a
                             >
                         </div>
                     </div>

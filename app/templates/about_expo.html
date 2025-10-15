@@ -1,0 +1,334 @@
+{% extends "base.html" %} {% from "_hero_macros.html" import hero_buttons %} {% block content %}
+<main>
+    <!-- HERO -->
+    <section class="relative w-full h-[320px] md:h-[380px]">
+        <img
+            src="/static/img/about-expo/abouttheexpo-hero.png"
+            alt=""
+            class="absolute inset-0 w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-black/40"></div>
+
+        <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
+            <h1 class="font-['Montserrat'] font-bold text-white text-[clamp(30px,5vw,56px)] leading-tight">
+                Turkmen–China 2026 Expo
+            </h1>
+            <p class="mt-2 font-['Roboto'] text-white/90 text-[clamp(16px,2.4vw,20px)]">
+                The International Platform for Technology and Business
+            </p>
+        </div>
+
+        {{ hero_buttons( home_href = '/', section_label = 'About the Expo', section_href = '/about-expo', is_detail =
+        False ) }}
+    </section>
+
+    <!-- CARD 1: Group 1130 (Left stacked images, right headings + list + CTA) -->
+    <!-- CARD 1: Group 1130 (Left stacked images, right headings + list + CTA) -->
+    <section class="max-w-[var(--container)] mx-auto px-4 py-10">
+        <div class="mx-auto max-w-[1310px]">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- LEFT: layered images with green plate (Group 1015) -->
+                <div class="lg:col-span-6 relative h-[640px]">
+                    <!-- Rectangle 421 (green plate, 380x500) -->
+                    <div
+                        class="absolute top-[80px] left-0 w-[380px] h-[500px] bg-[rgba(0,122,61,0.4)] rounded-[10px]"
+                    ></div>
+
+                    <!-- Rectangle 423 (main tall image, 380x500) -->
+                    <div class="absolute top-0 left-[105px] w-[380px] h-[500px] rounded-[10px] overflow-hidden">
+                        <img src="/static/img/about-expo/abouttheexpo1.png" alt="" class="w-full h-full object-cover" />
+                    </div>
+
+                    <!-- Rectangle 422 (bottom-right image, 380x380) -->
+                    <div class="absolute top-[260px] left-[250px] w-[380px] h-[380px] rounded-[10px] overflow-hidden">
+                        <img src="/static/img/about-expo/abouttheexpo2.png" alt="" class="w-full h-full object-cover" />
+                    </div>
+                </div>
+
+                <!-- RIGHT: text column (Group 1020 + 1000) -->
+                <div class="lg:col-span-6">
+                    <!-- Small green label line + subtitle (Turkmen–China 2026 Expo + line 60px) -->
+                    <div class="flex items-center gap-4">
+                        <div class="font-['Montserrat'] font-medium text-[30px] leading-[75px] text-[#007A3D]">
+                            Turkmen–China 2026 Expo
+                        </div>
+                        <div class="h-px w-[60px] bg-[#007A3D]"></div>
+                    </div>
+
+                    <!-- Big heading: 50/61 -->
+                    <h2 class="mt-2 font-['Montserrat'] font-medium text-[#1E1E1E] text-[50px] leading-[61px]">
+                        Expo 2026: Explore the Next Frontier
+                    </h2>
+
+                    <!-- Paragraph: 20/30 (max-width ~555) -->
+                    <p class="mt-4 max-w-[555px] font-['Roboto'] text-[20px] leading-[30px] text-black/70">
+                        Join global innovators, industry leaders, and emerging talents at one of the most dynamic expos
+                        of the year. Discover what the future holds and connect with those shaping it.
+                    </p>
+
+                    <!-- Bullets with custom checkbox icon (32x32) -->
+                    <ul class="mt-5 space-y-3">
+                        <li class="flex items-start gap-3">
+                            <img src="/static/img/about-expo/about_expo_checkbox.svg" alt="" class="w-8 h-8 shrink-0" />
+                            <span class="font-['Roboto'] text-[20px] leading-[30px] text-black/70">
+                                International technology showcases
+                            </span>
+                        </li>
+
+                        <li class="flex items-start gap-3">
+                            <img src="/static/img/about-expo/about_expo_checkbox.svg" alt="" class="w-8 h-8 shrink-0" />
+                            <span class="font-['Roboto'] text-[20px] leading-[30px] text-black/70">
+                                Networking with global professionals
+                            </span>
+                        </li>
+
+                        <li class="flex items-start gap-3">
+                            <img src="/static/img/about-expo/about_expo_checkbox.svg" alt="" class="w-8 h-8 shrink-0" />
+                            <span class="font-['Roboto'] text-[20px] leading-[30px] text-black/70">
+                                Keynote speeches from industry experts
+                            </span>
+                        </li>
+
+                        <li class="flex items-start gap-3">
+                            <img src="/static/img/about-expo/about_expo_checkbox.svg" alt="" class="w-8 h-8 shrink-0" />
+                            <span class="font-['Roboto'] text-[20px] leading-[30px] text-black/70">
+                                Interactive panels and workshops
+                            </span>
+                        </li>
+                    </ul>
+
+                    <!-- CTA (Group 990 / Rectangle 369): 158x53, radius 10 -->
+                    <div class="mt-6">
+                        <a
+                            href="/expo-sectors"
+                            class="inline-flex items-center justify-center h-[53px] px-5 rounded-[10px] bg-[#007A3D] text-white font-['Roboto'] font-bold text-[20px]"
+                        >
+                            Expo Sectors
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARD 2: Why to participate? (image right, four bullets left) -->
+    <section class="max-w-[var(--container)] mx-auto px-4 pb-10">
+        <div class="bg-white rounded-[20px] p-6 md:p-8 shadow-sm mx-auto max-w-[1310px]">
+            <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E] text-[50px] leading-[61px]">
+                Why to participate?
+            </h2>
+
+            <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Left bullets (760 wide in figma) -->
+                <div class="lg:col-span-7">
+                    <ul class="max-w-[760px] space-y-5">
+                        <li class="font-['Roboto'] text-[25px] leading-10 text-black/70">
+                            • Turkmenistan offers diverse opportunities across sectors — including oil and gas,
+                            construction, telecommunications, tourism, healthcare, agriculture, and food industries.
+                        </li>
+                        <li class="font-['Roboto'] text-[25px] leading-10 text-black/70">
+                            • Turkmenistan is one of the fastest-growing economies in Central Asia, offering vast
+                            opportunities for investment and cooperation.
+                        </li>
+                        <li class="font-['Roboto'] text-[25px] leading-10 text-black/70">
+                            • With billion-dollar infrastructure and construction projects, Turkmenistan presents an
+                            attractive market for international business.
+                        </li>
+                        <li class="font-['Roboto'] text-[25px] leading-10 text-black/70">
+                            • The $14 billion Ashgabat City smart city project marks a significant leap toward
+                            innovation and sustainable urban development.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Right image (480x480) -->
+                <div class="lg:col-span-5">
+                    <div class="w-[480px] max-w-full h-[480px] rounded-[10px] overflow-hidden ml-auto">
+                        <img src="/static/img/about-expo/abouttheexpo3.png" alt="" class="w-full h-full object-cover" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FRAME 51 (By the Numbers + Expo sectors 2026) -->
+    <section class="max-w-[var(--container)] mx-auto px-4 pb-14">
+        <div class="bg-white rounded-[20px] p-6 md:p-8 shadow-sm mx-auto max-w-[1310px]">
+            <!-- Title (50/61) -->
+            <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E] text-[50px] leading-[61px]">By the Numbers</h2>
+
+            <!-- Inner width = 1190px -->
+            <div class="mx-auto max-w-[1190px] mt-6">
+                <!-- Row: Total exhibition space -->
+                <div class="grid grid-cols-[330px_1fr] gap-8 items-start">
+                    <div class="font-['Roboto'] font-medium text-[30px] leading-[35px] text-[#1E1E1E]">
+                        Total exhibition space:
+                    </div>
+                    <div class="font-['Roboto'] text-[30px] leading-[26px] text-black/70">8,000 m²</div>
+                </div>
+                <div class="mt-4 h-px w-full border-t border-black/70"></div>
+
+                <!-- Row: Expo sectors 2026 -->
+                <div class="mt-8 grid grid-cols-[330px_1fr] gap-8 items-start">
+                    <div class="font-['Roboto'] font-medium text-[30px] leading-[35px] text-[#1E1E1E]">
+                        Expo sectors 2026:
+                    </div>
+                    <ul class="font-['Roboto'] text-[30px] leading-[45px] text-black/70">
+                        <li>Industry and Construction</li>
+                        <li>Energy Diversification</li>
+                        <li>Public–Private Partnership (PPP)</li>
+                        <li>Transport and Logistics</li>
+                        <li>Agriculture and Food Processing</li>
+                        <li>Information and Communication Technologies (ICT)</li>
+                        <li>Tourism and Hospitality</li>
+                        <li>Education and Research</li>
+                        <li>Healthcare and Pharmaceuticals</li>
+                        <li>Financial Services and Banking</li>
+                        <li>Trade and Export Development</li>
+                        <li>Environmental Sustainability</li>
+                    </ul>
+                </div>
+                <div class="mt-4 h-px w-full border-t border-black/70"></div>
+
+                <!-- Row: Expected attendance -->
+                <div class="mt-6 grid grid-cols-[330px_1fr] gap-8 items-start">
+                    <div class="font-['Roboto'] font-medium text-[30px] leading-[35px] text-[#1E1E1E]">
+                        Expected attendance:
+                    </div>
+                    <div class="font-['Roboto'] text-[30px] leading-[26px] text-black/70">5000+</div>
+                </div>
+                <div class="mt-4 h-px w-full border-t border-black/70"></div>
+
+                <!-- Row: Expected number of visitors -->
+                <div class="mt-6 grid grid-cols-[330px_1fr] gap-8 items-start">
+                    <div class="font-['Roboto'] font-medium text-[30px] leading-[35px] text-[#1E1E1E]">
+                        Expected number of visitors:
+                    </div>
+                    <div class="font-['Roboto'] text-[30px] leading-[26px] text-black/70">150</div>
+                </div>
+                <div class="mt-4 h-px w-full border-t border-black/70"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS BANNER (Group 1186) -->
+    <section class="relative w-full">
+        <!-- Background image 1440×456 + dark overlay -->
+        <div class="relative h-[456px] w-full">
+            <img
+                src="/static/img/about-expo/abouttheexpo-stats.png"
+                alt=""
+                class="absolute inset-0 w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-black/40"></div>
+
+            <!-- 4 stats -->
+            <div class="relative z-[1] max-w-[var(--container)] mx-auto h-full px-4">
+                <div class="h-full grid grid-cols-2 md:grid-cols-4 items-center gap-6">
+                    <!-- 453 / Visitors -->
+                    <div class="flex items-center gap-4">
+                        <div class="font-['Roboto'] font-medium text-white text-[70px] leading-[82px]">453</div>
+                        <div class="font-['Roboto'] font-bold text-[30px] leading-[35px] text-[#F4F4F2]">Visitors</div>
+                    </div>
+
+                    <!-- 18 / Participating Countries -->
+                    <div class="flex items-center gap-4">
+                        <div class="font-['Roboto'] font-medium text-white text-[70px] leading-[82px]">18</div>
+                        <div class="font-['Roboto'] font-bold text-[30px] leading-[35px] text-[#F4F4F2]">
+                            Participating<br class="hidden lg:block" />Countries
+                        </div>
+                    </div>
+
+                    <!-- 150 / Exhibiting companies -->
+                    <div class="flex items-center gap-4">
+                        <div class="font-['Roboto'] font-medium text-white text-[70px] leading-[82px]">150</div>
+                        <div class="font-['Roboto'] font-bold text-[30px] leading-[35px] text-[#F4F4F2]">
+                            Exhibiting<br class="hidden lg:block" />companies
+                        </div>
+                    </div>
+
+                    <!-- 65 / Exhibiting areas -->
+                    <div class="flex items-center gap-4">
+                        <div class="font-['Roboto'] font-medium text-white text-[70px] leading-[82px]">65</div>
+                        <div class="font-['Roboto'] font-bold text-[30px] leading-[35px] text-[#F4F4F2]">
+                            Exhibiting<br class="hidden lg:block" />areas
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXHIBIT MAP – centered label + big title (Group 1120 / Group 1000) -->
+    <section class="max-w-[var(--container)] mx-auto px-4 py-10">
+        <div class="mx-auto max-w-[1310px] text-center">
+            <!-- small green label with side lines -->
+            <div class="flex items-center justify-center gap-4">
+                <div class="hidden sm:block h-px w-[60px] bg-[#007A3D]"></div>
+                <div class="font-['Montserrat'] font-medium text-[#007A3D] text-[30px] leading-[75px]">Exhibit Map</div>
+                <div class="hidden sm:block h-px w-[60px] bg-[#007A3D]"></div>
+            </div>
+
+            <!-- big centered title -->
+            <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E] text-[50px] leading-[61px] max-w-[858px] mx-auto">
+                Flexible options for every concept and occasion
+            </h2>
+        </div>
+    </section>
+
+    <!-- FRAME 21 – large white card with image left and content right -->
+    <section class="max-w-[var(--container)] mx-auto px-4 pb-14">
+        <div class="bg-white rounded-[20px] shadow-sm mx-auto max-w-[1310px] p-6 md:p-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Left image block (700×502) with blue tag -->
+                <div class="lg:col-span-7">
+                    <div class="relative w-full max-w-[700px] h-[502px] rounded-[20px] overflow-hidden">
+                        <img
+                            src="/static/img/about-expo/abouttheexpo4.png"
+                            alt=""
+                            class="absolute inset-0 w-full h-full object-cover"
+                        />
+                        <!-- Rectangle 430 (blue bar) -->
+                        <div class="absolute top-[31px] right-[34px] w-[225.75px] h-[47.3px] bg-[#006AA6]"></div>
+                    </div>
+                </div>
+
+                <!-- Right content -->
+                <div class="lg:col-span-5 flex flex-col">
+                    <h3 class="font-['Poppins','Montserrat'] font-medium text-[30px] leading-[45px] text-[#1E1E1E]">
+                        To be an Exhibitors
+                    </h3>
+
+                    <p class="mt-4 font-['Lato','Roboto'] text-[20px] leading-[25px] max-w-[469px]">
+                        Choose any setup, any space — from cozy corners to grand halls. Whether you're planning a formal
+                        event, a creative workshop, a casual gathering, or a unique celebration, we offer complete
+                        flexibility to match your concept.
+                    </p>
+
+                    <!-- CTA button 421×60 with arrow -->
+                    <div class="mt-8">
+                        <a
+                            href="/registration"
+                            class="inline-flex items-center justify-center gap-4 w-full sm:w-[421px] h-[60px] rounded-[15px] bg-[#007A3D] text-white"
+                        >
+                            <span class="font-['Poppins','Roboto'] font-semibold text-[25px] leading-[38px]"
+                                >To participate</span
+                            >
+                            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M5 12h14" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                <path
+                                    d="M13 6l6 6-6 6"
+                                    stroke="white"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

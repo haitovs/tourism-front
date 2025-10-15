@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
+from app.routers.about_expo_router import router as about_forum_router
+from app.routers.about_forum_router import router as about_expo_router
 from app.routers.expo_sectors_router import router as expo_sectors_router
 from app.routers.news_router import router as news_router
 from app.routers.participant_router import router as participant_router
@@ -19,3 +21,5 @@ app.include_router(speaker_router)
 app.include_router(expo_sectors_router)
 app.include_router(participant_router)
 app.include_router(news_router)
+app.include_router(about_forum_router)
+app.include_router(about_expo_router)
