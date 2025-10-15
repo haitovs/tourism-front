@@ -126,11 +126,21 @@
                     </button>
                     <div x-show="m" x-cloak x-transition class="menu-dd">
                         <div class="glass menu-panel">
-                            <a href="/forum" class="menu-item">Forum</a>
+                            <a href="/participants{% if q %}?q={{ q|urlencode }}{% endif %}" class="menu-item">All</a>
                             <hr class="menu-sep" />
-                            <a href="/expo-sectors" class="menu-item">Expo</a>
+                            <a href="/participants?role=expo{% if q %}&q={{ q|urlencode }}{% endif %}" class="menu-item"
+                                >Expo</a
+                            >
                             <hr class="menu-sep" />
-                            <a href="/expo-sectors" class="menu-item">All</a>
+                            <a
+                                href="/participants?role=forum{% if q %}&q={{ q|urlencode }}{% endif %}"
+                                class="menu-item"
+                                >Forum</a
+                            >
+                            <hr class="menu-sep" />
+                            <a href="/participants?role=both{% if q %}&q={{ q|urlencode }}{% endif %}" class="menu-item"
+                                >Both</a
+                            >
                         </div>
                     </div>
                 </li>

@@ -6,6 +6,7 @@ from app.services import expo_sectors as sectors_srv
 from app.services import faqs as faq_srv
 from app.services import news as news_srv
 from app.services import organizers as org_srv
+from app.services import participants as participants_srv
 from app.services import partners as partners_srv
 from app.services import speakers as speakers_srv
 from app.services import sponsors as sponsor_srv
@@ -45,8 +46,6 @@ async def home(req: Request):
         "gold": sponsor_srv.list_all_sponsors_by_tier(tier="gold", lang=lang, site_id=site_id),
         "silver": sponsor_srv.list_all_sponsors_by_tier(tier="silver", lang=lang, site_id=site_id),
         "bronze": sponsor_srv.list_all_sponsors_by_tier(tier="bronze", lang=lang, site_id=site_id),
-
-        # other sections (left as-is; add site_id where you want strict tenancy)
         "sectors": sectors_srv.list_home_sectors(limit=3, latest_first=True),
         "stats": stats_srv.get_statistics(),
         "speakers": speakers_srv.get_featured_speakers(limit=3, site_id=site_id),
@@ -57,6 +56,10 @@ async def home(req: Request):
             "items": org_srv.list_organizers()
         },
         "partners": partners_srv.list_partners(),
+        "participants": participants_srv.list_participants(limit=12, latest_first=True, site_id=site_id),
+        "participants_expo": participants_srv.list_participants(limit=8, role="expo", site_id=site_id),
+        "participants_forum": participants_srv.list_participants(limit=8, role="forum", site_id=site_id),
+        "participants_both": participants_srv.list_participants(limit=8, role="both", site_id=site_id),
     }
     resp = templates.TemplateResponse("index.html", ctx)
     resp.set_cookie("lang", lang, max_age=60 * 60 * 24 * 365, httponly=False, samesite="lax")
