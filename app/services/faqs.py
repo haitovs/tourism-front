@@ -34,8 +34,6 @@ def list_faqs(*, site_id: Optional[int] = None, limit: int | None = None) -> lis
         if site_id is not None:
             stmt = stmt.where(FAQ.site_id == site_id)
 
-        # order: sort_order ASC (NULLS last) then id DESC
-        # SQLAlchemy portable NULLS LAST:
         sort_col = FAQ.sort_order
         stmt = stmt.order_by(sort_col.is_(None), sort_col.asc(), desc(FAQ.id))
 

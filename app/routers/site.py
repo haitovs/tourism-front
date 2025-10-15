@@ -50,7 +50,7 @@ async def home(req: Request):
         "stats": stats_srv.get_statistics(),
         "speakers": speakers_srv.get_featured_speakers(limit=3, site_id=site_id),
         "news": news_srv.get_latest_news(limit=5),
-        "faqs": faq_srv.list_faqs(limit=20),
+        "faqs": faq_srv.list_faqs(limit=5),
         "organizers": org_srv.list_organizers(),
         "organizers_data": {
             "items": org_srv.list_organizers()

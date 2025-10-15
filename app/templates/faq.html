@@ -1,0 +1,24 @@
+{% extends "base.html" %} {% from "_hero_macros.html" import hero_buttons %} {% block content %}
+<main>
+    <!-- HERO (simple gradient if you have no image) -->
+    <section class="relative w-full h-[450px]">
+        <!-- Background image -->
+        <img src="/static/img/unified-hero.png" alt="" class="absolute inset-0 w-full h-full object-cover" />
+        <!-- Dark overlay (rgba(0,0,0,0.35)) -->
+        <div class="absolute inset-0 bg-black/35"></div>
+
+        <!-- Center title + subtitle -->
+        <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
+            <h1 class="font-['Montserrat'] font-bold text-white text-[60px] leading-[73px]">FAQ</h1>
+            <p class="mt-3 font-['Roboto'] font-medium text-white text-[25px] leading-[29px] max-w-[720px]">
+                Stay up to date with the latest announcements, highlights, and guest updates.
+            </p>
+        </div>
+
+        {{ hero_buttons(home_href='/', section_label='FAQ', section_href='/faq', is_detail=False) }}
+    </section>
+
+    <!-- FULL FAQ (no limits) -->
+    <section class="mt-10 mb-16">{% include "_faq.html" %}</section>
+</main>
+{% endblock %}

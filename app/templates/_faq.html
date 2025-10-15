@@ -1,31 +1,21 @@
 {# templates/_faq.html #} {% set _faqs = faqs or [] %}
 
-<section id="faq" class="mx-auto w-[1310px] select-none" x-data="faqWidget()">
-    {# --- Top center pre-heading with green lines + big title --- #}
+<section id="faq" class="mx-auto w-[min(1310px,92vw)] select-none" x-data="faqWidget()">
+    {# — Title band — #}
     <div class="mb-8">
         <div class="flex items-center justify-center gap-4">
             <span class="block h-px w-[60px] bg-[#007A3D]"></span>
-            <span
-                class="text-[30px] leading-[75px] text-[#007A3D]"
-                style="font-family: 'Montserrat', ui-sans-serif, system-ui"
-                >FAQ</span
-            >
+            <span class="text-[30px] leading-[75px] text-[#007A3D] font-['Montserrat']">FAQ</span>
             <span class="block h-px w-[60px] bg-[#007A3D]"></span>
         </div>
-        <h2
-            class="mt-2 text-center text-[50px] leading-[75px] text-[#1E1E1E]"
-            style="font-family: 'Montserrat', ui-sans-serif, system-ui"
-        >
+        <h2 class="mt-2 text-center text-[50px] leading-[61px] text-[#1E1E1E] font-['Montserrat']">
             Have Questions? We’ve Got Answers
         </h2>
     </div>
 
-    {# --- Top strip: label left, search right --- #}
+    {# — Top strip: label left, search right — #}
     <div class="mb-6 flex items-center justify-between rounded-[10px] bg-[rgba(0,122,61,0.25)] px-6 py-4 h-[79px]">
-        <div class="text-[25px] leading-[29px] text-[#1E1E1E]" style="font-family: 'Roboto', ui-sans-serif, system-ui">
-            FAQ
-        </div>
-
+        <div class="text-[25px] leading-[29px] text-[#1E1E1E] font-['Roboto']">FAQ</div>
         <label
             class="relative flex h-[49px] w-[342px] items-center rounded-[5px] border border-[#BFBFC3] bg-white px-3"
         >
@@ -36,36 +26,29 @@
             <input
                 x-model.trim="q"
                 type="search"
-                class="h-full w-full outline-none placeholder-[#007A3D]/100 text-[#007A3D] text-[22px] leading-[27px] bg-transparent"
+                class="h-full w-full outline-none placeholder-[#007A3D] text-[#007A3D] text-[22px] leading-[27px] bg-transparent"
                 placeholder="Search..."
-                style="font-family: 'Inter', ui-sans-serif, system-ui"
                 autocomplete="off"
             />
         </label>
     </div>
 
-    {# --- Center banner --- #}
+    {# — Center banner — #}
     <div class="mb-8 rounded-[10px] bg-[rgba(0,122,61,0.25)] py-10">
-        <h3
-            class="text-center text-[50px] leading-[61px] text-[#1E1E1E] mb-2"
-            style="font-family: 'Montserrat', ui-sans-serif, system-ui"
-        >
+        <h3 class="text-center text-[50px] leading-[61px] text-[#1E1E1E] mb-2 font-['Montserrat']">
             Have any questions?
         </h3>
-        <p
-            class="text-center text-[25px] leading-[29px] text-[#1E1E1E]"
-            style="font-family: 'Roboto', ui-sans-serif, system-ui"
-        >
+        <p class="text-center text-[25px] leading-[29px] text-[#1E1E1E] font-['Roboto']">
             Let us answer the questions for you.
         </p>
     </div>
 
-    {# --- Accordion list --- #}
+    {# — Accordion list (single template; first item opens by default) — #}
     <div class="space-y-3">
-        {% for faq in _faqs %} {% if loop.first %}
+        {% for faq in _faqs %}
         <article
             x-show="isVisible({{ faq.id }})"
-            x-data="{ open: true }"
+            x-data="{ open: {{ 'true' if loop.first else 'false' }} }"
             class="overflow-hidden rounded-[10px] bg-white"
         >
             <button
@@ -74,11 +57,12 @@
                 @click="open = !open"
                 :aria-expanded="open"
                 aria-controls="faq-{{ faq.id }}"
-                style="font-family: 'Roboto', ui-sans-serif, system-ui"
             >
-                <span class="pr-4 text-[35px] leading-[41px] text-[#1E1E1E]">{{ faq.question }}</span>
+                <span class="pr-4 text-[28px] md:text-[35px] leading-[41px] text-[#1E1E1E] font-['Roboto']">
+                    {{ faq.question }}
+                </span>
                 <svg
-                    class="h-[41px] w-[41px] shrink-0 transition-transform"
+                    class="h-[34px] md:h-[41px] w-[34px] md:w-[41px] shrink-0 transition-transform"
                     :class="open ? 'rotate-[-90deg]' : 'rotate-90'"
                     viewBox="0 0 24 24"
                     fill="none"
@@ -103,70 +87,23 @@
                 x-html="md(`{{ faq.answer_md|replace('`','\\`')|replace('</','&lt;/') }}`)"
                 style="
                     font-family: 'Roboto', ui-sans-serif, system-ui;
-                    font-size: 25px;
-                    line-height: 35px;
+                    font-size: 22px;
+                    line-height: 32px;
                     color: rgba(30, 30, 30, 0.85);
                 "
             ></div>
         </article>
-        {% else %} {# Remaining items: closed by default #}
-        <article
-            x-show="isVisible({{ faq.id }})"
-            x-data="{ open: false }"
-            class="overflow-hidden rounded-[10px] bg-white"
-        >
-            <button
-                type="button"
-                class="flex h-[91px] w-full items-center justify-between rounded-[10px] bg-[rgba(0,122,61,0.25)] px-6 text-left"
-                :aria-expanded="open"
-                aria-controls="faq-{{ faq.id }}"
-                @click="open = !open"
-                style="font-family: 'Roboto', ui-sans-serif, system-ui"
-            >
-                <span class="pr-4 text-[35px] leading-[41px] text-[#1E1E1E]">{{ faq.question }}</span>
-                <svg
-                    class="h-[41px] w-[41px] shrink-0 transition-transform"
-                    :class="open ? 'rotate-[-90deg]' : 'rotate-90'"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    aria-hidden="true"
-                >
-                    <path
-                        d="M8 5l8 7-8 7"
-                        stroke="#1E1E1E"
-                        stroke-width="4"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                </svg>
-            </button>
-
-            <div
-                id="faq-{{ faq.id }}"
-                class="rounded-b-[10px] bg-white px-6 pb-6 pt-4"
-                x-cloak
-                x-show="open"
-                x-collapse
-                x-html="md(`{{ faq.answer_md|replace('`','\\`')|replace('</','&lt;/') }}`)"
-                style="
-                    font-family: 'Roboto', ui-sans-serif, system-ui;
-                    font-size: 25px;
-                    line-height: 35px;
-                    color: rgba(30, 30, 30, 0.85);
-                "
-            ></div>
-        </article>
-        {% endif %} {% endfor %} {# Empty state when search filters everything out #}
+        {% endfor %} {# — Empty state — #}
         <template x-if="filteredIds.size === 0">
             <div class="rounded-[10px] border border-dashed border-[#BFBFC3] px-6 py-10 text-center">
-                <p class="text-[20px]" style="font-family: 'Inter', ui-sans-serif, system-ui">
+                <p class="text-[20px] font-['Inter']">
                     No results for “<span class="font-semibold" x-text="q"></span>”. Try a different query.
                 </p>
             </div>
         </template>
     </div>
 
-    {# JSON index for client-side search (question + answer) #}
+    {# — JSON index for client-side search — #}
     <script type="application/json" id="faq-index">
         [
           {% for faq in _faqs -%}
@@ -178,10 +115,8 @@
 
 <script>
     function faqWidget() {
-        // Read pre-rendered JSON index (ids + question + answer_md)
         const raw = document.getElementById("faq-index")?.textContent || "[]";
         const INDEX = JSON.parse(raw);
-
         const normalize = (s) =>
             (s || "")
                 .toString()
@@ -204,29 +139,20 @@
             isVisible(id) {
                 return this.filteredIds.has(id);
             },
-
-            // Minimal safe Markdown -> HTML (bold, italic, links, line breaks).
+            // Minimal safe Markdown
             md(raw) {
                 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
                 let out = esc(raw || "");
-
-                // Links: [text](url), only http(s) or mailto
                 out = out.replace(
                     /\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g,
-                    (m, text, url) =>
-                        `<a href="${url}" target="_blank" rel="noopener" class="underline decoration-[#007A3D] text-[#007A3D]">${esc(
-                            text
+                    (m, t, u) =>
+                        `<a href="${u}" target="_blank" rel="noopener" class="underline decoration-[#007A3D] text-[#007A3D]">${esc(
+                            t
                         )}</a>`
                 );
-
-                // **bold** and *italic*
                 out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
                 out = out.replace(/\*([^*]+)\*/g, "<em>$1</em>");
-
-                // Line breaks
                 out = out.replace(/\n/g, "<br/>");
-
                 return out;
             },
         };
