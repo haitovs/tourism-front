@@ -1,0 +1,124 @@
+{% extends "base.html" %} {% from "_hero_macros.html" import hero_buttons %} {% block content %} {% set p = participant
+%}
+
+<main>
+    <!-- HERO -->
+    <section class="relative w-full h-[320px] md:h-[380px]">
+        <img src="/static/img/participant_hero.png" alt="" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-black/40"></div>
+
+        <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
+            <h1 class="font-['Montserrat'] font-bold text-white text-[clamp(30px,5vw,56px)] leading-tight">
+                Participants
+            </h1>
+            <p class="mt-2 font-['Roboto'] text-white/90 text-[clamp(16px,2.4vw,20px)]">
+                Explore the key participants of the Forum & Expo
+            </p>
+        </div>
+
+        {{ hero_buttons( home_href = '/', section_label = 'Participants', section_href = '/participants', is_detail =
+        True, current_path = request.url.path, detail_label = 'Participant Details', detail_href = '#participant-body',
+        detail_refresh = False ) }}
+    </section>
+
+    {# ---------- BODY CARD ---------- #}
+    <section id="participant-body" class="max-w-[var(--container)] mx-auto px-4 py-10">
+        <div class="bg-white rounded-[20px] p-6 md:p-8 shadow-sm relative">
+            {# Top row: Title (left) + Small Logo (right) #}
+            <div class="flex items-start justify-between gap-6">
+                <h2
+                    class="font-['Montserrat'] font-semibold text-[#1E1E1E] text-[clamp(26px,3.2vw,40px)] leading-[1.2] max-w-[700px]"
+                >
+                    {{ p.name }}
+                </h2>
+
+                {% if p.logo_url %}
+                <div
+                    class="shrink-0 w-[180px] md:w-[284px] h-[80px] md:h-[120px] bg-slate-100 rounded-[10px] overflow-hidden"
+                >
+                    <img src="{{ p.logo_url }}" alt="{{ p.name }}" class="w-full h-full object-contain" />
+                </div>
+                {% endif %}
+            </div>
+
+            {# Green divider line (matches your "Line 53") #}
+            <div class="mt-6 h-[2px] w-full max-w-[1190px] border-t-2 border-[#007A3D]"></div>
+
+            {# Intro paragraph (25/40) #} {% if p and p.intro_html %}
+            <article class="mt-6 max-w-[1190px] text-black font-['Roboto'] text-[25px] leading-10">
+                {{ p.intro_html | safe }}
+            </article>
+            {% elif p and p.bio %}
+            <p class="mt-6 max-w-[1190px] text-black font-['Roboto'] text-[25px] leading-10">{{ p.bio }}</p>
+            {% endif %} {# Extended body (Markdown → HTML), styled to 25/40 too #} {% if p and p.body_html %}
+            <article
+                class="prose max-w-none mt-4 prose-p:my-4 prose-headings:mt-6 prose-headings:mb-2 prose-headings:font-['Montserrat'] prose-p:font-['Roboto'] prose-li:font-['Roboto'] prose-a:text-[#007A3D] hover:prose-a:underline"
+            >
+                <style>
+                    /* make prose match 25/40 */
+                    .prose p,
+                    .prose li {
+                        font-size: 25px;
+                        line-height: 40px;
+                        color: #000;
+                    }
+                    .prose img {
+                        border-radius: 20px;
+                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+                    }
+                </style>
+                {{ p.body_html | safe }}
+            </article>
+            {% endif %} {# ---------- MOSAIC GALLERY (matches your rectangles) ---------- #} {% set rest =
+            (p.images_hero or []) + (p.images_rest or []) %} {% if rest|length > 0 %}
+            <div class="mt-10">
+                {# Desktop mosaic (approximate your absolute layout with a 12x12 grid) #}
+                <div class="hidden lg:grid lg:grid-cols-12 lg:grid-rows-12 gap-4 h-[890px] max-w-[1190px]">
+                    {# Rectangle 396: left tall 380x585 -> approximate: col-span-4, row-span-8 #} {% if rest|length >= 1
+                    %}
+                    <div class="col-span-4 row-span-8 rounded-[10px] overflow-hidden bg-slate-100">
+                        <img src="{{ rest[0] }}" alt="" class="w-full h-full object-cover" />
+                    </div>
+                    {% endif %} {# Rectangle 397: wide 785x280 on top middle-right -> col-span-8, row-span-4 #} {% if
+                    rest|length >= 2 %}
+                    <div class="col-span-8 row-span-4 rounded-[10px] overflow-hidden bg-slate-100">
+                        <img src="{{ rest[1] }}" alt="" class="w-full h-full object-cover" />
+                    </div>
+                    {% endif %} {# Rectangle 399: middle 380x280 -> col-span-4, row-span-4 #} {% if rest|length >= 3 %}
+                    <div class="col-span-4 row-span-4 rounded-[10px] overflow-hidden bg-slate-100">
+                        <img src="{{ rest[2] }}" alt="" class="w-full h-full object-cover" />
+                    </div>
+                    {% endif %} {# Rectangle 403: middle bottom 380x280 -> col-span-4, row-span-4 #} {% if rest|length
+                    >= 4 %}
+                    <div class="col-span-4 row-span-4 rounded-[10px] overflow-hidden bg-slate-100">
+                        <img src="{{ rest[3] }}" alt="" class="w-full h-full object-cover" />
+                    </div>
+                    {% endif %} {# Rectangle 400: left bottom 380x280 -> col-span-4, row-span-4 #} {% if rest|length >=
+                    5 %}
+                    <div class="col-span-4 row-span-4 rounded-[10px] overflow-hidden bg-slate-100">
+                        <img src="{{ rest[4] }}" alt="" class="w-full h-full object-cover" />
+                    </div>
+                    {% endif %} {# Rectangle 402: right tall 380x585 -> col-span-4, row-span-8 (placed at end) #} {% if
+                    rest|length >= 6 %}
+                    <div
+                        class="col-start-9 col-span-4 row-start-5 row-span-8 rounded-[10px] overflow-hidden bg-slate-100"
+                    >
+                        <img src="{{ rest[5] }}" alt="" class="w-full h-full object-cover" />
+                    </div>
+                    {% endif %}
+                </div>
+
+                {# Mobile/tablet fallback: simple responsive grid #}
+                <div class="grid lg:hidden grid-cols-1 sm:grid-cols-2 gap-4">
+                    {% for u in rest %}
+                    <div class="w-full rounded-[10px] overflow-hidden bg-slate-100 aspect-[4/3]">
+                        <img src="{{ u }}" class="w-full h-full object-cover" alt="" />
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+</main>
+{% endblock %}
