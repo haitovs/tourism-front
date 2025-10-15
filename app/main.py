@@ -9,7 +9,9 @@ from app.routers.news_router import router as news_router
 from app.routers.official_support_router import \
     router as official_support_router
 from app.routers.participant_router import router as participant_router
+from app.routers.privacy_router import router as privacy_router
 from app.routers.speaker_router import router as speaker_router
+from app.routers.terms_router import router as terms_router
 
 from .core.settings import settings
 from .routers import htmx, site
@@ -28,3 +30,5 @@ app.include_router(about_forum_router)
 app.include_router(about_expo_router)
 app.include_router(faq_router)
 app.include_router(official_support_router)
+app.include_router(terms_router)
+app.include_router(privacy_router)
