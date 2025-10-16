@@ -26,3 +26,15 @@ class Speaker(Base):
 
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=True)
     updated_at = Column(DateTime(timezone=True), onupdate=func.now(), nullable=True)
+
+    episode_links = relationship("EpisodeSpeaker", back_populates="speaker", cascade="all, delete-orphan", passive_deletes=True, lazy="selectin", overlaps="episodes,speaker")
+
+    episodes = relationship("Episode",
+                            secondary="episode_speakers",
+                            primaryjoin="Speaker.id==EpisodeSpeaker.speaker_id",
+                            secondaryjoin="Episode.id==EpisodeSpeaker.episode_id",
+                            viewonly=True,
+                            lazy="selectin",
+                            overlaps="episode_links,speaker_links,episode,speaker")
+
+    site = relationship("Site", lazy="selectin")

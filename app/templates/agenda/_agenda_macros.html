@@ -1,0 +1,353 @@
+{# app/templates/agenda/_agenda_macros.html #} {# --- Time badge: start & end on separate rows --- #} {% macro
+time_badge(start_dt, end_dt) -%}
+<aside class="h-[86px] bg-white rounded-[20px] px-4 flex items-center justify-center md:self-start">
+    <div
+        class="font-['Roboto'] font-extrabold text-[22px] md:text-[25px] tracking-[0.1em] text-[#007A3D] text-center leading-tight"
+    >
+        {{ start_dt.strftime('%I:%M %p') }}<br />{{ end_dt.strftime('%I:%M %p') }}
+    </div>
+</aside>
+{%- endmacro %} {# --- Info chip (calendar / map) --- #} {% macro info_chip(icon='calendar', text='') -%}
+<div class="h-[40px] px-3 border-2 border-[#007A3D] rounded-[10px] flex items-center gap-2">
+    {% if icon == 'calendar' %}
+    <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none">
+        <rect x="3" y="4" width="18" height="17" rx="2" stroke="#007A3D" stroke-width="2" />
+        <path d="M8 2v4M16 2v4M3 10h18" stroke="#007A3D" stroke-width="2" />
+    </svg>
+    {% elif icon == 'map' %}
+    <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none">
+        <path d="M12 22s7-5.5 7-12a7 7 0 1 0-14 0c0 6.5 7 12 7 12Z" stroke="#007A3D" stroke-width="2" />
+        <circle cx="12" cy="10" r="3" stroke="#007A3D" stroke-width="2" />
+    </svg>
+    {% endif %}
+    <span class="font-['Roboto'] text-[16px]">{{ text }}</span>
+</div>
+{%- endmacro %} {# --- Sponsor badge (aligned with sponsors templates) --- #} {% macro sponsor_badge(sponsor) -%} {% if
+sponsor %} {% set tier = (sponsor.tier or '')|lower %} {% set tier_label = (tier|capitalize) ~ " Sponsor" %} {% set
+tier_class = "tier-gold" if tier == "gold" else ("tier-silver" if tier == "silver" else ("tier-bronze" if tier ==
+"bronze" else "")) %}
+<div class="flex flex-col items-center justify-start">
+    {% if sponsor.logo_url %}
+    <img
+        src="{{ sponsor.logo_url }}"
+        alt="{{ sponsor.name or 'Sponsor' }}"
+        title="{{ sponsor.name or '' }}"
+        class="w-[160px] h-[95px] object-contain select-none pointer-events-none"
+        loading="lazy"
+    />
+    {% else %}
+    <img
+        src="/static/img/img_placeholder.png"
+        alt="Sponsor"
+        class="w-[160px] h-[95px] object-contain opacity-70 select-none pointer-events-none"
+        loading="lazy"
+    />
+    {% endif %}
+    <div class="mt-2 text-center font-['Roboto'] font-semibold text-[15px] {{ tier_class }}">{{ tier_label }}</div>
+</div>
+{% endif %} {%- endmacro %} {# --- Speaker card (visual) --- #} {% macro speaker_card(sp) -%}
+<div class="relative w-[265px] h-[320px] rounded-[20px] overflow-hidden bg-slate-100">
+    {% if sp.photo_url %}
+    <img src="{{ sp.photo_url }}" alt="{{ sp.fullname }}" class="absolute inset-0 w-full h-full object-cover" />
+    {% endif %}
+    <div class="absolute inset-x-0 bottom-0 h-[118px] bg-[rgba(30,30,30,0.65)] rounded-b-[20px] p-3">
+        <div class="font-['Roboto'] text-white">
+            <div class="font-bold text-[18px] leading-[21px] truncate">{{ sp.fullname }}</div>
+            {% if sp.position or sp.company %}
+            <div class="mt-1 text-[16px] leading-[19px] line-clamp-2 opacity-95">
+                {{ sp.position }}{% if sp.company %}, {{ sp.company }}{% endif %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="absolute right-3 bottom-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M9 6l6 6-6 6"
+                    stroke="#FFFFFF"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </svg>
+        </div>
+    </div>
+</div>
+{%- endmacro %} {# --- Speakers horizontal scroller (wheel-horizontal + clickable) --- #} {% macro
+speakers_scroller(speakers) -%} {% if not speakers or speakers|length == 0 %}
+<div class="text-center text-slate-500">No speakers yet.</div>
+{% elif speakers|length < 4 %}
+<ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    {% for sp in speakers %}
+    <li>
+        <a href="/speakers/{{ sp.id }}" class="block group" title="{{ sp.fullname }}">{{ speaker_card(sp) }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<div class="relative -mx-2 px-2" x-data>
+    <div
+        class="flex gap-6 overflow-x-auto no-scrollbar pb-2"
+        @wheel.passive="$event.deltaY && ($el.scrollLeft += ($event.deltaY>0? 80 : -80))"
+    >
+        {% for sp in speakers %}
+        <a href="/speakers/{{ sp.id }}" class="block group shrink-0" title="{{ sp.fullname }}">
+            {{ speaker_card(sp) }}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %} {%- endmacro %} {# --- Day pill (dynamic weekday + day number) --- #} {% macro day_pill(day) -%} {% set
+weekday = day.date.strftime('%A') %} {% set daynum = day.date.strftime('%d')|int %}
+<button
+    type="button"
+    @click="$dispatch('pickday', { id: {{ day.id }} })"
+    :class="(selectedDayId === {{ day.id }}) ? 'bg-[#007A3D] text-white shadow' : 'bg-white text-[#007A3D]'"
+    class="h-[61px] px-4 md:px-6 rounded-[10px] border-2 border-[#007A3D] grid grid-cols-[32px_1px_auto] items-center gap-3"
+>
+    <span
+        class="font-['Roboto'] font-bold text-[22px] md:text-[25px]"
+        :class="(selectedDayId === {{ day.id }}) ? 'text-[#F4F4F2]' : 'text-[#007A3D]'"
+        >{{ daynum }}</span
+    >
+    <span class="w-[2px] h-[36px]" :class="(selectedDayId === {{ day.id }}) ? 'bg-[#F4F4F2]' : 'bg-[#007A3D]'"></span>
+    <span class="font-['Roboto'] text-[20px] md:text-[25px]">{{ weekday }}</span>
+</button>
+{%- endmacro %} {# --- Episode block (collapsed + expanded) --- #} {% macro episode_block(d, ep, expanded_id) -%} {% set
+mod = (ep.moderators[0] if ep.moderators and ep.moderators|length>0 else None) %} {% set short = ep.short_desc or '' %}
+{% set topic = ep.topic_desc or '' %} {% set top_sponsor = ep.top_sponsor %}
+
+<article class="grid grid-cols-1 md:grid-cols-[256px_1fr] gap-4 md:gap-5">
+    {{ time_badge(ep.start_time, ep.end_time) }}
+
+    <div class="relative bg-white rounded-[20px] p-5 md:p-6">
+        <!-- Chips -->
+        <div class="flex flex-wrap items-center gap-3">
+            {{ info_chip('calendar', d.date.strftime('%d %B %Y')) }} {% if ep.location %} {{ info_chip('map',
+            ep.location) }}{% endif %}
+        </div>
+
+        {# COLLAPSED HEADER: title + short, then read more / divider / sponsor #}
+        <div class="mt-6 relative flex flex-col xl:flex-row xl:items-start xl:justify-between gap-6">
+            <!-- LEFT: Title + Short description -->
+            <div class="min-w-0">
+                <h3 class="font-['Montserrat'] font-semibold text-[30px] leading-[37px] text-black">{{ ep.title }}</h3>
+                {% if short %}
+                <p class="mt-4 font-['Roboto'] text-[16px] leading-[20px] text-black max-w-[540px]">{{ short }}</p>
+                {% endif %}
+            </div>
+
+            <!-- RIGHT: Read more + divider + sponsor -->
+            <div class="flex flex-col xl:flex-row items-end gap-4 xl:gap-6">
+                <button
+                    type="button"
+                    class="h-[32px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]"
+                    @click="$dispatch('toggle', { id: {{ ep.id }} })"
+                    x-show="expandedId !== {{ ep.id }})"
+                >
+                    Read more
+                </button>
+
+                {% if top_sponsor %}
+                <div class="hidden xl:block w-[2px] h-[125px] bg-[#007A3D] rounded-full"></div>
+                <div class="shrink-0 flex flex-col items-center">
+                    {% if top_sponsor.logo_url %}
+                    <img
+                        src="{{ top_sponsor.logo_url }}"
+                        alt="{{ top_sponsor.name }}"
+                        class="w-[160px] h-[95px] object-contain"
+                        loading="lazy"
+                    />
+                    {% else %}
+                    <img
+                        src="/static/img/img_placeholder.png"
+                        alt="Sponsor"
+                        class="w-[160px] h-[95px] object-contain opacity-70"
+                        loading="lazy"
+                    />
+                    {% endif %}
+                    <div class="mt-2 text-center font-['Roboto'] font-semibold text-[15px] text-[#DDAC17]">
+                        {{ (top_sponsor.tier or 'Gold')|capitalize }} Sponsor
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {# EXPANDED CONTENT #}
+        <div x-show="expandedId === {{ ep.id }}" x-collapse class="py-10">
+            <!-- GRID: left content vs right portrait -->
+            <div class="grid grid-cols-1 gap-8">
+                <!-- LEFT COLUMN -->
+                <div class="flex flex-col gap-10">
+                    {# =============== MODERATOR CONTAINER (centered) =============== #} {% if mod %}
+
+                    <div
+                        class="m-auto w-full max-w-[980px] flex flex-col md:flex-row items-center md:items-center justify-between gap-6"
+                    >
+                        <!-- Text Section -->
+                        <div class="flex-1 text-left">
+                            <h3 class="font-['Montserrat'] font-semibold text-[25px] leading-[30px] text-black">
+                                Moderator
+                            </h3>
+
+                            {% set mdesc = mod.description_norm or '' %} {% if mdesc %}
+                            <div class="mt-3 font-['Roboto'] text-[16px] leading-6 text-black whitespace-pre-line">
+                                {{ mdesc }}
+                            </div>
+                            {% else %}
+                            <p class="mt-3 font-['Roboto'] text-[16px] leading-6 text-black">
+                                {{ mod.fullname }} {% if mod.position or mod.company %}, {{ mod.position }}{% if
+                                mod.company %}, {{ mod.company }}{% endif %}{% endif %}.
+                            </p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Image Section -->
+                        {% if mod and mod.photo_url %}
+                        <div class="flex flex-col items-center justify-center shrink-0">
+                            <img
+                                src="{{ mod.photo_url }}"
+                                alt="{{ mod.fullname }}"
+                                class="w-[165px] h-[185px] object-cover rounded-[15px]"
+                            />
+                            <div class="mt-2 text-center font-['Roboto'] text-[20px] font-medium md:text-right">
+                                {{ mod.fullname }}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    {% endif %} {# =============== TOPIC CONTAINER (separate) =============== #} {% if topic %}
+                    <h3
+                        class="font-['Montserrat'] font-semibold text-[25px] leading-[30px] text-black text-center md:text-left"
+                    >
+                        Topic
+                    </h3>
+                    <div
+                        class="mt-3 font-['Roboto'] text-[16px] leading-6 text-black max-w-[980px] whitespace-pre-line"
+                    >
+                        {{ topic }}
+                    </div>
+                    {% endif %} {# =============== SPEAKERS (manual carousel) =============== #} {% if ep.speakers and
+                    ep.speakers|length > 0 %}
+                    <section
+                        x-data="{
+          track:null,
+          cardW: 265, gap: 24,
+          scrollBy(dir=1){
+            if(!this.track) return;
+            const step = this.cardW + this.gap;
+            this.track.scrollBy({ left: dir * step, behavior:'smooth' });
+          }
+        }"
+                        class="w-full"
+                    >
+                        <h3
+                            class="font-['Montserrat'] font-semibold text-[25px] leading-[30px] text-black text-center md:text-left"
+                        >
+                            Speakers
+                        </h3>
+
+                        <!-- Track -->
+                        <div class="mt-6 relative">
+                            <ul
+                                x-ref="track"
+                                x-init="track = $refs.track"
+                                class="no-scrollbar snap-x snap-mandatory overflow-x-auto flex gap-6 pr-2"
+                                style="scroll-behavior: smooth"
+                            >
+                                {% for sp in ep.speakers %}
+                                <li class="snap-start shrink-0">
+                                    <article
+                                        class="relative w-[265px] h-[320px] rounded-[20px] overflow-hidden shadow-lg"
+                                    >
+                                        <img
+                                            src="{{ sp.photo_url or '/static/img/placeholder.png' }}"
+                                            alt="{{ sp.fullname }}"
+                                            class="absolute inset-0 w-full h-full object-cover"
+                                        />
+                                        <!-- dark overlay -->
+                                        <div
+                                            class="absolute bottom-0 left-0 right-0 h-[118px] bg-[rgba(30,30,30,0.65)] rounded-b-[20px] p-4"
+                                        >
+                                            <div
+                                                class="font-['Roboto'] font-bold text-[18px] leading-[21px] text-white truncate"
+                                            >
+                                                {{ sp.fullname }}
+                                            </div>
+                                            <div
+                                                class="mt-1 font-['Roboto'] font-normal text-[16px] leading-[19px] text-white line-clamp-2"
+                                            >
+                                                {{ sp.position }}{% if sp.company %}, {{ sp.company }}{% endif %}
+                                            </div>
+                                        </div>
+                                        <!-- arrow circle -->
+                                        <div
+                                            class="absolute bottom-4 right-4 w-4 h-4 border border-white rounded-full flex items-center justify-center"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="white"
+                                                stroke-width="1.5"
+                                                class="w-3 h-3"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                                                />
+                                            </svg>
+                                        </div>
+                                    </article>
+                                </li>
+                                {% endfor %}
+                            </ul>
+
+                            <!-- gradient fades (optional) -->
+                            <div
+                                class="pointer-events-none absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white to-transparent hidden md:block"
+                            ></div>
+                            <div
+                                class="pointer-events-none absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white to-transparent hidden md:block"
+                            ></div>
+                        </div>
+                    </section>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Footer action -->
+            <div class="mt-8 flex justify-end">
+                <button
+                    type="button"
+                    class="h-[36px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]"
+                    @click="$dispatch('toggle', { id: {{ ep.id }} })"
+                >
+                    Hide
+                </button>
+            </div>
+        </div>
+
+        <!-- Utilities -->
+        <style>
+            /* Hide horizontal scrollbar across browsers */
+            .no-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+            .no-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            /* Multi-line clamp (Tailwind plugin not required) */
+            .line-clamp-2 {
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+        </style>
+    </div>
+</article>
+{%- endmacro %}
