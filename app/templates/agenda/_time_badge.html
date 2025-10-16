@@ -1,0 +1,9 @@
+{# app/templates/agenda/_time_badge.html #} {% macro time_badge(start_dt, end_dt) -%}
+<aside class="h-[86px] bg-white rounded-[20px] px-4 flex items-center shadow-soft justify-center md:self-start">
+    <div
+        class="font-['Roboto'] font-extrabold text-[22px] md:text-[25px] tracking-[0.1em] text-[#007A3D] text-center leading-tight"
+    >
+        {{ start_dt.strftime('%I:%M %p') }}<br />{{ end_dt.strftime('%I:%M %p') }}
+    </div>
+</aside>
+{%- endmacro %}

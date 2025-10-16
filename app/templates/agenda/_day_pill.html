@@ -1,0 +1,17 @@
+{# app/templates/agenda/_day_pill.html #} {% macro day_pill(day) -%} {% set weekday = day.date.strftime('%A') %} {% set
+daynum = day.date.strftime('%d')|int %}
+<button
+    type="button"
+    @click="$dispatch('pickday', { id: {{ day.id }} })"
+    :class="(selectedDayId === {{ day.id }}) ? 'bg-[#007A3D] text-white shadow' : 'bg-white text-[#007A3D]'"
+    class="h-[61px] px-4 md:px-6 rounded-[10px] border-2 border-[#007A3D] grid grid-cols-[32px_1px_auto] items-center gap-3"
+>
+    <span
+        class="font-['Roboto'] font-bold text-[22px] md:text-[25px]"
+        :class="(selectedDayId === {{ day.id }}) ? 'text-[#F4F4F2]' : 'text-[#007A3D]'"
+        >{{ daynum }}</span
+    >
+    <span class="w-[2px] h-[36px]" :class="(selectedDayId === {{ day.id }}) ? 'bg-[#F4F4F2]' : 'bg-[#007A3D]'"></span>
+    <span class="font-['Roboto'] text-[20px] md:text-[25px]">{{ weekday }}</span>
+</button>
+{%- endmacro %}

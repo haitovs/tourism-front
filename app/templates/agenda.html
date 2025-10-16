@@ -37,7 +37,9 @@
 
     <!-- Program header + day pills -->
     <div class="flex items-center gap-4">
-        <h2 class="font-['Montserrat'] text-[38px] md:text-[45px] leading-[55px] underline text-[#000]">Program:</h2>
+        <h2 class="font-['Montserrat'] font-semibold text-[38px] md:text-[45px] leading-[55px] underline text-[#000]">
+            Program:
+        </h2>
         <div class="flex flex-wrap gap-3 md:gap-4 ml-2">{% for d in days %} {{ agenda.day_pill(d) }} {% endfor %}</div>
     </div>
 

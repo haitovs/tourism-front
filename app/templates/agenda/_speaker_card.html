@@ -1,0 +1,28 @@
+{# app/templates/agenda/_speaker_card.html #} {% macro speaker_card(sp) -%}
+<div class="relative w-[265px] h-[320px] rounded-[20px] overflow-hidden bg-slate-100">
+    {% if sp.photo_url %}
+    <img src="{{ sp.photo_url }}" alt="{{ sp.fullname }}" class="absolute inset-0 w-full h-full object-cover" />
+    {% endif %}
+    <div class="absolute inset-x-0 bottom-0 h-[118px] bg-[rgba(30,30,30,0.65)] rounded-b-[20px] p-3">
+        <div class="font-['Roboto'] text-white">
+            <div class="font-bold text-[18px] leading-[21px] truncate">{{ sp.fullname }}</div>
+            {% if sp.position or sp.company %}
+            <div class="mt-1 text-[16px] leading-[19px] line-clamp-2 opacity-95">
+                {{ sp.position }}{% if sp.company %}, {{ sp.company }}{% endif %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="absolute right-3 bottom-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M9 6l6 6-6 6"
+                    stroke="#FFFFFF"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </svg>
+        </div>
+    </div>
+</div>
+{%- endmacro %}
