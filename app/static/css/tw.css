@@ -1,0 +1,27 @@
+/* ---- Tailwind v4 input file ---- */
+@import "tailwindcss";
+
+/* Tell Tailwind where to scan for class names (v4 style) */
+@source "./app/templates/**/*.html";
+@source "./app/static/js/**/*.js";
+@source "./app/**/*.py";
+
+/* Theme tokens (instead of tailwind.config.js) */
+@theme {
+    --font-mont: "Montserrat", ui-sans-serif, system-ui;
+    --font-roboto: "Roboto", ui-sans-serif, system-ui;
+
+    /* custom shadow used in your templates (shadow-soft) */
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Small custom utilities you rely on */
+@utility font-mont {
+    font-family: var(--font-mont);
+}
+@utility font-roboto {
+    font-family: var(--font-roboto);
+}
+@utility shadow-soft {
+    box-shadow: var(--shadow-soft);
+}
