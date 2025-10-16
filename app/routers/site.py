@@ -38,9 +38,10 @@ async def home(req: Request):
         "lang": lang,
         "settings": settings,
 
-        # TOP sponsors (grouped + flat, tenant-scoped)
+        # TOP sponsors (grouped + flat kept for backward-compat) + new view-model
         "sponsors_top": sponsor_srv.get_top_sponsors(lang=lang, site_id=site_id),
         "sponsors_top_flat": sponsor_srv.get_top_sponsors_flat(lang=lang, site_id=site_id, max_items=5),
+        "sponsors_top_view": sponsor_srv.build_top_sponsors_view(lang=lang, site_id=site_id, max_items=5),
 
         # LIST tiers (tenant-scoped)
         "gold": sponsor_srv.list_all_sponsors_by_tier(tier="gold", lang=lang, site_id=site_id),
@@ -56,11 +57,14 @@ async def home(req: Request):
             "items": org_srv.list_organizers()
         },
         "partners": partners_srv.list_partners(),
+
+        # ✅ fixed typo here
         "participants": participants_srv.list_participants(limit=12, latest_first=True, site_id=site_id),
         "participants_expo": participants_srv.list_participants(limit=8, role="expo", site_id=site_id),
         "participants_forum": participants_srv.list_participants(limit=8, role="forum", site_id=site_id),
         "participants_both": participants_srv.list_participants(limit=8, role="both", site_id=site_id),
     }
+
     resp = templates.TemplateResponse("index.html", ctx)
     resp.set_cookie("lang", lang, max_age=60 * 60 * 24 * 365, httponly=False, samesite="lax")
     return resp

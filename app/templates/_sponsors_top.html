@@ -1,37 +1,47 @@
-{# templates/_sponsors_top.html #} {% set MAX = 5 %} {% if sponsors_top_flat is defined and sponsors_top_flat and
-sponsors_top_flat.get('items') %} {% set flat = sponsors_top_flat['items'] %} {% else %} {% set order = ["premier",
-"general", "diamond", "platinum"] %} {% set grouped = sponsors_top or {} %} {% set ns = namespace(flat=[]) %} {% for t
-in order %} {% for sp in grouped.get(t, []) %} {% if ns.flat|length < MAX %} {% set _ = ns.flat.append(sp) %} {% endif
-%} {% endfor %} {% endfor %} {% set flat = ns.flat %} {% endif %} {% set count = flat|length %}
-
+{# expects sponsors_top_view = build_top_sponsors_view(...) #} {% set vm = sponsors_top_view %} {% set items =
+vm['items']|default([]) %}
 <div class="w-full max-w-[var(--container)] mx-auto">
-    {% if count == 0 %}
+    {% if vm.layout == "empty" %}
     <div class="text-slate-500">No top sponsors yet</div>
 
-    {% elif count < MAX %}
+    {% elif vm.layout == "grid" %}
     <ul class="flex flex-wrap justify-center gap-4">
-        {% for sp in flat %}
+        {% for sp in vm['items'] %}
         <li class="flex justify-center">
             <div class="w-[250px]">
-                <article class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-between h-[276px]">
-                    {% if sp.logo_url %}
+                {% if sp.website %}
+                <a
+                    href="{{ sp.website }}"
+                    class="{{ vm.link_interactive_class }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="{{ sp.name }} (opens in new tab)"
+                >
+                    <article class="{{ vm.card_base_class }}{{ vm.card_interactive_suffix }}">
+                        <img
+                            src="{{ sp.logo_url or vm.placeholder_src }}"
+                            alt="{{ sp.name if sp.logo_url else 'No sponsor yet' }}"
+                            title="{{ sp.name }}"
+                            class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none"
+                            draggable="false"
+                        />
+                        <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">
+                            {{ sp.tier_label }}
+                        </div>
+                    </article>
+                </a>
+                {% else %}
+                <article class="{{ vm.card_base_class }}">
                     <img
-                        src="{{ sp.logo_url }}"
-                        alt="{{ sp.name }}"
+                        src="{{ sp.logo_url or vm.placeholder_src }}"
+                        alt="{{ sp.name if sp.logo_url else 'No sponsor yet' }}"
                         title="{{ sp.name }}"
-                        class="w-[202px] h-[202px] object-contain select-none pointer-events-none"
+                        class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none"
                         draggable="false"
                     />
-                    {% else %}
-                    <img
-                        src="/static/img/img_placeholder.png"
-                        alt="No sponsor yet"
-                        class="w-[202px] h-[202px] object-contain opacity-70 select-none pointer-events-none"
-                        draggable="false"
-                    />
-                    {% endif %}
-                    <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">{{ sp.tier }} sponsor</div>
+                    <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">{{ sp.tier_label }}</div>
                 </article>
+                {% endif %}
             </div>
         </li>
         {% endfor %}
@@ -41,32 +51,44 @@ in order %} {% for sp in grouped.get(t, []) %} {% if ns.flat|length < MAX %} {% 
     <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: 1rem">
         <div class="marquee__viewport">
             <ul class="marquee__track">
-                {% for sp in flat %}
+                {% for sp in vm['items'] %}
                 <li class="marquee__item">
                     <div class="w-[250px]">
-                        <article
-                            class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-between h-[276px]"
+                        {% if sp.website %}
+                        <a
+                            href="{{ sp.website }}"
+                            class="{{ vm.link_interactive_class }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="{{ sp.name }} (opens in new tab)"
                         >
-                            {% if sp.logo_url %}
+                            <article class="{{ vm.card_base_class }}{{ vm.card_interactive_suffix }}">
+                                <img
+                                    src="{{ sp.logo_url or vm.placeholder_src }}"
+                                    alt="{{ sp.name if sp.logo_url else 'No sponsor yet' }}"
+                                    title="{{ sp.name }}"
+                                    class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none"
+                                    draggable="false"
+                                />
+                                <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">
+                                    {{ sp.tier_label }}
+                                </div>
+                            </article>
+                        </a>
+                        {% else %}
+                        <article class="{{ vm.card_base_class }}">
                             <img
-                                src="{{ sp.logo_url }}"
-                                alt="{{ sp.name }}"
+                                src="{{ sp.logo_url or vm.placeholder_src }}"
+                                alt="{{ sp.name if sp.logo_url else 'No sponsor yet' }}"
                                 title="{{ sp.name }}"
-                                class="w-[202px] h-[202px] object-contain select-none pointer-events-none"
+                                class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none"
                                 draggable="false"
                             />
-                            {% else %}
-                            <img
-                                src="/static/img/img_placeholder.png"
-                                alt="No sponsor yet"
-                                class="w-[202px] h-[202px] object-contain opacity-70 select-none pointer-events-none"
-                                draggable="false"
-                            />
-                            {% endif %}
                             <div class="text-sm font-bold uppercase tracking-wide text-slate-500/60">
-                                {{ sp.tier }} sponsor
+                                {{ sp.tier_label }}
                             </div>
                         </article>
+                        {% endif %}
                     </div>
                 </li>
                 {% endfor %}

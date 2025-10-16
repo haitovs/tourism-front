@@ -1,63 +1,64 @@
-{# templates/_sponsors_carousel.html #} {% set tier = data["tier"] %} {% set all = data["items"]|default([]) %} {% set
-count = all|length %} {% set tier_label = (tier | capitalize) ~ " Sponsor" %} {% set tier_class = "tier-gold" if tier ==
-"gold" else ("tier-silver" if tier == "silver" else "tier-bronze") %} {% macro card(sp) -%}
-<article class="bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start">
-    {% if sp.logo_url %}
+{# expects data = list_all_sponsors_by_tier(...), now with layout/rows/marquee_rows #} {% set vm = data %} {% macro
+card(sp) -%} {% if sp.website %}
+<a
+    href="{{ sp.website }}"
+    class="{{ vm.link_interactive_class }}"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="{{ sp.name }} (opens in new tab)"
+>
+    <article class="{{ vm.card_base_class }}{{ vm.card_interactive_suffix }}">
+        <img
+            src="{{ sp.logo_url or vm.placeholder_src }}"
+            alt="{{ sp.name if sp.logo_url else 'Sponsor' }}"
+            title="{{ sp.name }}"
+            class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none"
+            loading="lazy"
+        />
+        <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ vm.tier_class }}">
+            {{ vm.tier_label }}
+        </div>
+    </article>
+</a>
+{% else %}
+<article class="{{ vm.card_base_class }}">
     <img
-        src="{{ sp.logo_url }}"
-        alt="{{ sp.name }}"
+        src="{{ sp.logo_url or vm.placeholder_src }}"
+        alt="{{ sp.name if sp.logo_url else 'Sponsor' }}"
         title="{{ sp.name }}"
-        class="w-[150px] h-[150px] object-contain select-none pointer-events-none"
+        class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none"
         loading="lazy"
     />
-    {% else %}
-    <img
-        src="/static/img/img_placeholder.png"
-        alt="Sponsor"
-        class="w-[150px] h-[150px] object-contain opacity-70 select-none pointer-events-none"
-        loading="lazy"
-    />
-    {% endif %}
-    <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ tier_class }}">{{ tier_label }}</div>
+    <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ vm.tier_class }}">
+        {{ vm.tier_label }}
+    </div>
 </article>
-{%- endmacro %} {% if count == 0 %}
-<div class="text-center text-slate-400">No {{ tier }} sponsors yet</div>
+{% endif %} {%- endmacro %} {% if vm.layout == "empty" %}
+<div class="text-center text-slate-400">No {{ vm.tier }} sponsors yet</div>
 
-{% elif count <= 10 %} {% set r1 = all[:5] %} {% set r2 = all[5:10] %}
+{% elif vm.layout == "rows" %}
 <div class="space-y-4 w-full max-w-[var(--container)] mx-auto">
+    {% for row in vm.rows %} {% if row %}
     <div class="flex flex-wrap justify-center gap-4">
-        {% for sp in r1 %}
+        {% for sp in row %}
         <div class="flex justify-center">{{ card(sp) }}</div>
         {% endfor %}
     </div>
-    {% if r2 %}
-    <div class="flex flex-wrap justify-center gap-4">
-        {% for sp in r2 %}
-        <div class="flex justify-center">{{ card(sp) }}</div>
-        {% endfor %}
-    </div>
-    {% endif %}
+    {% endif %} {% endfor %}
 </div>
 
-{% else %} {% set row1 = all[0::2] %} {% set row2 = all[1::2] %}
+{% else %}
 <div class="space-y-4 w-full max-w-[var(--container)] mx-auto" data-marquee-group>
+    {% for row in vm.marquee_rows %}
     <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: 1rem">
         <div class="marquee__viewport">
             <ul class="marquee__track">
-                {% for sp in row1 %}
+                {% for sp in row %}
                 <li class="marquee__item">{{ card(sp) }}</li>
                 {% endfor %}
             </ul>
         </div>
     </div>
-    <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: 1rem">
-        <div class="marquee__viewport">
-            <ul class="marquee__track">
-                {% for sp in row2 %}
-                <li class="marquee__item">{{ card(sp) }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
+    {% endfor %}
 </div>
 {% endif %}
