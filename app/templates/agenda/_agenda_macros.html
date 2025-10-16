@@ -127,7 +127,7 @@ mod = (ep.moderators[0] if ep.moderators and ep.moderators|length>0 else None) %
         </div>
 
         {# COLLAPSED HEADER: title + short, then read more / divider / sponsor #}
-        <div class="mt-6 relative flex flex-col xl:flex-row xl:items-start xl:justify-between gap-6">
+        <div class="mt-6 relative flex flex-col xl:flex-row xl:justify-between gap-6">
             <!-- LEFT: Title + Short description -->
             <div class="min-w-0">
                 <h3 class="font-['Montserrat'] font-semibold text-[30px] leading-[37px] text-black">{{ ep.title }}</h3>
@@ -142,7 +142,7 @@ mod = (ep.moderators[0] if ep.moderators and ep.moderators|length>0 else None) %
                     type="button"
                     class="h-[32px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]"
                     @click="$dispatch('toggle', { id: {{ ep.id }} })"
-                    x-show="expandedId !== {{ ep.id }})"
+                    x-show="expandedId !== {{ ep.id }}"
                 >
                     Read more
                 </button>
@@ -329,25 +329,6 @@ mod = (ep.moderators[0] if ep.moderators and ep.moderators|length>0 else None) %
                 </button>
             </div>
         </div>
-
-        <!-- Utilities -->
-        <style>
-            /* Hide horizontal scrollbar across browsers */
-            .no-scrollbar::-webkit-scrollbar {
-                display: none;
-            }
-            .no-scrollbar {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
-            /* Multi-line clamp (Tailwind plugin not required) */
-            .line-clamp-2 {
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
-        </style>
     </div>
 </article>
 {%- endmacro %}

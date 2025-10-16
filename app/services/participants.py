@@ -171,7 +171,7 @@ def list_participants(
                 "role": getattr(r.role, "value", r.role) if r.role else None,
                 "bio": r.bio,
                 "logo_url": _resolve_logo_url(getattr(r, "logo", None)),
-                "images": images[:3],  # small preview strip
+                "images": images[:3],
             })
         return out
 

@@ -203,3 +203,22 @@
         transition: none;
     }
 }
+
+/* AGENDA */
+
+/* Hide horizontal scrollbar across browsers */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+/* Multi-line clamp (Tailwind plugin not required) */
+.line-clamp-2 {
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
