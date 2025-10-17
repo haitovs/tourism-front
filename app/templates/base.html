@@ -1,132 +1,126 @@
 <!DOCTYPE html>
 <html lang="{{ lang or 'en' }}">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>Expo Site</title>
-        <style>
-            [x-cloak] {
-                display: none !important;
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Expo Site</title>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;700&display=swap" rel="stylesheet" />
+    <!-- favicon.ico -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', path='img/favicon.ico') }}" />
+    <!-- Your CSS FIRST (so Tailwind's Typography can override generic resets) -->
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/extra.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/detailbar.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/navpill.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/hero.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/tw.build.css') }}" />
+    <!-- Splide CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" />
+    <!-- HTMX / Alpine -->
+    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+    <script defer src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="{{ url_for('static', path='/js/marquee.js') }}" defer></script>
+    <script src="{{ url_for('static', path='/js/headerHide.js') }}" defer></script>
+    <script src="{{ url_for('static', path='/js/scrollTop.js') }}" defer></script>
+</head>
+
+<body class="bg-[var(--c-bg)] text-[var(--c-text)]">
+    {% include "_detailbar.html" %}
+    <main class="flex-1">{% block content %}{% endblock %}</main>
+    {% include "_footer.html" %}
+    <button id="to-top" type="button" aria-label="Scroll to top" title="Back to top">
+        <!-- Up arrow (white stroke) -->
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <!-- outer circle look via background already; draw a simple up arrow -->
+            <path d="M12 18V6" stroke="#F4F4F2" stroke-width="3" stroke-linecap="round" />
+            <path d="M6 12l6-6 6 6" stroke="#F4F4F2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </button>
+    <!-- Splide JS (defer) -->
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" defer></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-grid@0.4.1/dist/js/splide-extension-grid.min.js"
+        defer></script>
+    <script>
+        window.addEventListener("load", () => {
+            if (typeof Splide === "undefined") {
+                console.error("Splide not loaded!");
+                return;
             }
-        </style>
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
-        />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;700&display=swap" rel="stylesheet" />
-        <!-- favicon.ico -->
-        <link rel="icon" type="image/x-icon" href="{{ url_for('static', path='img/favicon.ico') }}" />
-        <!-- Your CSS FIRST (so Tailwind's Typography can override generic resets) -->
-        <link rel="stylesheet" href="{{ url_for('static', path='/css/extra.css') }}" />
-        <link rel="stylesheet" href="{{ url_for('static', path='/css/detailbar.css') }}" />
-        <link rel="stylesheet" href="{{ url_for('static', path='/css/navpill.css') }}" />
-        <link rel="stylesheet" href="{{ url_for('static', path='/css/hero.css') }}" />
-        <link rel="stylesheet" href="{{ url_for('static', path='/css/tw.build.css') }}" />
-        <!-- Splide CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" />
-        <!-- HTMX / Alpine -->
-        <script src="https://unpkg.com/htmx.org@2.0.3"></script>
-        <script defer src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
-        <script defer src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
-        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-        <script src="{{ url_for('static', path='/js/marquee.js') }}" defer></script>
-        <script src="{{ url_for('static', path='/js/headerHide.js') }}" defer></script>
-        <script src="{{ url_for('static', path='/js/scrollTop.js') }}" defer></script>
-    </head>
-    <body class="bg-[var(--c-bg)] text-[var(--c-text)]">
-        {% include "_detailbar.html" %}
-        <main class="flex-1">{% block content %}{% endblock %}</main>
-        {% include "_footer.html" %}
-        <button id="to-top" type="button" aria-label="Scroll to top" title="Back to top">
-            <!-- Up arrow (white stroke) -->
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <!-- outer circle look via background already; draw a simple up arrow -->
-                <path d="M12 18V6" stroke="#F4F4F2" stroke-width="3" stroke-linecap="round" />
-                <path
-                    d="M6 12l6-6 6 6"
-                    stroke="#F4F4F2"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                />
-            </svg>
-        </button>
-        <!-- Splide JS (defer) -->
-        <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" defer></script>
-        <script
-            src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-grid@0.4.1/dist/js/splide-extension-grid.min.js"
-            defer
-        ></script>
-        <script>
-            window.addEventListener("load", () => {
-                if (typeof Splide === "undefined") {
-                    console.error("Splide not loaded!");
-                    return;
-                }
 
-                document.querySelectorAll(".splide[data-splide]").forEach((el) => {
-                    const cfg = (() => {
-                        // Basic options via dataset (strings)
-                        const d = el.dataset;
+            document.querySelectorAll(".splide[data-splide]").forEach((el) => {
+                const cfg = (() => {
+                    // Basic options via dataset (strings)
+                    const d = el.dataset;
 
-                        // Count can control loop/autoplay defaults
-                        const count = Number(d.count || "0");
+                    // Count can control loop/autoplay defaults
+                    const count = Number(d.count || "0");
 
-                        // Common options
-                        const opts = {
-                            type: d.type || (count > 1 ? "loop" : "slide"),
-                            arrows: false,
-                            pagination: false,
-                            autoplay: d.autoplay === "true" || (d.autoplay === undefined && count > 1),
-                            interval: Number(d.interval || "10000"),
-                            pauseOnHover: true,
-                            speed: Number(d.speed || "600"),
-                            easing: d.easing || "cubic-bezier(0.22,1,0.36,1)",
-                            drag: true,
-                            gap: d.gap || "1rem",
-                        };
+                    // Common options
+                    const opts = {
+                        type: d.type || (count > 1 ? "loop" : "slide"),
+                        arrows: false,
+                        pagination: false,
+                        autoplay: d.autoplay === "true" || (d.autoplay === undefined && count > 1),
+                        interval: Number(d.interval || "10000"),
+                        pauseOnHover: true,
+                        speed: Number(d.speed || "600"),
+                        easing: d.easing || "cubic-bezier(0.22,1,0.36,1)",
+                        drag: true,
+                        gap: d.gap || "1rem",
+                    };
 
-                        // perPage (for top), optional
-                        if (d.perPage) {
-                            opts.perPage = Number(d.perPage);
-                        }
-
-                        // GRID (for bottom)
-                        if (d.rows || d.cols) {
-                            const rows = Number(d.rows || "1");
-                            const cols = Number(d.cols || "1");
-                            const rowGap = d.rowGap || "1rem";
-                            const colGap = d.colGap || "1rem";
-                            opts.grid = { rows, cols, gap: { row: rowGap, col: colGap } };
-                        }
-
-                        // Breakpoints (optional)
-                        try {
-                            if (d.breakpoints) {
-                                opts.breakpoints = JSON.parse(d.breakpoints);
-                            }
-                        } catch (e) {
-                            console.warn("Invalid breakpoints JSON on", el, e);
-                        }
-
-                        return opts;
-                    })();
-
-                    // Mount with grid extension if grid is present
-                    const useGrid = !!cfg.grid;
-                    const splide = new Splide(el, cfg);
-                    if (useGrid && window.splide && window.splide.Extensions) {
-                        splide.mount(window.splide.Extensions);
-                    } else {
-                        splide.mount();
+                    // perPage (for top), optional
+                    if (d.perPage) {
+                        opts.perPage = Number(d.perPage);
                     }
-                });
+
+                    // GRID (for bottom)
+                    if (d.rows || d.cols) {
+                        const rows = Number(d.rows || "1");
+                        const cols = Number(d.cols || "1");
+                        const rowGap = d.rowGap || "1rem";
+                        const colGap = d.colGap || "1rem";
+                        opts.grid = { rows, cols, gap: { row: rowGap, col: colGap } };
+                    }
+
+                    // Breakpoints (optional)
+                    try {
+                        if (d.breakpoints) {
+                            opts.breakpoints = JSON.parse(d.breakpoints);
+                        }
+                    } catch (e) {
+                        console.warn("Invalid breakpoints JSON on", el, e);
+                    }
+
+                    return opts;
+                })();
+
+                // Mount with grid extension if grid is present
+                const useGrid = !!cfg.grid;
+                const splide = new Splide(el, cfg);
+                if (useGrid && window.splide && window.splide.Extensions) {
+                    splide.mount(window.splide.Extensions);
+                } else {
+                    splide.mount();
+                }
             });
-        </script>
-    </body>
+        });
+    </script>
+</body>
+
 </html>

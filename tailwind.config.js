@@ -1,24 +1,23 @@
-// tailwind.config.js (CommonJS works well with the EXE)
+// tailwind.config.js
 module.exports = {
     content: ["./app/templates/**/*.html", "./app/static/js/**/*.js", "./app/**/*.py"],
     theme: {
         extend: {
-            // You use `shadow-soft` in templates; define it here
+            // Define once — this includes your custom shadow
             boxShadow: {
                 soft: "0 10px 30px rgba(0,0,0,0.08)",
             },
 
-            // Helpful shorthands so you can use `font-mont` / `font-roboto` if you want
+            // Font families shorthand
             fontFamily: {
                 mont: ["Montserrat", "ui-sans-serif", "system-ui"],
                 roboto: ["Roboto", "ui-sans-serif", "system-ui"],
+                inter: ["Inter", "ui-sans-serif", "system-ui"],
+                lato: ["Inter", "ui-sans-serif", "system-ui"],
             },
-
-            boxShadow: { soft: "0 10px 30px rgba(0,0,0,.08)" },
         },
     },
 
-    // Ensure dynamic/rare classes are kept
     safelist: [
         // arbitrary values you use:
         { pattern: /rounded-\[.*\]/ },
@@ -30,6 +29,7 @@ module.exports = {
         { pattern: /line-clamp-\d+/ },
         { pattern: /(xl|lg|md|sm):flex-row/ },
         { pattern: /(xl|lg|md|sm):grid-cols-\[.*\]/ },
+        { pattern: /max-w-\[.*\]/ },
         "shadow-soft",
     ],
 };
