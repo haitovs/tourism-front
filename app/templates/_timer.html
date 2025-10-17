@@ -13,14 +13,9 @@
             Countdown to the official start of the forum
         </h2>
     </header>
-
     <!-- Picture with timer -->
     <div
-        x-data="timerWidget({
-    apiBase: '{{ settings.BACKEND_BASE_URL }}',
-    bgUrl: '/static/img/timer/timer_bg.png',
-    logoUrl: '/static/img/timer/logo.svg'
-  })"
+        x-data="timerWidget({ apiBase: '{{ settings.BACKEND_BASE_URL }}', bgUrl: '/static/img/timer/timer_bg.png', logoUrl: '/static/img/timer/logo.svg' })"
         x-init="init()"
         class="w-full flex justify-center"
     >
@@ -32,7 +27,6 @@
             <div
                 class="absolute left-0 top-0 h-[460px] w-[564px] bg-black/30 backdrop-blur-[2.5px] rounded-l-[20px]"
             ></div>
-
             <!-- Left content: logo + multi-line title, top-aligned, fits within 564px -->
             <div class="absolute left-0 top-0 h-[460px] w-[564px] z-20">
                 <div class="pl-[28px] pr-[24px] pt-[18px] text-white flex items-center gap-3 w-full">
@@ -44,7 +38,6 @@
                     ></div>
                 </div>
             </div>
-
             <!-- Red rounded timer bar: centered, UNDER the left content -->
             <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[922px] h-[215px] z-10">
                 <div class="w-full h-full bg-[#BD280D] rounded-[40px] flex items-center justify-center px-8">
@@ -59,13 +52,11 @@
                             </div>
                             <div class="mt-1 font-['Roboto'] text-[20px] leading-[24px]">DAYS</div>
                         </div>
-
                         <!-- colon (two dots) -->
                         <div class="flex flex-col items-center justify-center gap-[22px]">
                             <span class="block w-4 h-4 rounded-full bg-white"></span>
                             <span class="block w-4 h-4 rounded-full bg-white"></span>
                         </div>
-
                         <!-- HOURS -->
                         <div class="flex flex-col items-center justify-center">
                             <div
@@ -76,13 +67,11 @@
                             </div>
                             <div class="mt-1 font-['Roboto'] text-[20px] leading-[24px]">HOURS</div>
                         </div>
-
                         <!-- colon -->
                         <div class="flex flex-col items-center justify-center gap-[22px]">
                             <span class="block w-4 h-4 rounded-full bg-white"></span>
                             <span class="block w-4 h-4 rounded-full bg-white"></span>
                         </div>
-
                         <!-- MINUTES -->
                         <div class="flex flex-col items-center justify-center">
                             <div
@@ -93,13 +82,11 @@
                             </div>
                             <div class="mt-1 font-['Roboto'] text-[20px] leading-[24px]">MINUTES</div>
                         </div>
-
                         <!-- colon -->
                         <div class="flex flex-col items-center justify-center gap-[22px]">
                             <span class="block w-4 h-4 rounded-full bg-white"></span>
                             <span class="block w-4 h-4 rounded-full bg-white"></span>
                         </div>
-
                         <!-- SECONDS -->
                         <div class="flex flex-col items-center justify-center">
                             <div
@@ -116,7 +103,6 @@
         </div>
     </div>
 </section>
-
 <script>
     function timerWidget({ apiBase, bgUrl, logoUrl }) {
         return {

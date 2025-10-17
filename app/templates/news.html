@@ -21,22 +21,13 @@
         <form action="/news" method="get" class="flex" role="search" aria-label="Search news">
             <label for="news-q" class="sr-only">Search news</label>
             <div
-                class="flex-1 h-[74px] bg-white border border-[rgba(0,122,61,0.7)] rounded-l-[10px] flex items-center px-5"
-            >
-                <input
-                    id="news-q"
-                    type="text"
-                    name="q"
-                    value="{{ q or '' }}"
-                    placeholder="Search ..."
-                    class="w-full h-full outline-none placeholder-[#A6D0BB] font-['Roboto'] font-semibold text-[20px] md:text-[30px] leading-[35px] text-[#1E1E1E]"
-                />
+                class="flex-1 h-[74px] bg-white border border-[rgba(0,122,61,0.7)] rounded-l-[10px] flex items-center px-5">
+                <input id="news-q" type="text" name="q" value="{{ q or '' }}" placeholder="Search ..."
+                    class="w-full h-full outline-none placeholder-[#A6D0BB] font-['Roboto'] font-semibold text-[20px] md:text-[30px] leading-[35px] text-[#1E1E1E]" />
             </div>
-            <button
-                type="submit"
+            <button type="submit"
                 class="w-[70px] h-[74px] bg-[#007A3D] rounded-r-[10px] flex items-center justify-center"
-                aria-label="Search"
-            >
+                aria-label="Search">
                 <svg viewBox="0 0 24 24" class="w-[30px] h-[30px]" fill="none" aria-hidden="true">
                     <circle cx="11" cy="11" r="7" stroke="white" stroke-width="3" />
                     <path d="M20 20l-3.5-3.5" stroke="white" stroke-width="3" stroke-linecap="round" />

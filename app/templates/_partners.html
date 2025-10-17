@@ -1,5 +1,4 @@
 {# templates/_partners.html #} {% set _partners = partners or [] %} {% set count = _partners|length %}
-
 <section id="partners" class="max-w-[1440px] mx-auto py-14">
     <div class="mx-[86px]">
         <header class="text-center mb-8">
@@ -12,7 +11,6 @@
                 Our official partners
             </h2>
         </header>
-
         {% macro partner_card(p) -%}
         <article class="w-[190px] h-[225px] flex flex-col items-center justify-start">
             <div class="w-[170px] h-[123px] flex items-center justify-center">
@@ -42,7 +40,6 @@
         </article>
         {%- endmacro %} {% if count == 0 %}
         <div class="text-center text-slate-500">No partners added yet</div>
-
         {% elif count < 6 %} {# ---- Static centered row ---- #}
         <ul class="flex flex-wrap justify-center gap-x-[50px] gap-y-6">
             {% for p in _partners %}
@@ -53,7 +50,6 @@
             </li>
             {% endfor %}
         </ul>
-
         {% else %} {# ---- Marquee ---- #}
         <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: 1rem">
             <div class="marquee__viewport">

@@ -1,54 +1,44 @@
-{# app/templates/_hero_macros.html #} {% macro hero_buttons( home_href='/', section_label='Section', section_href=None,
-is_detail=False, current_path='', detail_label=None, detail_href=None, detail_refresh=False ) -%}
-<div class="relative z-[1]">
-    <div class="absolute left-4 md:left-[65px] bottom-4 flex flex-wrap items-center gap-3">
-        <!-- Home icon -->
-        <a
-            href="{{ home_href }}"
-            class="inline-flex w-[52px] h-[52px] rounded-md bg-white/95 items-center justify-center shadow"
-            aria-label="Go to homepage"
-        >
-            <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" aria-hidden="true">
-                <path
-                    d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z"
-                    stroke="#0B703C"
-                    stroke-width="2.2"
-                />
-            </svg>
-        </a>
-
-        {% if is_detail %} {# Detail page: choose behavior #} {% set section_target = (current_path if (detail_refresh
-        or not section_href) else section_href) %}
-        <a
-            href="{{ section_target }}"
-            class="h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow hover:bg-white"
-            {%
-            if
-            detail_refresh
-            %}aria-current="page"
-            title="Refresh"
-            {%
-            endif
-            %}
-        >
-            {{ section_label }}
-        </a>
-
-        {% if detail_label %}
-        <a
-            href="{{ detail_href or '#section-body' }}"
-            class="h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow hover:bg-white"
-        >
-            {{ detail_label }}
-        </a>
-        {% endif %} {% else %} {# List page: always go to section list #}
-        <a
-            href="{{ section_href or '#' }}"
-            class="h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow hover:bg-white"
-        >
-            {{ section_label }}
-        </a>
-        {% endif %}
+{# app/templates/_hero_macros.html #}
+{% macro hero_buttons( home_href='/', section_label='Section', section_href=None,
+    is_detail=False, current_path='', detail_label=None, detail_href=None, detail_refresh=False ) -%}
+    <div class="relative z-[1]">
+        <div class="absolute left-4 md:left-[65px] bottom-4 flex flex-wrap items-center gap-3">
+            <!-- Home icon -->
+            <a href="{{ home_href }}"
+               class="inline-flex w-[52px] h-[52px] rounded-md bg-white/95 items-center justify-center shadow"
+               aria-label="Go to homepage">
+                <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" aria-hidden="true">
+                    <path d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" stroke="#0B703C" stroke-width="2.2" />
+                </svg>
+            </a>
+            {% if is_detail %}
+                {# Detail page: choose behavior #} {% set section_target = (current_path if (detail_refresh
+                 or not section_href) else section_href) %}
+                <a
+                    href="{{ section_target }}"
+                    class="h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow hover:bg-white"
+                    {%
+                    if
+                    detail_refresh
+                    %}aria-current="page"
+                    title="Refresh"
+                    {%
+                    endif
+                    %}
+                >{{ section_label }}</a>
+                {% if detail_label %}
+                    <a href="{{ detail_href or '#section-body' }}"
+                       class="h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow hover:bg-white">
+                        {{ detail_label }}
+                    </a>
+                {% endif %}
+            {% else %}
+                {# List page: always go to section list #}
+                <a href="{{ section_href or '#' }}"
+                   class="h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow hover:bg-white">
+                    {{ section_label }}
+                </a>
+            {% endif %}
+        </div>
     </div>
-</div>
 {%- endmacro %}

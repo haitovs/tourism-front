@@ -4,7 +4,6 @@
     <section class="relative w-full h-[320px] md:h-[380px]">
         <img src="/static/img/expo_sectors_hero.png" alt="" class="absolute inset-0 w-full h-full object-cover" />
         <div class="absolute inset-0 bg-black/40"></div>
-
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
             <h1 class="font-['Montserrat'] font-bold text-white text-[clamp(30px,5vw,56px)] leading-tight">
                 Expo Sectors
@@ -13,11 +12,9 @@
                 Discover the sectors driving growth and cooperation
             </p>
         </div>
-
-        {{ hero_buttons( home_href = '/', section_label = 'Expo Sectors', section_href = '/expo-sectors', is_detail =
-        False ) }}
+        {{ hero_buttons(home_href = '/', section_label = 'Expo Sectors', section_href = '/expo-sectors', is_detail =
+        False) }}
     </section>
-
     <!-- GRID -->
     <section class="max-w-[var(--container)] mx-auto px-4 py-12">
         {% if sectors and sectors|length > 0 %}
@@ -32,17 +29,14 @@
                     <img src="/static/img/default_sector.png" alt="{{ s.header }}" class="w-full h-full object-cover" />
                     {% endif %}
                 </div>
-
                 <!-- Content -->
                 <div class="p-5 flex-1 flex flex-col">
                     <h3 class="font-['Roboto'] font-medium text-[22px] leading-7 text-[#1E1E1E]">{{ s.header }}</h3>
-
                     {% if s.description %}
                     <p class="mt-2 text-[16px] leading-6 text-slate-800 line-clamp-5">{{ s.description }}</p>
                     {% else %}
                     <p class="mt-2 text-[16px] leading-6 text-slate-600">More information coming soon.</p>
                     {% endif %}
-
                     <!-- CTA -->
                     <div class="mt-5">
                         <a

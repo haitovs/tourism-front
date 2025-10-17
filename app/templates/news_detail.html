@@ -39,11 +39,8 @@
                         {% if item.image_url %}
                         <img src="{{ item.image_url }}" alt="{{ item.title }}" class="w-full h-full object-cover" />
                         {% else %}
-                        <img
-                            src="/static/img/news_placeholder.jpg"
-                            alt=""
-                            class="w-full h-full object-cover opacity-80"
-                        />
+                        <img src="/static/img/news_placeholder.jpg" alt=""
+                            class="w-full h-full object-cover opacity-80" />
                         {% endif %}
                     </div>
 
@@ -57,19 +54,11 @@
                         <span class="flex items-center gap-2">
                             <svg width="24" height="24" viewBox="0 0 24 24">
                                 <circle cx="12" cy="12" r="9" fill="none" stroke="#007A3D" stroke-width="2" />
-                                <path
-                                    d="M12 7v5l3 2"
-                                    fill="none"
-                                    stroke="#007A3D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                />
+                                <path d="M12 7v5l3 2" fill="none" stroke="#007A3D" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                            <time
-                                datetime="{{ item.date_iso or '' }}"
-                                class="font-['Inter'] font-semibold text-[16px] text-[rgba(118,119,127,0.47)]"
-                            >
+                            <time datetime="{{ item.date_iso or '' }}"
+                                class="font-['Inter'] font-semibold text-[16px] text-[rgba(118,119,127,0.47)]">
                                 {{ item.date_human }}
                             </time>
                         </span>
@@ -93,8 +82,7 @@
                     <div class="font-['Roboto'] text-[20px] md:text-[22px] leading-[32px] text-black/70 space-y-6">
                         {% if item.body %} {# If body has HTML (p, h2, ul...), render safely #}
                         <div
-                            class="prose-headings:font-['Montserrat'] prose-headings:text-[#1E1E1E] prose-h2:text-[28px] prose-h3:text-[24px] prose-p:leading-[32px] prose-li:leading-[32px]"
-                        >
+                            class="prose-headings:font-['Montserrat'] prose-headings:text-[#1E1E1E] prose-h2:text-[28px] prose-h3:text-[24px] prose-p:leading-[32px] prose-li:leading-[32px]">
                             {{ item.body | safe }}
                         </div>
                         {% else %} {# fallback: reuse summary if no body #} {% if item.summary %}

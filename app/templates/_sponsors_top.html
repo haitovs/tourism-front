@@ -3,7 +3,6 @@ vm['items']|default([]) %}
 <div class="w-full max-w-[var(--container)] mx-auto">
     {% if vm.layout == "empty" %}
     <div class="text-slate-500">No top sponsors yet</div>
-
     {% elif vm.layout == "grid" %}
     <ul class="flex flex-wrap justify-center gap-4">
         {% for sp in vm['items'] %}
@@ -46,7 +45,6 @@ vm['items']|default([]) %}
         </li>
         {% endfor %}
     </ul>
-
     {% else %}
     <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: 1rem">
         <div class="marquee__viewport">

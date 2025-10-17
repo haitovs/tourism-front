@@ -35,7 +35,6 @@ card(sp) -%} {% if sp.website %}
 </article>
 {% endif %} {%- endmacro %} {% if vm.layout == "empty" %}
 <div class="text-center text-slate-400">No {{ vm.tier }} sponsors yet</div>
-
 {% elif vm.layout == "rows" %}
 <div class="space-y-4 w-full max-w-[var(--container)] mx-auto">
     {% for row in vm.rows %} {% if row %}
@@ -46,7 +45,6 @@ card(sp) -%} {% if sp.website %}
     </div>
     {% endif %} {% endfor %}
 </div>
-
 {% else %}
 <div class="space-y-4 w-full max-w-[var(--container)] mx-auto" data-marquee-group>
     {% for row in vm.marquee_rows %}
