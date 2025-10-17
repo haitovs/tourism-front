@@ -4,21 +4,21 @@
     --z-pill: 60;
     --z-dd: 100;
 }
-
-/* Rail that centers the pill under the header */
 .pill-rail {
     position: absolute;
     top: var(--pill-top);
-    left: 50%;
-    transform: translateX(-50%);
+    inset-inline: 0; /* stretch full width */
     display: flex;
-    align-items: center;
     justify-content: center;
-    width: var(--pill-w);
-    height: auto;
     z-index: var(--z-pill);
-    /* faint film so it doesn't jump visually when header hides/shows */
-    background: rgba(244, 244, 242, 0.12);
+    background: transparent; /* remove outer tint if you don’t want side glow */
+
+    /* inner alignment */
+    > .navpill {
+        width: 100%;
+        max-width: var(--container); /* same width as header */
+        margin-inline: auto;
+    }
 }
 
 /* NAV PILL fills the rail */

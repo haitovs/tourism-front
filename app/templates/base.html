@@ -38,7 +38,7 @@
     <script src="{{ url_for('static', path='/js/scrollTop.js') }}" defer></script>
 </head>
 
-<body class="bg-[var(--c-bg)] text-[var(--c-text)]">
+<body class="flex min-h-screen flex-col bg-[var(--c-bg)] text-[var(--c-text)]">
     {% include "_detailbar.html" %}
     <main class="flex-1">{% block content %}{% endblock %}</main>
     {% include "_footer.html" %}
