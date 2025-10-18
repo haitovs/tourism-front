@@ -1,67 +1,53 @@
-{# templates/_organizers_carousel.html #} {# Inputs: data = { items } #} {% set all = data["items"]|default([]) %} {%
-set count = all|length %}
+{% set all = data["items"]|default([]) %}
+{% set count = all|length %}
+
 {% if count == 0 %}
-    <div class="text-center text-slate-500">No organizers added yet</div>
-{% elif count < 8 %}
-    <!-- Centered static grid when fewer than 8 -->
-    <div class="w-full flex justify-center">
-        <ul class="grid grid-cols-2 md:grid-cols-4 gap-x-[30px] gap-y-[30px]">
-            {% for p in all %}
-                <li class="flex justify-center">
-                    {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block">{% endif %}
-                        <article class="bg-[#F4F4F2] rounded-[5px] shadow-[0_4px_4px_rgba(0,0,0,0.25)] w-[280px] h-[180px] flex items-center justify-center transition hover:shadow-md">
-                            {% if p.logo_url %}
-                                <img src="{{ p.logo_url }}"
-                                     alt="{{ p.name }}"
-                                     title="{{ p.name }}"
-                                     class="max-w-[213.14px] max-h-[154.51px] object-contain select-none pointer-events-none"
-                                     loading="lazy" />
-                            {% else %}
-                                <img src="/static/img/img_placeholder.png"
-                                     alt="{{ p.name }}"
-                                     title="{{ p.name }}"
-                                     class="max-w-[213.14px] max-h-[154.51px] object-contain opacity-70 select-none pointer-events-none"
-                                     loading="lazy" />
-                            {% endif %}
-                        </article>
-                        {% if p.website %}</a>{% endif %}
-                </li>
-            {% endfor %}
-        </ul>
+<div class="text-center text-slate-500">No organizers added yet</div>
+{% elif count < 8 %} <div class="w-full flex justify-center">
+    <ul class="grid grid-cols-2 md:grid-cols-4 gap-x-[clamp(12px,2.5vw,30px)] gap-y-[clamp(12px,2.5vw,30px)]">
+        {% for p in all %}
+        <li class="flex justify-center">
+            {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block">{% endif %}
+                <article class="bg-[#F4F4F2] rounded-[5px] shadow-[0_4px_4px_rgba(0,0,0,0.25)]
+                           w-[clamp(160px,28vw,280px)] h-[clamp(100px,18vw,180px)]
+                           flex items-center justify-center transition hover:shadow-md">
+                    {% if p.logo_url %}
+                    <img src="{{ p.logo_url }}" alt="{{ p.name }}" title="{{ p.name }}" class="object-contain select-none pointer-events-none
+                            max-w-[clamp(120px,19vw,213.14px)] max-h-[clamp(90px,13vw,154.51px)]" loading="lazy" />
+                    {% else %}
+                    <img src="/static/img/img_placeholder.png" alt="{{ p.name }}" title="{{ p.name }}" class="object-contain opacity-70 select-none pointer-events-none
+                            max-w-[clamp(120px,19vw,213.14px)] max-h-[clamp(90px,13vw,154.51px)]" loading="lazy" />
+                    {% endif %}
+                </article>
+                {% if p.website %}
+            </a>{% endif %}
+        </li>
+        {% endfor %}
+    </ul>
     </div>
-{% else %}
-    {# Seamless marquee when > 8 organizers #}
-    <div class="marquee"
-         data-marquee
-         data-speed="60"
-         data-min="1"
-         data-respect-rm="false"
-         style="--gap: 1rem">
+    {% else %}
+    <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: 1rem">
         <div class="marquee__viewport">
             <ul class="marquee__track">
-                {# Render ONE pass only; JS will clone to loop #}
                 {% for p in all %}
-                    <li class="marquee__item">
-                        {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block">{% endif %}
-                            <article class="bg-[#F4F4F2] rounded-[5px] shadow-[0_4px_4px_rgba(0,0,0,0.25)] w-[280px] h-[180px] flex items-center justify-center transition hover:shadow-md">
-                                {% if p.logo_url %}
-                                    <img src="{{ p.logo_url }}"
-                                         alt="{{ p.name }}"
-                                         title="{{ p.name }}"
-                                         class="max-w-[213.14px] max-h-[154.51px] object-contain select-none pointer-events-none"
-                                         loading="lazy" />
-                                {% else %}
-                                    <img src="/static/img/img_placeholder.png"
-                                         alt="{{ p.name }}"
-                                         title="{{ p.name }}"
-                                         class="max-w-[213.14px] max-h-[154.51px] object-contain opacity-70 select-none pointer-events-none"
-                                         loading="lazy" />
-                                {% endif %}
-                            </article>
-                            {% if p.website %}</a>{% endif %}
-                    </li>
+                <li class="marquee__item">
+                    {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block">{% endif %}
+                        <article class="bg-[#F4F4F2] rounded-[5px] shadow-[0_4px_4px_rgba(0,0,0,0.25)]
+                             w-[clamp(160px,28vw,280px)] h-[clamp(100px,18vw,180px)]
+                             flex items-center justify-center transition hover:shadow-md">
+                            {% if p.logo_url %}
+                            <img src="{{ p.logo_url }}" alt="{{ p.name }}" title="{{ p.name }}" class="object-contain select-none pointer-events-none
+                              max-w-[clamp(120px,19vw,213.14px)] max-h-[clamp(90px,13vw,154.51px)]" loading="lazy" />
+                            {% else %}
+                            <img src="/static/img/img_placeholder.png" alt="{{ p.name }}" title="{{ p.name }}" class="object-contain opacity-70 select-none pointer-events-none
+                              max-w-[clamp(120px,19vw,213.14px)] max-h-[clamp(90px,13vw,154.51px)]" loading="lazy" />
+                            {% endif %}
+                        </article>
+                        {% if p.website %}
+                    </a>{% endif %}
+                </li>
                 {% endfor %}
             </ul>
         </div>
     </div>
-{% endif %}
+    {% endif %}
