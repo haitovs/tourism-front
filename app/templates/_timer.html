@@ -109,8 +109,11 @@
 
         <!-- ===== SMALL (<1024px) WITH SECONDS ===== -->
         <div class="timer-small block w-full" x-show="!isDesktop" x-cloak x-transition.opacity.duration.200ms>
-            <div
-                class="timer-wrap mx-auto w-[350px] h-[160px] sm:w-[420px] sm:h-[180px] md:w-[560px] md:h-[210px] rounded-[16px]">
+            <div class="timer-wrap mx-auto
+              w-[380px]  h-[180px]
+              sm:w-[460px] sm:h-[200px]
+              md:w-[620px] md:h-[240px]
+              rounded-[16px]">
                 <!-- Background -->
                 <div class="timer-bg">
                     <img src="{{ url_for('static', path='img/timer/timer_bg.png') }}" x-bind:src="bgUrl" alt=""
@@ -121,70 +124,82 @@
                 <div class="timer-overlay"></div>
 
                 <!-- Content ON TOP -->
-                <div class="timer-content px-4 sm:px-6 md:px-8 flex items-center text-white">
+                <div class="timer-content px-4 sm:px-5 md:px-7 flex items-center text-white">
                     <!-- Left counters -->
                     <div class="flex-1">
-                        <div class="font-['Inter'] font-medium text-[16px] sm:text-[18px]">The remaining</div>
+                        <div class="font-['Inter'] font-medium text-[14px] sm:text-[15px] md:text-[16px]">The remaining
+                        </div>
 
-                        <div class="mt-2 sm:mt-3 md:mt-4 flex items-start gap-3 sm:gap-4 tabular-nums">
+                        <div class="mt-2 sm:mt-2.5 md:mt-3 flex items-center gap-3 sm:gap-3.5 md:gap-4 tabular-nums">
                             <!-- DAYS -->
                             <div class="text-center">
-                                <div class="font-['Poppins'] leading-none text-[32px] sm:text-[36px] md:text-[42px]"
-                                    x-text="dd">00</div>
-                                <div class="font-['Lato'] tracking-wide text-[11px] sm:text-[12px]">DAYS</div>
+                                <div class="font-['Poppins'] leading-none
+                        text-[28px] sm:text-[32px] md:text-[38px]" x-text="dd">00</div>
+                                <div class="font-['Lato'] tracking-wide
+                        text-[10px] sm:text-[11px] md:text-[12px]">DAYS</div>
                             </div>
 
                             <!-- dots -->
-                            <div class="flex flex-col items-center justify-center gap-[14px]">
+                            <div
+                                class="flex flex-col items-center justify-center gap-[12px] sm:gap-[13px] md:gap-[14px]">
                                 <span class="block w-2 h-2 rounded-full bg-white"></span>
                                 <span class="block w-2 h-2 rounded-full bg-white"></span>
                             </div>
 
                             <!-- HOURS -->
                             <div class="text-center">
-                                <div class="font-['Poppins'] leading-none text-[32px] sm:text-[36px] md:text-[42px]"
-                                    x-text="hh">00</div>
-                                <div class="font-['Lato'] tracking-wide text-[11px] sm:text-[12px]">HOURS</div>
+                                <div class="font-['Poppins'] leading-none
+                        text-[28px] sm:text-[32px] md:text-[38px]" x-text="hh">00</div>
+                                <div class="font-['Lato'] tracking-wide
+                        text-[10px] sm:text-[11px] md:text-[12px]">HOURS</div>
                             </div>
 
                             <!-- dots -->
-                            <div class="flex flex-col items-center justify-center gap-[14px]">
+                            <div
+                                class="flex flex-col items-center justify-center gap-[12px] sm:gap-[13px] md:gap-[14px]">
                                 <span class="block w-2 h-2 rounded-full bg-white"></span>
                                 <span class="block w-2 h-2 rounded-full bg-white"></span>
                             </div>
 
                             <!-- MINUTES -->
                             <div class="text-center">
-                                <div class="font-['Poppins'] leading-none text-[32px] sm:text-[36px] md:text-[42px]"
-                                    x-text="mm">00</div>
-                                <div class="font-['Lato'] tracking-wide text-[11px] sm:text-[12px]">MINUTES</div>
+                                <div class="font-['Poppins'] leading-none
+                        text-[28px] sm:text-[32px] md:text-[38px]" x-text="mm">00</div>
+                                <div class="font-['Lato'] tracking-wide
+                        text-[10px] sm:text-[11px] md:text-[12px]">MINUTES</div>
                             </div>
 
                             <!-- dots -->
-                            <div class="flex flex-col items-center justify-center gap-[14px]">
+                            <div
+                                class="flex flex-col items-center justify-center gap-[12px] sm:gap-[13px] md:gap-[14px]">
                                 <span class="block w-2 h-2 rounded-full bg-white"></span>
                                 <span class="block w-2 h-2 rounded-full bg-white"></span>
                             </div>
 
                             <!-- SECONDS -->
                             <div class="text-center">
-                                <div class="font-['Poppins'] leading-none text-[32px] sm:text-[36px] md:text-[42px]"
-                                    x-text="ss">00</div>
-                                <div class="font-['Lato'] tracking-wide text-[11px] sm:text-[12px]">SECONDS</div>
+                                <div class="font-['Poppins'] leading-none
+                        text-[28px] sm:text-[32px] md:text-[38px]" x-text="ss">00</div>
+                                <div class="font-['Lato'] tracking-wide
+                        text-[10px] sm:text-[11px] md:text-[12px]">SECONDS</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right deadline -->
-                    <div class="flex items-center gap-4 pl-4">
-                        <div class="h-[96px] sm:h-[110px] md:h-[120px] w-px bg-white/85"></div>
+                    <!-- Right deadline (smaller) -->
+                    <div class="flex items-center gap-3 sm:gap-3.5 md:gap-4 pl-3 sm:pl-3.5 md:pl-4">
+                        <div class="h-[84px] sm:h-[96px] md:h-[108px] w-px bg-white/80"></div>
                         <div class="text-center">
-                            <div class="font-['Inter'] font-medium text-[16px] sm:text-[18px]">Deadline</div>
-                            <div
-                                class="mt-2 sm:mt-3 font-['Poppins'] leading-none text-[32px] sm:text-[38px] md:text-[44px]">
+                            <div class="font-['Inter'] font-medium
+                      text-[14px] sm:text-[15px] md:text-[16px]">
+                                Deadline
+                            </div>
+                            <div class="mt-1.5 sm:mt-2 md:mt-2.5 font-['Poppins'] leading-none
+                      text-[28px] sm:text-[32px] md:text-[36px]">
                                 {{ timer.deadline_day }}
                             </div>
-                            <div class="font-['Lato'] tracking-wide uppercase text-[11px] sm:text-[12px]">
+                            <div class="font-['Lato'] tracking-wide uppercase
+                      text-[10px] sm:text-[11px] md:text-[12px]">
                                 {{ timer.deadline_month_upper }}
                             </div>
                         </div>
@@ -192,5 +207,6 @@
                 </div><!-- /timer-content -->
             </div><!-- /timer-wrap -->
         </div>
+
     </div>
 </section>

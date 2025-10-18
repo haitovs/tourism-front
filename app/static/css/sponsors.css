@@ -1,0 +1,53 @@
+/* Items scale with container. In rows: flex items can grow; in marquee: fixed basis */
+.s-item {
+    flex: 1 1 clamp(140px, 28vw, 250px);
+    max-width: 300px;
+}
+
+/* When inside marquee, prevent growing so the track scrolls predictably */
+.marquee__item .s-item {
+    flex: 0 0 clamp(140px, 28vw, 250px);
+}
+
+/* Card fills height of its wrapper and removes any fixed height coming from base class */
+.s-card {
+    display: grid;
+    grid-template-rows: 1fr auto; /* logo takes available space, label hugs content */
+    align-items: center;
+    justify-items: center;
+    height: auto;
+    min-height: 0;
+    padding: clamp(8px, 2vw, 16px);
+}
+
+/* Logo scales by max-height; width auto keeps aspect ratio; removes fixed w/h gaps */
+.s-card .s-logo {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    max-height: var(--logo-max-h, 120px);
+    object-fit: contain;
+}
+
+/* Tier label adapts; closes perceived gap by not being too tiny on mobile */
+.s-card .s-tier {
+    font-size: clamp(10px, 2.6vw, 21px);
+    line-height: 1.2;
+}
+
+/* Header responsiveness (unchanged semantics) */
+#sponsors .mini-title {
+    font-size: clamp(16px, 3vw, 30px);
+    line-height: 1.6;
+}
+#sponsors .main-title {
+    font-size: clamp(22px, 5vw, 60px);
+    line-height: 1.2;
+}
+#sponsors .sep-line {
+    width: clamp(120px, 30vw, 300px);
+}
+#sponsors .sep-logo {
+    width: clamp(90px, 22vw, 150px);
+    height: clamp(30px, 6vw, 50px);
+}

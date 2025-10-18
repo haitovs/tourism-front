@@ -19,7 +19,7 @@
 .timer-content {
     position: absolute;
     inset: 0;
-    z-index: 3;
+    z-index: 4;
 }
 .timer-left-panel {
     position: absolute;
