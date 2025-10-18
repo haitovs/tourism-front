@@ -1,0 +1,111 @@
+<section id="about" class="max-w-[var(--container)] mx-auto px-4 py-20">
+    <!-- Header -->
+    <header class="text-center mb-10">
+        <div class="flex items-center justify-center gap-4">
+            <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
+            <span class="font-['Montserrat'] text-[clamp(18px,3vw,30px)] leading-[1.6] text-[var(--c-primary)]">About
+                the Event</span>
+            <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
+        </div>
+        <h2
+            class="font-['Montserrat'] text-[clamp(22px,4vw,50px)] leading-[1.2] font-medium mt-2 text-center text-[#1E1E1E]">
+            International Expo &amp; Forum
+        </h2>
+    </header>
+
+    <!-- Content -->
+    <div class="grid lg:grid-cols-2 gap-6">
+        <!-- Left: text card (mobile = green panel, desktop = white card) -->
+        <article class="rounded-[20px] p-6 sm:p-7
+             bg-[var(--c-primary)] text-white
+             lg:bg-white lg:text-[#1E1E1E] lg:rounded-l-[20px] lg:rounded-r-none">
+
+            <!-- section label line -->
+            <div class="flex items-center justify-center lg:justify-start gap-3 mb-5">
+                <span class="h-px w-8 bg-white lg:bg-[var(--c-primary)]"></span>
+                <span class="font-['Roboto'] font-semibold text-[clamp(14px,2.2vw,18px)]
+                     text-white lg:text-[var(--c-primary)]">About the Event</span>
+                <span class="h-px w-8 bg-white lg:bg-[var(--c-primary)]"></span>
+            </div>
+
+            <!-- About -->
+            <section class="mb-7">
+                <h3 class="font-['Roboto'] font-semibold text-[clamp(18px,2.8vw,25px)] mb-2
+                   text-white lg:text-[#1E1E1E]">
+                    About the Forum
+                </h3>
+                <p class="font-['Roboto'] text-[clamp(14px,2.6vw,20px)] leading-[1.45]
+                  text-white/90 lg:text-[#7CBA9B]">
+                    We are an international team of professionals dedicated to organizing high-level global events —
+                    including forums, exhibitions, and lectures — that promote innovation, cultural exchange, and
+                    international cooperation.
+                </p>
+            </section>
+
+            <!-- Why Join -->
+            <section class="mb-7">
+                <h3 class="font-['Roboto'] font-semibold text-[clamp(18px,2.8vw,25px)] mb-2
+                   text-white lg:text-[#1E1E1E]">
+                    Why Join Forum 2026
+                </h3>
+                <p class="font-['Roboto'] text-[clamp(14px,2.6vw,20px)] leading-[1.45]
+                  text-white/90 lg:text-[rgba(0,122,61,0.55)]">
+                    Experience a forum designed to inspire, inform, and connect the community through meaningful
+                    dialogue
+                    and real collaboration.
+                </p>
+            </section>
+
+            <!-- For our guests -->
+            <section class="mb-8">
+                <h3 class="font-['Roboto'] font-semibold text-[clamp(18px,2.8vw,25px)] mb-2
+                   text-white lg:text-[#1E1E1E]">
+                    For Our Guests
+                </h3>
+                <p class="font-['Roboto'] text-[clamp(14px,2.6vw,20px)] leading-[1.45]
+                  text-white/90 lg:text-[rgba(0,122,61,0.55)]">
+                    Open to foreign delegations, embassy representatives, cultural missions, media professionals, and
+                    invited international guests.
+                </p>
+            </section>
+
+            <!-- Link (mobile = white on green, desktop = green on white) -->
+            <a href="/about-the-forum" class="inline-flex items-center gap-2 font-['Roboto'] font-extrabold
+                text-[clamp(14px,2.4vw,18px)] underline transition
+                text-white hover:opacity-90
+                lg:text-[var(--c-primary)]">
+                Read details
+                <svg class="w-[16px] h-[16px] sm:w-[18px] sm:h-[18px]" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14" />
+                    <path d="M13 5l7 7-7 7" />
+                </svg>
+            </a>
+        </article>
+
+        <!-- Right: media block -->
+        <aside class="relative">
+            <div class="relative h-[260px] sm:h-[320px] lg:h-full min-h-[260px]
+                  rounded-[20px] lg:rounded-r-[20px] lg:rounded-l-none overflow-hidden">
+                <img src="/static/img/about_video.png" alt="Event preview"
+                    class="w-full h-full object-cover select-none pointer-events-none" draggable="false"
+                    onerror="this.src='/static/img/img_placeholder.png'; this.style.objectFit='contain';" />
+                <!-- Dark overlay -->
+                <div class="absolute inset-0 bg-black/20"></div>
+                <!-- Concentric play button (matches Figma vibe) -->
+                <button type="button" class="absolute inset-0 m-auto grid place-items-center w-[90px] h-[90px] sm:w-[110px] sm:h-[110px]
+                       rounded-full bg-white/15 backdrop-blur-[2px] hover:bg-white/25 transition"
+                    aria-label="Play video">
+                    <div
+                        class="relative w-[64px] h-[64px] rounded-full bg-[rgba(0,122,61,0.75)] grid place-items-center">
+                        <div
+                            class="absolute inset-0 m-auto w-[88px] h-[88px] rounded-full bg-[rgba(0,122,61,0.6)] -z-10">
+                        </div>
+                        <img src="/static/img/about_video_play.svg" alt="Play"
+                            class="w-[34px] h-[34px] pointer-events-none select-none" draggable="false" />
+                    </div>
+                </button>
+            </div>
+        </aside>
+    </div>
+</section>
