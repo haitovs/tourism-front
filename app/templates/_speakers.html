@@ -1,96 +1,115 @@
 {# app/templates/_speakers.html #}
-<section class="max-w-[var(--container)] mx-auto px-4 py-14 space-y-10" id="speakers">
+<section class="max-w-[var(--container)] mx-auto px-4 py-10 space-y-7" id="speakers">
     <!-- Header -->
     <header class="text-center">
-        <div class="flex items-center justify-center gap-4">
-            <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
-            <span class="font-['Montserrat'] text-[30px] leading-[75px] text-[var(--c-primary)]">Speakers</span>
-            <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
+        <div class="flex items-center justify-center gap-3">
+            <span class="hidden sm:block h-px w-[48px] bg-[var(--c-primary)]"></span>
+            <span
+                class="font-['Montserrat'] text-[clamp(16px,2.4vw,26px)] leading-[1.5] text-[var(--c-primary)]">Speakers</span>
+            <span class="hidden sm:block h-px w-[48px] bg-[var(--c-primary)]"></span>
         </div>
-        <h2
-            class="font-['Montserrat'] text-[clamp(28px,4vw,50px)] leading-[1.22] font-medium mt-1 text-center text-[#1E1E1E]"
-        >
+        <h2 class="font-['Montserrat'] text-[clamp(22px,3.6vw,42px)] leading-[1.2] font-medium mt-1 text-[#1E1E1E]">
             Our respected speakers
         </h2>
     </header>
-    <!-- Cards wrapper (white container like figma) -->
-    <div class="w-full bg-white rounded-[20px] p-6 md:p-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 place-items-center">
+
+    <div class="w-full bg-white rounded-[14px] p-4 sm:p-5">
+        {# ===== MOBILE & TABLET (<= md) : compact list=====#} <div class="lg:hidden space-y-3.5">
             {% for sp in speakers %}
             <a href="/speakers/{{ sp.id }}" class="block group">
-                <div class="relative w-[380px] h-[450px] rounded-[35px] overflow-hidden shadow">
-                    {% if sp.photo_url %}
-                    <img
-                        src="{{ sp.photo_url }}"
-                        alt="{{ sp.fullname }}"
-                        class="absolute inset-0 w-full h-full object-cover"
-                    />
-                    {% else %}
-                    <img
-                        src="/static/img/person_placeholder.jpg"
-                        alt="Speaker"
-                        class="absolute inset-0 w-full h-full object-cover opacity-80"
-                    />
-                    {% endif %}
-                    <!-- bottom dark panel -->
-                    <div
-                        class="absolute bottom-0 left-0 right-0 h-[160px] bg-[rgba(30,30,30,0.65)] backdrop-blur-sm rounded-b-[35px] p-5"
-                    >
-                        <div class="text-white">
-                            <div
-                                class="font-['Roboto'] font-bold text-[25px] leading-[29px] truncate"
-                                title="{{ sp.fullname }}"
-                            >
-                                {{ sp.fullname }}
-                            </div>
-                            <div class="mt-2 font-['Roboto'] text-[20px] leading-[23px] line-clamp-2">
-                                {{ sp.position }}
-                            </div>
+                <article class="w-full rounded-[14px] bg-white shadow  overflow-hidden">
+                    <div class="flex">
+                        <!-- photo -->
+                        <div class="shrink-0 overflow-hidden"
+                            style="width:clamp(84px,22vw,110px); height:clamp(84px,22vw,110px)">
+                            {% if sp.photo_url %}
+                            <img src="{{ sp.photo_url }}" alt="{{ sp.fullname }}" class="w-full h-full object-cover" />
+                            {% else %}
+                            <img src="/static/img/person_placeholder.jpg" alt="Speaker"
+                                class="w-full h-full object-cover opacity-80" />
+                            {% endif %}
                         </div>
-                        <!-- arrow (bottom-right of dark panel) -->
-                        <div class="absolute right-5 bottom-5">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                class="transition-transform group-hover:translate-x-[2px]"
-                            >
-                                <path
-                                    d="M5 12h14M13 6l6 6-6 6"
-                                    fill="none"
-                                    stroke="white"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                />
-                            </svg>
+                        <!-- text -->
+                        <div class="flex-1 p-3 sm:p-3.5">
+                            <h3
+                                class="font-['Roboto'] font-bold text-[clamp(15px,3.8vw,18px)] leading-[1.2] text-[#1E1E1E]">
+                                {{ sp.fullname }}
+                            </h3>
+                            <p
+                                class="mt-1.5 font-['Roboto'] text-[clamp(12px,3.2vw,14px)] leading-[1.3] text-[#1E1E1E]/80 line-clamp-2">
+                                {{ sp.position }}, {{ sp.company }}
+                            </p>
                         </div>
                     </div>
-                </div>
+                </article>
             </a>
-            {% endfor %} {% if speakers|length == 0 %}
-            <div class="col-span-full text-center text-slate-500 py-10">No speakers yet.</div>
+            {% endfor %}
+            {% if speakers|length == 0 %}
+            <div class="text-center text-slate-500 py-8">No speakers yet.</div>
             {% endif %}
-        </div>
-        <!-- More details button -->
-        <div class="mt-8 flex justify-center">
-            <a
-                href="/speakers"
-                class="inline-flex items-center justify-center w-[227px] h-[65px] rounded-[15px] bg-[#007A3D] text-white gap-3"
-            >
-                <span class="font-['Roboto'] text-[25px] leading-[29px] underline">More details</span>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="w-[22px] h-[22px]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="1.6"
-                >
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-            </a>
-        </div>
+
+            <!-- full width button -->
+            <div class="pt-1">
+                <a href="/speakers" class="block w-full rounded-[12px] bg-[#007A3D] text-white text-center py-3
+                  font-['Roboto'] font-semibold text-[clamp(15px,4.4vw,18px)]">
+                    More details
+                </a>
+            </div>
+    </div>
+
+    {# ===== DESKTOP (>= lg only, i.e. > md) : smaller cards ===== #}
+    <div class="hidden lg:grid grid-cols-3 gap-5 xl:gap-6 place-items-center">
+        {% for sp in speakers %}
+        <a href="/speakers/{{ sp.id }}" class="block group">
+            <div class="relative w-[min(90vw,300px)] xl:w-[min(28vw,320px)] h-[380px] xl:h-[400px]
+                    rounded-[24px] overflow-hidden shadow">
+                {% if sp.photo_url %}
+                <img src="{{ sp.photo_url }}" alt="{{ sp.fullname }}"
+                    class="absolute inset-0 w-full h-full object-cover" />
+                {% else %}
+                <img src="/static/img/person_placeholder.jpg" alt="Speaker"
+                    class="absolute inset-0 w-full h-full object-cover opacity-80" />
+                {% endif %}
+
+                <!-- bottom panel -->
+                <div class="absolute bottom-0 left-0 right-0 h-[122px] xl:h-[130px]
+                      bg-[rgba(30,30,30,0.65)] backdrop-blur-sm rounded-b-[24px] p-4">
+                    <div class="text-white pr-7">
+                        <div class="font-['Roboto'] font-bold text-[clamp(16px,1.2vw,20px)] leading-[1.15] truncate"
+                            title="{{ sp.fullname }}">
+                            {{ sp.fullname }}
+                        </div>
+                        <div class="mt-1.5 font-['Roboto'] text-[clamp(13px,1.05vw,16px)] leading-[1.25] line-clamp-2">
+                            {{ sp.position }}, {{ sp.company }}
+                        </div>
+                    </div>
+                    <div class="absolute right-3.5 bottom-3.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            class="transition-transform group-hover:translate-x-[2px]">
+                            <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="white" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+
+        {% if speakers|length == 0 %}
+        <div class="col-span-full text-center text-slate-500 py-8">No speakers yet.</div>
+        {% endif %}
+    </div>
+
+    <!-- desktop button -->
+    <div class="hidden lg:flex justify-center mt-6">
+        <a href="/speakers"
+            class="inline-flex items-center justify-center w-[190px] h-[50px] rounded-[12px] bg-[#007A3D] text-white gap-2.5">
+            <span class="font-['Roboto'] text-[18px] leading-[1] underline">More details</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="1.6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+        </a>
+    </div>
     </div>
 </section>
