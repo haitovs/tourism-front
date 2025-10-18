@@ -1,6 +1,5 @@
-{# app/templates/_timer.html #}
 <section class="max-w-[var(--container)] mx-auto px-4 py-14 space-y-10" id="timer">
-    <!-- HEADER: green mini title + lines, then big title -->
+    <!-- HEADER -->
     <header class="text-center">
         <div class="flex items-center justify-center gap-4">
             <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
@@ -8,234 +7,189 @@
             <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
         </div>
         <h2
-            class="font-['Montserrat'] text-[clamp(28px,4vw,50px)] leading-[1.22] font-medium mt-1 text-center text-[#1E1E1E]"
-        >
+            class="font-['Montserrat'] text-[clamp(28px,4vw,50px)] leading-[1.22] font-medium mt-1 text-center text-[#1E1E1E]">
             Countdown to the official start of the forum
         </h2>
     </header>
-    <!-- Picture with timer -->
-    <div
-        x-data="timerWidget({ apiBase: '{{ settings.BACKEND_BASE_URL }}', bgUrl: '/static/img/timer/timer_bg.png', logoUrl: '/static/img/timer/logo.svg' })"
-        x-init="init()"
-        class="w-full flex justify-center"
-    >
-        <div
-            class="relative w-[1310px] h-[460px] rounded-[20px] overflow-hidden"
-            :style="`background-image:url('${bgUrl}'); background-size:cover; background-position:center;`"
-        >
-            <!-- Left dark overlay: 564 × 460 -->
-            <div
-                class="absolute left-0 top-0 h-[460px] w-[564px] bg-black/30 backdrop-blur-[2.5px] rounded-l-[20px]"
-            ></div>
-            <!-- Left content: logo + multi-line title, top-aligned, fits within 564px -->
-            <div class="absolute left-0 top-0 h-[460px] w-[564px] z-20">
-                <div class="pl-[28px] pr-[24px] pt-[18px] text-white flex items-center gap-3 w-full">
-                    <img :src="logoUrl" alt="logo" class="w-[80px] h-auto shrink-0" />
-                    <div
-                        class="font-['Montserrat'] font-medium text-[22px] leading-[28px] text-gray-100 whitespace-normal line-clamp-3"
-                        style="max-width: calc(564px - 28px - 24px - 80px - 12px)"
-                        x-text="eventName || 'International Turkmenistan-China forum and exhibition'"
-                    ></div>
+
+    <!-- One Alpine instance drives BOTH -->
+    <div x-data="window.timerWidget({
+      apiBase: '{{ settings.BACKEND_BASE_URL }}',
+      bgUrl: '/static/img/timer/timer_bg.png',
+      logoUrl: '/static/img/timer/logo.svg'
+    })" x-init="$nextTick(() => init())">
+        <!-- ===== BIG TIMER (>=1024px) ===== -->
+        <div class="timer-big justify-center w-full">
+            <div class="timer-wrap w-[1100px] xl:w-[1310px] h-[380px] xl:h-[460px]">
+                <!-- Background -->
+                <div class="timer-bg">
+                    <img src="{{ url_for('static', path='img/timer/timer_bg.png') }}" x-bind:src="bgUrl" alt=""
+                        aria-hidden="true" />
                 </div>
-            </div>
-            <!-- Red rounded timer bar: centered, UNDER the left content -->
-            <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[922px] h-[215px] z-10">
-                <div class="w-full h-full bg-[#BD280D] rounded-[40px] flex items-center justify-center px-8">
-                    <div class="flex items-center gap-[42px] text-white select-none">
-                        <!-- DAYS -->
-                        <div class="flex flex-col items-center justify-center">
-                            <div
-                                class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums"
-                                x-text="dd"
-                            >
-                                00
-                            </div>
-                            <div class="mt-1 font-['Roboto'] text-[20px] leading-[24px]">DAYS</div>
-                        </div>
-                        <!-- colon (two dots) -->
-                        <div class="flex flex-col items-center justify-center gap-[22px]">
-                            <span class="block w-4 h-4 rounded-full bg-white"></span>
-                            <span class="block w-4 h-4 rounded-full bg-white"></span>
-                        </div>
-                        <!-- HOURS -->
-                        <div class="flex flex-col items-center justify-center">
-                            <div
-                                class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums"
-                                x-text="hh"
-                            >
-                                00
-                            </div>
-                            <div class="mt-1 font-['Roboto'] text-[20px] leading-[24px]">HOURS</div>
-                        </div>
-                        <!-- colon -->
-                        <div class="flex flex-col items-center justify-center gap-[22px]">
-                            <span class="block w-4 h-4 rounded-full bg-white"></span>
-                            <span class="block w-4 h-4 rounded-full bg-white"></span>
-                        </div>
-                        <!-- MINUTES -->
-                        <div class="flex flex-col items-center justify-center">
-                            <div
-                                class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums"
-                                x-text="mm"
-                            >
-                                00
-                            </div>
-                            <div class="mt-1 font-['Roboto'] text-[20px] leading-[24px]">MINUTES</div>
-                        </div>
-                        <!-- colon -->
-                        <div class="flex flex-col items-center justify-center gap-[22px]">
-                            <span class="block w-4 h-4 rounded-full bg-white"></span>
-                            <span class="block w-4 h-4 rounded-full bg-white"></span>
-                        </div>
-                        <!-- SECONDS -->
-                        <div class="flex flex-col items-center justify-center">
-                            <div
-                                class="font-['Roboto'] font-semibold text-[110px] leading-[110px] tabular-nums"
-                                x-text="ss"
-                            >
-                                00
-                            </div>
-                            <div class="mt-1 font-['Roboto'] text-[20px] leading-[24px]">SECONDS</div>
+
+                <!-- Overlay (below content layer by z-index in CSS) -->
+                <div class="timer-overlay"></div>
+
+                <!-- Optional darker left panel -->
+                <div class="timer-left-panel w-[480px] xl:w-[564px] bg-black/30 backdrop-blur-[2.5px] rounded-l-[20px]">
+                </div>
+
+                <!-- Content ON TOP -->
+                <div class="timer-content text-white">
+                    <!-- Left content -->
+                    <div class="absolute left-0 top-0 h-full w-[480px] xl:w-[564px]">
+                        <div class="pl-[24px] pr-[20px] pt-[16px] flex items-center gap-3 w-full">
+                            <img :src="logoUrl" alt="logo" class="w-[72px] xl:w-[80px] h-auto shrink-0" />
+                            <div class="font-['Montserrat'] font-medium text-[20px] xl:text-[22px] leading-[26px] xl:leading-[28px] line-clamp-3 text-white"
+                                style="max-width: calc(100% - 72px - 12px - 24px - 20px)"
+                                x-text="eventName || 'International Turkmenistan-China forum and exhibition'"></div>
                         </div>
                     </div>
+
+                    <!-- Center red bar -->
+                    <div
+                        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[840px] h-[190px] xl:w-[922px] xl:h-[215px]">
+                        <div class="w-full h-full bg-[#BD280D] rounded-[40px] flex items-center justify-center px-8">
+                            <div class="flex items-center gap-[32px] xl:gap-[42px] text-white select-none">
+                                <!-- DAYS -->
+                                <div class="flex flex-col items-center">
+                                    <div class="font-['Roboto'] font-semibold tabular-nums text-[92px] leading-[92px] xl:text-[110px] xl:leading-[110px]"
+                                        x-text="dd">00</div>
+                                    <div
+                                        class="mt-1 font-['Roboto'] text-[18px] leading-[22px] xl:text-[20px] xl:leading-[24px]">
+                                        DAYS</div>
+                                </div>
+                                <!-- dots -->
+                                <div class="flex flex-col items-center justify-center gap-[18px] xl:gap-[22px]">
+                                    <span class="block w-4 h-4 rounded-full bg-white"></span>
+                                    <span class="block w-4 h-4 rounded-full bg-white"></span>
+                                </div>
+                                <!-- HOURS -->
+                                <div class="flex flex-col items-center">
+                                    <div class="font-['Roboto'] font-semibold tabular-nums text-[92px] leading-[92px] xl:text-[110px] xl:leading-[110px]"
+                                        x-text="hh">00</div>
+                                    <div
+                                        class="mt-1 font-['Roboto'] text-[18px] leading-[22px] xl:text-[20px] xl:leading-[24px]">
+                                        HOURS</div>
+                                </div>
+                                <!-- dots -->
+                                <div class="flex flex-col items-center justify-center gap-[18px] xl:gap-[22px]">
+                                    <span class="block w-4 h-4 rounded-full bg-white"></span>
+                                    <span class="block w-4 h-4 rounded-full bg-white"></span>
+                                </div>
+                                <!-- MINUTES -->
+                                <div class="flex flex-col items-center">
+                                    <div class="font-['Roboto'] font-semibold tabular-nums text-[92px] leading-[92px] xl:text-[110px] xl:leading-[110px]"
+                                        x-text="mm">00</div>
+                                    <div
+                                        class="mt-1 font-['Roboto'] text-[18px] leading-[22px] xl:text-[20px] xl:leading-[24px]">
+                                        MINUTES</div>
+                                </div>
+                                <!-- dots -->
+                                <div class="flex flex-col items-center justify-center gap-[18px] xl:gap-[22px]">
+                                    <span class="block w-4 h-4 rounded-full bg-white"></span>
+                                    <span class="block w-4 h-4 rounded-full bg-white"></span>
+                                </div>
+                                <!-- SECONDS -->
+                                <div class="flex flex-col items-center">
+                                    <div class="font-['Roboto'] font-semibold tabular-nums text-[92px] leading-[92px] xl:text-[110px] xl:leading-[110px]"
+                                        x-text="ss">00</div>
+                                    <div
+                                        class="mt-1 font-['Roboto'] text-[18px] leading-[22px] xl:text-[20px] xl:leading-[24px]">
+                                        SECONDS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /timer-content -->
+            </div><!-- /timer-wrap -->
+        </div>
+
+        <!-- ===== SMALL (<1024px) WITH SECONDS ===== -->
+        <div class="timer-small">
+            <div
+                class="timer-wrap mx-auto w-[350px] h-[160px] sm:w-[420px] sm:h-[180px] md:w-[560px] md:h-[210px] rounded-[16px]">
+                <!-- Background -->
+                <div class="timer-bg">
+                    <img src="{{ url_for('static', path='img/timer/timer_bg.png') }}" x-bind:src="bgUrl" alt=""
+                        aria-hidden="true" />
                 </div>
-            </div>
+
+                <!-- Overlay (below content layer by z-index in CSS) -->
+                <div class="timer-overlay"></div>
+
+                <!-- Content ON TOP -->
+                <div class="timer-content px-4 sm:px-6 md:px-8 flex items-center text-white">
+                    <!-- Left counters -->
+                    <div class="flex-1">
+                        <div class="font-['Inter'] font-medium text-[16px] sm:text-[18px]">The remaining</div>
+
+                        <div class="mt-2 sm:mt-3 md:mt-4 flex items-end gap-3 sm:gap-4 tabular-nums">
+                            <!-- DAYS -->
+                            <div class="text-center">
+                                <div class="font-['Poppins'] leading-none text-[32px] sm:text-[36px] md:text-[42px]"
+                                    x-text="dd">00</div>
+                                <div class="font-['Lato'] tracking-wide text-[11px] sm:text-[12px]">DAYS</div>
+                            </div>
+
+                            <!-- dots -->
+                            <div class="flex flex-col items-center justify-center gap-[14px]">
+                                <span class="block w-2 h-2 rounded-full bg-white"></span>
+                                <span class="block w-2 h-2 rounded-full bg-white"></span>
+                            </div>
+
+                            <!-- HOURS -->
+                            <div class="text-center">
+                                <div class="font-['Poppins'] leading-none text-[32px] sm:text-[36px] md:text-[42px]"
+                                    x-text="hh">00</div>
+                                <div class="font-['Lato'] tracking-wide text-[11px] sm:text-[12px]">HOURS</div>
+                            </div>
+
+                            <!-- dots -->
+                            <div class="flex flex-col items-center justify-center gap-[14px]">
+                                <span class="block w-2 h-2 rounded-full bg-white"></span>
+                                <span class="block w-2 h-2 rounded-full bg-white"></span>
+                            </div>
+
+                            <!-- MINUTES -->
+                            <div class="text-center">
+                                <div class="font-['Poppins'] leading-none text-[32px] sm:text-[36px] md:text-[42px]"
+                                    x-text="mm">00</div>
+                                <div class="font-['Lato'] tracking-wide text-[11px] sm:text-[12px]">MINUTES</div>
+                            </div>
+
+                            <!-- dots -->
+                            <div class="flex flex-col items-center justify-center gap-[14px]">
+                                <span class="block w-2 h-2 rounded-full bg-white"></span>
+                                <span class="block w-2 h-2 rounded-full bg-white"></span>
+                            </div>
+
+                            <!-- SECONDS -->
+                            <div class="text-center">
+                                <div class="font-['Poppins'] leading-none text-[32px] sm:text-[36px] md:text-[42px]"
+                                    x-text="ss">00</div>
+                                <div class="font-['Lato'] tracking-wide text-[11px] sm:text-[12px]">SECONDS</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right deadline -->
+                    <div class="flex items-center gap-4 pl-4">
+                        <div class="h-[96px] sm:h-[110px] md:h-[120px] w-px bg-white/85"></div>
+                        <div class="text-center">
+                            <div class="font-['Inter'] font-medium text-[16px] sm:text-[18px]">Deadline</div>
+                            <div
+                                class="mt-2 sm:mt-3 font-['Poppins'] leading-none text-[32px] sm:text-[38px] md:text-[44px]">
+                                {{ timer.deadline_day }}
+                            </div>
+                            <div class="font-['Lato'] tracking-wide uppercase text-[11px] sm:text-[12px]">
+                                {{ timer.deadline_month_upper }}
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /timer-content -->
+
+            </div><!-- /timer-wrap -->
         </div>
     </div>
 </section>
-<script>
-    function timerWidget({ apiBase, bgUrl, logoUrl }) {
-        return {
-            apiBase,
-            bgUrl,
-            logoUrl,
-
-            eventName: "",
-            mode: "UNTIL_START",
-            targetISO: null,
-            serverISO: null,
-            deltaMs: 0,
-
-            dd: "00",
-            hh: "00",
-            mm: "00",
-            ss: "00",
-            _tickHandle: null,
-
-            async init() {
-                await this.fetchTimer();
-                this.openWS();
-                this.startTicking();
-            },
-
-            wsUrlFromBase() {
-                try {
-                    const u = new URL(this.apiBase);
-                    u.protocol = u.protocol === "https:" ? "wss:" : "ws:";
-                    u.pathname = "/ws/timer";
-                    u.search = "";
-                    return u.toString();
-                } catch (e) {
-                    // fallback to same host if parsing fails
-                    const loc = window.location;
-                    return (loc.protocol === "https:" ? "wss://" : "ws://") + loc.host + "/ws/timer";
-                }
-            },
-
-            async fetchTimer() {
-                const url = this.apiBase.replace(/\/+$/, "") + "/timer/active";
-                try {
-                    const res = await fetch(url, { credentials: "include" });
-                    if (!res.ok) {
-                        console.warn("[timer] fetch failed:", res.status, res.statusText);
-                        // Keep zeros; try again in 10s in case admin activates later
-                        setTimeout(() => this.fetchTimer(), 10000);
-                        return;
-                    }
-                    const data = await res.json().catch((e) => {
-                        console.error("[timer] bad JSON:", e);
-                        return null;
-                    });
-                    if (!data) return;
-
-                    this.eventName = data.event_name || "";
-                    this.mode = data.mode || "UNTIL_START";
-                    this.serverISO = data.server_time || null;
-                    this.targetISO = (this.mode === "UNTIL_END" ? data.end_time : data.start_time) || null;
-
-                    if (this.serverISO) {
-                        const serverMs = Date.parse(this.serverISO);
-                        this.deltaMs = Date.now() - serverMs;
-                    } else {
-                        this.deltaMs = 0;
-                    }
-
-                    // If target is missing or in the past, keep ticking but show 00s
-                    if (!this.targetISO) console.warn("[timer] no target time in response");
-                } catch (err) {
-                    console.error("[timer] fetch error:", err);
-                    setTimeout(() => this.fetchTimer(), 10000);
-                }
-            },
-
-            openWS() {
-                const wsURL = this.wsUrlFromBase();
-                let ws;
-                try {
-                    ws = new WebSocket(wsURL);
-                } catch (e) {
-                    return; // no WS, timer still works by fetch()
-                }
-                ws.onmessage = (ev) => {
-                    try {
-                        const msg = JSON.parse(ev.data);
-                        if (msg && msg.event === "TIMER_CREATED" && msg.data) {
-                            const d = msg.data;
-                            this.eventName = d.event_name || "";
-                            this.mode = d.mode || "UNTIL_START";
-                            this.targetISO = (this.mode === "UNTIL_END" ? d.end_time : d.start_time) || null;
-                            // reset drift using client clock (no server_time in WS payload)
-                            this.deltaMs = 0;
-                        }
-                    } catch {}
-                };
-                ws.onerror = () => {};
-                ws.onclose = () => {};
-            },
-
-            startTicking() {
-                const update = () => {
-                    if (!this.targetISO) {
-                        // no timer -> keep zeros
-                        this.dd = this.hh = this.mm = this.ss = "00";
-                        this._tickHandle = setTimeout(update, 1000);
-                        return;
-                    }
-                    // derive server-synced "now"
-                    const nowMs = Date.now() - this.deltaMs;
-                    const targetMs = Date.parse(this.targetISO);
-                    let remain = targetMs - nowMs;
-
-                    if (isNaN(targetMs) || remain <= 0) {
-                        this.dd = this.hh = this.mm = this.ss = "00";
-                        this._tickHandle = setTimeout(update, 1000);
-                        return;
-                    }
-                    const sec = Math.floor(remain / 1000);
-                    const days = Math.floor(sec / 86400);
-                    const hrs = Math.floor((sec % 86400) / 3600);
-                    const mins = Math.floor((sec % 3600) / 60);
-                    const secs = sec % 60;
-
-                    this.dd = String(days).padStart(2, "0");
-                    this.hh = String(hrs).padStart(2, "0");
-                    this.mm = String(mins).padStart(2, "0");
-                    this.ss = String(secs).padStart(2, "0");
-
-                    this._tickHandle = setTimeout(update, 1000);
-                };
-                update();
-            },
-        };
-    }
-</script>

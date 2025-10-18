@@ -11,6 +11,7 @@ from app.services import partners as partners_srv
 from app.services import speakers as speakers_srv
 from app.services import sponsors as sponsor_srv
 from app.services import statistics as stats_srv
+from app.services import timer as timer_srv
 
 from ..core.settings import settings
 from ..core.templates import templates
@@ -32,6 +33,10 @@ def _resolve_site_id(req: Request) -> int | None:
 async def home(req: Request):
     lang = _resolve_lang(req)
     site_id = _resolve_site_id(req)
+
+    # ⬇️ build timer context first
+    deadline_dt = timer_srv.get_deadline_from_settings(settings)
+    timer_ctx = timer_srv.build_timer_context(deadline_dt)
 
     ctx = {
         "request": req,
@@ -58,11 +63,12 @@ async def home(req: Request):
         },
         "partners": partners_srv.list_partners(),
 
-        # ✅ fixed typo here
+        # participants
         "participants": participants_srv.list_participants(limit=12, latest_first=True, site_id=site_id),
         "participants_expo": participants_srv.list_participants(limit=8, role="expo", site_id=site_id),
         "participants_forum": participants_srv.list_participants(limit=8, role="forum", site_id=site_id),
         "participants_both": participants_srv.list_participants(limit=8, role="both", site_id=site_id),
+        "timer": timer_ctx,
     }
 
     resp = templates.TemplateResponse("index.html", ctx)

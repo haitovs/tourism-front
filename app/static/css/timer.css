@@ -1,0 +1,61 @@
+/* Visibility toggles (no Tailwind breakpoints dependency) */
+.timer-big {
+    display: none;
+}
+.timer-small {
+    display: block;
+}
+
+@media (min-width: 1024px) {
+    .timer-big {
+        display: flex;
+    } /* flex so inner layout aligns */
+    .timer-small {
+        display: none;
+    }
+}
+
+/* Layering */
+.timer-wrap {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #111; /* safe fallback */
+}
+
+/* Background image at bottom */
+.timer-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+.timer-bg > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Dark overlay above bg, below content */
+.timer-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1;
+}
+
+/* Optional left panel above overlay, below content */
+.timer-left-panel {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    z-index: 2;
+}
+
+/* Actual content on top */
+.timer-content {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+}

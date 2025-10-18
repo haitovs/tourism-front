@@ -1,19 +1,18 @@
-<section id="about" class="max-w-[var(--container)] mx-auto px-4 py-20">
+<section id="about" class="max-w-[var(--container)] mx-auto px-4 py-20 ">
     <!-- Header -->
-    <header class="text-center mb-10">
+    <header class="text-center mb-10 ">
         <div class="flex items-center justify-center gap-4">
             <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
             <span class="font-['Montserrat'] text-[30px] leading-[75px] text-[var(--c-primary)]">About the Event</span>
             <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
         </div>
         <h2
-            class="font-['Montserrat'] text-[clamp(28px,4vw,50px)] leading-[61px] font-medium mt-2 text-center text-[#1E1E1E]"
-        >
+            class="font-['Montserrat'] text-[clamp(28px,4vw,50px)] leading-[61px] font-medium mt-2 text-center text-[#1E1E1E]">
             International Expo &amp; Forum
         </h2>
     </header>
     <!-- Content -->
-    <div class="grid lg:grid-cols-2 gap-6">
+    <div class="grid lg:grid-cols-2 gap-6 ">
         <!-- Left: text card -->
         <article class="bg-white rounded-[20px] lg:rounded-l-[20px] lg:rounded-r-none p-7">
             <!-- About -->
@@ -44,10 +43,8 @@
                 </p>
             </section>
             <!-- More details (link) -->
-            <a
-                href="/about-the-forum"
-                class="inline-flex items-center gap-2 font-['Roboto'] font-extrabold text-[18px] text-[var(--c-primary)] underline hover:opacity-80 transition"
-            >
+            <a href="/about-the-forum"
+                class="inline-flex items-center gap-2 font-['Roboto'] font-extrabold text-[18px] text-[var(--c-primary)] underline hover:opacity-80 transition">
                 More details
                 <!-- arrow-right -->
                 <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -58,29 +55,18 @@
         </article>
         <aside class="relative">
             <div
-                class="relative h-[380px] sm:h-[460px] lg:h-full min-h-[320px] rounded-[20px] lg:rounded-r-[20px] lg:rounded-l-none overflow-hidden"
-            >
-                <img
-                    src="/static/img/about_video.png"
-                    alt="Event preview"
-                    class="w-full h-full object-cover select-none pointer-events-none"
-                    draggable="false"
-                    onerror="this.src='/static/img/img_placeholder.png'; this.style.objectFit='contain';"
-                />
+                class="relative h-[380px] sm:h-[460px] lg:h-full min-h-[320px] rounded-[20px] lg:rounded-r-[20px] lg:rounded-l-none overflow-hidden">
+                <img src="/static/img/about_video.png" alt="Event preview"
+                    class="w-full h-full object-cover select-none pointer-events-none" draggable="false"
+                    onerror="this.src='/static/img/img_placeholder.png'; this.style.objectFit='contain';" />
                 <!-- Dark overlay -->
                 <div class="absolute inset-0 bg-black/20"></div>
                 <!-- Play button using external SVG -->
-                <button
-                    type="button"
+                <button type="button"
                     class="absolute inset-0 m-auto w-[100px] h-[95px] rounded-full grid place-items-center bg-white/15 backdrop-blur-sm hover:bg-white/25 transition"
-                    aria-label="Play video"
-                >
-                    <img
-                        src="/static/img/about_video_play.svg"
-                        alt="Play"
-                        class="w-[44px] h-[44px] pointer-events-none select-none"
-                        draggable="false"
-                    />
+                    aria-label="Play video">
+                    <img src="/static/img/about_video_play.svg" alt="Play"
+                        class="w-[44px] h-[44px] pointer-events-none select-none" draggable="false" />
                 </button>
             </div>
         </aside>

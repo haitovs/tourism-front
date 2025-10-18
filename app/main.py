@@ -13,6 +13,7 @@ from app.routers.participant_router import router as participant_router
 from app.routers.privacy_router import router as privacy_router
 from app.routers.speaker_router import router as speaker_router
 from app.routers.terms_router import router as terms_router
+from app.routers.timer_router import router as timer_router
 
 from .core.settings import settings
 from .routers import site
@@ -33,3 +34,4 @@ app.include_router(official_support_router)
 app.include_router(terms_router)
 app.include_router(privacy_router)
 app.include_router(agenda_router)
+app.include_router(timer_router)
