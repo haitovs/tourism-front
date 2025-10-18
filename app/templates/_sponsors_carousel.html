@@ -1,58 +1,60 @@
-{# expects data = list_all_sponsors_by_tier(...), now with layout/rows/marquee_rows #} {% set vm = data %} {% macro
-card(sp) -%} {% if sp.website %}
-<a
-    href="{{ sp.website }}"
-    class="{{ vm.link_interactive_class }}"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="{{ sp.name }} (opens in new tab)"
->
+{# _sponsors_carousel.html #}
+{% set vm = data %}
+{% macro card(sp) -%}
+{% if sp.website %}
+<a href="{{ sp.website }}" class="{{ vm.link_interactive_class }}" target="_blank" rel="noopener noreferrer"
+    aria-label="{{ sp.name }} (opens in new tab)">
     <article class="{{ vm.card_base_class }}{{ vm.card_interactive_suffix }}">
-        <img
-            src="{{ sp.logo_url or vm.placeholder_src }}"
-            alt="{{ sp.name if sp.logo_url else 'Sponsor' }}"
+        <img src="{{ sp.logo_url or vm.placeholder_src }}" alt="{{ sp.name if sp.logo_url else 'Sponsor' }}"
             title="{{ sp.name }}"
-            class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none"
-            loading="lazy"
-        />
-        <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ vm.tier_class }}">
+            class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none mx-auto"
+            loading="lazy" />
+        <div class="mt-2 text-center font-['Roboto'] font-semibold text-[clamp(12px,2vw,21px)] {{ vm.tier_class }}">
             {{ vm.tier_label }}
         </div>
     </article>
 </a>
 {% else %}
 <article class="{{ vm.card_base_class }}">
-    <img
-        src="{{ sp.logo_url or vm.placeholder_src }}"
-        alt="{{ sp.name if sp.logo_url else 'Sponsor' }}"
+    <img src="{{ sp.logo_url or vm.placeholder_src }}" alt="{{ sp.name if sp.logo_url else 'Sponsor' }}"
         title="{{ sp.name }}"
-        class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none"
-        loading="lazy"
-    />
-    <div class="mt-2 text-center font-['Roboto'] font-semibold text-[21px] {{ vm.tier_class }}">
+        class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none mx-auto"
+        loading="lazy" />
+    <div class="mt-2 text-center font-['Roboto'] font-semibold text-[clamp(12px,2vw,21px)] {{ vm.tier_class }}">
         {{ vm.tier_label }}
     </div>
 </article>
-{% endif %} {%- endmacro %} {% if vm.layout == "empty" %}
+{% endif %}
+{%- endmacro %}
+
+{% if vm.layout == "empty" %}
 <div class="text-center text-slate-400">No {{ vm.tier }} sponsors yet</div>
+
 {% elif vm.layout == "rows" %}
 <div class="space-y-4 w-full max-w-[var(--container)] mx-auto">
-    {% for row in vm.rows %} {% if row %}
-    <div class="flex flex-wrap justify-center gap-4">
+    {% for row in vm.rows %}
+    {% if row %}
+    <div class="flex flex-wrap justify-center gap-3 sm:gap-4">
         {% for sp in row %}
-        <div class="flex justify-center">{{ card(sp) }}</div>
+        <div class="flex justify-center w-[180px] sm:w-[210px] md:w-[240px]">
+            {{ card(sp) }}
+        </div>
         {% endfor %}
     </div>
-    {% endif %} {% endfor %}
+    {% endif %}
+    {% endfor %}
 </div>
+
 {% else %}
 <div class="space-y-4 w-full max-w-[var(--container)] mx-auto" data-marquee-group>
     {% for row in vm.marquee_rows %}
-    <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: 1rem">
+    <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: .75rem">
         <div class="marquee__viewport">
             <ul class="marquee__track">
                 {% for sp in row %}
-                <li class="marquee__item">{{ card(sp) }}</li>
+                <li class="marquee__item w-[180px] sm:w-[210px] md:w-[240px]">
+                    {{ card(sp) }}
+                </li>
                 {% endfor %}
             </ul>
         </div>

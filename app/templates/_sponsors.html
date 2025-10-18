@@ -1,38 +1,46 @@
-<section class="max-w-[var(--container)] mx-auto px-4 py-14 space-y-10" id="sponsors">
-    <!-- HEADER: green mini title + lines, then big title -->
+<!-- sponsors section -->
+<section id="sponsors" class="max-w-[var(--container)] mx-auto px-4 py-14 space-y-8">
     <header class="text-center">
         <div class="flex items-center justify-center gap-4">
-            <span class="hidden sm:block h-px w-[50px] bg-[var(--c-primary)]"></span>
-            <span class="font-['Montserrat'] text-[30px] leading-[75px] text-[var(--c-primary)]">Sponsors</span>
-            <span class="hidden sm:block h-px w-[50px] bg-[var(--c-primary)]"></span>
+            <span class="hidden sm:block h-px w-[44px] sm:w-[50px] bg-[var(--c-primary)]"></span>
+            <span class="font-['Montserrat'] text-[clamp(18px,2.6vw,30px)] leading-[1.6] text-[var(--c-primary)]">
+                Sponsors
+            </span>
+            <span class="hidden sm:block h-px w-[44px] sm:w-[50px] bg-[var(--c-primary)]"></span>
         </div>
         <h2
-            class="font-['Montserrat'] text-[clamp(28px,4vw,60px)] leading-[75px] font-medium mt-1 text-center text-[#1E1E1E]"
-        >
+            class="font-['Montserrat'] text-[clamp(22px,4vw,60px)] leading-[1.2] font-medium mt-1 text-center text-[#1E1E1E]">
             With Gratitude to Our Sponsors
         </h2>
     </header>
-    <!-- Top Sponsors (unique tiers) as centered carousel -->
-    <div id="sponsors-top" class="flex justify-center">{% include "_sponsors_top.html" with context %}</div>
-    <!-- decorative separator: two lines + wetka image in center (gold lines) -->
-    <div class="flex items-center justify-center gap-6 my-6">
-        <div class="hidden sm:block h-px w-[300px] bg-[#F2C75C]"></div>
-        <img src="/static/img/wetka.png" alt="" class="w-[150px] h-[50px] object-contain" />
-        <div class="hidden sm:block h-px w-[300px] bg-[#F2C75C]"></div>
+
+    <!-- Top Sponsors -->
+    <div id="sponsors-top" class="flex justify-center">
+        {% include "_sponsors_top.html" with context %}
     </div>
-    <!-- Bottom carousels; render only if tier has items; no headings, stacked -->
-    <div class="space-y-6">
+
+    <!-- separator -->
+    <div class="flex items-center justify-center gap-4 sm:gap-6 my-6">
+        <div class="hidden sm:block h-px w-[180px] sm:w-[260px] lg:w-[300px] bg-[#F2C75C]"></div>
+        <img src="/static/img/wetka.png" alt="" class="w-[120px] sm:w-[150px] h-[40px] sm:h-[50px] object-contain" />
+        <div class="hidden sm:block h-px w-[180px] sm:w-[260px] lg:w-[300px] bg-[#F2C75C]"></div>
+    </div>
+
+    <!-- Tier carousels -->
+    <div class="space-y-5 sm:space-y-6">
         {% if gold["items"]|length > 0 %}
         <div id="carousel-gold" class="w-full">
-            {% with data=gold %} {% include "_sponsors_carousel.html" %} {% endwith %}
+            {% with data=gold %}{% include "_sponsors_carousel.html" %}{% endwith %}
         </div>
-        {% endif %} {% if silver["items"]|length > 0 %}
+        {% endif %}
+        {% if silver["items"]|length > 0 %}
         <div id="carousel-silver" class="w-full">
-            {% with data=silver %} {% include "_sponsors_carousel.html" %} {% endwith %}
+            {% with data=silver %}{% include "_sponsors_carousel.html" %}{% endwith %}
         </div>
-        {% endif %} {% if bronze["items"]|length > 0 %}
+        {% endif %}
+        {% if bronze["items"]|length > 0 %}
         <div id="carousel-bronze" class="w-full">
-            {% with data=bronze %} {% include "_sponsors_carousel.html" %} {% endwith %}
+            {% with data=bronze %}{% include "_sponsors_carousel.html" %}{% endwith %}
         </div>
         {% endif %}
     </div>
