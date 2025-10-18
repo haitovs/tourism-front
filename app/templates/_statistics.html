@@ -1,109 +1,88 @@
-<section
-    id="statistics"
-    class="relative w-full h-[500px] mt-16"
-    style="background-image:url('{{ settings.STATS_BG_IMAGE }}');
-                background-size:cover;
-                background-position:center"
->
+<section id="statistics" class="relative w-full h-[420px] sm:h-[460px] lg:h-[500px] mt-16"
+    style="background-image:url('{{ settings.STATS_BG_IMAGE }}'); background-size:cover; background-position:center">
     <div class="absolute inset-0 bg-black/40"></div>
+
     <div
-        class="relative h-full max-w-[var(--container)] mx-auto px-4 flex flex-col items-center justify-center text-white"
-    >
+        class="relative h-full max-w-[var(--container)] mx-auto px-4 flex flex-col items-center justify-center text-white">
         <header class="text-center mb-6">
             <div class="flex items-center justify-center gap-4 mb-1">
                 <span class="hidden sm:block h-px w-[60px] bg-white"></span>
-                <span class="font-['Montserrat'] text-[30px] leading-[75px]">Statistics</span>
+                <!-- mini title -->
+                <span class="font-['Montserrat'] text-[clamp(14px,2.2vw,22px)] leading-[1.6]">Statistics</span>
                 <span class="hidden sm:block h-px w-[60px] bg-white"></span>
             </div>
-            <h2 class="font-['Montserrat'] text-[clamp(26px,4vw,50px)] leading-[1.2] font-medium text-white">
+            <!-- main title -->
+            <h2 class="font-['Montserrat'] text-[clamp(18px,3.4vw,38px)] leading-[1.2] font-medium text-white">
                 Key figures of our forum
             </h2>
         </header>
-        <div
-            x-data="countup({ values: { episodes: {{ stats.episodes|default(0) }}, delegates: {{ stats.delegates|default(0) }}, speakers: {{ stats.speakers|default(0) }}, companies: {{ stats.companies|default(0) }}, } })"
-            x-intersect.once="start()"
-            class="w-full max-w-[1280px] grid grid-cols-2 md:grid-cols-4 gap-x-[78px] gap-y-10 place-items-center"
-        >
-            <div class="flex items-center gap-4 h-[150px]">
-                <img
-                    src="/static/img/stat_sessions.png"
-                    alt=""
-                    class="w-[130px] h-[130px] object-contain hidden sm:block"
-                />
-                <div>
-                    <div class="font-['Roboto'] font-medium text-[70px] leading-[82px]" x-text="display.episodes">
-                        0
+
+        <div x-data="window.countup({
+          values: {
+            episodes: {{ stats.episodes|default(0) }},
+            delegates: {{ stats.delegates|default(0) }},
+            speakers:  {{ stats.speakers|default(0) }},
+            companies: {{ stats.companies|default(0) }},
+          }
+        })" x-intersect.once="start()" class="w-full max-w-[1280px] grid grid-cols-2 md:grid-cols-4
+                    gap-x-5 sm:gap-x-8 lg:gap-x-16 gap-y-6 place-items-center">
+
+            <!-- Sessions -->
+            <div class="flex items-center gap-2 sm:gap-3 h-[100px] sm:h-[120px]">
+                <img src="/static/img/stat_sessions.png" alt=""
+                    class="hidden sm:block w-[64px] sm:w-[88px] md:w-[104px] lg:w-[110px] h-auto object-contain" />
+                <div class="text-center sm:text-left">
+                    <div class="font-['Roboto'] font-medium tabular-nums
+                                text-[clamp(26px,6vw,52px)] leading-[1.08]" x-text="display.episodes">0</div>
+                    <div class="font-['Roboto'] font-medium text-white/85 tracking-wide
+                                text-[clamp(10px,1.8vw,16px)] leading-[1.2]">
+                        Sessions
                     </div>
-                    <div class="font-['Roboto'] font-medium text-[20px] leading-[23px] text-white/85">Sessions</div>
                 </div>
             </div>
-            <div class="flex items-center gap-4 h-[150px]">
-                <img
-                    src="/static/img/stat_delegates.png"
-                    alt=""
-                    class="w-[130px] h-[130px] object-contain hidden sm:block"
-                />
-                <div>
-                    <div class="font-['Roboto'] font-medium text-[70px] leading-[82px]" x-text="display.delegates">
-                        0
+
+            <!-- Delegates -->
+            <div class="flex items-center gap-2 sm:gap-3 h-[100px] sm:h-[120px]">
+                <img src="/static/img/stat_delegates.png" alt=""
+                    class="hidden sm:block w-[64px] sm:w-[88px] md:w-[104px] lg:w-[110px] h-auto object-contain" />
+                <div class="text-center sm:text-left">
+                    <div class="font-['Roboto'] font-medium tabular-nums
+                                text-[clamp(26px,6vw,52px)] leading-[1.08]" x-text="display.delegates">0</div>
+                    <div class="font-['Roboto'] font-medium text-white/85 tracking-wide
+                                text-[clamp(10px,1.8vw,16px)] leading-[1.2]">
+                        Delegates
                     </div>
-                    <div class="font-['Roboto'] font-medium text-[20px] leading-[23px] text-white/85">Delegates</div>
                 </div>
             </div>
-            <div class="flex items-center gap-4 h-[150px]">
-                <img
-                    src="/static/img/stat_speakers.png"
-                    alt=""
-                    class="w-[130px] h-[130px] object-contain hidden sm:block"
-                />
-                <div>
-                    <div class="font-['Roboto'] font-medium text-[70px] leading-[82px]" x-text="display.speakers">
-                        0
+
+            <!-- Speakers -->
+            <div class="flex items-center gap-2 sm:gap-3 h-[100px] sm:h-[120px]">
+                <img src="/static/img/stat_speakers.png" alt=""
+                    class="hidden sm:block w-[64px] sm:w-[88px] md:w-[104px] lg:w-[110px] h-auto object-contain" />
+                <div class="text-center sm:text-left">
+                    <div class="font-['Roboto'] font-medium tabular-nums
+                                text-[clamp(26px,6vw,52px)] leading-[1.08]" x-text="display.speakers">0</div>
+                    <div class="font-['Roboto'] font-medium text-white/85 tracking-wide
+                                text-[clamp(10px,1.8vw,16px)] leading-[1.2]">
+                        Speakers
                     </div>
-                    <div class="font-['Roboto'] font-medium text-[20px] leading-[23px] text-white/85">Speakers</div>
                 </div>
             </div>
-            <div class="flex items-center gap-4 h-[150px]">
-                <img
-                    src="/static/img/stat_companies.png"
-                    alt=""
-                    class="w-[130px] h-[130px] object-contain hidden sm:block"
-                />
-                <div>
-                    <div class="font-['Roboto'] font-medium text-[70px] leading-[82px]" x-text="display.companies">
-                        0
+
+            <!-- Companies -->
+            <div class="flex items-center gap-2 sm:gap-3 h-[100px] sm:h-[120px]">
+                <img src="/static/img/stat_companies.png" alt=""
+                    class="hidden sm:block w-[64px] sm:w-[88px] md:w-[104px] lg:w-[110px] h-auto object-contain" />
+                <div class="text-center sm:text-left">
+                    <div class="font-['Roboto'] font-medium tabular-nums
+                                text-[clamp(26px,6vw,52px)] leading-[1.08]" x-text="display.companies">0</div>
+                    <div class="font-['Roboto'] font-medium text-white/85 tracking-wide
+                                text-[clamp(10px,1.8vw,16px)] leading-[1.2]">
+                        Companies
                     </div>
-                    <div class="font-['Roboto'] font-medium text-[20px] leading-[23px] text-white/85">Companies</div>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
-<script>
-    function countup({ values, duration = 1500 }) {
-        return {
-            target: values,
-            display: { episodes: 0, delegates: 0, speakers: 0, companies: 0 },
-            started: false,
-            start() {
-                if (this.started) return;
-                this.started = true;
-
-                const keys = Object.keys(this.target);
-                const startTime = performance.now();
-
-                const tick = (now) => {
-                    const t = Math.min(1, (now - startTime) / duration);
-                    const e = 1 - Math.pow(1 - t, 3);
-                    keys.forEach((k) => {
-                        this.display[k] = Math.floor(e * this.target[k]);
-                    });
-                    if (t < 1) requestAnimationFrame(tick);
-                    else keys.forEach((k) => (this.display[k] = this.target[k]));
-                };
-
-                requestAnimationFrame(tick);
-            },
-        };
-    }
-</script>
