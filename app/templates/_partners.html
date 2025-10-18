@@ -1,69 +1,77 @@
-{# templates/_partners.html #} {% set _partners = partners or [] %} {% set count = _partners|length %}
-<section id="partners" class="max-w-[1440px] mx-auto py-14">
-    <div class="mx-[86px]">
+{# templates/_partners.html #}
+{% set _partners = partners or [] %}
+{% set count = _partners|length %}
+
+<section id="partners" class="mx-auto w-[min(1440px,92vw)] py-14">
+    <div class="mx-auto w-[min(1268px,90vw)]">
         <header class="text-center mb-8">
             <div class="flex items-center justify-center gap-4">
                 <span class="hidden sm:block h-px w-[60px] bg-[#007A3D]"></span>
-                <span class="font-['Montserrat'] text-[30px] leading-[75px] text-[#007A3D]">Partners</span>
+                <span
+                    class="font-['Montserrat'] text-[clamp(18px,2.8vw,30px)] leading-[1.6] text-[#007A3D]">Partners</span>
                 <span class="hidden sm:block h-px w-[60px] bg-[#007A3D]"></span>
             </div>
-            <h2 class="font-['Montserrat'] text-[50px] leading-[75px] font-medium mt-1 text-center text-[#1E1E1E]">
+            <h2
+                class="font-['Montserrat'] text-[clamp(22px,4vw,50px)] leading-[1.2] font-medium mt-1 text-center text-[#1E1E1E]">
                 Our official partners
             </h2>
         </header>
+
         {% macro partner_card(p) -%}
-        <article class="w-[190px] h-[225px] flex flex-col items-center justify-start">
-            <div class="w-[170px] h-[123px] flex items-center justify-center">
+        <article class="flex flex-col items-center justify-start
+                      w-[clamp(140px,18vw,190px)] h-[clamp(180px,22vw,225px)]">
+            <div class="flex items-center justify-center
+                    w-[clamp(120px,16vw,170px)] h-[clamp(86px,12vw,123px)]">
                 {% if p.logo_url %}
-                <img
-                    src="{{ p.logo_url }}"
-                    alt="{{ p.name }}"
-                    title="{{ p.name }}"
-                    class="w-[170px] h-[123px] object-contain select-none pointer-events-none"
-                    loading="lazy"
-                />
+                <img src="{{ p.logo_url }}" alt="{{ p.name }}" title="{{ p.name }}" class="object-contain select-none pointer-events-none
+                        w-[clamp(120px,16vw,170px)] h-[clamp(86px,12vw,123px)]" loading="lazy" />
                 {% else %}
-                <img
-                    src="/static/img/img_placeholder.png"
-                    alt="{{ p.name }}"
-                    title="{{ p.name }}"
-                    class="w-[170px] h-[123px] object-contain opacity-70 select-none pointer-events-none"
-                    loading="lazy"
-                />
+                <img src="/static/img/img_placeholder.png" alt="{{ p.name }}" title="{{ p.name }}" class="object-contain opacity-70 select-none pointer-events-none
+                        w-[clamp(120px,16vw,170px)] h-[clamp(86px,12vw,123px)]" loading="lazy" />
                 {% endif %}
             </div>
-            {# NEW: neutral bottom text (location identical to sponsors' tier label spot) #} {% if p.type %}
-            <div class="mt-2 text-center font-['Roboto'] text-[18px] text-slate-700 leading-tight">{{ p.type }}</div>
+
+            {% if p.type %}
+            <div class="mt-2 text-center font-['Roboto'] leading-tight text-slate-700
+                      text-[clamp(12px,1.6vw,18px)]">
+                {{ p.type }}
+            </div>
             {% else %}
-            <div class="mt-2 text-center font-['Roboto'] text-[16px] text-slate-400 leading-tight">&nbsp;</div>
+            <div class="mt-2 text-center font-['Roboto'] leading-tight text-slate-400
+                      text-[clamp(11px,1.4vw,16px)]">&nbsp;</div>
             {% endif %}
         </article>
-        {%- endmacro %} {% if count == 0 %}
+        {%- endmacro %}
+
+        {% if count == 0 %}
         <div class="text-center text-slate-500">No partners added yet</div>
-        {% elif count < 6 %} {# ---- Static centered row ---- #}
-        <ul class="flex flex-wrap justify-center gap-x-[50px] gap-y-6">
+
+        {% elif count < 6 %} <ul class="flex flex-wrap justify-center
+                 gap-x-[clamp(16px,3.5vw,50px)] gap-y-[clamp(14px,3vw,24px)]">
             {% for p in _partners %}
             <li class="flex justify-center">
-                {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block"
-                    >{% endif %} {{ partner_card(p) }} {% if p.website %}</a
-                >{% endif %}
+                {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block">{% endif %}
+                    {{ partner_card(p) }}
+                    {% if p.website %}</a>{% endif %}
             </li>
             {% endfor %}
-        </ul>
-        {% else %} {# ---- Marquee ---- #}
-        <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: 1rem">
-            <div class="marquee__viewport">
-                <ul class="marquee__track">
-                    {% for p in _partners %}
-                    <li class="marquee__item">
-                        {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block"
-                            >{% endif %} {{ partner_card(p) }} {% if p.website %}</a
-                        >{% endif %}
-                    </li>
-                    {% endfor %}
-                </ul>
+            </ul>
+
+            {% else %}
+            <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: 1rem">
+                <div class="marquee__viewport">
+                    <ul class="marquee__track">
+                        {% for p in _partners %}
+                        <li class="marquee__item">
+                            {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block">{%
+                                endif %}
+                                {{ partner_card(p) }}
+                                {% if p.website %}</a>{% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-        </div>
-        {% endif %}
+            {% endif %}
     </div>
 </section>

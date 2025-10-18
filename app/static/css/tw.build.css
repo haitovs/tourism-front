@@ -858,8 +858,14 @@
   .h-\[clamp\(48px\,6vw\,56px\)\] {
     height: clamp(48px, 6vw, 56px);
   }
+  .h-\[clamp\(86px\,12vw\,123px\)\] {
+    height: clamp(86px, 12vw, 123px);
+  }
   .h-\[clamp\(100px\,18vw\,180px\)\] {
     height: clamp(100px, 18vw, 180px);
+  }
+  .h-\[clamp\(180px\,22vw\,225px\)\] {
+    height: clamp(180px, 22vw, 225px);
   }
   .h-auto {
     height: auto;
@@ -1116,6 +1122,12 @@
   .w-\[clamp\(24px\,4vw\,41px\)\] {
     width: clamp(24px, 4vw, 41px);
   }
+  .w-\[clamp\(120px\,16vw\,170px\)\] {
+    width: clamp(120px, 16vw, 170px);
+  }
+  .w-\[clamp\(140px\,18vw\,190px\)\] {
+    width: clamp(140px, 18vw, 190px);
+  }
   .w-\[clamp\(160px\,28vw\,280px\)\] {
     width: clamp(160px, 28vw, 280px);
   }
@@ -1136,6 +1148,9 @@
   }
   .w-\[min\(1210px\,90vw\)\] {
     width: min(1210px, 90vw);
+  }
+  .w-\[min\(1268px\,90vw\)\] {
+    width: min(1268px, 90vw);
   }
   .w-\[min\(1310px\,92vw\)\] {
     width: min(1310px, 92vw);
@@ -1528,6 +1543,9 @@
   .gap-x-\[clamp\(12px\,2\.5vw\,30px\)\] {
     column-gap: clamp(12px, 2.5vw, 30px);
   }
+  .gap-x-\[clamp\(16px\,3\.5vw\,50px\)\] {
+    column-gap: clamp(16px, 3.5vw, 50px);
+  }
   .gap-y-6 {
     row-gap: calc(var(--spacing) * 6);
   }
@@ -1545,6 +1563,9 @@
   }
   .gap-y-\[clamp\(12px\,2\.5vw\,30px\)\] {
     row-gap: clamp(12px, 2.5vw, 30px);
+  }
+  .gap-y-\[clamp\(14px\,3vw\,24px\)\] {
+    row-gap: clamp(14px, 3vw, 24px);
   }
   .truncate {
     overflow: hidden;
@@ -2166,6 +2187,9 @@
   .text-\[clamp\(10px\,2\.4vw\,12px\)\] {
     font-size: clamp(10px, 2.4vw, 12px);
   }
+  .text-\[clamp\(11px\,1\.4vw\,16px\)\] {
+    font-size: clamp(11px, 1.4vw, 16px);
+  }
   .text-\[clamp\(11px\,1\.5vw\,14px\)\] {
     font-size: clamp(11px, 1.5vw, 14px);
   }
@@ -2174,6 +2198,9 @@
   }
   .text-\[clamp\(12px\,1\.6vw\,16px\)\] {
     font-size: clamp(12px, 1.6vw, 16px);
+  }
+  .text-\[clamp\(12px\,1\.6vw\,18px\)\] {
+    font-size: clamp(12px, 1.6vw, 18px);
   }
   .text-\[clamp\(12px\,2\.4vw\,20px\)\] {
     font-size: clamp(12px, 2.4vw, 20px);
