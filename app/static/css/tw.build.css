@@ -330,6 +330,9 @@
   .z-\[70\] {
     z-index: 70;
   }
+  .col-span-1 {
+    grid-column: span 1 / span 1;
+  }
   .col-span-2 {
     grid-column: span 2 / span 2;
   }
@@ -413,6 +416,9 @@
   }
   .mt-2 {
     margin-top: calc(var(--spacing) * 2);
+  }
+  .mt-2\.5 {
+    margin-top: calc(var(--spacing) * 2.5);
   }
   .mt-3 {
     margin-top: calc(var(--spacing) * 3);
@@ -542,6 +548,9 @@
   }
   .aspect-\[16\/9\] {
     aspect-ratio: 16/9;
+  }
+  .aspect-\[16\/11\] {
+    aspect-ratio: 16/11;
   }
   .aspect-square {
     aspect-ratio: 1 / 1;
@@ -828,6 +837,18 @@
   .h-\[890px\] {
     height: 890px;
   }
+  .h-\[clamp\(18px\,3\.2vw\,20px\)\] {
+    height: clamp(18px, 3.2vw, 20px);
+  }
+  .h-\[clamp\(24px\,3vw\,32px\)\] {
+    height: clamp(24px, 3vw, 32px);
+  }
+  .h-\[clamp\(28px\,3\.2vw\,36px\)\] {
+    height: clamp(28px, 3.2vw, 36px);
+  }
+  .h-\[clamp\(48px\,6vw\,56px\)\] {
+    height: clamp(48px, 6vw, 56px);
+  }
   .h-auto {
     height: auto;
   }
@@ -1071,6 +1092,9 @@
   .w-\[1310px\] {
     width: 1310px;
   }
+  .w-\[clamp\(18px\,3\.2vw\,20px\)\] {
+    width: clamp(18px, 3.2vw, 20px);
+  }
   .w-\[min\(90vw\,300px\)\] {
     width: min(90vw, 300px);
   }
@@ -1082,6 +1106,9 @@
   }
   .w-\[min\(100\%\,380px\)\] {
     width: min(100%, 380px);
+  }
+  .w-\[min\(680px\,94\%\)\] {
+    width: min(680px, 94%);
   }
   .w-\[min\(1310px\,92vw\)\] {
     width: min(1310px, 92vw);
@@ -1319,6 +1346,9 @@
   .gap-1 {
     gap: calc(var(--spacing) * 1);
   }
+  .gap-1\.5 {
+    gap: calc(var(--spacing) * 1.5);
+  }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
   }
@@ -1497,6 +1527,9 @@
   .rounded-\[5px\] {
     border-radius: 5px;
   }
+  .rounded-\[8px\] {
+    border-radius: 8px;
+  }
   .rounded-\[10px\] {
     border-radius: 10px;
   }
@@ -1511,6 +1544,9 @@
   }
   .rounded-\[16px\] {
     border-radius: 16px;
+  }
+  .rounded-\[18px\] {
+    border-radius: 18px;
   }
   .rounded-\[20px\] {
     border-radius: 20px;
@@ -1814,6 +1850,9 @@
   .p-3 {
     padding: calc(var(--spacing) * 3);
   }
+  .p-3\.5 {
+    padding: calc(var(--spacing) * 3.5);
+  }
   .p-4 {
     padding: calc(var(--spacing) * 4);
   }
@@ -2082,8 +2121,14 @@
   .text-\[clamp\(10px\,2\.4vw\,12px\)\] {
     font-size: clamp(10px, 2.4vw, 12px);
   }
+  .text-\[clamp\(11px\,1\.5vw\,14px\)\] {
+    font-size: clamp(11px, 1.5vw, 14px);
+  }
   .text-\[clamp\(11px\,2\.2vw\,18px\)\] {
     font-size: clamp(11px, 2.2vw, 18px);
+  }
+  .text-\[clamp\(12px\,1\.6vw\,16px\)\] {
+    font-size: clamp(12px, 1.6vw, 16px);
   }
   .text-\[clamp\(12px\,2\.4vw\,20px\)\] {
     font-size: clamp(12px, 2.4vw, 20px);
@@ -2102,6 +2147,9 @@
   }
   .text-\[clamp\(13px\,1\.05vw\,16px\)\] {
     font-size: clamp(13px, 1.05vw, 16px);
+  }
+  .text-\[clamp\(13px\,1\.9vw\,16px\)\] {
+    font-size: clamp(13px, 1.9vw, 16px);
   }
   .text-\[clamp\(13px\,3\.8vw\,16px\)\] {
     font-size: clamp(13px, 3.8vw, 16px);
@@ -2123,6 +2171,9 @@
   }
   .text-\[clamp\(14px\,2\.6vw\,20px\)\] {
     font-size: clamp(14px, 2.6vw, 20px);
+  }
+  .text-\[clamp\(14px\,2vw\,18px\)\] {
+    font-size: clamp(14px, 2vw, 18px);
   }
   .text-\[clamp\(15px\,3\.8vw\,18px\)\] {
     font-size: clamp(15px, 3.8vw, 18px);
@@ -2166,6 +2217,9 @@
   .text-\[clamp\(18px\,2\.2vw\,24px\)\] {
     font-size: clamp(18px, 2.2vw, 24px);
   }
+  .text-\[clamp\(18px\,2\.6vw\,30px\)\] {
+    font-size: clamp(18px, 2.6vw, 30px);
+  }
   .text-\[clamp\(18px\,2\.8vw\,25px\)\] {
     font-size: clamp(18px, 2.8vw, 25px);
   }
@@ -2174,6 +2228,9 @@
   }
   .text-\[clamp\(18px\,3\.4vw\,38px\)\] {
     font-size: clamp(18px, 3.4vw, 38px);
+  }
+  .text-\[clamp\(18px\,3\.6vw\,20px\)\] {
+    font-size: clamp(18px, 3.6vw, 20px);
   }
   .text-\[clamp\(18px\,3vw\,30px\)\] {
     font-size: clamp(18px, 3vw, 30px);
@@ -2186,6 +2243,9 @@
   }
   .text-\[clamp\(18px\,6vw\,60px\)\] {
     font-size: clamp(18px, 6vw, 60px);
+  }
+  .text-\[clamp\(20px\,4\.2vw\,35px\)\] {
+    font-size: clamp(20px, 4.2vw, 35px);
   }
   .text-\[clamp\(20px\,4vw\,48px\)\] {
     font-size: clamp(20px, 4vw, 48px);
@@ -2201,6 +2261,9 @@
   }
   .text-\[clamp\(22px\,4vw\,60px\)\] {
     font-size: clamp(22px, 4vw, 60px);
+  }
+  .text-\[clamp\(24px\,4vw\,50px\)\] {
+    font-size: clamp(24px, 4vw, 50px);
   }
   .text-\[clamp\(24px\,5vw\,60px\)\] {
     font-size: clamp(24px, 5vw, 60px);
@@ -3004,6 +3067,11 @@
       margin-top: calc(var(--spacing) * 4);
     }
   }
+  .sm\:mt-5 {
+    @media (width >= 40rem) {
+      margin-top: calc(var(--spacing) * 5);
+    }
+  }
   .sm\:block {
     @media (width >= 40rem) {
       display: block;
@@ -3274,6 +3342,11 @@
       gap: calc(var(--spacing) * 4);
     }
   }
+  .sm\:gap-5 {
+    @media (width >= 40rem) {
+      gap: calc(var(--spacing) * 5);
+    }
+  }
   .sm\:gap-6 {
     @media (width >= 40rem) {
       gap: calc(var(--spacing) * 6);
@@ -3354,6 +3427,16 @@
   .sm\:px-0 {
     @media (width >= 40rem) {
       padding-inline: calc(var(--spacing) * 0);
+    }
+  }
+  .sm\:px-3\.5 {
+    @media (width >= 40rem) {
+      padding-inline: calc(var(--spacing) * 3.5);
+    }
+  }
+  .sm\:px-4 {
+    @media (width >= 40rem) {
+      padding-inline: calc(var(--spacing) * 4);
     }
   }
   .sm\:px-5 {
@@ -4237,6 +4320,11 @@
   .lg\:w-\[min\(30vw\,360px\)\] {
     @media (width >= 64rem) {
       width: min(30vw, 360px);
+    }
+  }
+  .lg\:max-w-\[600px\] {
+    @media (width >= 64rem) {
+      max-width: 600px;
     }
   }
   .lg\:min-w-\[240px\] {
