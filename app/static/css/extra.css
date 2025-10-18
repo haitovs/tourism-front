@@ -13,10 +13,6 @@
     --pill-top: 60px;
 }
 
-[x-cloak] {
-    display: none !important;
-}
-
 /* soft shadow utility */
 .shadow-soft {
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);

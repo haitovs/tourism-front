@@ -1,29 +1,10 @@
-/* Visibility toggles (no Tailwind breakpoints dependency) */
-.timer-big {
-    display: none;
-}
-.timer-small {
-    display: block;
-}
-
-@media (min-width: 1024px) {
-    .timer-big {
-        display: flex;
-    } /* flex so inner layout aligns */
-    .timer-small {
-        display: none;
-    }
-}
-
-/* Layering */
+/* --- Core layers (unchanged) --- */
 .timer-wrap {
     position: relative;
     overflow: hidden;
     border-radius: 20px;
-    background: #111; /* safe fallback */
+    background: #111;
 }
-
-/* Background image at bottom */
 .timer-bg {
     position: absolute;
     inset: 0;
@@ -35,16 +16,11 @@
     object-fit: cover;
     display: block;
 }
-
-/* Dark overlay above bg, below content */
-.timer-overlay {
+.timer-content {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-    z-index: 1;
+    z-index: 3;
 }
-
-/* Optional left panel above overlay, below content */
 .timer-left-panel {
     position: absolute;
     left: 0;
@@ -53,9 +29,46 @@
     z-index: 2;
 }
 
-/* Actual content on top */
-.timer-content {
+/* Overlay: brand green on small; dark blur on large */
+.timer-overlay {
     position: absolute;
     inset: 0;
-    z-index: 3;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.5); /* var(--c-primary) with opacity */
+}
+@media (min-width: 1024px) {
+    .timer-overlay {
+        background: rgba(0, 0, 0, 0.45);
+    }
+}
+
+/* Timer pill color: brand green on small, red on large */
+.timer-pill {
+    background: var(--c-primary, #007a3d);
+}
+@media (min-width: 1024px) {
+    .timer-pill {
+        background: #bd280d;
+    }
+}
+
+/* Dot separators between numbers (scale up by breakpoint) */
+.timer-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 9999px;
+    background: #fff;
+    display: block;
+}
+@media (min-width: 768px) {
+    .timer-dot {
+        width: 12px;
+        height: 12px;
+    }
+}
+@media (min-width: 1024px) {
+    .timer-dot {
+        width: 16px;
+        height: 16px;
+    }
 }

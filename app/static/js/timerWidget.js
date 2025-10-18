@@ -6,6 +6,10 @@
             bgUrl,
             logoUrl,
 
+            // 👇 add this
+            isDesktop: window.matchMedia("(min-width: 1024px)").matches,
+            _mq: null,
+
             eventName: "",
             mode: "UNTIL_START",
             targetISO: null,
@@ -19,6 +23,14 @@
             _tickHandle: null,
 
             async init() {
+                // 👇 wire up the media-query listener so Alpine updates when resizing
+                this._mq = window.matchMedia("(min-width: 1024px)");
+                const mqHandler = (e) => {
+                    this.isDesktop = e.matches;
+                };
+                if (this._mq.addEventListener) this._mq.addEventListener("change", mqHandler);
+                else this._mq.addListener(mqHandler); // Safari/old
+
                 await this.fetchTimer();
                 this.openWS();
                 this.startTicking();
@@ -31,7 +43,7 @@
                     u.pathname = "/ws/timer";
                     u.search = "";
                     return u.toString();
-                } catch (e) {
+                } catch {
                     const loc = window.location;
                     return (loc.protocol === "https:" ? "wss://" : "ws://") + loc.host + "/ws/timer";
                 }
@@ -46,10 +58,7 @@
                         setTimeout(() => this.fetchTimer(), 10000);
                         return;
                     }
-                    const data = await res.json().catch((e) => {
-                        console.error("[timer] bad JSON:", e);
-                        return null;
-                    });
+                    const data = await res.json().catch(() => null);
                     if (!data) return;
 
                     this.eventName = data.event_name || "";
@@ -57,13 +66,7 @@
                     this.serverISO = data.server_time || null;
                     this.targetISO = (this.mode === "UNTIL_END" ? data.end_time : data.start_time) || null;
 
-                    if (this.serverISO) {
-                        const serverMs = Date.parse(this.serverISO);
-                        this.deltaMs = Date.now() - serverMs;
-                    } else {
-                        this.deltaMs = 0;
-                    }
-
+                    this.deltaMs = this.serverISO ? Date.now() - Date.parse(this.serverISO) : 0;
                     if (!this.targetISO) console.warn("[timer] no target time in response");
                 } catch (err) {
                     console.error("[timer] fetch error:", err);
@@ -72,11 +75,10 @@
             },
 
             openWS() {
-                const wsURL = this.wsUrlFromBase();
                 let ws;
                 try {
-                    ws = new WebSocket(wsURL);
-                } catch (e) {
+                    ws = new WebSocket(this.wsUrlFromBase());
+                } catch {
                     return;
                 }
                 ws.onmessage = (ev) => {
@@ -91,8 +93,6 @@
                         }
                     } catch {}
                 };
-                ws.onerror = () => {};
-                ws.onclose = () => {};
             },
 
             startTicking() {

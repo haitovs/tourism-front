@@ -18,8 +18,10 @@
       bgUrl: '/static/img/timer/timer_bg.png',
       logoUrl: '/static/img/timer/logo.svg'
     })" x-init="$nextTick(() => init())">
+
         <!-- ===== BIG TIMER (>=1024px) ===== -->
-        <div class="timer-big justify-center w-full">
+        <div class="timer-big flex w-full justify-center" x-show="isDesktop" x-cloak
+            x-transition.opacity.duration.200ms>
             <div class="timer-wrap w-[1100px] xl:w-[1310px] h-[380px] xl:h-[460px]">
                 <!-- Background -->
                 <div class="timer-bg">
@@ -27,7 +29,7 @@
                         aria-hidden="true" />
                 </div>
 
-                <!-- Overlay (below content layer by z-index in CSS) -->
+                <!-- Overlay (below content by z-index) -->
                 <div class="timer-overlay"></div>
 
                 <!-- Optional darker left panel -->
@@ -106,7 +108,7 @@
         </div>
 
         <!-- ===== SMALL (<1024px) WITH SECONDS ===== -->
-        <div class="timer-small">
+        <div class="timer-small block w-full" x-show="!isDesktop" x-cloak x-transition.opacity.duration.200ms>
             <div
                 class="timer-wrap mx-auto w-[350px] h-[160px] sm:w-[420px] sm:h-[180px] md:w-[560px] md:h-[210px] rounded-[16px]">
                 <!-- Background -->
@@ -115,7 +117,7 @@
                         aria-hidden="true" />
                 </div>
 
-                <!-- Overlay (below content layer by z-index in CSS) -->
+                <!-- Overlay (below content by z-index) -->
                 <div class="timer-overlay"></div>
 
                 <!-- Content ON TOP -->
@@ -124,7 +126,7 @@
                     <div class="flex-1">
                         <div class="font-['Inter'] font-medium text-[16px] sm:text-[18px]">The remaining</div>
 
-                        <div class="mt-2 sm:mt-3 md:mt-4 flex items-end gap-3 sm:gap-4 tabular-nums">
+                        <div class="mt-2 sm:mt-3 md:mt-4 flex items-start gap-3 sm:gap-4 tabular-nums">
                             <!-- DAYS -->
                             <div class="text-center">
                                 <div class="font-['Poppins'] leading-none text-[32px] sm:text-[36px] md:text-[42px]"
@@ -188,7 +190,6 @@
                         </div>
                     </div>
                 </div><!-- /timer-content -->
-
             </div><!-- /timer-wrap -->
         </div>
     </div>
