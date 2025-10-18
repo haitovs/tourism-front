@@ -1,4 +1,4 @@
-<header id="site-header" class="detailbar relative z-detail" x-data="{ langOpen:false }">
+<header id="site-header" class="detailbar relative z-detail" x-data="{ langOpen:false, mobileOpen:false }">
     <div class="max-w-[var(--container)] mx-auto px-4 row flex items-center justify-between">
         <!-- left: logo only -->
         <div class="flex items-center gap-4">
@@ -11,10 +11,8 @@
         <div class="flex items-center gap-6">
             <div class="hidden md:flex items-center gap-3">
                 <img src="/static/img/detailbar/ic-mail.svg" class="w-6 h-6" alt="" />
-                <a
-                    href="mailto:info@ciet-turkmenistan.com"
-                    class="font-['Roboto'] font-medium text-[20px] md:text-[24px]"
-                >
+                <a href="mailto:info@ciet-turkmenistan.com"
+                    class="font-['Roboto'] font-medium text-[20px] md:text-[24px]">
                     info@ciet-turkmenistan.com
                 </a>
             </div>
@@ -32,32 +30,19 @@
             <div class="relative group">
                 <button
                     class="flex items-center gap-1 font-['Roboto'] font-medium text-[20px] md:text-[24px] group-hover:text-[#00B374]"
-                    aria-haspopup="true"
-                >
+                    aria-haspopup="true">
                     {{ (lang or 'en')|upper }}
-                    <svg
-                        class="w-4 h-4 -rotate-90 transition-transform group-hover:rotate-0"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        aria-hidden="true"
-                    >
-                        <path
-                            d="M6 9l6 6 6-6"
-                            stroke="#F4F4F2"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        />
+                    <svg class="w-4 h-4 -rotate-90 transition-transform group-hover:rotate-0" viewBox="0 0 24 24"
+                        fill="none" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" stroke="#F4F4F2" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
                     </svg>
                 </button>
                 <div
-                    class="absolute right-0 mt-2 w-24 p-2 glass text-white text-center z-[70] hidden group-hover:block"
-                >
+                    class="absolute right-0 mt-2 w-24 p-2 glass text-white text-center z-[70] hidden group-hover:block">
                     {% for code in ['ru','tm','en'] %}
-                    <a
-                        class="block py-2 hover:bg-white/10 transition"
-                        href="{{ _path }}?lang={{ code }}{% for k,v in _params.items() if k!='lang' %}&{{k}}={{ v|urlencode }}{% endfor %}"
-                    >
+                    <a class="block py-2 hover:bg-white/10 transition"
+                        href="{{ _path }}?lang={{ code }}{% for k,v in _params.items() if k!='lang' %}&{{k}}={{ v|urlencode }}{% endfor %}">
                         {{ code|upper }}
                     </a>
                     {% endfor %}
@@ -73,16 +58,11 @@
     <!-- NavPill -->
     {% set p = request.url.path %}
     <div class="pill-rail">
-        <nav class="navpill px-4 md:px-6">
+        <nav class="navpill  px-4 md:px-6">
             <ul
-                class="flex flex-wrap items-center gap-3 md:gap-6 font-['Roboto'] font-bold text-[18px] md:text-[22px] text-[var(--c-primary)]"
-            >
+                class="flex flex-wrap items-center gap-3 md:gap-6 font-['Roboto'] font-bold text-[14px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[22px text-[var(--c-primary)]">
                 <li>
-                    <a
-                        class="px-3 py-1 rounded-full {{ 'bg-white text-[var(--c-text)]' if p=='/' else 'hover:text-[var(--c-text)]' }}"
-                        href="/"
-                        >Home</a
-                    >
+                    <a class=" {{ 'hover:text-[var(--c-text)]' }}" href="/">Home</a>
                 </li>
 
                 <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
@@ -93,12 +73,8 @@
                     <div x-show="m" x-cloak x-transition class="menu-dd">
                         <div class="glass menu-panel menu-grid">
                             <!-- /forum row with right-side extender -->
-                            <div
-                                class="menu-items relative"
-                                x-data="{open:false}"
-                                @mouseenter="open=true"
-                                @mouseleave="open=false"
-                            >
+                            <div class="menu-items relative" x-data="{open:false}" @mouseenter="open=true"
+                                @mouseleave="open=false">
                                 <a href="/about-the-forum" class="menu-item">
                                     <span>Forum</span>
                                     <span class="menu-items-arrow" aria-hidden="true"></span>
@@ -130,25 +106,18 @@
                         <div class="glass menu-panel">
                             <a href="/participants{% if q %}?q={{ q|urlencode }}{% endif %}" class="menu-item">All</a>
                             <hr class="menu-sep" />
-                            <a href="/participants?role=expo{% if q %}&q={{ q|urlencode }}{% endif %}" class="menu-item"
-                                >Expo</a
-                            >
+                            <a href="/participants?role=expo{% if q %}&q={{ q|urlencode }}{% endif %}"
+                                class="menu-item">Expo</a>
                             <hr class="menu-sep" />
-                            <a
-                                href="/participants?role=forum{% if q %}&q={{ q|urlencode }}{% endif %}"
-                                class="menu-item"
-                                >Forum</a
-                            >
+                            <a href="/participants?role=forum{% if q %}&q={{ q|urlencode }}{% endif %}"
+                                class="menu-item">Forum</a>
                         </div>
                     </div>
                 </li>
 
                 <li>
-                    <a
-                        href="/news"
-                        class="{{ 'text-[var(--c-text)]' if p.startswith('/news') else 'hover:text-[var(--c-text)]' }}"
-                        >News</a
-                    >
+                    <a href="/news"
+                        class="{{ 'text-[var(--c-text)]' if p.startswith('/news') else 'hover:text-[var(--c-text)]' }}">News</a>
                 </li>
 
                 <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
@@ -169,11 +138,8 @@
                 </li>
 
                 <li>
-                    <a
-                        href="/registration"
-                        class="{{ 'text-[var(--c-text)]' if p.startswith('/registration') else 'hover:text-[var(--c-text)]' }}"
-                        >Registration</a
-                    >
+                    <a href="/registration"
+                        class="{{ 'text-[var(--c-text)]' if p.startswith('/registration') else 'hover:text-[var(--c-text)]' }}">Registration</a>
                 </li>
             </ul>
         </nav>

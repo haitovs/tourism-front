@@ -146,10 +146,3 @@
     position: sticky;
     top: 12px;
 }
-
-/* Responsive width constraint on smaller wide screens */
-@media (max-width: 1400px) {
-    .pill-rail {
-        width: min(92vw, var(--container));
-    }
-}

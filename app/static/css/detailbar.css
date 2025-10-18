@@ -15,7 +15,7 @@
 
     will-change: transform, box-shadow, backdrop-filter;
     transition: transform 200ms ease, box-shadow 200ms ease, backdrop-filter 200ms ease;
-    backdrop-filter: none; /* add blur only on scroll */
+    backdrop-filter: none;
 }
 
 /* Hidden while scrolling down */
