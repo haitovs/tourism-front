@@ -16,22 +16,26 @@
 {{ info.info_chip(icon, text) }}
 {%- endmacro %}
 
-{% macro sponsor_badge(sponsor) -%}
-{{ sponsor.sponsor_badge(sponsor) }}
+{% macro sponsor_badge(sp) -%}
+{{ sponsor.sponsor_badge(sp) }}
 {%- endmacro %}
 
 {% macro speaker_card(sp) -%}
 {{ speaker.speaker_card(sp) }}
 {%- endmacro %}
 
+{# FIXED: use the speakers param; call the correct imported names #}
 {% macro speakers_scroller(speakers) -%}
-{{ scroller.speakers_scroller(speakers) }}
+{% call(sp) scroller.speakers_scroller(speakers) %}
+{{ speaker.speaker_card(sp) }}
+{% endcall %}
 {%- endmacro %}
 
 {% macro day_pill(day) -%}
 {{ daypill.day_pill(day) }}
 {%- endmacro %}
 
-{% macro episode_block(d, ep, expanded_id) -%}
-{{ episode.episode_block(d, ep, expanded_id) }}
+{# Pass the OUTER Alpine variable name down to the episode macro #}
+{% macro episode_block(d, ep, expanded_var_name) -%}
+{{ episode.episode_block(d, ep, expanded_var_name) }}
 {%- endmacro %}

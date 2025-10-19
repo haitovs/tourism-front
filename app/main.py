@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from app.routers.about_expo_router import router as about_forum_router
-from app.routers.about_forum_router import router as about_expo_router
+from app.routers.about_expo_router import router as about_expo_router
+from app.routers.about_forum_router import router as about_forum_router
 from app.routers.agenda_router import router as agenda_router
 from app.routers.expo_sectors_router import router as expo_sectors_router
 from app.routers.faq_router import router as faq_router
@@ -18,6 +18,7 @@ from app.routers.timer_router import router as timer_router
 from .core.settings import settings
 from .routers import site
 
+# app/main.py
 app = FastAPI(title=settings.APP_NAME)
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")

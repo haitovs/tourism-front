@@ -16,7 +16,7 @@
 </section>
 <!-- BODY -->
 <section class="max-w-[1310px] mx-auto px-4 md:px-0 py-10"
-    x-data="{ selectedDayId: {{ selected_day_id or 'null' }}, expandedId: null }"
+    x-data='{"selectedDayId": {{ (selected_day_id | tojson) if selected_day_id is not none else "null" }}, "expandedId": null }'
     @pickday.window="selectedDayId = $event.detail.id; expandedId = null"
     @toggle.window="expandedId = (expandedId === $event.detail.id ? null : $event.detail.id)">
     {% if not days or days|length == 0 %}
@@ -53,8 +53,10 @@
             x-if="selectedDayId === {{ d.id }} || (selectedDayId === null && {{ 'true' if loop.first else 'false' }})"
             x-init="if (selectedDayId===null && {{ 'true' if loop.first else 'false' }}) selectedDayId={{ d.id }}">
             <div class="space-y-6">
-                {% for ep in d.episodes %}{{ agenda.episode_block(d, ep, 'expandedId') }}{% endfor %} {% if
-                d.episodes|length == 0 %}
+                {% for ep in d.episodes %}
+                {{ agenda.episode_block(d, ep, 'expandedId') }}
+                {% endfor %}
+                {% if d.episodes|length == 0 %}
                 <div class="bg-white rounded-[12px] p-8 text-center text-slate-500">No sessions for this day yet.</div>
                 {% endif %}
             </div>
