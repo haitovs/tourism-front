@@ -16,7 +16,7 @@
 
     <!-- Top Sponsors -->
     <div id="sponsors-top" class="flex justify-center">
-        {% include "_sponsors_top.html" with context %}
+        {% include "index/_sponsors_top.html" with context %}
     </div>
 
     <!-- separator -->
@@ -30,17 +30,17 @@
     <div class="space-y-5 sm:space-y-6">
         {% if gold["items"]|length > 0 %}
         <div id="carousel-gold" class="w-full">
-            {% with data=gold %}{% include "_sponsors_carousel.html" %}{% endwith %}
+            {% with data=gold %}{% include "index/_sponsors_carousel.html" %}{% endwith %}
         </div>
         {% endif %}
         {% if silver["items"]|length > 0 %}
         <div id="carousel-silver" class="w-full">
-            {% with data=silver %}{% include "_sponsors_carousel.html" %}{% endwith %}
+            {% with data=silver %}{% include "index/_sponsors_carousel.html" %}{% endwith %}
         </div>
         {% endif %}
         {% if bronze["items"]|length > 0 %}
         <div id="carousel-bronze" class="w-full">
-            {% with data=bronze %}{% include "_sponsors_carousel.html" %}{% endwith %}
+            {% with data=bronze %}{% include "index/_sponsors_carousel.html" %}{% endwith %}
         </div>
         {% endif %}
     </div>
