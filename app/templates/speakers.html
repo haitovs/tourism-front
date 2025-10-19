@@ -39,37 +39,67 @@
 
         <!-- Grid -->
         <div class="mt-6 bg-white rounded-[12px] p-5 md:p-8">
-            <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 place-items-center">
-                {% set items = speakers or [] %} {% for sp in items %}
+            <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 place-items-stretch">
+
+                {% set items = speakers or [] %}
+                {% for sp in items %}
                 <li x-show="!q || norm('{{ (sp.fullname or sp.name or '')|e }} {{ (sp.position or '')|e }} {{ (sp.company or '')|e }}').includes(norm(q))"
                     x-cloak class="w-full flex justify-center">
-                    <a href="/speakers/{{ sp.id }}" class="block group">
+                    <!-- MOBILE: 350x80 row (image left 20%, content right 80%) -->
+                    <a href="/speakers/{{ sp.id }}" class="block md:hidden w-[350px] h-[80px]">
                         <div
-                            class="relative w-[340px] sm:w-[360px] md:w-[380px] h-[430px] md:h-[450px] rounded-[26px] md:rounded-[35px] overflow-hidden shadow">
+                            class="relative w-full h-full shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-[10px] overflow-hidden grid grid-cols-[20%_80%]">
+                            <!-- Left image -->
+                            <div class="h-full">
+                                <div class="w-full h-full bg-[#F3F3F6]">
+                                    <img src="{{ sp.photo_url or '/static/img/person_placeholder.jpg' }}"
+                                        alt="{{ sp.fullname }}" class="w-full h-full object-cover" loading="lazy" />
+                                </div>
+                            </div>
+                            <!-- Right content (white block with rounded right corners) -->
+                            <div class="h-full bg-white rounded-r-[10px] px-3 py-2 flex flex-col justify-center">
+                                <div class="font-['Lato'] font-semibold text-[16px] leading-[19px] text-black truncate"
+                                    title="{{ sp.fullname }}">
+                                    {{ sp.fullname }}
+                                </div>
+                                <div
+                                    class="mt-1 font-['Lato'] font-semibold text-[12px] leading-[14px] text-black line-clamp-2">
+                                    {{ sp.position }}{% if sp.company %}, {{ sp.company }}{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- DESKTOP/TABLET: adaptive big card -->
+                    <a href="/speakers/{{ sp.id }}" class="hidden md:block group w-full">
+                        <div
+                            class="relative w-full aspect-[4/5] rounded-[20px] lg:rounded-[28px] overflow-hidden shadow transition-transform duration-300 group-hover:scale-[1.01]">
                             {% if sp.photo_url %}
                             <img src="{{ sp.photo_url }}" alt="{{ sp.fullname }}"
-                                class="absolute inset-0 w-full h-full object-cover" />
+                                class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
                             {% else %}
                             <img src="/static/img/person_placeholder.jpg" alt="Speaker"
-                                class="absolute inset-0 w-full h-full object-cover opacity-80" />
+                                class="absolute inset-0 w-full h-full object-cover opacity-80" loading="lazy" />
                             {% endif %}
 
-                            <div
-                                class="absolute inset-x-0 bottom-0 h-[140px] md:h-[160px] bg-black/55 backdrop-blur-sm p-4 md:p-5">
+                            <!-- Fluid gradient overlay instead of fixed-height block -->
+                            <div class="absolute inset-x-0 bottom-0 pt-10 pb-4 px-4 lg:px-5
+                bg-gradient-to-t from-black/75 via-black/35 to-transparent">
                                 <div class="text-white">
-                                    <div class="font-['Roboto'] font-bold text-[22px] md:text-[24px] truncate"
-                                        title="{{ sp.fullname }}">
+                                    <div class="font-['Roboto'] font-bold
+                 text-[clamp(18px,1.6vw,24px)] leading-tight truncate" title="{{ sp.fullname }}">
                                         {{ sp.fullname }}
                                     </div>
-                                    <div
-                                        class="mt-1.5 font-['Roboto'] text-[16px] md:text-[18px] line-clamp-2 opacity-95">
-                                        {{ sp.position }} , {{ sp.company }}
+
+                                    <div class="mt-1.5 font-['Roboto']
+                 text-[clamp(14px,1.2vw,18px)] leading-snug opacity-95 line-clamp-2">
+                                        {{ sp.position }}{% if sp.company %} , {{ sp.company }}{% endif %}
                                     </div>
                                 </div>
-                                <div class="absolute right-4 md:right-5 bottom-4 md:bottom-5">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="w-[22px] h-[22px] md:w-[24px] md:h-[24px] transition-transform group-hover:translate-x-[2px]"
-                                        viewBox="0 0 24 24" fill="none">
+
+                                <div class="absolute right-4 lg:right-5 bottom-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-[22px] h-[22px] lg:w-[24px] lg:h-[24px]
+                    transition-transform group-hover:translate-x-[2px]" viewBox="0 0 24 24" fill="none">
                                         <path d="M9 6l6 6-6 6" stroke="#FFFFFF" stroke-width="1.8"
                                             stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
@@ -77,12 +107,16 @@
                             </div>
                         </div>
                     </a>
+
                 </li>
-                {% endfor %} {% if items|length == 0 %}
+                {% endfor %}
+
+                {% if items|length == 0 %}
                 <li class="col-span-full text-center text-slate-500 py-10">No speakers yet.</li>
                 {% endif %}
             </ul>
         </div>
+
 
         {{ pager(current_page or 1, total_pages or 1, q, base='/speakers') }}
     </section>
