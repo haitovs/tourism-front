@@ -1,5 +1,9 @@
-{% extends "base.html" %} {% from "_hero_macros.html" import hero_buttons %}{% import "macros/news_macros.html" as nm %}
-{% import "macros/pager.html" as pg %} {% block content %}
+{% extends "base.html" %}
+{% from "_hero_macros.html" import hero_buttons %}
+{% import "macros/news_macros.html" as nm %}
+{% import "macros/pager.html" as pg %}
+
+{% block content %}
 <main>
     {# ---------- HERO ---------- #}
     <section class="relative w-full h-[320px] md:h-[380px]">
@@ -13,7 +17,12 @@
             </p>
         </div>
 
-        {{ hero_buttons( home_href = '/', section_label = 'News', section_href = '/news', is_detail = False ) }}
+        {{ hero_buttons(
+        home_href = '/',
+        section_label = 'News',
+        section_href = '/news',
+        is_detail = False
+        ) }}
     </section>
 
     {# ---------- SEARCH BAR (matches "Group 944") ---------- #}
@@ -36,30 +45,55 @@
         </form>
     </section>
 
-    {# ---------- CONTENT ---------- #} {% set has_items = items and items|length > 0 %}
+    {# ---------- CONTENT ---------- #}
+    {% set has_items = items and items|length > 0 %}
     <section class="max-w-[1310px] mx-auto px-4 pt-8 pb-20">
         {# "Line 16" top divider #}
         <div class="h-[3px] bg-[rgba(0,122,61,0.35)] w-full mb-8"></div>
 
         {% if not has_items %}
         <div class="bg-white rounded-[14px] p-10 text-center text-slate-500">No news found.</div>
-        {% else %} {% set current_page = page or 1 %} {% if current_page == 1 %} {# PAGE 1: 1 featured + right 2×2 grid
-        #} {% set featured = items[0] if items|length > 0 else None %} {% set others = items[1:5] if items|length > 1
-        else [] %}
+        {% else %}
+        {% set current_page = page or 1 %}
+
+        {% if current_page == 1 %}
+        {# PAGE 1: 1 featured + right 2×2 grid (first item featured) #}
+        {% set featured = items[0] if items|length > 0 else None %}
+        {% set others = items[1:5] if items|length > 1 else [] %}
 
         <div class="flex flex-col lg:flex-row gap-8">
-            {% if featured %} {{ nm.featured_card(featured) }} {% endif %}
+            {% if featured %}
+            {# Below lg: featured shows as a NORMAL card, so it resizes like the others #}
+            <div class="block lg:hidden">
+                {{ nm.news_card(featured) }}
+            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-[21px] flex-1">
-                {% for n in others %} {{ nm.news_card(n) }} {% endfor %}
+            {# lg and up: show BIG featured, but let its width adapt across lg/xl/2xl #}
+            <div class="hidden lg:block w-full lg:max-w-[600px] xl:max-w-[660px] 2xl:max-w-[720px] lg:flex-none">
+                {{ nm.featured_card(featured) }}
+            </div>
+            {% endif %}
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-[21px] flex-1 place-items-stretch">
+                {% for n in others %}
+                {{ nm.news_card(n) }}
+                {% endfor %}
             </div>
         </div>
-        {% else %} {# PAGE 2+: uniform 3×2 grid #}
-        <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[30px] gap-y-[30px]">
-            {% for n in items %} {{ nm.news_card(n) }} {% endfor %}
+
+
+        {% else %}
+        {# PAGE 2+: uniform grid #}
+        <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[30px] gap-y-[30px] place-items-stretch">
+            {% for n in items %}
+            {{ nm.news_card(n) }}
+            {% endfor %}
         </div>
-        {% endif %} {# ---------- PAGINATION (matches "Group 623" + "Group 549") ---------- #} {{ pg.pager(current_page,
-        total_pages, q) }} {% endif %}
+        {% endif %}
+
+        {# ---------- PAGINATION (matches "Group 623" + "Group 549") ---------- #}
+        {{ pg.pager(current_page, total_pages, q) }}
+        {% endif %}
     </section>
 </main>
 {% endblock %}
