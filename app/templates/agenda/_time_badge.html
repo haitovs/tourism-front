@@ -1,9 +1,12 @@
-{# app/templates/agenda/_time_badge.html #} {% macro time_badge(start_dt, end_dt) -%}
-<aside class="h-[86px] bg-white rounded-[20px] px-4 flex items-center shadow-soft justify-center md:self-start">
-    <div
-        class="font-['Roboto'] font-extrabold text-[22px] md:text-[25px] tracking-[0.1em] text-[#007A3D] text-center leading-tight"
-    >
-        {{ start_dt.strftime('%I:%M %p') }}<br />{{ end_dt.strftime('%I:%M %p') }}
+{# app/templates/agenda/_time_badge.html #}
+{% macro time_badge(start_dt, end_dt) -%}
+<aside class="flex items-center justify-center md:self-start">
+    <div class="font-['Roboto'] font-extrabold tabular-nums text-[#007A3D]
+              leading-[1.05] tracking-[0.02em]
+              text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px]
+              text-left md:text-center">
+        {{ start_dt.strftime('%I:%M') }}<span class="hidden sm:inline"> {{ start_dt.strftime('%p') }}</span><br />
+        {{ end_dt.strftime('%I:%M') }}<span class="hidden sm:inline"> {{ end_dt.strftime('%p') }}</span>
     </div>
 </aside>
 {%- endmacro %}
