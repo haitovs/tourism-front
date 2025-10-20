@@ -40,5 +40,19 @@
 
     "hero.section": "Section",
     "hero.go_home": "Go to homepage",
-    "hero.refresh": "Refresh"
+    "hero.refresh": "Refresh",
+
+    "agenda.title": "Agenda",
+    "agenda.hero_subtitle": "Your guide to everything happening at Construction, Industry, Energy of Turkmenistan 2026",
+    "agenda.program": "Program",
+    "agenda.none": "No agenda yet.",
+    "agenda.no_sessions": "No sessions for this day yet.",
+
+    "weekday.monday": "Monday",
+    "weekday.tuesday": "Tuesday",
+    "weekday.wednesday": "Wednesday",
+    "weekday.thursday": "Thursday",
+    "weekday.friday": "Friday",
+    "weekday.saturday": "Saturday",
+    "weekday.sunday": "Sunday"
 }

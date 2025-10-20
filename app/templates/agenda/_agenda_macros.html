@@ -24,7 +24,6 @@
 {{ speaker.speaker_card(sp) }}
 {%- endmacro %}
 
-{# FIXED: use the speakers param; call the correct imported names #}
 {% macro speakers_scroller(speakers) -%}
 {% call(sp) scroller.speakers_scroller(speakers) %}
 {{ speaker.speaker_card(sp) }}
@@ -35,7 +34,6 @@
 {{ daypill.day_pill(day) }}
 {%- endmacro %}
 
-{# Pass the OUTER Alpine variable name down to the episode macro #}
 {% macro episode_block(d, ep, expanded_var_name) -%}
 {{ episode.episode_block(d, ep, expanded_var_name) }}
 {%- endmacro %}

@@ -1,19 +1,26 @@
-{# app/templates/agenda.html #} {% extends "base.html" %} {% from "_hero_macros.html" import hero_buttons %} {% import
-"agenda/_agenda_macros.html" as agenda %} {% block content %}
+{# app/templates/agenda.html #}
+{% extends "base.html" %}
+{% from "_hero_macros.html" import hero_buttons %}
+{% import "agenda/_agenda_macros.html" as agenda %}
+
+{% block content %}
 <!-- HERO -->
 <section class="relative w-full h-[450px]">
     <img src="/static/img/agenda/agenda-hero.png" alt="Agenda Hero"
         class="absolute inset-0 w-full h-full object-cover" />
     <div class="absolute inset-0 bg-black/35"></div>
     <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
-        <h1 class="font-['Montserrat'] font-bold text-[clamp(34px,5vw,60px)] leading-[1.2] text-white">Agenda</h1>
+        <h1 class="font-['Montserrat'] font-bold text-[clamp(34px,5vw,60px)] leading-[1.2] text-white">
+            {{ t('agenda.title') }}
+        </h1>
         <p
             class="mt-3 font-['Roboto'] font-medium text-[clamp(16px,2.2vw,25px)] leading-[29px] text-white/95 max-w-[583px]">
-            Your guide to everything happening at Construction, Industry, Energy of Turkmenistan 2026
+            {{ t('agenda.hero_subtitle') }}
         </p>
     </div>
-    {{ hero_buttons(home_href='/', section_label='Agenda', section_href='/agenda', is_detail=False) }}
+    {{ hero_buttons(home_href='/', section_label=t('nav.agenda'), section_href='/agenda', is_detail=False) }}
 </section>
+
 <!-- BODY -->
 <section class="max-w-[1310px] mx-auto px-4 md:px-0 py-10"
     x-data='{"selectedDayId": {{ (selected_day_id | tojson) if selected_day_id is not none else "null" }}, "expandedId": null }'
@@ -21,20 +28,24 @@
     @toggle.window="expandedId = (expandedId === $event.detail.id ? null : $event.detail.id)">
     {% if not days or days|length == 0 %}
     <div class="bg-white rounded-[12px] p-10 text-center">
-        <h3 class="font-['Montserrat'] text-[28px] md:text-[32px] text-[#1E1E1E]">Program</h3>
-        <p class="mt-3 font-['Roboto'] text-[18px] text-slate-600">No agenda yet.</p>
+        <h3 class="font-['Montserrat'] text-[28px] md:text-[32px] text-[#1E1E1E]">
+            {{ t('agenda.program') }}
+        </h3>
+        <p class="mt-3 font-['Roboto'] text-[18px] text-slate-600">
+            {{ t('agenda.none') }}
+        </p>
     </div>
     {% else %}
     <!-- Program header + day pills -->
     <div class="flex items-center gap-3 sm:gap-4">
         <h2 class="font-['Montserrat'] font-semibold
-             text-[22px] sm:text-[28px] md:text-[36px] lg:text-[45px]
-             leading-[1.2] underline text-[#000]">
-            Program:
+                     text-[22px] sm:text-[28px] md:text-[36px] lg:text-[45px]
+                     leading-[1.2] underline text-[#000]">
+            {{ t('agenda.program') }}:
         </h2>
         <!-- Fixed-size, rounded scroller -->
         <div class="w-full max-w-[1310px]">
-            <div class="rounded-[12px]  bg-white/60 overflow-hidden">
+            <div class="rounded-[12px] bg-white/60 overflow-hidden">
                 <div class="overflow-x-auto overflow-y-hidden">
                     <div class="h-[61px] flex items-stretch gap-3 md:gap-4 px-4">
                         {% for d in days %}
@@ -57,7 +68,9 @@
                 {{ agenda.episode_block(d, ep, 'expandedId') }}
                 {% endfor %}
                 {% if d.episodes|length == 0 %}
-                <div class="bg-white rounded-[12px] p-8 text-center text-slate-500">No sessions for this day yet.</div>
+                <div class="bg-white rounded-[12px] p-8 text-center text-slate-500">
+                    {{ t('agenda.no_sessions') }}
+                </div>
                 {% endif %}
             </div>
         </template>
