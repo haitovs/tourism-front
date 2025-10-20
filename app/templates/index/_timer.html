@@ -44,8 +44,9 @@
                     <div class="absolute left-0 top-0 h-full w-[480px] xl:w-[564px]">
                         <div class="pl-[24px] pr-[20px] pt-[16px] flex items-center gap-3 w-full">
                             <img :src="logoUrl" alt="logo" class="w-[72px] xl:w-[80px] h-auto shrink-0" />
-                            <div class="font-['Montserrat'] font-medium text-[20px] xl:text-[22px] ... "
-                                x-text="eventName || {{ t('home.timer.default_event')|tojson }}">
+                            <div class="font-['Montserrat'] font-medium text-[20px] xl:text-[22px] leading-[26px] xl:leading-[28px] line-clamp-3 text-white"
+                                style="max-width: calc(100% - 72px - 12px - 24px - 20px)"
+                                x-text="eventName  || {{ t('home.timer.default_event')|tojson }}">
                             </div>
                         </div>
                     </div>
