@@ -1,5 +1,6 @@
-{# app/templates/speaker_detail.html #} {% extends "base.html" %} {% from "_hero_macros.html" import hero_buttons %} {%
-block content %}
+{% extends "base.html" %}
+{% from "_hero_macros.html" import hero_buttons %}
+{% block content %}
 <main>
     <!-- HERO -->
     <section class="relative w-full h-[420px]">
@@ -8,69 +9,64 @@ block content %}
 
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
             <h1 class="font-['Montserrat'] font-bold text-[clamp(34px,5vw,56px)] leading-tight text-white">
-                Distinguished Speakers
+                {{ t('speakers.hero.title') }}
             </h1>
             <p class="mt-3 font-['Roboto'] text-[clamp(16px,2.4vw,22px)] text-white/90">
-                Leaders, innovators, and experts from across the industry
+                {{ t('speakers.hero.subtitle') }}
             </p>
         </div>
 
-        {{ hero_buttons( home_href = '/', section_label = 'All Speakers', section_href = '/speakers', is_detail = True,
-        current_path = request.url.path, detail_label = 'Speaker Details', detail_href = '#speaker-body', detail_refresh
-        = False ) }}
+        {{ hero_buttons(
+        home_href='/',
+        section_label=t('speakers.section_label'),
+        section_href='/speakers',
+        is_detail=True,
+        current_path=request.url.path,
+        detail_label=t('speaker.detail.breadcrumb'),
+        detail_href='#speaker-body',
+        detail_refresh=False
+        ) }}
     </section>
 
     <!-- BODY -->
     <section id="speaker-body" class="max-w-[1440px] mx-auto px-4 py-10">
-        <!-- Exact desktop geometry: 380px | 40px gap | 800px -->
         <div class="grid gap-8 md:gap-[40px] justify-center md:[grid-template-columns:380px_800px]">
-            <!-- Left: 380x450 image with 20px radius -->
+            <!-- Left image -->
             <aside class="mx-auto md:mx-0">
                 <div class="relative w-[min(100%,380px)] h-[450px] rounded-[20px] overflow-hidden bg-white">
                     {% if speaker.photo_url %}
-                    <img
-                        src="{{ speaker.photo_url }}"
-                        alt="{{speaker.fullname}}"
-                        class="absolute inset-0 w-full h-full object-cover"
-                    />
+                    <img src="{{ speaker.photo_url }}" alt="{{ speaker.fullname }}"
+                        class="absolute inset-0 w-full h-full object-cover" />
                     {% else %}
-                    <img
-                        src="/static/img/person_placeholder.jpg"
-                        alt="Speaker"
-                        class="absolute inset-0 w-full h-full object-cover opacity-80"
-                    />
+                    <img src="/static/img/person_placeholder.jpg" alt="Speaker"
+                        class="absolute inset-0 w-full h-full object-cover opacity-80" />
                     {% endif %}
                 </div>
             </aside>
 
-            <!-- Right: 800x704 white panel with 20px radius -->
+            <!-- Right panel -->
             <article class="bg-white rounded-[20px] shadow w-full md:w-[800px] min-h-[704px] p-6 md:p-8">
-                <!-- SPEAKER label -->
-                <div class="text-[rgba(21,25,56,0.85)] font-['Roboto'] text-[20px] leading-[23px]">SPEAKER</div>
+                <div class="text-[rgba(21,25,56,0.85)] font-['Roboto'] text-[20px] leading-[23px]">
+                    {{ t('speaker.card.label') }}
+                </div>
 
-                <!-- Full name: name + surname -->
                 <h2
-                    class="mt-3 font-['Roboto'] font-semibold text-[#151938] text-[clamp(28px,4vw,45px)] leading-[1.18]"
-                >
-                    {{speaker.fullname}}
+                    class="mt-3 font-['Roboto'] font-semibold text-[#151938] text-[clamp(28px,4vw,45px)] leading-[1.18]">
+                    {{ speaker.fullname }}
                 </h2>
 
-                {# Company logo | tight green divider | position #} {% if speaker.company_photo_url or speaker.position
-                or speaker.company %}
+                {% if speaker.company_photo_url or speaker.position or speaker.company %}
                 <div class="mt-4 flex items-center gap-3 md:gap-4">
                     {% if speaker.company_photo_url %}
-                    <img
-                        src="{{ speaker.company_photo_url }}"
-                        alt="Company logo"
-                        class="h-[40px] md:h-[50px] w-auto object-contain shrink-0"
-                        loading="lazy"
-                    />
-                    {% endif %} {% if speaker.company_photo_url and (speaker.position or speaker.company) %}
+                    <img src="{{ speaker.company_photo_url }}" alt="Company logo"
+                        class="h-[40px] md:h-[50px] w-auto object-contain shrink-0" loading="lazy" />
+                    {% endif %}
+                    {% if speaker.company_photo_url and (speaker.position or speaker.company) %}
                     <span class="hidden md:inline-block w-[2px] h-[34px] bg-[#007A3D]"></span>
-                    {% endif %} {% if speaker.position or speaker.company %}
+                    {% endif %}
+                    {% if speaker.position or speaker.company %}
                     <p
-                        class="font-['Roboto'] text-[#151938] text-[22px] md:text-[25px] leading-[28px] md:leading-[30px] max-w-[420px] md:max-w-[520px]"
-                    >
+                        class="font-['Roboto'] text-[#151938] text-[22px] md:text-[25px] leading-[28px] md:leading-[30px] max-w-[420px] md:max-w-[520px]">
                         {{ speaker.position }}{% if speaker.company %}{% if speaker.position %}, {% endif %}{{
                         speaker.company }}{% endif %}
                     </p>
@@ -78,14 +74,13 @@ block content %}
                 </div>
                 {% endif %}
 
-                <!-- Description paragraph (700px width, 25/40) -->
                 <section class="mt-6">
-                    {% set _desc = speaker.description or '' %} {% if _desc %}
+                    {% set _desc = speaker.description or '' %}
+                    {% if _desc %}
                     <div class="font-['Roboto'] text-[25px] leading-[40px] text-black max-w-[700px]">{{ _desc }}</div>
                     {% else %}
                     <p class="font-['Roboto'] text-[18px] leading-8 text-slate-800">
-                        Biography coming soon. This section will include the speaker’s background, notable achievements,
-                        and session highlights. Check back for updates.
+                        {{ t('speaker.bio.missing') }}
                     </p>
                     {% endif %}
                 </section>

@@ -306,5 +306,22 @@
     "privacy.hero.title": "Privacy Policy",
     "privacy.hero.subtitle": "How we collect, use, and protect your data.",
     "privacy.empty.title": "Privacy Policy",
-    "privacy.empty.subtitle": "No privacy policy has been published yet. Please check back later."
+    "privacy.empty.subtitle": "No privacy policy has been published yet. Please check back later.",
+
+    "speaker.detail.breadcrumb": "Speaker Details",
+    "speaker.card.label": "SPEAKER",
+    "speaker.bio.missing": "Biography coming soon. This section will include the speaker’s background, notable achievements, and session highlights. Check back for updates.",
+
+    "speakers.section_label": "All Speakers",
+    "speakers.hero.title": "Distinguished Speakers",
+    "speakers.hero.subtitle": "Leaders, innovators, and experts from across the industry",
+    "speakers.search.placeholder": "Search ...",
+    "speakers.search.aria": "Search speakers",
+    "speakers.none": "No speakers yet.",
+
+    "terms.section_label": "Terms of Use",
+    "terms.hero.title": "Terms of Use",
+    "terms.hero.subtitle": "Rules for using our site and services.",
+    "terms.empty.title": "Terms of Use",
+    "terms.empty.subtitle": "No Terms of Use available."
 }
