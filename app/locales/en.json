@@ -152,5 +152,9 @@
     "news.read_more": "Read more",
     "news.pager.previous": "Previous",
     "news.pager.next": "Next",
-    "news.pager.aria": "Pagination"
+    "news.pager.aria": "Pagination",
+
+    "pager.aria": "Pagination",
+    "pager.previous": "Previous",
+    "pager.next": "Next"
 }
