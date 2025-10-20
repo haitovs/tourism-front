@@ -18,10 +18,14 @@ _LOCALES_DIR = Path(__file__).parent.parent / "locales"
 def _load_locale(lang: str) -> Dict[str, str]:
     path = _LOCALES_DIR / f"{lang}.json"
     if not path.exists():
+        print(f"[i18n] missing locale: {path}")  # debug
         return {}
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        print(f"[i18n] loaded {lang}: {len(data)} keys")  # debug
+        return data
+    except Exception as e:
+        print(f"[i18n] failed to load {path}: {e}")
         return {}
 
 

@@ -246,6 +246,9 @@
   .top-\[clamp\(170px\,22vw\,240px\)\] {
     top: clamp(170px, 22vw, 240px);
   }
+  .top-full {
+    top: 100%;
+  }
   .right-0 {
     right: calc(var(--spacing) * 0);
   }
@@ -1095,6 +1098,9 @@
   }
   .-rotate-90 {
     rotate: calc(90deg * -1);
+  }
+  .rotate-0 {
+    rotate: 0deg;
   }
   .rotate-90 {
     rotate: 90deg;

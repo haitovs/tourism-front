@@ -24,7 +24,17 @@
     "nav.faq": "FAQ",
     "btn.read_more": "Read more",
     "btn.view_all": "View all",
+
     "footer.contact": "Contact",
     "footer.follow_us": "Follow us",
-    "footer.rights": "© All rights reserved."
+    "footer.rights": "© All rights reserved.",
+    "footer.nav_title": "Navigation",
+    "footer.useful_title": "Useful Links",
+    "footer.contact_title": "Contact Us",
+    "footer.address": "Ashgabat, Turkmenistan",
+    "footer.tagline_line1": "International Turkmen–China",
+    "footer.tagline_line2": "Exhibition and Forum",
+    "footer.rights_year": "All rights reserved 2025",
+    "footer.powered_by": "Powered by",
+    "footer.register": "Register"
 }

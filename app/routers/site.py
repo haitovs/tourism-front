@@ -1,7 +1,8 @@
 # app/routers/site.py
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Response
 from starlette.responses import HTMLResponse
 
+from app.core.language_middleware import LANG_COOKIE
 from app.services import expo_sectors as sectors_srv
 from app.services import faqs as faq_srv
 from app.services import news as news_srv
@@ -22,6 +23,15 @@ router = APIRouter()
 def _resolve_site_id(req: Request) -> int | None:
     site = getattr(req.state, "site", None)
     return getattr(site, "id", None) if site else None
+
+
+@router.post("/set-lang/{code}")
+def set_lang(code: str, response: Response):
+    code = (code or "").lower().split("-")[0]
+    if code not in settings.SUPPORTED_LANGS:
+        code = settings.DEFAULT_LANG
+    response.set_cookie(LANG_COOKIE, code, max_age=60 * 60 * 24 * 365, samesite="lax")
+    return {"ok": True, "lang": code}
 
 
 @router.get("/", response_class=HTMLResponse)
