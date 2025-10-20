@@ -1,4 +1,4 @@
-{# templates/_faq.html #}
+{# app/templates/index/_faq.html #}
 {% set _faqs = faqs or [] %}
 <section id="faq" class="mx-auto w-[min(1310px,92vw)] select-none" x-data="faqWidget()">
 
@@ -6,18 +6,22 @@
     <div class="mb-8">
         <div class="flex items-center justify-center gap-4">
             <span class="block h-px w-[60px] bg-[#007A3D]"></span>
-            <span class="text-[clamp(18px,2.8vw,30px)] leading-[1.6] text-[#007A3D] font-['Montserrat']">FAQ</span>
+            <span class="text-[clamp(18px,2.8vw,30px)] leading-[1.6] text-[#007A3D] font-['Montserrat']">
+                {{ t('index.faq.band') }}
+            </span>
             <span class="block h-px w-[60px] bg-[#007A3D]"></span>
         </div>
         <h2 class="mt-2 text-center text-[clamp(22px,4vw,50px)] leading-[1.2] text-[#1E1E1E] font-['Montserrat']">
-            Have Questions? We’ve Got Answers
+            {{ t('index.faq.title') }}
         </h2>
     </div>
 
     <!-- Top strip -->
     <div
-        class="mb-6 flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-between rounded-[10px] bg-[rgba(0,122,61,0.25)] px-4 sm:px-6 py-3">
-        <div class="text-[clamp(14px,2.2vw,25px)] leading-[1.2] text-[#1E1E1E] font-['Roboto']">FAQ</div>
+        class="mb-6 flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-between rounded-[10px] bg[rgba(0,122,61,0.25)] px-4 sm:px-6 py-3">
+        <div class="text-[clamp(14px,2.2vw,25px)] leading-[1.2] text-[#1E1E1E] font-['Roboto']">
+            {{ t('index.faq.band') }}
+        </div>
 
         <label
             class="relative flex h-[clamp(40px,5.2vw,49px)] w-full sm:w-[min(420px,60%)] items-center rounded-[5px] border border-[#BFBFC3] bg-white px-3">
@@ -28,17 +32,17 @@
             </svg>
             <input x-model.trim="q" type="search"
                 class="h-full w-full outline-none placeholder-[#007A3D] text-[#007A3D] text-[clamp(14px,2.2vw,22px)] leading-[1.2] bg-transparent"
-                placeholder="Search..." autocomplete="off" />
+                placeholder="{{ t('index.faq.search_placeholder') }}" autocomplete="off" />
         </label>
     </div>
 
     <!-- Center banner -->
     <div class="mb-8 rounded-[10px] bg-[rgba(0,122,61,0.25)] py-8 sm:py-10 px-3">
         <h3 class="text-center text-[clamp(20px,4vw,50px)] leading-[1.2] text-[#1E1E1E] mb-2 font-['Montserrat']">
-            Have any questions?
+            {{ t('index.faq.center.heading') }}
         </h3>
         <p class="text-center text-[clamp(14px,2.4vw,25px)] leading-[1.35] text-[#1E1E1E] font-['Roboto']">
-            Let us answer the questions for you.
+            {{ t('index.faq.center.body') }}
         </p>
     </div>
 
@@ -73,7 +77,9 @@
         <template x-if="filteredIds.size === 0">
             <div class="rounded-[10px] border border-dashed border-[#BFBFC3] px-6 py-10 text-center">
                 <p class="text-[clamp(14px,2.4vw,20px)] font-['Inter']">
-                    No results for “<span class="font-semibold" x-text="q"></span>”. Try a different query.
+                    {{ t('index.faq.no_results.1') }}
+                    “<span class="font-semibold" x-text="q"></span>”.
+                    {{ t('index.faq.no_results.2') }}
                 </p>
             </div>
         </template>

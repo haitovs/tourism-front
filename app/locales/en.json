@@ -70,5 +70,31 @@
     "sponsor.tier.silver": "Silver Sponsor",
     "sponsor.tier.bronze": "Bronze Sponsor",
 
-    "agenda.no_speakers": "No speakers yet."
+    "agenda.no_speakers": "No speakers yet.",
+
+    "index.about.band": "About the Event",
+    "index.about.title": "International Expo & Forum",
+    "index.about.forum.heading": "About the Forum",
+    "index.about.forum.body": "We are an international team of professionals dedicated to organizing high-level global events — including forums, exhibitions, and lectures — that promote innovation, cultural exchange, and international cooperation.",
+    "index.about.why.heading": "Why Join Forum 2026",
+    "index.about.why.body": "Experience a forum designed to inspire, inform, and connect the community through meaningful dialogue and real collaboration.",
+    "index.about.guests.heading": "For Our Guests",
+    "index.about.guests.body": "Open to foreign delegations, embassy representatives, cultural missions, media professionals, and invited international guests.",
+    "index.about.cta": "Read details",
+    "index.about.video_alt": "Event preview",
+    "index.about.video_play_aria": "Play video",
+    "index.about.video_play_alt": "Play",
+
+    "index.sectors.band": "Expo Sectors",
+    "index.sectors.title": "Strategic Economic Sectors for Development",
+    "index.sectors.more_info": "More information",
+    "index.sectors.more_details": "More details",
+
+    "index.faq.band": "FAQ",
+    "index.faq.title": "Have Questions? We’ve Got Answers",
+    "index.faq.search_placeholder": "Search...",
+    "index.faq.center.heading": "Have any questions?",
+    "index.faq.center.body": "Let us answer the questions for you.",
+    "index.faq.no_results.1": "No results for",
+    "index.faq.no_results.2": "Try a different query."
 }
