@@ -245,5 +245,17 @@
     "sectors.detail.hero.section_label": "Expo Sectors",
     "sectors.detail.hero.detail_label": "Sector Details",
     "sectors.detail.key_professions": "Key Professions",
-    "sectors.detail.types": "Types"
+    "sectors.detail.types": "Types",
+
+    "sectors.list.hero.title": "Expo Sectors",
+    "sectors.list.hero.subtitle": "Discover the sectors driving growth and cooperation",
+    "sectors.list.hero.section_label": "Expo Sectors",
+    "sectors.list.card.more_info": "More information",
+    "sectors.list.card.coming_soon": "More information coming soon.",
+    "sectors.list.card.open_title": "Open",
+    "sectors.list.empty": "No sectors have been published yet.",
+
+    "faq.hero.title": "FAQ",
+    "faq.hero.subtitle": "Answers to the most common questions about the event.",
+    "faq.hero.section_label": "FAQ"
 }

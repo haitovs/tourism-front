@@ -1,4 +1,5 @@
-{% extends "base.html" %}{% from "_hero_macros.html" import hero_buttons %} {% block content %}
+{% extends "base.html" %}{% from "_hero_macros.html" import hero_buttons %}
+{% block content %}
 <main>
     <!-- HERO -->
     <section class="relative w-full h-[320px] md:h-[380px]">
@@ -6,15 +7,20 @@
         <div class="absolute inset-0 bg-black/40"></div>
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
             <h1 class="font-['Montserrat'] font-bold text-white text-[clamp(30px,5vw,56px)] leading-tight">
-                Expo Sectors
+                {{ t('sectors.list.hero.title') }}
             </h1>
             <p class="mt-2 font-['Roboto'] text-white/90 text-[clamp(16px,2.4vw,20px)]">
-                Discover the sectors driving growth and cooperation
+                {{ t('sectors.list.hero.subtitle') }}
             </p>
         </div>
-        {{ hero_buttons(home_href = '/', section_label = 'Expo Sectors', section_href = '/expo-sectors', is_detail =
-        False) }}
+        {{ hero_buttons(
+        home_href = '/',
+        section_label = t('sectors.list.hero.section_label'),
+        section_href = '/expo-sectors',
+        is_detail = False
+        ) }}
     </section>
+
     <!-- GRID -->
     <section class="max-w-[var(--container)] mx-auto px-4 py-12">
         {% if sectors and sectors|length > 0 %}
@@ -29,30 +35,25 @@
                     <img src="/static/img/default_sector.png" alt="{{ s.header }}" class="w-full h-full object-cover" />
                     {% endif %}
                 </div>
+
                 <!-- Content -->
                 <div class="p-5 flex-1 flex flex-col">
                     <h3 class="font-['Roboto'] font-medium text-[22px] leading-7 text-[#1E1E1E]">{{ s.header }}</h3>
+
                     {% if s.description %}
                     <p class="mt-2 text-[16px] leading-6 text-slate-800 line-clamp-5">{{ s.description }}</p>
                     {% else %}
-                    <p class="mt-2 text-[16px] leading-6 text-slate-600">More information coming soon.</p>
+                    <p class="mt-2 text-[16px] leading-6 text-slate-600">{{ t('sectors.list.card.coming_soon') }}</p>
                     {% endif %}
+
                     <!-- CTA -->
                     <div class="mt-5">
-                        <a
-                            href="/expo-sectors/{{ s.id }}"
-                            title="Open {{ s.header }}"
-                            class="inline-flex items-center justify-between w-full sm:w-auto gap-3 px-4 h-[46px] rounded-md bg-[#D3F2E2] text-[#007A3D] font-['Roboto'] font-medium text-[16px] hover:bg-[#c8ecd9] transition"
-                        >
-                            <span>More information</span>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="w-4 h-4"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                            >
+                        <a href="/expo-sectors/{{ s.id }}"
+                            title="{{ t('sectors.list.card.open_title',) }} {{ s.header }}"
+                            class="inline-flex items-center justify-between w-full sm:w-auto gap-3 px-4 h-[46px] rounded-md bg-[#D3F2E2] text-[#007A3D] font-['Roboto'] font-medium text-[16px] hover:bg-[#c8ecd9] transition">
+                            <span>{{ t('sectors.list.card.more_info') }}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.8">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                             </svg>
                         </a>
@@ -62,7 +63,9 @@
             {% endfor %}
         </div>
         {% else %}
-        <div class="bg-white rounded-[15px] p-8 text-center text-slate-500">No sectors have been published yet.</div>
+        <div class="bg-white rounded-[15px] p-8 text-center text-slate-500">
+            {{ t('sectors.list.empty') }}
+        </div>
         {% endif %}
     </section>
 </main>
