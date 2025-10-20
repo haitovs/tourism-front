@@ -1,10 +1,17 @@
+# app/core/settings.py
 from typing import Tuple
 
+from pydantic import Field  # <-- add this
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        case_sensitive=True,
+        extra="ignore",  # <-- ignore env keys you don't map to fields
+        populate_by_name=True,  # <-- allow alias population
+    )
 
     ENV: str = "dev"
     APP_NAME: str = "Expo Site"
@@ -13,14 +20,29 @@ class Settings(BaseSettings):
     TRANSLATE_BASE_URL: str = "https://libretranslate.de"
     TRANSLATE_API_KEY: str | None = None
 
+    # --- I18N (front) ---
     DEFAULT_LANG: str = "en"
-    SUPPORTED_LANGS: Tuple[str, ...] = ("en", "ru", "tm")
+    # read from env var SUPPORTED_LANGS= "en,ru,tk,zh" using an alias
+    SUPPORTED_LANGS_RAW: str = Field(default="en,ru,tk,zh", alias="SUPPORTED_LANGS")
 
     MEDIA_BASE_URL: str = "http://localhost:8000"
     MEDIA_PREFIX: str = "/uploads"
 
     BACKEND_BASE_URL: str = "http://127.0.0.1:8000"
     STATS_BG_IMAGE: str = "/static/img/stats_bg.png"
+
+    @property
+    def SUPPORTED_LANGS(self) -> Tuple[str, ...]:
+        items = [x.strip().lower() for x in self.SUPPORTED_LANGS_RAW.split(",") if x.strip()]
+        seen, out = set(), []
+        for x in items:
+            k = x.split("-")[0]
+            if k and k not in seen:
+                seen.add(k)
+                out.append(k)
+        if self.DEFAULT_LANG not in out:
+            out.insert(0, self.DEFAULT_LANG)
+        return tuple(out)
 
 
 settings = Settings()
