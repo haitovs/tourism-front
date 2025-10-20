@@ -54,5 +54,19 @@
     "weekday.thursday": "Thursday",
     "weekday.friday": "Friday",
     "weekday.saturday": "Saturday",
-    "weekday.sunday": "Sunday"
+    "weekday.sunday": "Sunday",
+
+    "common.read_more": "Read more",
+    "common.hide": "Hide",
+
+    "agenda.sponsors": "Sponsors",
+    "agenda.moderator": "Moderator",
+    "agenda.topic": "Topic",
+    "agenda.speakers": "Speakers",
+    "agenda.speakers_carousel": "Speakers carousel",
+
+    "sponsor.unknown": "Sponsor",
+    "sponsor.tier.gold": "Gold Sponsor",
+    "sponsor.tier.silver": "Silver Sponsor",
+    "sponsor.tier.bronze": "Bronze Sponsor"
 }
