@@ -6,7 +6,7 @@
 
 {% set placeholder_src = vm.placeholder_src|default('/static/img/img_placeholder.png') %}
 {% set logo = sp.logo_url or placeholder_src %}
-{% set name = sp.name|default('Sponsor') %}
+{% set name = sp.name|default(t('sponsors.common.sponsor')) %}
 {% set tier_label = vm.tier_label|default('') %}
 {% set tier_class = vm.tier_class|default('') %}
 {% set base = vm.card_base_class|default('') %}
@@ -17,9 +17,9 @@
 
 {% if href %}
 <a href="{{ href }}" class="{{ linkc }}" target="_blank" rel="noopener noreferrer"
-    aria-label="{{ name }} (opens in new tab)">
+    aria-label="{{ name }} {{ t('sponsors.common.opens_new_tab') }}">
     <article class="{{ base }}{{ inter }}">
-        <img src="{{ logo }}" alt="{{ name if logo else 'Sponsor' }}" title="{{ name }}"
+        <img src="{{ logo }}" alt="{{ name if logo else t('sponsors.common.sponsor') }}" title="{{ name }}"
             class="select-none pointer-events-none object-contain mx-auto" style="width: {{ w }}px; height: {{ h }}px"
             loading="lazy" />
         <div class="mt-2 text-center font-['Roboto'] font-semibold text-[clamp(12px,2vw,21px)] {{ tier_class }}">
@@ -29,7 +29,7 @@
 </a>
 {% else %}
 <article class="{{ base }}">
-    <img src="{{ logo }}" alt="{{ name if logo else 'Sponsor' }}" title="{{ name }}"
+    <img src="{{ logo }}" alt="{{ name if logo else t('sponsors.common.sponsor') }}" title="{{ name }}"
         class="select-none pointer-events-none object-contain mx-auto" style="width: {{ w }}px; height: {{ h }}px"
         loading="lazy" />
     <div class="mt-2 text-center font-['Roboto'] font-semibold text-[clamp(12px,2vw,21px)] {{ tier_class }}">
@@ -42,7 +42,7 @@
 {% set layout = vm.layout|default('empty') %}
 
 {% if layout == "empty" %}
-<div class="text-center text-slate-400">No {{ vm.tier|default('') }} sponsors yet</div>
+<div class="text-center text-slate-400">{{ t('sponsors.carousel.empty') }}</div>
 
 {% elif layout == "rows" %}
 <div class="space-y-4 w-full max-w-[var(--container)] mx-auto">

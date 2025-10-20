@@ -120,5 +120,31 @@
     "index.speakers.title": "Our respected speakers",
     "index.speakers.more_details": "More details",
     "index.speakers.none": "No speakers yet.",
-    "index.speakers.person_alt": "Speaker"
+    "index.speakers.person_alt": "Speaker",
+
+    "sponsors.carousel.empty": "No sponsors yet",
+    "sponsors.common.sponsor": "Sponsor",
+    "sponsors.common.opens_new_tab": "(opens in new tab)",
+
+    "sponsors.top.empty": "No top sponsors yet",
+
+    "home.sponsors.title_mini": "Sponsors",
+    "home.sponsors.title_main": "With Gratitude to Our Sponsors",
+
+    "home.stats.title_mini": "Statistics",
+    "home.stats.title_main": "Key figures of our forum",
+    "home.stats.sessions": "Sessions",
+    "home.stats.delegates": "Delegates",
+    "home.stats.speakers": "Speakers",
+    "home.stats.companies": "Companies",
+
+    "home.timer.title_mini": "Timer",
+    "home.timer.title_main": "Countdown to the official start of the forum",
+    "home.timer.default_event": "International Turkmenistan–China forum and exhibition",
+    "home.timer.days": "Days",
+    "home.timer.hours": "Hours",
+    "home.timer.minutes": "Minutes",
+    "home.timer.seconds": "Seconds",
+    "home.timer.remaining": "The remaining",
+    "home.timer.deadline": "Deadline"
 }

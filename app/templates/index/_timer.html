@@ -3,12 +3,14 @@
     <header class="text-center">
         <div class="flex items-center justify-center gap-4">
             <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
-            <span class="font-['Montserrat'] text-[30px] leading-[75px] text-[var(--c-primary)]">Timer</span>
+            <span class="font-['Montserrat'] text-[30px] leading-[75px] text-[var(--c-primary)]">
+                {{ t('home.timer.title_mini') }}
+            </span>
             <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
         </div>
         <h2
             class="font-['Montserrat'] text-[clamp(28px,4vw,50px)] leading-[1.22] font-medium mt-1 text-center text-[#1E1E1E]">
-            Countdown to the official start of the forum
+            {{ t('home.timer.title_main') }}
         </h2>
     </header>
 
@@ -42,9 +44,9 @@
                     <div class="absolute left-0 top-0 h-full w-[480px] xl:w-[564px]">
                         <div class="pl-[24px] pr-[20px] pt-[16px] flex items-center gap-3 w-full">
                             <img :src="logoUrl" alt="logo" class="w-[72px] xl:w-[80px] h-auto shrink-0" />
-                            <div class="font-['Montserrat'] font-medium text-[20px] xl:text-[22px] leading-[26px] xl:leading-[28px] line-clamp-3 text-white"
-                                style="max-width: calc(100% - 72px - 12px - 24px - 20px)"
-                                x-text="eventName || 'International Turkmenistan-China forum and exhibition'"></div>
+                            <div class="font-['Montserrat'] font-medium text-[20px] xl:text-[22px] ... "
+                                x-text="eventName || {{ t('home.timer.default_event')|tojson }}">
+                            </div>
                         </div>
                     </div>
 
@@ -59,7 +61,7 @@
                                         x-text="dd">00</div>
                                     <div
                                         class="mt-1 font-['Roboto'] text-[18px] leading-[22px] xl:text-[20px] xl:leading-[24px]">
-                                        DAYS</div>
+                                        {{ t('home.timer.days')|upper }}</div>
                                 </div>
                                 <!-- dots -->
                                 <div class="flex flex-col items-center justify-center gap-[18px] xl:gap-[22px]">
@@ -72,7 +74,7 @@
                                         x-text="hh">00</div>
                                     <div
                                         class="mt-1 font-['Roboto'] text-[18px] leading-[22px] xl:text-[20px] xl:leading-[24px]">
-                                        HOURS</div>
+                                        {{ t('home.timer.hours')|upper }}</div>
                                 </div>
                                 <!-- dots -->
                                 <div class="flex flex-col items-center justify-center gap-[18px] xl:gap-[22px]">
@@ -85,7 +87,7 @@
                                         x-text="mm">00</div>
                                     <div
                                         class="mt-1 font-['Roboto'] text-[18px] leading-[22px] xl:text-[20px] xl:leading-[24px]">
-                                        MINUTES</div>
+                                        {{ t('home.timer.minutes')|upper }}</div>
                                 </div>
                                 <!-- dots -->
                                 <div class="flex flex-col items-center justify-center gap-[18px] xl:gap-[22px]">
@@ -98,7 +100,7 @@
                                         x-text="ss">00</div>
                                     <div
                                         class="mt-1 font-['Roboto'] text-[18px] leading-[22px] xl:text-[20px] xl:leading-[24px]">
-                                        SECONDS</div>
+                                        {{ t('home.timer.seconds')|upper }}</div>
                                 </div>
                             </div>
                         </div>
@@ -127,7 +129,8 @@
                 <div class="timer-content px-4 sm:px-5 md:px-7 flex items-center text-white">
                     <!-- Left counters -->
                     <div class="flex-1">
-                        <div class="font-['Inter'] font-medium text-[14px] sm:text-[15px] md:text-[16px]">The remaining
+                        <div class="font-['Inter'] font-medium text-[14px] sm:text-[15px] md:text-[16px]">
+                            {{ t('home.timer.remaining') }}
                         </div>
 
                         <div class="mt-2 sm:mt-2.5 md:mt-3 flex items-center gap-3 sm:gap-3.5 md:gap-4 tabular-nums">
@@ -135,8 +138,9 @@
                             <div class="text-center">
                                 <div class="font-['Poppins'] leading-none
                         text-[28px] sm:text-[32px] md:text-[38px]" x-text="dd">00</div>
-                                <div class="font-['Lato'] tracking-wide
-                        text-[10px] sm:text-[11px] md:text-[12px]">DAYS</div>
+                                <div class="font-['Lato'] tracking-wide text-[10px] sm:text-[11px] md:text-[12px]">
+                                    {{ t('home.timer.days')|upper }}
+                                </div>
                             </div>
 
                             <!-- dots -->
@@ -150,8 +154,9 @@
                             <div class="text-center">
                                 <div class="font-['Poppins'] leading-none
                         text-[28px] sm:text-[32px] md:text-[38px]" x-text="hh">00</div>
-                                <div class="font-['Lato'] tracking-wide
-                        text-[10px] sm:text-[11px] md:text-[12px]">HOURS</div>
+                                <div class="font-['Lato'] tracking-wide text-[10px] sm:text-[11px] md:text-[12px]">
+                                    {{ t('home.timer.hours')|upper }}
+                                </div>
                             </div>
 
                             <!-- dots -->
@@ -165,8 +170,9 @@
                             <div class="text-center">
                                 <div class="font-['Poppins'] leading-none
                         text-[28px] sm:text-[32px] md:text-[38px]" x-text="mm">00</div>
-                                <div class="font-['Lato'] tracking-wide
-                        text-[10px] sm:text-[11px] md:text-[12px]">MINUTES</div>
+                                <div class="font-['Lato'] tracking-wide text-[10px] sm:text-[11px] md:text-[12px]">
+                                    {{ t('home.timer.minutes')|upper }}
+                                </div>
                             </div>
 
                             <!-- dots -->
@@ -180,8 +186,9 @@
                             <div class="text-center">
                                 <div class="font-['Poppins'] leading-none
                         text-[28px] sm:text-[32px] md:text-[38px]" x-text="ss">00</div>
-                                <div class="font-['Lato'] tracking-wide
-                        text-[10px] sm:text-[11px] md:text-[12px]">SECONDS</div>
+                                <div class="font-['Lato'] tracking-wide text-[10px] sm:text-[11px] md:text-[12px]">
+                                    {{ t('home.timer.seconds')|upper }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -190,9 +197,8 @@
                     <div class="flex items-center gap-3 sm:gap-3.5 md:gap-4 pl-3 sm:pl-3.5 md:pl-4">
                         <div class="h-[84px] sm:h-[96px] md:h-[108px] w-px bg-white/80"></div>
                         <div class="text-center">
-                            <div class="font-['Inter'] font-medium
-                      text-[14px] sm:text-[15px] md:text-[16px]">
-                                Deadline
+                            <div class="font-['Inter'] font-medium text-[14px] sm:text-[15px] md:text-[16px]">
+                                {{ t('home.timer.deadline') }}
                             </div>
                             <div class="mt-1.5 sm:mt-2 md:mt-2.5 font-['Poppins'] leading-none
                       text-[28px] sm:text-[32px] md:text-[36px]">
