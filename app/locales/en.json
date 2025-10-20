@@ -285,5 +285,26 @@
     "official.body.p2": "Collaboration plays a key role in turning ideas into reality. When businesses, governments, and individuals unite, they unlock greater opportunities. Shared knowledge and collective effort make it possible to overcome challenges and build stronger, more resilient communities.",
     "official.body.p3": "The future depends on how we use today’s opportunities. By embracing technology, investing in education, and encouraging creativity, we prepare for sustainable development and long-term success. Every step forward, no matter how small, contributes to shaping a brighter tomorrow.",
     "official.sign.left.name": "Merdan Atayev",
-    "official.sign.right.name": "Merdan Atayev"
+    "official.sign.right.name": "Merdan Atayev",
+
+    "participant.detail.breadcrumb": "Participant Details",
+
+    "participants.section_label": "Participants",
+    "participants.hero.title": "Participants",
+    "participants.hero.subtitle": "Explore the key participants of the Forum & Expo",
+    "participants.filters.all": "All",
+    "participants.filters.expo": "Expo",
+    "participants.filters.forum": "Forum",
+    "participants.search.placeholder": "Search...",
+    "participants.search.aria": "Search participants",
+    "participants.card.no_bio": "More information coming soon.",
+    "participants.card.more_info": "More information",
+    "participants.card.open_title_prefix": "Open",
+    "participants.none": "No participants have been published yet.",
+
+    "privacy.section_label": "Privacy Policy",
+    "privacy.hero.title": "Privacy Policy",
+    "privacy.hero.subtitle": "How we collect, use, and protect your data.",
+    "privacy.empty.title": "Privacy Policy",
+    "privacy.empty.subtitle": "No privacy policy has been published yet. Please check back later."
 }
