@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 {% include "index/_hero.html" %}
 {% include "index/_sponsors.html" %}
 {% include "index/_about_the_event.html" %}
@@ -10,9 +11,11 @@
 {% include "index/_speakers.html" %}
 {% include "index/_news.html" %}
 {% include "index/_faq.html" %}
+
 {% with data=organizers_data %}
 {% include "index/_organizers.html" %}
 {% endwith %}
+
 {% include "index/_partners.html" %}
 
 {% endblock %}

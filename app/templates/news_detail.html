@@ -1,4 +1,5 @@
-{% extends "base.html" %}{% from "_hero_macros.html" import hero_buttons %} {% block content %}
+{% extends "base.html" %}{% from "_hero_macros.html" import hero_buttons %}
+{% block content %}
 <main>
     {# ---------- HERO ---------- #}
     <section class="relative w-full h-[320px] md:h-[450px]">
@@ -7,30 +8,43 @@
 
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
             <h1 class="font-['Montserrat'] font-bold text-white text-[clamp(30px,5vw,60px)] leading-[1.1]">
-                News Details
+                {{ t('news.detail.hero.title') }}
             </h1>
             <p class="mt-3 font-['Roboto'] font-medium text-white/95 text-[clamp(16px,2.4vw,20px)] max-w-[640px]">
-                Stay up to date with the latest announcements, highlights, and guest updates.
+                {{ t('news.detail.hero.subtitle') }}
             </p>
         </div>
 
-        {{ hero_buttons( home_href = '/', section_label = 'News', section_href = '/news', is_detail = True, current_path
-        = request.url.path, detail_label = 'News Details', detail_href = '#news-body', detail_refresh = False ) }}
+        {{ hero_buttons(
+        home_href='/',
+        section_label=t('news.common.section_label'),
+        section_href='/news',
+        is_detail=True,
+        current_path=request.url.path,
+        detail_label=t('news.detail.hero.detail_label'),
+        detail_href='#news-body',
+        detail_refresh=False
+        ) }}
     </section>
 
-    {# ---------- BODY CARD ---------- #} {% set has_item = item is defined and item %}
-    <section class="max-w-[1310px] mx-auto px-4 py-10">
+    {# ---------- BODY CARD ---------- #}
+    {% set has_item = item is defined and item %}
+    <section id="news-body" class="max-w-[1310px] mx-auto px-4 py-10">
         {% if not has_item %}
-        <div class="bg-white rounded-[10px] p-10 text-center text-slate-500">News item not found.</div>
+        <div class="bg-white rounded-[10px] p-10 text-center text-slate-500">
+            {{ t('news.detail.not_found') }}
+        </div>
         {% else %}
         <div class="bg-white rounded-[10px] p-6 md:p-8 lg:p-10 shadow-sm">
             {# header strip like “DAILY” + thin green divider #}
             <div class="flex items-center justify-between">
-                <span class="font-['Roboto'] text-[30px] leading-[35px] text-[rgba(0,122,61,0.75)]">DAILY</span>
+                <span class="font-['Roboto'] text-[30px] leading-[35px] text-[rgba(0,122,61,0.75)]">
+                    {{ t('news.detail.daily_tag') }}
+                </span>
                 <div class="flex-1 ml-4 border-t-[3px] border-[#A6D0BB]"></div>
             </div>
 
-            {# responsive two-column layout: left = media+meta+summary, right = full body #}
+            {# responsive two-column layout #}
             <div class="mt-8 grid grid-cols-1 lg:grid-cols-[minmax(0,534px)_1fr] gap-10">
                 {# LEFT COLUMN #}
                 <div>
@@ -48,7 +62,7 @@
                     <div class="mt-6 flex items-center gap-4">
                         <span class="inline-flex h-[36px] px-4 rounded-[10px] bg-[#007A3D] items-center">
                             <span class="font-['Roboto'] font-bold text-[16px] leading-[20px] text-white">
-                                {{ item.category or 'News' }}
+                                {{ item.category or t('news.common.category_default') }}
                             </span>
                         </span>
                         <span class="flex items-center gap-2">
@@ -69,27 +83,30 @@
                         {{ item.title }}
                     </h2>
 
-                    {# summary / short lead #} {% if item.summary %}
+                    {# summary / short lead #}
+                    {% if item.summary %}
                     <p class="mt-6 font-['Roboto'] text-[25px] leading-[32px] text-black/70">{{ item.summary }}</p>
-                    {% endif %} {# optional secondary lead (if you want) — remove if not needed #} {% if item.lead %}
+                    {% endif %}
+                    {% if item.lead %}
                     <p class="mt-5 font-['Roboto'] text-[25px] leading-[32px] text-black/70">{{ item.lead }}</p>
                     {% endif %}
                 </div>
 
                 {# RIGHT COLUMN — main content #}
                 <article class="prose max-w-none">
-                    {# Tailwind prose base; keep your fonts by overriding the default #}
                     <div class="font-['Roboto'] text-[20px] md:text-[22px] leading-[32px] text-black/70 space-y-6">
-                        {% if item.body %} {# If body has HTML (p, h2, ul...), render safely #}
+                        {% if item.body %}
                         <div
                             class="prose-headings:font-['Montserrat'] prose-headings:text-[#1E1E1E] prose-h2:text-[28px] prose-h3:text-[24px] prose-p:leading-[32px] prose-li:leading-[32px]">
                             {{ item.body | safe }}
                         </div>
-                        {% else %} {# fallback: reuse summary if no body #} {% if item.summary %}
+                        {% else %}
+                        {% if item.summary %}
                         <p>{{ item.summary }}</p>
                         {% else %}
-                        <p>Details coming soon.</p>
-                        {% endif %} {% endif %}
+                        <p>{{ t('common.details_coming_soon') }}</p>
+                        {% endif %}
+                        {% endif %}
                     </div>
                 </article>
             </div>

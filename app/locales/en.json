@@ -257,5 +257,23 @@
 
     "faq.hero.title": "FAQ",
     "faq.hero.subtitle": "Answers to the most common questions about the event.",
-    "faq.hero.section_label": "FAQ"
+    "faq.hero.section_label": "FAQ",
+
+    "news.common.section_label": "News",
+
+    "news.common.category_default": "News",
+    "news.detail.hero.title": "News Details",
+    "news.detail.hero.subtitle": "Stay up to date with the latest announcements, highlights, and guest updates.",
+    "news.detail.hero.detail_label": "News Details",
+    "news.detail.not_found": "News item not found.",
+    "news.detail.daily_tag": "DAILY",
+    "common.details_coming_soon": "Details coming soon.",
+
+    "news.list.hero.title": "News",
+    "news.list.hero.subtitle": "Stay up to date with the latest announcements, highlights, and guest updates.",
+    "news.list.search.aria": "Search news",
+    "news.list.search.label": "Search news",
+    "news.list.search.placeholder": "Search ...",
+    "news.list.search.btn_aria": "Search",
+    "news.list.empty": "No news found."
 }
