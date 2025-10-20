@@ -1,38 +1,52 @@
-{# _sponsors_carousel.html #}
-{% set vm = data %}
+{# index/_sponsors_carousel.html #}
+{% set vm = data|default({}) %}
+
 {% macro card(sp) -%}
-{% if sp.website %}
-<a href="{{ sp.website }}" class="{{ vm.link_interactive_class }}" target="_blank" rel="noopener noreferrer"
-    aria-label="{{ sp.name }} (opens in new tab)">
-    <article class="{{ vm.card_base_class }}{{ vm.card_interactive_suffix }}">
-        <img src="{{ sp.logo_url or vm.placeholder_src }}" alt="{{ sp.name if sp.logo_url else 'Sponsor' }}"
-            title="{{ sp.name }}"
-            class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none mx-auto"
+{% set href = sp.website|default('') %}
+
+{% set placeholder_src = vm.placeholder_src|default('/static/img/img_placeholder.png') %}
+{% set logo = sp.logo_url or placeholder_src %}
+{% set name = sp.name|default('Sponsor') %}
+{% set tier_label = vm.tier_label|default('') %}
+{% set tier_class = vm.tier_class|default('') %}
+{% set base = vm.card_base_class|default('') %}
+{% set inter = vm.card_interactive_suffix|default('') %}
+{% set linkc = vm.link_interactive_class|default('') %}
+{% set w = vm.img_w|default(200) %}
+{% set h = vm.img_h|default(120) %}
+
+{% if href %}
+<a href="{{ href }}" class="{{ linkc }}" target="_blank" rel="noopener noreferrer"
+    aria-label="{{ name }} (opens in new tab)">
+    <article class="{{ base }}{{ inter }}">
+        <img src="{{ logo }}" alt="{{ name if logo else 'Sponsor' }}" title="{{ name }}"
+            class="select-none pointer-events-none object-contain mx-auto" style="width: {{ w }}px; height: {{ h }}px"
             loading="lazy" />
-        <div class="mt-2 text-center font-['Roboto'] font-semibold text-[clamp(12px,2vw,21px)] {{ vm.tier_class }}">
-            {{ vm.tier_label }}
+        <div class="mt-2 text-center font-['Roboto'] font-semibold text-[clamp(12px,2vw,21px)] {{ tier_class }}">
+            {{ tier_label }}
         </div>
     </article>
 </a>
 {% else %}
-<article class="{{ vm.card_base_class }}">
-    <img src="{{ sp.logo_url or vm.placeholder_src }}" alt="{{ sp.name if sp.logo_url else 'Sponsor' }}"
-        title="{{ sp.name }}"
-        class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none mx-auto"
+<article class="{{ base }}">
+    <img src="{{ logo }}" alt="{{ name if logo else 'Sponsor' }}" title="{{ name }}"
+        class="select-none pointer-events-none object-contain mx-auto" style="width: {{ w }}px; height: {{ h }}px"
         loading="lazy" />
-    <div class="mt-2 text-center font-['Roboto'] font-semibold text-[clamp(12px,2vw,21px)] {{ vm.tier_class }}">
-        {{ vm.tier_label }}
+    <div class="mt-2 text-center font-['Roboto'] font-semibold text-[clamp(12px,2vw,21px)] {{ tier_class }}">
+        {{ tier_label }}
     </div>
 </article>
 {% endif %}
 {%- endmacro %}
 
-{% if vm.layout == "empty" %}
-<div class="text-center text-slate-400">No {{ vm.tier }} sponsors yet</div>
+{% set layout = vm.layout|default('empty') %}
 
-{% elif vm.layout == "rows" %}
+{% if layout == "empty" %}
+<div class="text-center text-slate-400">No {{ vm.tier|default('') }} sponsors yet</div>
+
+{% elif layout == "rows" %}
 <div class="space-y-4 w-full max-w-[var(--container)] mx-auto">
-    {% for row in vm.rows %}
+    {% for row in vm.rows|default([]) %}
     {% if row %}
     <div class="flex flex-wrap justify-center gap-3 sm:gap-4">
         {% for sp in row %}
@@ -47,7 +61,7 @@
 
 {% else %}
 <div class="space-y-4 w-full max-w-[var(--container)] mx-auto" data-marquee-group>
-    {% for row in vm.marquee_rows %}
+    {% for row in vm.marquee_rows|default([]) %}
     <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: .75rem">
         <div class="marquee__viewport">
             <ul class="marquee__track">

@@ -1,37 +1,48 @@
-{# _sponsors_top.html #}
-{% set vm = sponsors_top_view %}
+{# index/_sponsors_top.html #}
+{% set vm = sponsors_top_view|default({}) %}
 {% set items = vm['items']|default([]) %}
+{% set layout = vm.layout|default('empty') %}
+{% set placeholder_src = vm.placeholder_src|default('/static/img/img_placeholder.png') %}
+
+
 <div class="w-full mx-auto max-w-[var(--container)]">
-    {% if vm.layout == "empty" %}
+    {% if layout == "empty" %}
     <div class="text-slate-500 text-center">No top sponsors yet</div>
-    {% elif vm.layout == "grid" %}
+
+    {% elif layout == "grid" %}
     <ul class="flex flex-wrap justify-center gap-3 sm:gap-4">
-        {% for sp in vm['items'] %}
+        {% for sp in items %}
         <li class="flex justify-center">
             <div class="w-[180px] sm:w-[220px] md:w-[240px]">
-                {% if sp.website %}
-                <a href="{{ sp.website }}" class="{{ vm.link_interactive_class }}" target="_blank"
-                    rel="noopener noreferrer" aria-label="{{ sp.name }} (opens in new tab)">
-                    <article class="{{ vm.card_base_class }}{{ vm.card_interactive_suffix }}">
-                        <img src="{{ sp.logo_url or vm.placeholder_src }}"
-                            alt="{{ sp.name if sp.logo_url else 'No sponsor yet' }}" title="{{ sp.name }}"
-                            class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none mx-auto"
+                {% set href = sp.website|default('') %}
+                {% set logo = sp.logo_url or placeholder_src %}
+
+                {% set name = sp.name|default('Sponsor') %}
+                {% set tier_label = sp.tier_label|default('') %}
+
+                {% if href %}
+                <a href="{{ href }}" class="{{ vm.link_interactive_class|default('') }}" target="_blank"
+                    rel="noopener noreferrer" aria-label="{{ name }} (opens in new tab)">
+                    <article class="{{ vm.card_base_class|default('') }}{{ vm.card_interactive_suffix|default('') }}">
+                        <img src="{{ logo }}" alt="{{ name if logo else 'No sponsor yet' }}" title="{{ name }}"
+                            class="mx-auto select-none pointer-events-none object-contain"
+                            style="width: {{ vm.img_w|default(200) }}px; height: {{ vm.img_h|default(120) }}px"
                             draggable="false" />
                         <div
                             class="text-[clamp(10px,1.8vw,12px)] font-bold uppercase tracking-wide text-slate-500/60 text-center mt-1.5">
-                            {{ sp.tier_label }}
+                            {{ tier_label }}
                         </div>
                     </article>
                 </a>
                 {% else %}
-                <article class="{{ vm.card_base_class }}">
-                    <img src="{{ sp.logo_url or vm.placeholder_src }}"
-                        alt="{{ sp.name if sp.logo_url else 'No sponsor yet' }}" title="{{ sp.name }}"
-                        class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none mx-auto"
+                <article class="{{ vm.card_base_class|default('') }}">
+                    <img src="{{ logo }}" alt="{{ name if logo else 'No sponsor yet' }}" title="{{ name }}"
+                        class="mx-auto select-none pointer-events-none object-contain"
+                        style="width: {{ vm.img_w|default(200) }}px; height: {{ vm.img_h|default(120) }}px"
                         draggable="false" />
                     <div
                         class="text-[clamp(10px,1.8vw,12px)] font-bold uppercase tracking-wide text-slate-500/60 text-center mt-1.5">
-                        {{ sp.tier_label }}
+                        {{ tier_label }}
                     </div>
                 </article>
                 {% endif %}
@@ -39,36 +50,43 @@
         </li>
         {% endfor %}
     </ul>
+
     {% else %}
     <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap: .75rem">
         <div class="marquee__viewport">
             <ul class="marquee__track">
-                {% for sp in vm['items'] %}
+                {% for sp in items %}
+                {% set href = sp.website|default('') %}
+                {% set logo = sp.logo_url or placeholder_src %}
+
+                {% set name = sp.name|default('Sponsor') %}
+                {% set tier_label = sp.tier_label|default('') %}
                 <li class="marquee__item">
                     <div class="w-[180px] sm:w-[220px] md:w-[240px]">
-                        {% if sp.website %}
-                        <a href="{{ sp.website }}" class="{{ vm.link_interactive_class }}" target="_blank"
-                            rel="noopener noreferrer" aria-label="{{ sp.name }} (opens in new tab)">
-                            <article class="{{ vm.card_base_class }}{{ vm.card_interactive_suffix }}">
-                                <img src="{{ sp.logo_url or vm.placeholder_src }}"
-                                    alt="{{ sp.name if sp.logo_url else 'No sponsor yet' }}" title="{{ sp.name }}"
-                                    class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none mx-auto"
+                        {% if href %}
+                        <a href="{{ href }}" class="{{ vm.link_interactive_class|default('') }}" target="_blank"
+                            rel="noopener noreferrer" aria-label="{{ name }} (opens in new tab)">
+                            <article
+                                class="{{ vm.card_base_class|default('') }}{{ vm.card_interactive_suffix|default('') }}">
+                                <img src="{{ logo }}" alt="{{ name if logo else 'No sponsor yet' }}" title="{{ name }}"
+                                    class="mx-auto select-none pointer-events-none object-contain"
+                                    style="width: {{ vm.img_w|default(200) }}px; height: {{ vm.img_h|default(120) }}px"
                                     draggable="false" />
                                 <div
                                     class="text-[clamp(10px,1.8vw,12px)] font-bold uppercase tracking-wide text-slate-500/60 text-center mt-1.5">
-                                    {{ sp.tier_label }}
+                                    {{ tier_label }}
                                 </div>
                             </article>
                         </a>
                         {% else %}
-                        <article class="{{ vm.card_base_class }}">
-                            <img src="{{ sp.logo_url or vm.placeholder_src }}"
-                                alt="{{ sp.name if sp.logo_url else 'No sponsor yet' }}" title="{{ sp.name }}"
-                                class="w-[{{ vm.img_w }}px] h-[{{ vm.img_h }}px] object-contain select-none pointer-events-none mx-auto"
+                        <article class="{{ vm.card_base_class|default('') }}">
+                            <img src="{{ logo }}" alt="{{ name if logo else 'No sponsor yet' }}" title="{{ name }}"
+                                class="mx-auto select-none pointer-events-none object-contain"
+                                style="width: {{ vm.img_w|default(200) }}px; height: {{ vm.img_h|default(120) }}px"
                                 draggable="false" />
                             <div
                                 class="text-[clamp(10px,1.8vw,12px)] font-bold uppercase tracking-wide text-slate-500/60 text-center mt-1.5">
-                                {{ sp.tier_label }}
+                                {{ tier_label }}
                             </div>
                         </article>
                         {% endif %}
