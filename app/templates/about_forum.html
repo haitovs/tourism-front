@@ -7,38 +7,40 @@
         <div class="absolute inset-0 bg-black/40"></div>
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
             <h1 class="font-['Montserrat'] font-bold text-white
-text-[clamp(30px,5vw,60px)] lg:text-[clamp(44px,3.6vw,72px)]
-leading-[1.15]">
-                Turkmen- China 2026 Forum
+               text-[clamp(30px,5vw,60px)] lg:text-[clamp(44px,3.6vw,72px)]
+               leading-[1.15]">
+                {{ t('about_forum.hero.title') }}
             </h1>
             <p class="mt-2 font-['Roboto'] text-white/90 text-[clamp(16px,2.4vw,20px)]">
-                Strengthening Strategic Partnership for Sustainable Development
+                {{ t('about_forum.hero.subtitle') }}
             </p>
         </div>
-        {{ hero_buttons(home_href = '/', section_label = 'About the Forum', section_href = '/about-forum', is_detail =
-        False) }}
+        {{ hero_buttons(
+        home_href = '/',
+        section_label = t('nav.about_forum'),
+        section_href = '/about-the-forum',
+        is_detail = False
+        ) }}
     </section>
+
     <!-- FRAME 49 (Card 1) -->
     <section class="max-w-[var(--container)] mx-auto px-4 py-8 md:py-10">
         <div class="bg-white rounded-[16px] md:rounded-[20px] p-4 sm:p-5 md:p-8 shadow-sm mx-auto max-w-[1310px]">
             <!-- Title -->
             <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E]
-text-[clamp(22px,5vw,28px)]
-md:text-[clamp(30px,3.6vw,54px)]
-lg:text-[clamp(36px,2.8vw,60px)]
-leading-[1.22]">
-                International Business and Forum of Turkmenistan
+               text-[clamp(22px,5vw,28px)]
+               md:text-[clamp(30px,3.6vw,54px)]
+               lg:text-[clamp(36px,2.8vw,60px)]
+               leading-[1.22]">
+                {{ t('about_forum.intro.title') }}
             </h2>
 
             <!-- Text -->
             <div class="mt-3 md:mt-6 space-y-4 md:space-y-6">
                 <p class="font-['Lato','Roboto',ui-sans-serif]
-text-[15px] sm:text-[16px] md:text-[18px] lg:text-[21px] xl:text-[22px]
-leading-[1.65] text-[#1E1E1E]">
-                    Industry and construction play a vital role in the economic development of any country. Industry
-                    includes the production of goods in factories, such as automobiles, electronics, textiles, food
-                    products, and machinery. It can be divided into several sectors: heavy industry, light industry, and
-                    high-tech production.
+                text-[15px] sm:text-[16px] md:text-[18px] lg:text-[21px] xl:text-[22px]
+                leading-[1.65] text-[#1E1E1E]">
+                    {{ t('about_forum.intro.p1') }}
                 </p>
 
                 <!-- mobile/touch: 2-col rounded tiles -->
@@ -53,11 +55,9 @@ leading-[1.65] text-[#1E1E1E]">
                     </div>
                 </div>
 
-                <p
-                    class="font-['Lato','Roboto',ui-sans-serif] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] leading-[1.6] text-[#1E1E1E]">
-                    In modern times, both industries are becoming more automated and eco-friendly. Technologies such as
-                    3D printing, smart construction tools, and green building materials are transforming the way we
-                    build and manufacture.
+                <p class="font-['Lato','Roboto',ui-sans-serif]
+                text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] leading-[1.6] text-[#1E1E1E]">
+                    {{ t('about_forum.intro.p2') }}
                 </p>
 
                 <!-- second pair of tiles -->
@@ -72,42 +72,34 @@ leading-[1.65] text-[#1E1E1E]">
                     </div>
                 </div>
 
-                <p
-                    class="font-['Lato','Roboto',ui-sans-serif] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] leading-[1.6] text-[#1E1E1E]">
-                    Together, industry and construction shape the environment we live in, provide millions of jobs, and
-                    contribute significantly to innovation and progress in society.
+                <p class="font-['Lato','Roboto',ui-sans-serif]
+                text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] leading-[1.6] text-[#1E1E1E]">
+                    {{ t('about_forum.intro.p3') }}
                 </p>
             </div>
 
             <!-- Divider -->
             <div class="mt-4 md:mt-6 h-px w-full bg-[#007A3D] opacity-60"></div>
 
-            <!-- Desktop mosaic (lg+): left tall, two on top-right, one wide below them -->
+            <!-- Desktop mosaic (lg+) -->
             <div class="mt-6 hidden lg:block">
                 <div class="mx-auto w-[min(92vw,1200px)] h-[clamp(380px,38vw,520px)]
-           grid grid-cols-5 grid-rows-5 gap-4">
-                    <!-- LEFT TALL: rows 1-5, cols 1-2 -->
+                  grid grid-cols-5 grid-rows-5 gap-4">
                     <figure
                         class="col-start-1 col-span-2 row-start-1 row-span-5 rounded-xl overflow-hidden bg-slate-100">
                         <img src="/static/img/about-forum/abouttheforum1.png" alt=""
                             class="block w-full h-full object-cover" />
                     </figure>
-
-                    <!-- RIGHT TOP #1: rows 1-2, col 3 -->
                     <figure
                         class="col-start-3 col-span-1 row-start-1 row-span-2 rounded-xl overflow-hidden bg-slate-100">
                         <img src="/static/img/about-forum/abouttheforum2.png" alt=""
                             class="block w-full h-full object-cover" />
                     </figure>
-
-                    <!-- RIGHT TOP #2: rows 1-2, cols 4-5 -->
                     <figure
                         class="col-start-4 col-span-2 row-start-1 row-span-2 rounded-xl overflow-hidden bg-slate-100">
                         <img src="/static/img/about-forum/abouttheforum3.png" alt=""
                             class="block w-full h-full object-cover" />
                     </figure>
-
-                    <!-- RIGHT BOTTOM WIDE: rows 3-5, cols 3-5 -->
                     <figure
                         class="col-start-3 col-span-3 row-start-3 row-span-3 rounded-xl overflow-hidden bg-slate-100">
                         <img src="/static/img/about-forum/abouttheforum4.png" alt=""
@@ -115,58 +107,50 @@ leading-[1.65] text-[#1E1E1E]">
                     </figure>
                 </div>
             </div>
-
+        </div>
     </section>
+
 
     <!-- FRAME 50 (Card 2: Why to participate?) -->
     <section class="max-w-[var(--container)] mx-auto px-4 pb-8 md:pb-10">
         <div class="bg-white rounded-[16px] md:rounded-[20px] p-4 sm:p-5 md:p-8 shadow-sm mx-auto max-w-[1310px]">
-
-            <!-- 2-col at lg: left = header+text, right = pictures -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-
-                <!-- LEFT: header + bullets -->
+                <!-- LEFT -->
                 <div class="lg:col-span-7">
                     <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E]
-                        text-[clamp(18px,5vw,22px)]
-                        md:text-[clamp(28px,3.6vw,48px)]
-                        lg:text-[clamp(34px,2.8vw,56px)]
-                        leading-[1.22]">
-                        Why to participate?
+                   text-[clamp(18px,5vw,22px)]
+                   md:text-[clamp(28px,3.6vw,48px)]
+                   lg:text-[clamp(34px,2.8vw,56px)]
+                   leading-[1.22]">
+                        {{ t('about_forum.why.title') }}
                     </h2>
 
                     <ul class="mt-3 md:mt-4 space-y-3 sm:space-y-4 max-w-[60ch]">
                         <li class="font-['Roboto']
-text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px]
-text-black/70 leading-[1.65]">
-                            • Turkmenistan offers diverse opportunities across sectors — including oil and gas,
-                            construction, telecommunications, tourism, healthcare, agriculture, and food industries.
+                     text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px]
+                     text-black/70 leading-[1.65]">
+                            {{ t('about_forum.why.points.0') }}
                         </li>
                         <li class="font-['Roboto']
-text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px]
-text-black/70 leading-[1.65]">
-                            • Turkmenistan is one of the fastest-growing economies in Central Asia, offering vast
-                            opportunities for investment and cooperation.
+                     text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px]
+                     text-black/70 leading-[1.65]">
+                            {{ t('about_forum.why.points.1') }}
                         </li>
                         <li class="font-['Roboto']
-text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px]
-text-black/70 leading-[1.65]">
-                            • With billion-dollar infrastructure and construction projects, Turkmenistan presents an
-                            attractive market for international business.
+                     text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px]
+                     text-black/70 leading-[1.65]">
+                            {{ t('about_forum.why.points.2') }}
                         </li>
                         <li class="font-['Roboto']
-text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px]
-text-black/70 leading-[1.65]">
-                            • The $14 billion Ashgabat City smart city project marks a significant leap toward
-                            innovation
-                            and sustainable urban development.
+                     text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px]
+                     text-black/70 leading-[1.65]">
+                            {{ t('about_forum.why.points.3') }}
                         </li>
                     </ul>
                 </div>
 
-                <!-- RIGHT: pictures -->
+                <!-- RIGHT -->
                 <div class="lg:col-span-5 lg:flex lg:items-stretch">
-                    <!-- mobile/tablet: 2-col tiles -->
                     <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
                         <div class="aspect-[4/3] rounded-[12px] overflow-hidden bg-slate-100">
                             <img src="/static/img/about-forum/abouttheforum5.png" alt=""
@@ -178,7 +162,6 @@ text-black/70 leading-[1.65]">
                         </div>
                     </div>
 
-                    <!-- desktop: overlapping stack fills column height -->
                     <div class="hidden lg:block lg:flex-1">
                         <div class="relative mx-auto w-[clamp(360px,34vw,460px)] min-h-[580px] lg:h-full">
                             <img src="/static/img/about-forum/abouttheforum5.png" alt=""
@@ -188,10 +171,10 @@ text-black/70 leading-[1.65]">
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
+
 
 
     <!-- FRAME 51 (By the Numbers + Expo sectors 2026) -->
@@ -201,7 +184,7 @@ text-black/70 leading-[1.65]">
                text-[clamp(20px,4.2vw,26px)]
                md:text-[42px] lg:text-[52px] xl:text-[58px]
                leading-[1.18]">
-                By the Numbers
+                {{ t('about_forum.numbers.title') }}
             </h2>
 
             <div class="mx-auto max-w-[min(92vw,1190px)] mt-4 md:mt-6 space-y-4">
@@ -212,7 +195,7 @@ text-black/70 leading-[1.65]">
                   md:grid-cols-[minmax(220px,400px)_1fr]">
                     <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
                     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        Total exhibition space:
+                        {{ t('about_forum.numbers.total_space') }}
                     </div>
                     <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
                     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
@@ -227,22 +210,22 @@ text-black/70 leading-[1.65]">
                   md:grid-cols-[minmax(220px,400px)_1fr]">
                     <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
                     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        Expo sectors 2026:
+                        {{ t('about_forum.numbers.sectors_2026') }}
                     </div>
                     <ul class="font-['Roboto'] text-black/70 text-left leading-[1.6] space-y-1
                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        <li>Industry and Construction</li>
-                        <li>Energy Diversification</li>
-                        <li>Public–Private Partnership (PPP)</li>
-                        <li>Transport and Logistics</li>
-                        <li>Agriculture and Food Processing</li>
-                        <li>Information and Communication Technologies (ICT)</li>
-                        <li>Tourism and Hospitality</li>
-                        <li>Education and Research</li>
-                        <li>Healthcare and Pharmaceuticals</li>
-                        <li>Financial Services and Banking</li>
-                        <li>Trade and Export Development</li>
-                        <li>Environmental Sustainability</li>
+                        <li>{{ t('about_forum.numbers.sector_list.0') }}</li>
+                        <li>{{ t('about_forum.numbers.sector_list.1') }}</li>
+                        <li>{{ t('about_forum.numbers.sector_list.2') }}</li>
+                        <li>{{ t('about_forum.numbers.sector_list.3') }}</li>
+                        <li>{{ t('about_forum.numbers.sector_list.4') }}</li>
+                        <li>{{ t('about_forum.numbers.sector_list.5') }}</li>
+                        <li>{{ t('about_forum.numbers.sector_list.6') }}</li>
+                        <li>{{ t('about_forum.numbers.sector_list.7') }}</li>
+                        <li>{{ t('about_forum.numbers.sector_list.8') }}</li>
+                        <li>{{ t('about_forum.numbers.sector_list.9') }}</li>
+                        <li>{{ t('about_forum.numbers.sector_list.10') }}</li>
+                        <li>{{ t('about_forum.numbers.sector_list.11') }}</li>
                     </ul>
                     <div class="col-span-2 mt-3 h-px bg-black/20"></div>
                 </div>
@@ -253,7 +236,7 @@ text-black/70 leading-[1.65]">
                   md:grid-cols-[minmax(220px,400px)_1fr]">
                     <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
                     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        Expected attendance:
+                        {{ t('about_forum.numbers.expected_attendance') }}
                     </div>
                     <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
                     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
@@ -268,7 +251,7 @@ text-black/70 leading-[1.65]">
                   md:grid-cols-[minmax(220px,400px)_1fr]">
                     <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
                     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        Expected number of visitors:
+                        {{ t('about_forum.numbers.expected_visitors') }}
                     </div>
                     <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
                     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
@@ -279,6 +262,7 @@ text-black/70 leading-[1.65]">
             </div>
         </div>
     </section>
+
 
 
 

@@ -207,5 +207,37 @@
 
     "about_expo.cta.exhibitor_title": "Become an Exhibitor",
     "about_expo.cta.exhibitor_text": "Choose any setup — from compact stands to large pavilions. Whether it’s a formal showcase, a product demo, or a creative activation, we provide flexible formats and support to match your goals.",
-    "about_expo.cta.participate_btn": "Participate"
+    "about_expo.cta.participate_btn": "Participate",
+
+    "about_forum.hero.title": "Turkmen–China 2026 Forum",
+    "about_forum.hero.subtitle": "Strengthening strategic partnership for sustainable development",
+
+    "about_forum.intro.title": "International Business and Forum of Turkmenistan",
+    "about_forum.intro.p1": "Industry and construction play a vital role in the economic development of any country. Industry includes the production of goods in factories, such as automobiles, electronics, textiles, food products, and machinery. It can be divided into several sectors: heavy industry, light industry, and high-tech production.",
+    "about_forum.intro.p2": "In modern times, both industries are becoming more automated and eco-friendly. Technologies such as 3D printing, smart construction tools, and green building materials are transforming the way we build and manufacture.",
+    "about_forum.intro.p3": "Together, industry and construction shape the environment we live in, provide millions of jobs, and contribute significantly to innovation and progress in society.",
+
+    "about_forum.why.title": "Why participate?",
+    "about_forum.why.points.0": "Turkmenistan offers diverse opportunities across sectors — including oil and gas, construction, telecommunications, tourism, healthcare, agriculture, and food industries.",
+    "about_forum.why.points.1": "Turkmenistan is one of the fastest-growing economies in Central Asia, offering vast opportunities for investment and cooperation.",
+    "about_forum.why.points.2": "With billion-dollar infrastructure and construction projects, Turkmenistan presents an attractive market for international business.",
+    "about_forum.why.points.3": "The $14 billion Ashgabat City smart city project marks a significant leap toward innovation and sustainable urban development.",
+
+    "about_forum.numbers.title": "By the Numbers",
+    "about_forum.numbers.total_space": "Total exhibition space:",
+    "about_forum.numbers.sectors_2026": "Expo sectors 2026:",
+    "about_forum.numbers.sector_list.0": "Industry and Construction",
+    "about_forum.numbers.sector_list.1": "Energy Diversification",
+    "about_forum.numbers.sector_list.2": "Public–Private Partnership (PPP)",
+    "about_forum.numbers.sector_list.3": "Transport and Logistics",
+    "about_forum.numbers.sector_list.4": "Agriculture and Food Processing",
+    "about_forum.numbers.sector_list.5": "Information and Communication Technologies (ICT)",
+    "about_forum.numbers.sector_list.6": "Tourism and Hospitality",
+    "about_forum.numbers.sector_list.7": "Education and Research",
+    "about_forum.numbers.sector_list.8": "Healthcare and Pharmaceuticals",
+    "about_forum.numbers.sector_list.9": "Financial Services and Banking",
+    "about_forum.numbers.sector_list.10": "Trade and Export Development",
+    "about_forum.numbers.sector_list.11": "Environmental Sustainability",
+    "about_forum.numbers.expected_attendance": "Expected attendance:",
+    "about_forum.numbers.expected_visitors": "Expected number of visitors:"
 }
