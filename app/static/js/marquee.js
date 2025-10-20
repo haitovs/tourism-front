@@ -5,7 +5,7 @@
         const test = document.createElement("div");
         test.style.position = "absolute";
         test.style.visibility = "hidden";
-        test.style.width = val; // accepts rem, em, etc.
+        test.style.width = val;
         el.appendChild(test);
         const px = test.getBoundingClientRect().width || test.offsetWidth || 0;
         el.removeChild(test);
@@ -22,9 +22,11 @@
         meas.style.cssText =
             "display:flex;gap:0;visibility:hidden;position:absolute;left:-99999px;top:0;margin:0;padding:0;list-style:none";
         document.body.appendChild(meas);
+
         const unit = [];
         const add = () => baseNodes.forEach((n) => unit.push(n.cloneNode(true)));
         add();
+
         const vw = Math.max(1, viewport.getBoundingClientRect().width);
 
         const measure = () => {
@@ -32,10 +34,12 @@
             unit.forEach((n) => meas.appendChild(n.cloneNode(true)));
             const ch = [...meas.children];
             const w = ch.reduce((a, el) => a + el.getBoundingClientRect().width, 0);
+            // include *internal* gaps within the unit
             return w + Math.max(0, ch.length - 1) * gap;
         };
 
         let uw = measure();
+        // pad until > viewport (extra 10% for safety)
         while (uw < vw * 1.1) {
             add();
             uw = measure();
@@ -51,45 +55,63 @@
 
         const min = Number(root.dataset.min || 0);
         const speed = Number(root.dataset.speed || 60);
+        const respectRM = (root.dataset.respectRm || "false").toLowerCase() === "true";
+        const reduce = respectRM && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
         const base = [...track.children];
         if (base.length < min) return;
 
-        const g = gapPx(root);
+        // prepare
+        let g = gapPx(root);
         track.innerHTML = "";
 
         let { unit, unitWidth } = buildUnit(viewport, base, g);
         if (!unitWidth) {
             requestAnimationFrame(() => initOne(root));
-            return;
-        } // layout not ready yet
+            return; // layout not ready
+        }
 
-        const f1 = document.createDocumentFragment(),
-            f2 = document.createDocumentFragment();
+        // We render TWO units separated by CSS gap.
+        // The visible cycle therefore equals unitWidth + one extra gap between the two units.
+        let cycle = unitWidth + g;
+
+        // mount two copies
+        const f1 = document.createDocumentFragment();
+        const f2 = document.createDocumentFragment();
         unit.forEach((n) => f1.appendChild(n.cloneNode(true)));
         unit.forEach((n) => f2.appendChild(n.cloneNode(true)));
         track.appendChild(f1);
         track.appendChild(f2);
 
+        // styling
+        const gapCss = getComputedStyle(root).getPropertyValue("--gap").trim() || "16px";
         track.style.display = "flex";
-        track.style.gap = getComputedStyle(root).getPropertyValue("--gap").trim() || "16px";
+        track.style.gap = gapCss;
         track.style.willChange = "transform";
         track.style.userSelect = "none";
         track.style.pointerEvents = "auto";
 
-        const respectRM = (root.dataset.respectRm || "false").toLowerCase() === "true";
-        const reduce = respectRM && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        // animation
+        let last = performance.now();
+        let offset = 0;
 
-        let last = performance.now(),
-            offset = 0;
+        // subpixel-friendly transform (align to device pixel)
+        const toPxAligned = (x) => {
+            const dpr = window.devicePixelRatio || 1;
+            return Math.round(x * dpr) / dpr;
+        };
 
         function loop(now) {
             const dt = (now - last) / 1000;
             last = now;
+
             if (!reduce) {
                 offset += speed * dt;
-                if (unitWidth > 0) {
-                    const m = offset % unitWidth;
-                    track.style.transform = `translate3d(${-m}px,0,0)`;
+                if (cycle > 0) {
+                    // use cycle (unitWidth + inter-unit gap) for a perfect seamless loop
+                    const m = offset % cycle;
+                    const tx = -toPxAligned(m);
+                    track.style.transform = `translate3d(${tx}px,0,0)`;
                 }
             } else {
                 track.style.transform = "translate3d(0,0,0)";
@@ -98,20 +120,33 @@
         }
         requestAnimationFrame(loop);
 
+        // Rebuild on resize or when container/gap changes
         const ro = new ResizeObserver(() => {
-            const cur = unitWidth ? offset % unitWidth : 0;
+            // remember current progress within cycle
+            const cur = cycle > 0 ? offset % cycle : 0;
+
+            // recompute gap (could change with CSS)
+            g = gapPx(root);
+
+            // rebuild unit for new viewport/gap
             track.innerHTML = "";
             const rebuilt = buildUnit(viewport, base, g);
             unit = rebuilt.unit;
             unitWidth = rebuilt.unitWidth || unitWidth;
-            const nf1 = document.createDocumentFragment(),
-                nf2 = document.createDocumentFragment();
+            cycle = unitWidth + g;
+
+            const nf1 = document.createDocumentFragment();
+            const nf2 = document.createDocumentFragment();
             unit.forEach((n) => nf1.appendChild(n.cloneNode(true)));
             unit.forEach((n) => nf2.appendChild(n.cloneNode(true)));
             track.appendChild(nf1);
             track.appendChild(nf2);
+
+            // keep same visual progress
             offset = cur;
-            track.style.transform = `translate3d(${-(offset % unitWidth)}px,0,0)`;
+            const tx = -toPxAligned(offset % cycle);
+            track.style.gap = getComputedStyle(root).getPropertyValue("--gap").trim() || "16px";
+            track.style.transform = `translate3d(${tx}px,0,0)`;
         });
         ro.observe(viewport);
     }

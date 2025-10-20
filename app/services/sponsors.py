@@ -231,10 +231,6 @@ def list_all_sponsors_by_tier(
     projected = [_project(sp) for sp in items]
     count = len(projected)
 
-    # decide layout for carousel
-    # - 0: empty
-    # - 1..10: two static rows (5 + 5)
-    # - >10: two marquee rows, split odd/even indices
     if count == 0:
         layout = "empty"
         rows: list[list[dict]] = []
@@ -258,7 +254,7 @@ def list_all_sponsors_by_tier(
         "rows": rows,
         "marquee_rows": marquee_rows,
         # shared presentation defaults for cards in this block
-        "card_base_class": "bg-white rounded-2xl shadow p-4 w-[190px] h-[225px] flex flex-col items-center justify-start",
+        "card_base_class": "bg-white rounded-2xl shadow p-4 h-[225px] flex flex-col items-center justify-start",
         "card_interactive_suffix": " border border-transparent transition-all duration-300 group-hover:shadow-lg group-hover:border-[var(--c-primary)]",
         "link_interactive_class": "group block focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--c-primary)] rounded-2xl",
         "placeholder_src": "/static/img/img_placeholder.png",

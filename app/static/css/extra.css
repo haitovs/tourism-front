@@ -125,30 +125,57 @@
     image-rendering: auto;
 }
 
-/* Seamless marquee (rAF-driven, no CSS keyframes) */
+/* Seamless marquee (CSS keyframes + auto-duplication via tiny JS) */
 .marquee {
     --gap: 1rem;
+    --speed: 60; /* logical px/sec; overridden by data-speed */
+    --duration: 30s; /* computed in JS based on track width & speed */
 }
+
 .marquee__viewport {
     overflow: hidden;
     width: 100%;
+    isolation: isolate; /* prevents subpixel bleed in some browsers */
 }
+
 .marquee__track {
-    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline-flex; /* inline to allow max-content measurement */
     gap: var(--gap);
     will-change: transform;
+    min-width: max-content; /* track shrinks to content; crucial for calc */
+    transform: translate3d(0, 0, 0);
+    animation: marquee-slide var(--duration) linear infinite;
 }
+
 .marquee__item {
     flex: 0 0 auto;
+    will-change: transform;
 }
+
+@keyframes marquee-slide {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    100% {
+        transform: translate3d(-50%, 0, 0);
+    } /* exactly half (2x content) */
+}
+
+/* Variants for density */
 .marquee--tight {
     --gap: 0.75rem;
 }
 .marquee--loose {
     --gap: 2rem;
 }
+
+/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .marquee__track {
+        animation: none !important;
         transform: translate3d(0, 0, 0) !important;
     }
 }
