@@ -239,5 +239,11 @@
     "about_forum.numbers.sector_list.10": "Trade and Export Development",
     "about_forum.numbers.sector_list.11": "Environmental Sustainability",
     "about_forum.numbers.expected_attendance": "Expected attendance:",
-    "about_forum.numbers.expected_visitors": "Expected number of visitors:"
+    "about_forum.numbers.expected_visitors": "Expected number of visitors:",
+
+    "sectors.detail.hero.section_fallback": "Sector",
+    "sectors.detail.hero.section_label": "Expo Sectors",
+    "sectors.detail.hero.detail_label": "Sector Details",
+    "sectors.detail.key_professions": "Key Professions",
+    "sectors.detail.types": "Types"
 }
