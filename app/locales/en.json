@@ -36,5 +36,9 @@
     "footer.tagline_line2": "Exhibition and Forum",
     "footer.rights_year": "All rights reserved 2025",
     "footer.powered_by": "Powered by",
-    "footer.register": "Register"
+    "footer.register": "Register",
+
+    "hero.section": "Section",
+    "hero.go_home": "Go to homepage",
+    "hero.refresh": "Refresh"
 }
