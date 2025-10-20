@@ -108,5 +108,17 @@
     "index.news.more_details": "More details",
     "index.news.none": "No news yet",
 
-    "index.organizers.none": "No organizers added yet"
+    "index.organizers.band": "Organizers",
+    "index.organizers.title": "Presented by the following organization:",
+    "index.organizers.none": "No organizers added yet",
+
+    "index.partners.band": "Partners",
+    "index.partners.title": "Our official partners",
+    "index.partners.none": "No partners added yet",
+
+    "index.speakers.band": "Speakers",
+    "index.speakers.title": "Our respected speakers",
+    "index.speakers.more_details": "More details",
+    "index.speakers.none": "No speakers yet.",
+    "index.speakers.person_alt": "Speaker"
 }

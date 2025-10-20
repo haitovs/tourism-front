@@ -1,4 +1,4 @@
-{# Expected context: { data: { items: [...] } } #}
+{# app/templates/_organizers.html #}
 {% set all = (data and data.get('items')) or [] %}
 {% set count = all|length %}
 
@@ -7,18 +7,19 @@
         <header class="text-center mb-8">
             <div class="flex items-center justify-center gap-4">
                 <span class="hidden sm:block h-px w-[60px] bg-[#007A3D]"></span>
-                <span
-                    class="font-['Montserrat'] text-[clamp(18px,2.8vw,30px)] leading-[1.6] text-[#007A3D]">Organizers</span>
+                <span class="font-['Montserrat'] text-[clamp(18px,2.8vw,30px)] leading-[1.6] text-[#007A3D]">
+                    {{ t('index.organizers.band') }}
+                </span>
                 <span class="hidden sm:block h-px w-[60px] bg-[#007A3D]"></span>
             </div>
             <h2
                 class="font-['Montserrat'] text-[clamp(22px,4vw,50px)] leading-[1.2] font-medium mt-1 text-center text-[#1E1E1E]">
-                Presented by the following organization:
+                {{ t('index.organizers.title') }}
             </h2>
         </header>
 
         {% if count == 0 %}
-        <div class="text-center text-slate-500">No organizers added yet</div>
+        <div class="text-center text-slate-500">{{ t('index.organizers.none') }}</div>
         {% elif count < 8 %} <div class="w-full flex justify-center">
             <ul
                 class="flex flex-wrap justify-center gap-x-[clamp(12px,2.5vw,30px)] gap-y-[clamp(12px,2.5vw,30px)] max-w-[1210px]">
@@ -50,15 +51,15 @@
                 <li class="marquee__item">
                     {% if p.website %}<a href="{{ p.website }}" target="_blank" rel="noopener" class="block">{% endif %}
                         <article class="bg-[#F4F4F2] rounded-[5px] shadow-[0_4px_4px_rgba(0,0,0,0.25)]
-                                 w-[clamp(160px,28vw,280px)] h-[clamp(100px,18vw,180px)]
-                                 flex items-center justify-center transition hover:shadow-md">
+                                     w-[clamp(160px,28vw,280px)] h-[clamp(100px,18vw,180px)]
+                                     flex items-center justify-center transition hover:shadow-md">
                             {% if p.logo_url %}
                             <img src="{{ p.logo_url }}" alt="{{ p.name }}" title="{{ p.name }}" class="object-contain select-none pointer-events-none
-                                  max-w-[clamp(120px,19vw,213.14px)] max-h-[clamp(90px,13vw,154.51px)]"
+                                      max-w-[clamp(120px,19vw,213.14px)] max-h-[clamp(90px,13vw,154.51px)]"
                                 loading="lazy" />
                             {% else %}
                             <img src="/static/img/img_placeholder.png" alt="{{ p.name }}" title="{{ p.name }}" class="object-contain opacity-70 select-none pointer-events-none
-                                  max-w-[clamp(120px,19vw,213.14px)] max-h-[clamp(90px,13vw,154.51px)]"
+                                      max-w-[clamp(120px,19vw,213.14px)] max-h-[clamp(90px,13vw,154.51px)]"
                                 loading="lazy" />
                             {% endif %}
                         </article>

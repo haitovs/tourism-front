@@ -7,13 +7,14 @@
         <header class="text-center mb-8">
             <div class="flex items-center justify-center gap-4">
                 <span class="hidden sm:block h-px w-[60px] bg-[#007A3D]"></span>
-                <span
-                    class="font-['Montserrat'] text-[clamp(18px,2.8vw,30px)] leading-[1.6] text-[#007A3D]">Partners</span>
+                <span class="font-['Montserrat'] text-[clamp(18px,2.8vw,30px)] leading-[1.6] text-[#007A3D]">
+                    {{ t('index.partners.band') }}
+                </span>
                 <span class="hidden sm:block h-px w-[60px] bg-[#007A3D]"></span>
             </div>
             <h2
                 class="font-['Montserrat'] text-[clamp(22px,4vw,50px)] leading-[1.2] font-medium mt-1 text-center text-[#1E1E1E]">
-                Our official partners
+                {{ t('index.partners.title') }}
             </h2>
         </header>
 
@@ -44,7 +45,7 @@
         {%- endmacro %}
 
         {% if count == 0 %}
-        <div class="text-center text-slate-500">No partners added yet</div>
+        <div class="text-center text-slate-500">{{ t('index.partners.none') }}</div>
 
         {% elif count < 6 %} <ul class="flex flex-wrap justify-center
                  gap-x-[clamp(16px,3.5vw,50px)] gap-y-[clamp(14px,3vw,24px)]">
