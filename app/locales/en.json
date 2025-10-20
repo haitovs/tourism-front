@@ -96,5 +96,17 @@
     "index.faq.center.heading": "Have any questions?",
     "index.faq.center.body": "Let us answer the questions for you.",
     "index.faq.no_results.1": "No results for",
-    "index.faq.no_results.2": "Try a different query."
+    "index.faq.no_results.2": "Try a different query.",
+
+    "index.hero.title_line1": "International Turkmenistan–China",
+    "index.hero.title_line2": "forum and exhibition",
+    "index.hero.subtitle": "Register to attend the upcoming international conference dedicated to global cooperation, innovation, and cultural exchange.",
+
+    "index.news.band": "News",
+    "index.news.title": "Daily news",
+    "index.news.read_more": "Read more",
+    "index.news.more_details": "More details",
+    "index.news.none": "No news yet",
+
+    "index.organizers.none": "No organizers added yet"
 }
