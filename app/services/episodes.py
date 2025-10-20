@@ -114,16 +114,9 @@ def _sponsor_to_dict(sp) -> dict:
 
 
 def _choose_top_sponsor(sponsors: Iterable) -> Optional[dict]:
-    """Pick top sponsor by tier preference (gold > silver > bronze), fallback first if present."""
+    """Pick the first sponsor in the given order; return None if empty."""
     s_list = [_sponsor_to_dict(sp) for sp in sponsors or []]
-    if not s_list:
-        return None
-    # preference order
-    for tier in ("gold", "silver", "bronze"):
-        for s in s_list:
-            if (s.get("tier") or "").lower() == tier:
-                return s
-    return s_list[0]
+    return s_list[0] if s_list else None
 
 
 def episode_to_view(ep: Episode) -> dict:
@@ -177,26 +170,17 @@ def list_days_with_episode_views(
     Similar to previous list_days_with_episodes but returns episodes already converted
     via episode_to_view.
     """
-    from app.services.agenda import (
-        list_days,  # reuse existing functions
-        list_episodes_for_day)
+    from app.services.agenda import list_days, list_episodes_for_day
 
     out = []
     days = list_days(site_id=site_id, only_published=only_published)
     for d in days:
         eps = list_episodes_for_day(day_id=d["id"], site_id=site_id, only_published=only_published)
-        # episodes returned by list_episodes_for_day are raw dicts from agenda._episode_to_dict;
-        # if you prefer, you can pull SQL models here and call episode_to_view on models directly.
-        # For now, convert using the same shape expected:
-        # If eps items are model instances, adapt accordingly; here we support both dict and model.
         evs = []
         for e in eps:
-            # If e looks like a model (has attribute 'speakers'), try to convert via episode_to_view
             if hasattr(e, "__dict__") and (hasattr(e, "speakers") or hasattr(e, "moderators")):
                 evs.append(episode_to_view(e))
             else:
-                # If e is a dict (already built by agenda._episode_to_dict), re-map keys to expected view shape
-                # Minimal translation:
                 ev = {
                     "id": e.get("id"),
                     "slug": e.get("slug", ""),

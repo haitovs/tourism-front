@@ -3,12 +3,15 @@
 {% import "agenda/_info_chip.html" as chip %}
 {% import "agenda/_speaker_card.html" as card %}
 {% import "agenda/_speakers_scroller.html" as scroller %}
+{% from "agenda/_sponsor_badge.html" import sponsor_badge %}
 
 {% macro episode_block(d, ep, expanded_var_name) -%}
 {% set mod = ep.moderators[0] if ep.moderators else None %}
 {% set short = ep.short_desc or '' %}
 {% set topic = ep.topic_desc or '' %}
 {% set ep_id = ep.id %}
+{% set top_sponsor = ep.top_sponsor %}
+
 
 <article class="grid grid-cols-1 md:grid-cols-[256px_1fr] gap-4 md:gap-5" x-cloak>
     {{ tb.time_badge(ep.start_time, ep.end_time) }}
@@ -30,6 +33,35 @@
                 </div>
 
                 <div class="flex flex-col items-end justify-between gap-3">
+                    {# --- MOBILE SPONSORS (episode-assigned, smaller) --- #}
+                    {% if ep.sponsors %}
+                    <div class="w-full max-w-[240px]">
+                        <div class="text-right font-['Montserrat'] font-semibold text-[12px] leading-[16px] text-black">
+                            Sponsors
+                        </div>
+                        <ul class="mt-1.5 flex flex-wrap justify-end items-center gap-1.5" aria-label="Sponsors">
+                            {% for s in ep.sponsors %}
+                            <li class="h-[22px]">
+                                {% if s.url %}
+                                <a href="{{ s.url }}" target="_blank" rel="noopener noreferrer"
+                                    class="inline-flex items-center">
+                                    <img src="{{ s.logo_url or '/static/img/logo_placeholder.svg' }}"
+                                        alt="{{ s.name or 'Sponsor' }}"
+                                        class="h-[22px] w-auto max-w-[84px] object-contain" loading="lazy" />
+                                </a>
+                                {% else %}
+                                <span class="inline-flex items-center">
+                                    <img src="{{ s.logo_url or '/static/img/logo_placeholder.svg' }}"
+                                        alt="{{ s.name or 'Sponsor' }}"
+                                        class="h-[22px] w-auto max-w-[84px] object-contain" loading="lazy" />
+                                </span>
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
                     <button type="button"
                         class="h-[32px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]"
                         @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
@@ -41,47 +73,57 @@
             </div>
         </div>
 
+
         {# ===================== DESKTOP COLLAPSED ===================== #}
         <div class="hidden md:block" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
-            <div class="flex flex-col items-end gap-3">
-                {% if ep.sponsors %}
-                <div class="w-full max-w-[520px]">
-                    <div class="text-right font-['Montserrat'] font-semibold text-[14px] leading-[18px] text-black">
-                        Sponsors
-                    </div>
-                    <ul class="mt-2 flex flex-wrap justify-end items-center gap-2">
-                        {% for s in ep.sponsors %}
-                        <li class="h-[32px]">
-                            {% if s.url %}
-                            <a href="{{ s.url }}" target="_blank" rel="noopener noreferrer"
-                                class="inline-flex items-center">
-                                <img src="{{ s.logo_url or '/static/img/logo_placeholder.svg' }}"
-                                    alt="{{ s.name or 'Sponsor' }}" class="h-[32px] w-auto max-w-[120px] object-contain"
-                                    loading="lazy" />
-                            </a>
-                            {% else %}
-                            <span class="inline-flex items-center">
-                                <img src="{{ s.logo_url or '/static/img/logo_placeholder.svg' }}"
-                                    alt="{{ s.name or 'Sponsor' }}" class="h-[32px] w-auto max-w-[120px] object-contain"
-                                    loading="lazy" />
-                            </span>
-                            {% endif %}
-                        </li>
-                        {% endfor %}
-                    </ul>
+            {# COLLAPSED HEADER: title + short, then read more / divider / sponsor #}
+            <div class="mt-6 relative flex flex-col xl:flex-row xl:justify-between gap-6">
+
+                <!-- LEFT: Title + Short description -->
+                <div class="min-w-0">
+                    <h3 class="font-['Montserrat'] font-semibold text-[30px] leading-[37px] text-black">
+                        {{ ep.title }}
+                    </h3>
+                    {% if short %}
+                    <p class="mt-4 font-['Roboto'] text-[16px] leading-[20px] text-black max-w-[540px]">
+                        {{ short }}
+                    </p>
+                    {% endif %}
                 </div>
-                {% endif %}
 
-                <button type="button"
-                    class="h-[32px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]"
-                    @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
-                    x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}"
-                    :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
-                    Read more
-                </button>
+                <!-- RIGHT: Read more + divider + sponsor -->
+                <div class="flex flex-col xl:flex-row items-end gap-4 xl:gap-6">
+                    <button type="button"
+                        class="h-[32px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]"
+                        @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
+                        x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}"
+                        :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
+                        Read more
+                    </button>
+
+                    {% if top_sponsor %}
+                    <div class="hidden xl:block w-[2px] h-[125px] bg-[#007A3D] rounded-full"></div>
+
+                    <div class="shrink-0 flex flex-col items-center">
+                        {% if top_sponsor.logo_url %}
+                        <img src="{{ top_sponsor.logo_url }}" alt="{{ top_sponsor.name or 'Sponsor' }}"
+                            class="w-[160px] h-[95px] object-contain" loading="lazy" />
+                        {% else %}
+                        <img src="/static/img/img_placeholder.png" alt="Sponsor"
+                            class="w-[160px] h-[95px] object-contain opacity-70" loading="lazy" />
+                        {% endif %}
+                        <div class="mt-2 text-center font-['Roboto'] font-semibold text-[15px] text-[#DDAC17]">
+                            {{ ((top_sponsor.tier or 'Gold')|capitalize) ~ ' Sponsor' }}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
             </div>
-
         </div>
+
+
+
 
         {# ===================== MOBILE EXPANDED ===================== #}
         <div class="md:hidden" x-show="{{ expanded_var_name }} === {{ ep_id|tojson }}" x-collapse>
@@ -91,38 +133,54 @@
                 </h3>
 
                 {% if mod %}
-                <div class="m-auto w-full max-w-[980px] flex flex-col sm:flex-row items-start gap-4">
-                    <div class="flex-1 text-left">
+                <div
+                    class="m-auto w-full max-w-[980px] grid grid-cols-[88px_1fr] sm:grid-cols-[112px_1fr] gap-4 sm:gap-6 items-center">
+                    {# Left: photo #}
+                    {% if mod.photo_url %}
+                    <div class="shrink-0 w-[88px] sm:w-[112px]">
+                        <div
+                            class="w-[88px] h-[104px] sm:w-[112px] sm:h-[128px] rounded-[10px] sm:rounded-[12px] overflow-hidden bg-[#F5F5F7] flex items-center justify-center">
+                            <img src="{{ mod.photo_url }}" alt="{{ mod.fullname }}"
+                                class="h-full w-auto max-w-full object-contain" loading="lazy" />
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="shrink-0 w-[88px] sm:w-[112px]">
+                        <div
+                            class="w-[88px] h-[104px] sm:w-[112px] sm:h-[128px] rounded-[10px] sm:rounded-[12px] bg-[#F5F5F7]">
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {# Right (same row): label + name #}
+                    <div class="min-w-0">
                         <h3 class="font-['Montserrat'] font-semibold text-[20px] leading-[24px] text-black">Moderator
                         </h3>
-                        {% set mdesc = mod.description_norm or '' %}
+                        <div class="mt-1 font-['Roboto'] font-bold text-[16px] leading-[20px] text-[#1E1E1E] truncate">
+                            {{ mod.fullname }}
+                        </div>
+                    </div>
+
+                    {# Below (new row, full width): moderator text / fallback #}
+                    {% set mdesc = mod.description_norm or '' %}
+                    <div class="col-span-2">
                         {% if mdesc %}
                         <div class="mt-2 font-['Roboto'] text-[14px] leading-6 whitespace-pre-line">
                             {{ mdesc }}
                         </div>
                         {% else %}
                         <p class="mt-2 font-['Roboto'] text-[14px] leading-6 text-black">
-                            {{ mod.fullname }}{% if mod.position or mod.company %} — {{ mod.position }}{% if mod.company
-                            %}, {{ mod.company }}{% endif %}{% endif %}
+                            {% if mod.position or mod.company %}
+                            {{ mod.position }}{% if mod.company %}, {{ mod.company }}{% endif %}
+                            {% else %}
+                            &nbsp; {# keeps spacing consistent if no extra info #}
+                            {% endif %}
                         </p>
                         {% endif %}
                     </div>
-
-                    {% if mod.photo_url %}
-                    <div class="flex flex-col items-center justify-center shrink-0 w-[88px]">
-                        <div
-                            class="w-[88px] h-[104px] rounded-[10px] overflow-hidden bg-[#F5F5F7] flex items-center justify-center">
-                            <img src="{{ mod.photo_url }}" alt="{{ mod.fullname }}"
-                                class="h-full w-auto max-w-full object-contain" loading="lazy" />
-                        </div>
-                        <div
-                            class="mt-1 text-center font-['Roboto'] text-[12px] font-medium whitespace-normal break-words">
-                            {{ mod.fullname }}
-                        </div>
-                    </div>
-                    {% endif %}
                 </div>
                 {% endif %}
+
 
                 {% if topic %}
                 <div class="pt-2">
@@ -206,9 +264,9 @@
                         </div>
 
                         {% if mod.photo_url %}
-                        <div class="flex flex-col items-center justify-center shrink-0 w-[112px]">
+                        <div class="flex flex-col items-center justify-center shrink-0 w-[140px] md:w-[150px]">
                             <div
-                                class="w-[112px] h-[128px] rounded-[12px] overflow-hidden bg-[#F5F5F7] flex items-center justify-center">
+                                class="w-[140px] h-[160px] md:w-[150px] md:h-[172px] rounded-[14px] overflow-hidden bg-[#F5F5F7] flex items-center justify-center">
                                 <img src="{{ mod.photo_url }}" alt="{{ mod.fullname }}"
                                     class="h-full w-auto max-w-full object-contain" loading="lazy" />
                             </div>
@@ -218,6 +276,8 @@
                             </div>
                         </div>
                         {% endif %}
+
+
                     </div>
                     {% endif %}
 
