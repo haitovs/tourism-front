@@ -7,7 +7,6 @@ from fastapi import APIRouter, HTTPException, Query, Request
 from starlette import status
 from starlette.responses import HTMLResponse
 
-from app.routers.site import _resolve_lang
 from app.services import news as news_srv
 
 from ..core.settings import settings
@@ -41,7 +40,7 @@ async def news_list(
         page: int = Query(1, ge=1),
         per_page: int = Query(6, ge=1, le=24),
 ):
-    lang = _resolve_lang(req)
+    lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
 
     all_items = news_srv.get_latest_news(limit=200)
     if q:
@@ -75,7 +74,7 @@ async def news_list(
 
 @router.get("/news/{news_id}", response_class=HTMLResponse)
 async def news_detail(req: Request, news_id: int):
-    lang = _resolve_lang(req)
+    lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
 
     record = news_srv.get_news(news_id=news_id)
 

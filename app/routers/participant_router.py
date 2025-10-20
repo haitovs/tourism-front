@@ -3,7 +3,6 @@ from fastapi import APIRouter, HTTPException, Request
 from starlette import status
 from starlette.responses import HTMLResponse
 
-from app.routers.site import _resolve_lang
 from app.services import participants as participants_srv
 
 from ..core.settings import settings
@@ -20,7 +19,7 @@ async def participants_page(req: Request):
       - role: expo|forum|both
       - q: search by name (contains)
     """
-    lang = _resolve_lang(req)
+    lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
     role = req.query_params.get("role")
     q = req.query_params.get("q")
     # You can pass site_id here if you already derive it per-tenant elsewhere.
@@ -38,7 +37,7 @@ async def participants_page(req: Request):
 
 @router.get("/participants/{participant_id}", response_class=HTMLResponse)
 async def participant_detail(req: Request, participant_id: int):
-    lang = _resolve_lang(req)
+    lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
     participant = participants_srv.get_participant(participant_id=participant_id)
     if not participant:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Participant not found")

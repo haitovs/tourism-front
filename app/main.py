@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
+from app.core.language_middleware import LanguageMiddleware
 from app.routers.about_expo_router import router as about_expo_router
 from app.routers.about_forum_router import router as about_forum_router
 from app.routers.agenda_router import router as agenda_router
@@ -11,19 +12,22 @@ from app.routers.official_support_router import \
     router as official_support_router
 from app.routers.participant_router import router as participant_router
 from app.routers.privacy_router import router as privacy_router
+from app.routers.site import router as site_router
 from app.routers.speaker_router import router as speaker_router
 from app.routers.terms_router import router as terms_router
 from app.routers.timer_router import router as timer_router
 
 from .core.settings import settings
-from .routers import site
 
 # app/main.py
 app = FastAPI(title=settings.APP_NAME)
 
+# add language middleware (after app init, before routes)
+app.add_middleware(LanguageMiddleware)
+
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
-app.include_router(site.router)
+app.include_router(site_router)
 app.include_router(speaker_router)
 app.include_router(expo_sectors_router)
 app.include_router(participant_router)

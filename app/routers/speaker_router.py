@@ -3,7 +3,6 @@ from fastapi import APIRouter, HTTPException, Request
 from starlette import status
 from starlette.responses import HTMLResponse
 
-from app.routers.site import _resolve_lang
 from app.services import speakers as speakers_srv
 
 from ..core.settings import settings
@@ -15,7 +14,7 @@ router = APIRouter()
 # ---------- Speakers: list page ----------
 @router.get("/speakers", response_class=HTMLResponse)
 async def speakers_page(req: Request, page: int = 1):
-    lang = _resolve_lang(req)
+    lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
 
     q = req.query_params.get("q") or ""
 
@@ -37,7 +36,7 @@ async def speakers_page(req: Request, page: int = 1):
 # ---------- Speakers: detail page ----------
 @router.get("/speakers/{speaker_id}", response_class=HTMLResponse)
 async def speaker_detail(req: Request, speaker_id: int):
-    lang = _resolve_lang(req)
+    lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
     sp = speakers_srv.get_speaker(speaker_id=speaker_id)
     if not sp:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Speaker not found")

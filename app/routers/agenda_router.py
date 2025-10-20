@@ -2,7 +2,7 @@
 from fastapi import APIRouter, Request
 from starlette.responses import HTMLResponse
 
-from app.routers.site import _resolve_lang, _resolve_site_id
+from app.routers.site import _resolve_site_id
 from app.services import agenda as agenda_srv
 from app.services.text_utils import normalize_textblock, split_short_and_topic
 
@@ -14,7 +14,7 @@ router = APIRouter()
 
 @router.get("/agenda", response_class=HTMLResponse)
 async def agenda_page(req: Request):
-    lang = _resolve_lang(req)
+    lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
     site_id = _resolve_site_id(req)
 
     days = agenda_srv.list_days_with_episodes(site_id=site_id)

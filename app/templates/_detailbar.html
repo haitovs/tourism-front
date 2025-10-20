@@ -36,10 +36,11 @@
             </div>
 
             <!-- language switcher -->
+            <!-- language switcher -->
             <div class="relative group">
                 <button class="flex items-center gap-1 font-['Roboto'] font-medium px-1
-               text-[12px] sm:text-[16px] md:text-[20px] lg:text-[24px] rounded-md
-               hover:bg-white/10 transition-colors" aria-haspopup="true">
+         text-[12px] sm:text-[16px] md:text-[20px] lg:text-[24px] rounded-md
+         hover:bg-white/10 transition-colors" aria-haspopup="true">
                     {{ (lang or 'en')|upper }}
                     <svg class="w-3 h-3 sm:w-4 sm:h-4 -rotate-90 transition-transform group-hover:rotate-0"
                         viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -51,15 +52,15 @@
                 <!-- dropdown -->
                 <div
                     class="absolute right-0 mt-2 w-24 p-2 glass text-white text-center z-[70] hidden group-hover:block">
-                    {% for code in ['ru','tm','en'] %}
-                    <a class="block py-2 rounded-md font-medium transition
-                     hover:bg-white/10 "
-                        href="{{ _path }}?lang={{ code }}{% for k,v in _params.items() if k!='lang' %}&{{k}}={{ v|urlencode }}{% endfor %}">
+                    {% for code in ['en','ru','tk','zh'] %}
+                    <a class="block py-2 rounded-md font-medium transition hover:bg-white/10" href="#"
+                        onclick="event.preventDefault(); fetch('/set-lang/{{code}}',{method:'POST'}).then(()=>location.reload());">
                         {{ code|upper }}
                     </a>
                     {% endfor %}
                 </div>
             </div>
+
 
             <!-- user -->
             <a href="/register" aria-label="Register" class="   shrink-0 inline-flex hover:opacity-90 transition">
@@ -78,85 +79,85 @@
             <ul
                 class="flex flex-wrap items-center gap-3 md:gap-6 font-['Roboto'] font-bold text-[14px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[22px text-[var(--c-primary)]">
                 <li>
-                    <a class=" {{ 'hover:text-[var(--c-text)]' }}" href="/">Home</a>
+                    <a class="{{ 'hover:text-[var(--c-text)]' }}" href="/">{{ t('nav.home') }}</a>
                 </li>
 
                 <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
                     <button class="flex items-center gap-2 hover:text-[var(--c-text)]">
-                        About the Forum <span class="text-[var(--c-text)]/40">›</span>
+                        {{ t('nav.about_forum') }} <span class="text-[var(--c-text)]/40">›</span>
                     </button>
-
                     <div x-show="m" x-cloak x-transition class="menu-dd">
                         <div class="glass menu-panel menu-grid">
-                            <!-- /forum row with right-side extender -->
                             <div class="menu-items relative" x-data="{open:false}" @mouseenter="open=true"
                                 @mouseleave="open=false">
                                 <a href="/about-the-forum" class="menu-item">
-                                    <span>Forum</span>
+                                    <span>{{ t('nav.forum') }}</span>
                                     <span class="menu-items-arrow" aria-hidden="true"></span>
                                 </a>
-
-                                <!-- RIGHT EXTENSION CARD (extends current dropdown) -->
                                 <div x-show="open" x-cloak x-transition.opacity class="menu-subcard">
-                                    <a href="/agenda" class="menu-items-item menu-subitem">Agenda</a>
-                                    <a href="/speakers" class="menu-items-item menu-subitem">Speakers</a>
-                                    <a href="/meeting-request" class="menu-items-item menu-subitem">Meeting request</a>
+                                    <a href="/agenda" class="menu-items-item menu-subitem">{{ t('nav.agenda') }}</a>
+                                    <a href="/speakers" class="menu-items-item menu-subitem">{{ t('nav.speakers') }}</a>
+                                    <a href="/meeting-request" class="menu-items-item menu-subitem">{{
+                                        t('nav.meeting_request') }}</a>
                                 </div>
                             </div>
-
                             <hr class="menu-sep" />
-                            <a href="/about-the-expo" class="menu-item">Expo</a>
+                            <a href="/about-the-expo" class="menu-item">{{ t('nav.about_expo') }}</a>
                             <hr class="menu-sep" />
-                            <a href="/official-support" class="menu-item">Official support</a>
+                            <a href="/official-support" class="menu-item">{{ t('nav.official_support') }}</a>
                             <hr class="menu-sep" />
-                            <a href="/brochure" class="menu-item">Brochure</a>
+                            <a href="/brochure" class="menu-item">{{ t('nav.brochure') }}</a>
                         </div>
                     </div>
                 </li>
 
                 <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
                     <button class="flex items-center gap-2 hover:text-[var(--c-text)]">
-                        Participants <span class="text-[var(--c-text)]/40">›</span>
+                        {{ t('nav.participants') }} <span class="text-[var(--c-text)]/40">›</span>
                     </button>
                     <div x-show="m" x-cloak x-transition class="menu-dd">
                         <div class="glass menu-panel">
-                            <a href="/participants{% if q %}?q={{ q|urlencode }}{% endif %}" class="menu-item">All</a>
+                            <a href="/participants{% if q %}?q={{ q|urlencode }}{% endif %}" class="menu-item">{{
+                                t('nav.all') }}</a>
                             <hr class="menu-sep" />
                             <a href="/participants?role=expo{% if q %}&q={{ q|urlencode }}{% endif %}"
-                                class="menu-item">Expo</a>
+                                class="menu-item">{{ t('nav.expo') }}</a>
                             <hr class="menu-sep" />
                             <a href="/participants?role=forum{% if q %}&q={{ q|urlencode }}{% endif %}"
-                                class="menu-item">Forum</a>
+                                class="menu-item">{{ t('nav.forum') }}</a>
                         </div>
                     </div>
                 </li>
 
                 <li>
                     <a href="/news"
-                        class="{{ 'text-[var(--c-text)]' if p.startswith('/news') else 'hover:text-[var(--c-text)]' }}">News</a>
+                        class="{{ 'text-[var(--c-text)]' if p.startswith('/news') else 'hover:text-[var(--c-text)]' }}">{{
+                        t('nav.news') }}</a>
                 </li>
 
                 <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
                     <button class="flex items-center gap-2 hover:text-[var(--c-text)]">
-                        Travel &amp; Accommodation Guide <span class="text-[var(--c-text)]/40">›</span>
+                        {{ t('nav.travel_guide') }} <span class="text-[var(--c-text)]/40">›</span>
                     </button>
                     <div x-show="m" x-cloak x-transition class="menu-dd">
                         <div class="glass menu-panel">
-                            <a href="/visa" class="menu-item">Apply for Visa</a>
+                            <a href="/visa" class="menu-item">{{ t('nav.apply_visa') }}</a>
                             <hr class="menu-sep" />
-                            <a href="/hotel" class="menu-item">Book Your Hotel</a>
+                            <a href="/hotel" class="menu-item">{{ t('nav.book_hotel') }}</a>
                             <hr class="menu-sep" />
-                            <a href="/flight" class="menu-item">Book Your Flight</a>
+                            <a href="/flight" class="menu-item">{{ t('nav.book_flight') }}</a>
                             <hr class="menu-sep" />
-                            <a href="/faq" class="menu-item">FAQ</a>
+                            <a href="/faq" class="menu-item">{{ t('nav.faq') }}</a>
                         </div>
                     </div>
                 </li>
 
                 <li>
                     <a href="/registration"
-                        class="{{ 'text-[var(--c-text)]' if p.startswith('/registration') else 'hover:text-[var(--c-text)]' }}">Registration</a>
+                        class="{{ 'text-[var(--c-text)]' if p.startswith('/registration') else 'hover:text-[var(--c-text)]' }}">{{
+                        t('nav.registration') }}</a>
                 </li>
+
             </ul>
         </nav>
     </div>

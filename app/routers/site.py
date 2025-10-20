@@ -19,11 +19,6 @@ from ..core.templates import templates
 router = APIRouter()
 
 
-def _resolve_lang(req: Request) -> str:
-    lang = req.query_params.get("lang") or req.cookies.get("lang") or settings.DEFAULT_LANG
-    return lang if lang in settings.SUPPORTED_LANGS else settings.DEFAULT_LANG
-
-
 def _resolve_site_id(req: Request) -> int | None:
     site = getattr(req.state, "site", None)
     return getattr(site, "id", None) if site else None
@@ -31,7 +26,9 @@ def _resolve_site_id(req: Request) -> int | None:
 
 @router.get("/", response_class=HTMLResponse)
 async def home(req: Request):
-    lang = _resolve_lang(req)
+    # use middleware-provided language
+    lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
+
     site_id = _resolve_site_id(req)
 
     # ⬇️ build timer context first
@@ -40,7 +37,7 @@ async def home(req: Request):
 
     ctx = {
         "request": req,
-        "lang": lang,
+        "lang": lang,  # optional (we also inject via templates middleware)
         "settings": settings,
 
         # TOP sponsors (grouped + flat kept for backward-compat) + new view-model
@@ -71,6 +68,5 @@ async def home(req: Request):
         "timer": timer_ctx,
     }
 
-    resp = templates.TemplateResponse("index.html", ctx)
-    resp.set_cookie("lang", lang, max_age=60 * 60 * 24 * 365, httponly=False, samesite="lax")
-    return resp
+    # ✅ Middleware handles the cookie; no manual set_cookie needed here.
+    return templates.TemplateResponse("index.html", ctx)
