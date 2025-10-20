@@ -1,23 +1,19 @@
-{# app/templates/agenda/_sponsor_badge.html #} {% macro sponsor_badge(sponsor) -%} {% if sponsor %} {% set tier =
-(sponsor.tier or '')|lower %} {% set tier_label = (tier|capitalize) ~ " Sponsor" %} {% set tier_class = "tier-gold" if
-tier == "gold" else ("tier-silver" if tier == "silver" else ("tier-bronze" if tier == "bronze" else "")) %}
+{# app/templates/agenda/_sponsor_badge.html #}
+{% macro sponsor_badge(sponsor) -%}
+{% if sponsor %}
+{% set tier = (sponsor.tier or '')|lower %}
+{% set tier_key = tier if tier in ['gold','silver','bronze'] else 'gold' %}
 <div class="flex flex-col items-center justify-start">
     {% if sponsor.logo_url %}
-    <img
-        src="{{ sponsor.logo_url }}"
-        alt="{{ sponsor.name or 'Sponsor' }}"
-        title="{{ sponsor.name or '' }}"
-        class="w-[160px] h-[95px] object-contain select-none pointer-events-none"
-        loading="lazy"
-    />
+    <img src="{{ sponsor.logo_url }}" alt="{{ sponsor.name or t('sponsor.unknown') }}" title="{{ sponsor.name or '' }}"
+        class="w-[160px] h-[95px] object-contain select-none pointer-events-none" loading="lazy" />
     {% else %}
-    <img
-        src="/static/img/img_placeholder.png"
-        alt="Sponsor"
-        class="w-[160px] h-[95px] object-contain opacity-70 select-none pointer-events-none"
-        loading="lazy"
-    />
+    <img src="/static/img/img_placeholder.png" alt="{{ t('sponsor.unknown') }}"
+        class="w-[160px] h-[95px] object-contain opacity-70 select-none pointer-events-none" loading="lazy" />
     {% endif %}
-    <div class="mt-2 text-center font-['Roboto'] font-semibold text-[15px] {{ tier_class }}">{{ tier_label }}</div>
+    <div class="mt-2 text-center font-['Roboto'] font-semibold text-[15px]">
+        {{ t('sponsor.tier.' ~ tier_key) }}
+    </div>
 </div>
-{% endif %} {%- endmacro %}
+{% endif %}
+{%- endmacro %}

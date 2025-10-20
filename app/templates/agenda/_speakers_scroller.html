@@ -1,23 +1,23 @@
-{# app/templates/agenda/_speakers_scroller.html #} {% macro speakers_scroller(speakers) -%} {% if not speakers or
-speakers|length == 0 %}
-<div class="text-center text-slate-500">No speakers yet.</div>
-{% elif speakers|length < 4 %}
-<ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+{# app/templates/agenda/_speakers_scroller.html #}
+{% macro speakers_scroller(speakers) -%}
+{% if not speakers or speakers|length == 0 %}
+<div class="text-center text-slate-500">{{ t('agenda.no_speakers') }}</div>
+{% elif speakers|length < 4 %} <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
     {% for sp in speakers %}
     <li>
         <a href="/speakers/{{ sp.id }}" class="block group" title="{{ sp.fullname }}">{{ caller(sp) }}</a>
     </li>
     {% endfor %}
-</ul>
-{% else %}
-<div class="relative -mx-2 px-2" x-data>
-    <div
-        class="flex gap-6 overflow-x-auto no-scrollbar pb-2"
-        @wheel.passive="$event.deltaY && ($el.scrollLeft += ($event.deltaY>0? 80 : -80))"
-    >
-        {% for sp in speakers %}
-        <a href="/speakers/{{ sp.id }}" class="block group shrink-0" title="{{ sp.fullname }}"> {{ caller(sp) }} </a>
-        {% endfor %}
+    </ul>
+    {% else %}
+    <div class="relative -mx-2 px-2" x-data>
+        <div class="flex gap-6 overflow-x-auto no-scrollbar pb-2"
+            @wheel.passive="$event.deltaY && ($el.scrollLeft += ($event.deltaY>0? 80 : -80))">
+            {% for sp in speakers %}
+            <a href="/speakers/{{ sp.id }}" class="block group shrink-0" title="{{ sp.fullname }}"> {{ caller(sp) }}
+            </a>
+            {% endfor %}
+        </div>
     </div>
-</div>
-{% endif %} {%- endmacro %}
+    {% endif %}
+    {%- endmacro %}

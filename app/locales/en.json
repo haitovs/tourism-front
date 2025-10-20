@@ -68,5 +68,7 @@
     "sponsor.unknown": "Sponsor",
     "sponsor.tier.gold": "Gold Sponsor",
     "sponsor.tier.silver": "Silver Sponsor",
-    "sponsor.tier.bronze": "Bronze Sponsor"
+    "sponsor.tier.bronze": "Bronze Sponsor",
+
+    "agenda.no_speakers": "No speakers yet."
 }

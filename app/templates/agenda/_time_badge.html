@@ -1,5 +1,8 @@
 {# app/templates/agenda/_time_badge.html #}
 {% macro time_badge(start_dt, end_dt) -%}
+{% set lc = lang_ctx() %}
+{% set use_12h = (lc == 'en') %}
+
 <aside class="flex items-center justify-center md:self-start
               bg-white rounded-[20px] shadow-soft
               h-[70px] sm:h-[80px] md:h-[86px]
@@ -8,10 +11,15 @@
               leading-[1.05] tracking-[0.02em]
               text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px]
               text-left md:text-center">
+        {% if use_12h %}
         {{ start_dt.strftime('%I:%M') }}
         <span class="hidden sm:inline"> {{ start_dt.strftime('%p') }}</span><br />
         {{ end_dt.strftime('%I:%M') }}
         <span class="hidden sm:inline"> {{ end_dt.strftime('%p') }}</span>
+        {% else %}
+        {{ start_dt.strftime('%H:%M') }}<br />
+        {{ end_dt.strftime('%H:%M') }}
+        {% endif %}
     </div>
 </aside>
 {%- endmacro %}
