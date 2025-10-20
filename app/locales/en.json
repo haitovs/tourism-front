@@ -275,5 +275,15 @@
     "news.list.search.label": "Search news",
     "news.list.search.placeholder": "Search ...",
     "news.list.search.btn_aria": "Search",
-    "news.list.empty": "No news found."
+    "news.list.empty": "No news found.",
+
+    "official.section_label": "Official Support",
+    "official.hero.title": "Official Support",
+    "official.hero.subtitle": "Backed by official governmental and business representatives",
+    "official.card.title": "Commercial, Investment and Business opportunities in Turkmenistan 2025",
+    "official.body.p1": "Innovation and growth are at the heart of every successful society. Progress is built when people share ideas, combine their skills, and work together to create solutions that improve daily life. From small changes to major breakthroughs, innovation shapes the way we live and connect with the world.",
+    "official.body.p2": "Collaboration plays a key role in turning ideas into reality. When businesses, governments, and individuals unite, they unlock greater opportunities. Shared knowledge and collective effort make it possible to overcome challenges and build stronger, more resilient communities.",
+    "official.body.p3": "The future depends on how we use today’s opportunities. By embracing technology, investing in education, and encouraging creativity, we prepare for sustainable development and long-term success. Every step forward, no matter how small, contributes to shaping a brighter tomorrow.",
+    "official.sign.left.name": "Merdan Atayev",
+    "official.sign.right.name": "Merdan Atayev"
 }

@@ -2,27 +2,30 @@
 <main>
     {# ========= HERO ========= #}
     <section class="relative w-full h-[450px]">
-        <!-- Background image -->
         <img src="/static/img/unified-hero.png" alt="" class="absolute inset-0 w-full h-full object-cover" />
-        <!-- Dark overlay (rgba(0,0,0,0.35)) -->
         <div class="absolute inset-0 bg-black/35"></div>
 
-        <!-- Center title + subtitle -->
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
-            <h1 class="font-['Montserrat'] font-bold text-white text-[60px] leading-[73px]">Official Support</h1>
+            <h1 class="font-['Montserrat'] font-bold text-white text-[60px] leading-[73px]">
+                {{ t('official.hero.title') }}
+            </h1>
             <p class="mt-3 font-['Roboto'] font-medium text-white text-[25px] leading-[29px] max-w-[720px]">
-                Backed by official governmental and business representatives
+                {{ t('official.hero.subtitle') }}
             </p>
         </div>
 
-        {{ hero_buttons( home_href = '/', section_label = 'Official Support', section_href = '/official-support',
-        is_detail = False ) }}
+        {{ hero_buttons(
+        home_href='/',
+        section_label=t('official.section_label'),
+        section_href='/official-support',
+        is_detail=False
+        ) }}
     </section>
 
-    {# ========= CONTENT CARD (Frame 33) ========= #}
+    {# ========= CONTENT CARD ========= #}
     <section class="max-w-[var(--container)] mx-auto px-4">
         <div class="mx-auto max-w-[1310px] bg-white rounded-[20px] shadow-md mt-[80px] mb-14 relative">
-            <!-- Header row: left logo img (160x160) + title -->
+            <!-- Header row -->
             <div class="px-6 md:px-8 pt-8 md:pt-10">
                 <div class="flex items-center gap-6">
                     <div class="w-[160px] h-[160px] rounded-[12px] overflow-hidden shrink-0">
@@ -30,7 +33,7 @@
                     </div>
                     <h2
                         class="font-['Montserrat'] font-medium text-[40px] leading-[40px] text-black max-w-[783px] ml-4 md:ml-6">
-                        Commercial, Investment and Business opportunities in Turkmenistan 2025
+                        {{ t('official.card.title') }}
                     </h2>
                 </div>
             </div>
@@ -38,37 +41,13 @@
             <!-- Paragraphs -->
             <div class="px-6 md:px-8 pt-6 pb-2">
                 <p class="font-['Lato','Roboto'] text-[20px] leading-[30px] text-black max-w-[1189px]">
-                    Innovation and growth are at the heart of every successful society. Progress is built when people
-                    share ideas, combine their skills, and work together to create solutions that improve daily life.
-                    From small changes to major breakthroughs, innovation shapes the way we live and connect with the
-                    world. Collaboration plays a key role in turning ideas into reality. When businesses, governments,
-                    and individuals unite, they unlock greater opportunities. Shared knowledge and collective effort
-                    make it possible to overcome challenges and build stronger, more resilient communities. The future
-                    depends on how we use today’s opportunities. By embracing technology, investing in education, and
-                    encouraging creativity, we prepare for sustainable development and long-term success. Every step
-                    forward, no matter how small, contributes to shaping a brighter tomorrow.
+                    {{ t('official.body.p1') }}
                 </p>
                 <p class="mt-6 font-['Lato','Roboto'] text-[20px] leading-[30px] text-black max-w-[1189px]">
-                    Innovation and growth are at the heart of every successful society. Progress is built when people
-                    share ideas, combine their skills, and work together to create solutions that improve daily life.
-                    From small changes to major breakthroughs, innovation shapes the way we live and connect with the
-                    world. Collaboration plays a key role in turning ideas into reality. When businesses, governments,
-                    and individuals unite, they unlock greater opportunities. Shared knowledge and collective effort
-                    make it possible to overcome challenges and build stronger, more resilient communities. The future
-                    depends on how we use today’s opportunities. By embracing technology, investing in education, and
-                    encouraging creativity, we prepare for sustainable development and long-term success. Every step
-                    forward, no matter how small, contributes to shaping a brighter tomorrow.
+                    {{ t('official.body.p2') }}
                 </p>
                 <p class="mt-6 font-['Lato','Roboto'] text-[20px] leading-[30px] text-black max-w-[1189px]">
-                    Innovation and growth are at the heart of every successful society. Progress is built when people
-                    share ideas, combine their skills, and work together to create solutions that improve daily life.
-                    From small changes to major breakthroughs, innovation shapes the way we live and connect with the
-                    world. Collaboration plays a key role in turning ideas into reality. When businesses, governments,
-                    and individuals unite, they unlock greater opportunities. Shared knowledge and collective effort
-                    make it possible to overcome challenges and build stronger, more resilient communities. The future
-                    depends on how we use today’s opportunities. By embracing technology, investing in education, and
-                    encouraging creativity, we prepare for sustainable development and long-term success. Every step
-                    forward, no matter how small, contributes to shaping a brighter tomorrow.
+                    {{ t('official.body.p3') }}
                 </p>
             </div>
 
@@ -79,7 +58,7 @@
                     <div class="flex flex-col items-center text-center">
                         <div
                             class="font-['Lato','Roboto'] font-semibold text-[20px] md:text-[25px] leading-[1.2] text-black mb-3 md:mb-4">
-                            Merdan Atayev:
+                            {{ t('official.sign.left.name') }}:
                         </div>
                         <div class="w-full max-w-[320px] sm:max-w-[360px]">
                             <img src="/static/img/official-support/left-sign.png" alt="Signature"
@@ -92,7 +71,7 @@
                     <div class="flex flex-col items-center text-center">
                         <div
                             class="font-['Lato','Roboto'] font-semibold text-[20px] md:text-[25px] leading-[1.2] text-black mb-3 md:mb-4">
-                            Merdan Atayev:
+                            {{ t('official.sign.right.name') }}:
                         </div>
                         <div class="w-full max-w-[320px] sm:max-w-[360px]">
                             <img src="/static/img/official-support/right-sign.png" alt="Signature"
