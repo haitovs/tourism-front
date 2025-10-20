@@ -146,5 +146,11 @@
     "home.timer.minutes": "Minutes",
     "home.timer.seconds": "Seconds",
     "home.timer.remaining": "The remaining",
-    "home.timer.deadline": "Deadline"
+    "home.timer.deadline": "Deadline",
+
+    "news.category_default": "News",
+    "news.read_more": "Read more",
+    "news.pager.previous": "Previous",
+    "news.pager.next": "Next",
+    "news.pager.aria": "Pagination"
 }
