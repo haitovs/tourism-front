@@ -10,17 +10,18 @@
             <h1 class="font-['Montserrat'] font-bold text-white
                  text-[clamp(30px,5vw,60px)] lg:text-[clamp(44px,3.6vw,72px)]
                  leading-[1.15]">
-                Turkmen–China 2026 Expo
+                {{ t('about_expo.hero.title') }}
             </h1>
             <p class="mt-2 font-['Roboto'] text-white/90
        text-[14px] sm:text-[16px] md:text-[18px] lg:text-[24px]
        leading-[1.4] sm:leading-[1.5] md:leading-[1.6]
        max-w-[66ch] mx-auto">
-                The International Platform for Technology and Business
+                {{ t('about_expo.hero.subtitle') }}
             </p>
 
         </div>
-        {{ hero_buttons(home_href='/', section_label='About the Expo', section_href='/about-expo', is_detail=False) }}
+        {{ hero_buttons(home_href='/', section_label=t('nav.about_expo'), section_href='/about-expo', is_detail=False)
+        }}
     </section>
 
     <section class="max-w-[var(--container)] mx-auto px-4 py-8 md:py-10">
@@ -63,22 +64,21 @@
                     <div class="flex items-center gap-3 sm:gap-4">
                         <div
                             class="font-['Montserrat'] font-medium text-[#007A3D] text-[clamp(18px,2.6vw,30px)] leading-[1.6]">
-                            Turkmen–China 2026 Expo
+                            {{ t('about_expo.intro.ribbon') }}
                         </div>
                         <div class="h-px w-[44px] sm:w-[60px] bg-[#007A3D]"></div>
                     </div>
                     <h2 class="mt-2 font-['Montserrat'] font-medium text-[#1E1E1E]
-                     text-[clamp(22px,5vw,28px)]
-                     md:text-[clamp(30px,3.6vw,54px)]
-                     lg:text-[clamp(36px,2.8vw,60px)]
-                     leading-[1.22]">
-                        Expo 2026: Explore the Next Frontier
+     text-[clamp(22px,5vw,28px)]
+     md:text-[clamp(30px,3.6vw,54px)]
+     lg:text-[clamp(36px,2.8vw,60px)]
+     leading-[1.22]">
+                        {{ t('about_expo.intro.title') }}
                     </h2>
                     <p class="mt-3 md:mt-4 max-w-[55ch] font-['Roboto']
-                    text-[15px] sm:text-[16px] md:text-[18px] lg:text-[21px]
-                    leading-[1.65] text-black/70">
-                        Join global innovators, industry leaders, and emerging talents at one of the most dynamic expos
-                        of the year. Discover what the future holds and connect with those shaping it.
+    text-[15px] sm:text-[16px] md:text-[18px] lg:text-[21px]
+    leading-[1.65] text-black/70">
+                        {{ t('about_expo.intro.lead') }}
                     </p>
                     <ul class="mt-4 md:mt-5 space-y-2.5 sm:space-y-3">
                         <li class="flex items-start gap-2.5 sm:gap-3">
@@ -86,7 +86,7 @@
                                 class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 shrink-0" />
                             <span
                                 class="font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[24px] leading-[1.6] text-black/70">
-                                International technology showcases
+                                {{ t('about_expo.intro.bullets.0') }}
                             </span>
                         </li>
                         <li class="flex items-start gap-2.5 sm:gap-3">
@@ -94,7 +94,7 @@
                                 class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 shrink-0" />
                             <span
                                 class="font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[24px] leading-[1.6] text-black/70">
-                                Networking with global professionals
+                                {{ t('about_expo.intro.bullets.1') }}
                             </span>
                         </li>
                         <li class="flex items-start gap-2.5 sm:gap-3">
@@ -102,7 +102,7 @@
                                 class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 shrink-0" />
                             <span
                                 class="font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[24px] leading-[1.6] text-black/70">
-                                Keynote speeches from industry experts
+                                {{ t('about_expo.intro.bullets.2') }}
                             </span>
                         </li>
                         <li class="flex items-start gap-2.5 sm:gap-3">
@@ -110,16 +110,17 @@
                                 class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 shrink-0" />
                             <span
                                 class="font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[24px] leading-[1.6] text-black/70">
-                                Interactive panels and workshops
+                                {{ t('about_expo.intro.bullets.3') }}
                             </span>
                         </li>
                     </ul>
                     <div class="mt-5 md:mt-6">
                         <a href="/expo-sectors" class="inline-flex items-center justify-center h-[49px] sm:h-[53px] px-4 sm:px-5 rounded-[10px] bg-[#007A3D] text-white font-['Roboto'] font-bold
-                      text-[clamp(16px,2.2vw,20px)]">
-                            Expo Sectors
+              text-[clamp(16px,2.2vw,20px)]">
+                            {{ t('about_expo.intro.cta') }}
                         </a>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -127,72 +128,111 @@
 
     <section class="max-w-[var(--container)] mx-auto px-4 pb-8 md:pb-10">
         <div class="bg-white rounded-[16px] md:rounded-[24px] p-4 sm:p-5 md:p-8 shadow-sm mx-auto max-w-[1310px]">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-                <div class="lg:col-span-7">
-                    <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E]
-                     text-[clamp(18px,5vw,22px)]
-                     md:text-[clamp(28px,3.6vw,48px)]
-                     lg:text-[clamp(34px,2.8vw,56px)]
-                     leading-[1.22]">
-                        Why to participate?
-                    </h2>
-                    <ul class="mt-3 md:mt-4 space-y-3 sm:space-y-4 max-w-[60ch]">
-                        <li class="font-['Roboto']
-                       text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px]
-                       text-black/70 leading-[1.65]">
-                            • Turkmenistan offers diverse opportunities across sectors — including oil and gas,
-                            construction, telecommunications, tourism, healthcare, agriculture, and food industries.
-                        </li>
-                        <li class="font-['Roboto']
-                       text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px]
-                       text-black/70 leading-[1.65]">
-                            • Turkmenistan is one of the fastest-growing economies in Central Asia, offering vast
-                            opportunities for investment and cooperation.
-                        </li>
-                        <li class="font-['Roboto']
-                       text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px]
-                       text-black/70 leading-[1.65]">
-                            • With billion-dollar infrastructure and construction projects, Turkmenistan presents an
-                            attractive market for international business.
-                        </li>
-                        <li class="font-['Roboto']
-                       text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px]
-                       text-black/70 leading-[1.65]">
-                            • The $14 billion Ashgabat City smart city project marks a significant leap toward
-                            innovation and sustainable urban development.
-                        </li>
-                    </ul>
-                </div>
-                <div class="lg:col-span-5 hidden lg:block">
-                    <div
-                        class="w-[min(480px,84vw)] h-[min(480px,84vw)] max-w-full rounded-[10px] overflow-hidden ml-auto">
-                        <img src="/static/img/about-expo/abouttheexpo3.png" alt="" class="w-full h-full object-cover" />
+            <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E]
+      text-[clamp(20px,4.2vw,26px)]
+      md:text-[42px] lg:text-[52px] xl:text-[58px]
+      leading-[1.18]">
+                {{ t('about_expo.numbers.title') }}
+            </h2>
+
+            <div class="mx-auto max-w-[min(92vw,1190px)] mt-4 md:mt-6 space-y-4">
+                <!-- Row 1 -->
+                <div class="grid items-start gap-x-4 md:gap-x-8
+                  grid-cols-[minmax(150px,180px)_1fr]
+                  md:grid-cols-[minmax(220px,400px)_1fr]">
+                    <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
+                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('about_expo.numbers.total_space') }}
                     </div>
+
+                    <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
+                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('about_expo.numbers.sectors_2026') }}
+                    </div>
+                    <div class="col-span-2 mt-3 h-px bg-black/20"></div>
                 </div>
 
+                <!-- Row 2: sector list -->
+                <div class="grid items-start gap-x-4 md:gap-x-8
+                  grid-cols-[minmax(150px,180px)_1fr]
+                  md:grid-cols-[minmax(220px,400px)_1fr]">
+                    <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
+                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('about_expo.numbers.sectors_2026') }}
+                    </div>
+                    <ul class="font-['Roboto'] text-black/70 text-left leading-[1.6] space-y-1
+                   text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        <li>{{ t('about_expo.numbers.sector_list.0') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.1') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.2') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.3') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.4') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.5') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.6') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.7') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.8') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.9') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.10') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.11') }}</li>
+                    </ul>
+                    <div class="col-span-2 mt-3 h-px bg-black/20"></div>
+                </div>
+
+                <!-- Row 3: expected attendance -->
+                <div class="grid items-start gap-x-4 md:gap-x-8
+                  grid-cols-[minmax(150px,180px)_1fr]
+                  md:grid-cols-[minmax(220px,400px)_1fr]">
+                    <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
+                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('about_expo.numbers.expected_attendance') }}
+                    </div>
+
+                    <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
+                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        5000+
+                    </div>
+                    <div class="col-span-2 mt-3 h-px bg-black/20"></div>
+                </div>
+
+                <!-- Row 4: expected visitors (label + number) -->
+                <div class="grid items-start gap-x-4 md:gap-x-8
+                  grid-cols-[minmax(150px,180px)_1fr]
+                  md:grid-cols-[minmax(220px,400px)_1fr]">
+                    <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
+                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('about_expo.numbers.expected_visitors') }}
+                    </div>
+                    <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
+                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        150
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
+
     <section class="max-w-[var(--container)] mx-auto px-4 pb-10">
         <div class="bg-white rounded-[16px] md:rounded-[24px] p-4 sm:p-5 md:p-8 shadow-sm mx-auto max-w-[1310px]">
             <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E]
-                 text-[clamp(20px,4.2vw,26px)]
-                 md:text-[42px] lg:text-[52px] xl:text-[58px]
-                 leading-[1.18]">
-                By the Numbers
+     text-[clamp(20px,4.2vw,26px)]
+     md:text-[42px] lg:text-[52px] xl:text-[58px]
+     leading-[1.18]">
+                {{ t('about_expo.numbers.title') }}
             </h2>
+
             <div class="mx-auto max-w-[min(92vw,1190px)] mt-4 md:mt-6 space-y-4">
                 <div class="grid items-start gap-x-4 md:gap-x-8
                     grid-cols-[minmax(150px,180px)_1fr]
                     md:grid-cols-[minmax(220px,400px)_1fr]">
                     <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
-                      text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        Total exhibition space:
+     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('about_expo.numbers.total_space') }}
                     </div>
-                    <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
-                      text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        8,000 m²
+
+                    <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
+     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('about_expo.numbers.sectors_2026') }}
                     </div>
                     <div class="col-span-2 mt-3 h-px bg-black/20"></div>
                 </div>
@@ -201,23 +241,23 @@
                     grid-cols-[minmax(150px,180px)_1fr]
                     md:grid-cols-[minmax(220px,400px)_1fr]">
                     <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
-                      text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        Expo sectors 2026:
+     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('about_expo.numbers.sectors_2026') }}
                     </div>
                     <ul class="font-['Roboto'] text-black/70 text-left leading-[1.6] space-y-1
-                     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        <li>Industry and Construction</li>
-                        <li>Energy Diversification</li>
-                        <li>Public–Private Partnership (PPP)</li>
-                        <li>Transport and Logistics</li>
-                        <li>Agriculture and Food Processing</li>
-                        <li>Information and Communication Technologies (ICT)</li>
-                        <li>Tourism and Hospitality</li>
-                        <li>Education and Research</li>
-                        <li>Healthcare and Pharmaceuticals</li>
-                        <li>Financial Services and Banking</li>
-                        <li>Trade and Export Development</li>
-                        <li>Environmental Sustainability</li>
+    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        <li>{{ t('about_expo.numbers.sector_list.0') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.1') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.2') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.3') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.4') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.5') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.6') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.7') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.8') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.9') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.10') }}</li>
+                        <li>{{ t('about_expo.numbers.sector_list.11') }}</li>
                     </ul>
                     <div class="col-span-2 mt-3 h-px bg-black/20"></div>
                 </div>
@@ -226,9 +266,10 @@
                     grid-cols-[minmax(150px,180px)_1fr]
                     md:grid-cols-[minmax(220px,400px)_1fr]">
                     <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
-                      text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        Expected attendance:
+     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('about_expo.numbers.expected_attendance') }}
                     </div>
+
                     <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
                       text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
                         5000+
@@ -257,17 +298,19 @@
             <img src="/static/img/about-expo/abouttheexpo-stats.png" alt=""
                 class="absolute inset-0 w-full h-full object-cover" />
             <div class="absolute inset-0 bg-black/40"></div>
+
             <div class="relative z-[1] max-w-[var(--container)] mx-auto h-full px-4">
                 <div class="h-full grid grid-cols-2 mlg:grid-cols-4 place-items-center gap-4 sm:gap-6">
                     <!-- 1 -->
                     <div class="flex flex-col md:flex-row items-center justify-center gap-1 sm:gap-2">
                         <div
                             class="font-['Roboto'] font-medium text-white tabular-nums text-[clamp(32px,8vw,70px)] leading-[1.1]">
-                            453</div>
+                            453
+                        </div>
                         <div
                             class="font-['Roboto'] font-bold text-[clamp(14px,3.2vw,30px)] leading-[1.2] text-[#F4F4F2] md:ml-2 md:text-left text-center">
-                            <span class="block">Visitors</span>
-                            <span class="block">&nbsp;</span>
+                            <span class="block">{{ t('about_expo.stats.visitors.l1') }}</span>
+                            <span class="block">{{ t('about_expo.stats.visitors.l2') }}</span>
                         </div>
                     </div>
 
@@ -275,11 +318,12 @@
                     <div class="flex flex-col md:flex-row items-center justify-center gap-1 sm:gap-2">
                         <div
                             class="font-['Roboto'] font-medium text-white tabular-nums text-[clamp(32px,8vw,70px)] leading-[1.1]">
-                            18</div>
+                            18
+                        </div>
                         <div
                             class="font-['Roboto'] font-bold text-[clamp(14px,3.2vw,30px)] leading-[1.2] text-[#F4F4F2] md:ml-2 md:text-left text-center">
-                            <span class="block">Participating</span>
-                            <span class="block">Countries</span>
+                            <span class="block">{{ t('about_expo.stats.countries.l1') }}</span>
+                            <span class="block">{{ t('about_expo.stats.countries.l2') }}</span>
                         </div>
                     </div>
 
@@ -287,11 +331,12 @@
                     <div class="flex flex-col md:flex-row items-center justify-center gap-1 sm:gap-2">
                         <div
                             class="font-['Roboto'] font-medium text-white tabular-nums text-[clamp(32px,8vw,70px)] leading-[1.1]">
-                            150</div>
+                            150
+                        </div>
                         <div
                             class="font-['Roboto'] font-bold text-[clamp(14px,3.2vw,30px)] leading-[1.2] text-[#F4F4F2] md:ml-2 md:text-left text-center">
-                            <span class="block">Exhibiting</span>
-                            <span class="block">companies</span>
+                            <span class="block">{{ t('about_expo.stats.companies.l1') }}</span>
+                            <span class="block">{{ t('about_expo.stats.companies.l2') }}</span>
                         </div>
                     </div>
 
@@ -299,34 +344,36 @@
                     <div class="flex flex-col md:flex-row items-center justify-center gap-1 sm:gap-2">
                         <div
                             class="font-['Roboto'] font-medium text-white tabular-nums text-[clamp(32px,8vw,70px)] leading-[1.1]">
-                            65</div>
+                            65
+                        </div>
                         <div
                             class="font-['Roboto'] font-bold text-[clamp(14px,3.2vw,30px)] leading-[1.2] text-[#F4F4F2] md:ml-2 md:text-left text-center">
-                            <span class="block">Exhibiting</span>
-                            <span class="block">areas</span>
+                            <span class="block">{{ t('about_expo.stats.areas.l1') }}</span>
+                            <span class="block">{{ t('about_expo.stats.areas.l2') }}</span>
                         </div>
                     </div>
                 </div>
             </div>
-
-
         </div>
     </section>
+
 
     <section class="max-w-[var(--container)] mx-auto px-4 py-10">
         <div class="mx-auto max-w-[1310px] text-center">
             <div class="flex items-center justify-center gap-4">
                 <div class="hidden sm:block h-px w-[60px] bg-[#007A3D]"></div>
                 <div class="font-['Montserrat'] font-medium text-[#007A3D] text-[clamp(18px,2.6vw,30px)] leading-[1.6]">
-                    Exhibit Map</div>
+                    {{ t('about_expo.map.ribbon') }}
+                </div>
                 <div class="hidden sm:block h-px w-[60px] bg-[#007A3D]"></div>
             </div>
             <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E]
-                 text-[clamp(22px,4vw,50px)] leading-[1.2] max-w-[858px] mx-auto">
-                Flexible options for every concept and occasion
+               text-[clamp(22px,4vw,50px)] leading-[1.2] max-w-[858px] mx-auto">
+                {{ t('about_expo.map.title') }}
             </h2>
         </div>
     </section>
+
 
     <section class="max-w-[var(--container)] mx-auto px-4 pb-14">
         <div class="bg-white rounded-[24px] shadow-sm mx-auto max-w-[1310px] p-6 md:p-8">
@@ -337,26 +384,25 @@
                         <img src="/static/img/about-expo/abouttheexpo4.png" alt=""
                             class="absolute inset-0 w-full h-full object-cover" />
                         <div class="absolute top-[clamp(16px,2.6vw,31px)] right-[clamp(18px,3vw,34px)]
-                        w-[clamp(150px,16vw,226px)] h-[clamp(36px,4vw,47.3px)] bg-[#006AA6]"></div>
+                      w-[clamp(150px,16vw,226px)] h-[clamp(36px,4vw,47.3px)] bg-[#006AA6]"></div>
                     </div>
                 </div>
+
                 <div class="lg:col-span-5 flex flex-col">
                     <h3
                         class="font-['Poppins','Montserrat'] font-medium text-[clamp(20px,3.4vw,30px)] leading-[1.35] text-[#1E1E1E]">
-                        To be an Exhibitors
+                        {{ t('about_expo.cta.exhibitor_title') }}
                     </h3>
                     <p class="mt-3 sm:mt-4 font-['Lato','Roboto']
-                    text-[15px] sm:text-[16px] md:text-[18px] leading-[1.6] max-w-[56ch]">
-                        Choose any setup, any space — from cozy corners to grand halls. Whether you're planning a formal
-                        event, a creative workshop, a casual gathering, or a unique celebration, we offer complete
-                        flexibility to match your concept.
+                 text-[15px] sm:text-[16px] md:text-[18px] leading-[1.6] max-w-[56ch]">
+                        {{ t('about_expo.cta.exhibitor_text') }}
                     </p>
                     <div class="mt-6 sm:mt-8">
                         <a href="/registration" class="inline-flex items-center justify-center gap-3 sm:gap-4 w-full sm:w-[360px] md:w-[421px]
-                      h-[54px] md:h-[60px] rounded-[12px] bg-[#007A3D] text-white">
+                    h-[54px] md:h-[60px] rounded-[12px] bg-[#007A3D] text-white">
                             <span
                                 class="font-['Poppins','Roboto'] font-semibold text-[clamp(18px,2.6vw,25px)] leading-[1.4]">
-                                To participate
+                                {{ t('about_expo.cta.participate_btn') }}
                             </span>
                             <svg class="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path d="M5 12h14" stroke="white" stroke-width="2" stroke-linecap="round" />
@@ -369,5 +415,6 @@
             </div>
         </div>
     </section>
+
 </main>
 {% endblock %}

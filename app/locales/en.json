@@ -156,5 +156,56 @@
 
     "pager.aria": "Pagination",
     "pager.previous": "Previous",
-    "pager.next": "Next"
+    "pager.next": "Next",
+
+    "about_expo.hero.title": "About the Expo",
+    "about_expo.hero.subtitle": "Your guide to the International Turkmen–China Exhibition: goals, format, and opportunities for participants.",
+    "about_expo.intro.ribbon": "About the Event",
+    "about_expo.intro.title": "International Expo — Vision & Goals",
+    "about_expo.intro.lead": "We foster innovation, cultural exchange, and international cooperation by bringing together government, business, and civil society.",
+    "about_expo.intro.bullets.0": "Showcase cutting-edge products and technologies",
+    "about_expo.intro.bullets.1": "Meet decision-makers and potential partners",
+    "about_expo.intro.bullets.2": "Discover investment and export opportunities",
+    "about_expo.intro.bullets.3": "Strengthen bilateral and regional cooperation",
+    "about_expo.intro.cta": "Explore Expo Sectors",
+
+    "about_expo.why.title": "Why Exhibit at the Expo?",
+    "about_expo.why.points.0": "Direct access to buyers, distributors, and government representatives",
+    "about_expo.why.points.1": "High-visibility branding across the venue and media",
+    "about_expo.why.points.2": "Curated B2B meetings and networking programs",
+    "about_expo.why.points.3": "Market insights and expert sessions",
+
+    "about_expo.numbers.title": "Key Figures and Thematic Focus",
+    "about_expo.numbers.total_space": "Total exhibition space:",
+    "about_expo.numbers.sectors_2026": "Key sectors in 2026:",
+    "about_expo.numbers.sector_list.0": "Energy",
+    "about_expo.numbers.sector_list.1": "Construction & Infrastructure",
+    "about_expo.numbers.sector_list.2": "Industrial Equipment",
+    "about_expo.numbers.sector_list.3": "Transport & Logistics",
+    "about_expo.numbers.sector_list.4": "Agri-food & Processing",
+    "about_expo.numbers.sector_list.5": "Chemicals & Materials",
+    "about_expo.numbers.sector_list.6": "ICT & Digital Solutions",
+    "about_expo.numbers.sector_list.7": "Finance & Investment",
+    "about_expo.numbers.sector_list.8": "Education & HR",
+    "about_expo.numbers.sector_list.9": "Healthcare & Pharma",
+    "about_expo.numbers.sector_list.10": "Tourism & Hospitality",
+    "about_expo.numbers.sector_list.11": "Environmental Solutions",
+    "about_expo.numbers.expected_attendance": "Expected attendance:",
+    "about_expo.numbers.expected_visitors": "Expected number of visitors:",
+
+    "about_expo.stats.visitors.l1": "Visitors",
+    "about_expo.stats.visitors.l2": "\u00A0",
+    "about_expo.stats.countries.l1": "Participating",
+    "about_expo.stats.countries.l2": "Countries",
+    "about_expo.stats.companies.l1": "Exhibiting",
+    "about_expo.stats.companies.l2": "Companies",
+    "about_expo.stats.areas.l1": "Exhibiting",
+    "about_expo.stats.areas.l2": "Areas",
+
+    "about_expo.map.ribbon": "Exhibit Map",
+    "about_expo.map.title": "Flexible options for every concept and occasion",
+
+    "about_expo.cta.exhibitor_title": "Become an Exhibitor",
+    "about_expo.cta.exhibitor_text": "Choose any setup — from compact stands to large pavilions. Whether it’s a formal showcase, a product demo, or a creative activation, we provide flexible formats and support to match your goals.",
+    "about_expo.cta.participate_btn": "Participate"
 }
