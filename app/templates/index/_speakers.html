@@ -62,7 +62,7 @@
     <div class="hidden lg:grid grid-cols-3 gap-5 xl:gap-6 place-items-center">
         {% for sp in speakers %}
         <a href="/speakers/{{ sp.id }}" class="block group">
-            <div class="relative w-[min(90vw,300px)] xl:w-[min(28vw,320px)] h-[380px] xl:h-[400px]
+            <div class="relative w-[min(90vw,300px)] xl:w-[min(28vw,380px)] h-[380px] xl:h-[420px]
                         rounded-[24px] overflow-hidden shadow">
                 {% if sp.photo_url %}
                 <img src="{{ sp.photo_url }}" alt="{{ sp.fullname }}"

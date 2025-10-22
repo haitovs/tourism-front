@@ -74,12 +74,12 @@
 
     "index.about.band": "Çäre hakda",
     "index.about.title": "Halkara sergi we forum",
-    "index.about.forum.heading": "Forum hakda",
-    "index.about.forum.body": "Biz innowasiýa, medeni alyş-çalyş we hyzmatdaşlygy öňe sürýän forumlary, sergileri we leksiýalary gurnaýan halkara topar.",
-    "index.about.why.heading": "Näme üçin Forum 2026?",
-    "index.about.why.body": "Ilham berýän, maglumat berýän we hyzmatdaşlyga birikdirýän forumy başdan geçiriň.",
-    "index.about.guests.heading": "Myhmanlar üçin",
-    "index.about.guests.body": "Daşary ýurt wekilleri, ilçihanalaryň wekilleri, medeni missiýalar, metbugat we çaky myhmanlar üçin açyk.",
+    "index.about.forum.heading": "Forum barada",
+    "index.about.forum.body": "Biz innowasiýany, medeni alyş-çalşygy we halkara hyzmatdaşlygy ösdürýän ýokary derejeli dünýä çärelerini — forumlary, sergileri we leksiýalary — gurnaýan halkara hünärmenler toparydyrys.",
+    "index.about.why.heading": "Biziň maksadymyz",
+    "index.about.why.body": "Maksadymyz — daşary ýurtly myhmanlar üçin ýönekeý we bökdençsiz hasaba alyş tejribesini döretmek hem-de dünýäniň dürli künjeklerinden diplomatlary, döwlet wekillerini, hünärmenleri we innowatorlary duşuşdyryp, aragatnaşygy hem-de hyzmatdaşlygy güýçlendirmek, täze pikirleri ruhlandyrmak.",
+    "index.about.guests.heading": "Kimi kabul edýäris?",
+    "index.about.guests.body": "Platforma iri jemgyýetçilik we hünär çärelerine gatnaşýan daşary ýurt delegasiýalaryna, ilçihanalaryň wekillerine, medeni missiýalara, metbugat işgärlerine we çagyrylan halkara myhmanlara açykdyr.",
     "index.about.cta": "Maglumat",
     "index.about.video_alt": "Çäre syn",
     "index.about.video_play_aria": "Wideo aç",
@@ -121,6 +121,9 @@
     "index.speakers.more_details": "Jikme-jik",
     "index.speakers.none": "Entek ýok.",
     "index.speakers.person_alt": "Çykyşçy",
+
+    "index.sponsors.ribbon": "Sponsorlar",
+    "index.sponsors.title": "Sponsorlarymyza minnetdarlyk bildirýäris",
 
     "sponsors.carousel.empty": "Sponsor ýok",
     "sponsors.common.sponsor": "Sponsor",
