@@ -185,14 +185,10 @@
     "about_expo.numbers.exhibiting_companies": "参展企业",
     "about_expo.numbers.exhibiting_companies_value": "150",
 
-    "about_expo.stats.visitors.l1": "参观者",
-    "about_expo.stats.visitors.l2": "\u00A0",
-    "about_expo.stats.countries.l1": "参展",
-    "about_expo.stats.countries.l2": "国家",
-    "about_expo.stats.companies.l1": "参展",
-    "about_expo.stats.companies.l2": "企业",
-    "about_expo.stats.areas.l1": "展",
-    "about_expo.stats.areas.l2": "区",
+    "about_expo.stats.visitors": "参观者",
+    "about_expo.stats.countries": "参展国家",
+    "about_expo.stats.companies": "参展企业",
+    "about_expo.stats.areas": "展区",
 
     "about_expo.map.ribbon": "展区地图",
     "about_expo.map.title": "适配各种场景的灵活方案",

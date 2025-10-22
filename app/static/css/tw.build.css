@@ -998,6 +998,9 @@
   .max-w-\[84px\] {
     max-width: 84px;
   }
+  .max-w-\[150px\] {
+    max-width: 150px;
+  }
   .max-w-\[240px\] {
     max-width: 240px;
   }
@@ -1081,6 +1084,9 @@
   }
   .min-w-\[82px\] {
     min-width: 82px;
+  }
+  .min-w-\[220px\] {
+    min-width: 220px;
   }
   .flex-1 {
     flex: 1;
@@ -1360,6 +1366,9 @@
   }
   .gap-y-6 {
     row-gap: calc(var(--spacing) * 6);
+  }
+  .gap-y-8 {
+    row-gap: calc(var(--spacing) * 8);
   }
   .gap-y-\[30px\] {
     row-gap: 30px;
@@ -2347,6 +2356,9 @@
     --tw-tracking: var(--tracking-wide);
     letter-spacing: var(--tracking-wide);
   }
+  .\[text-wrap\:balance\] {
+    text-wrap: balance;
+  }
   .break-words {
     overflow-wrap: break-word;
   }
@@ -3059,6 +3071,11 @@
       width: auto;
     }
   }
+  .sm\:max-w-\[180px\] {
+    @media (width >= 40rem) {
+      max-width: 180px;
+    }
+  }
   .sm\:max-w-\[360px\] {
     @media (width >= 40rem) {
       max-width: 360px;
@@ -3159,6 +3176,11 @@
   .sm\:gap-x-8 {
     @media (width >= 40rem) {
       column-gap: calc(var(--spacing) * 8);
+    }
+  }
+  .sm\:gap-y-10 {
+    @media (width >= 40rem) {
+      row-gap: calc(var(--spacing) * 10);
     }
   }
   .sm\:rounded-\[12px\] {
@@ -3548,6 +3570,11 @@
       flex-direction: row;
     }
   }
+  .md\:justify-between {
+    @media (width >= 48rem) {
+      justify-content: space-between;
+    }
+  }
   .md\:gap-4 {
     @media (width >= 48rem) {
       gap: calc(var(--spacing) * 4);
@@ -3875,6 +3902,11 @@
       width: 300px;
     }
   }
+  .lg\:max-w-\[220px\] {
+    @media (width >= 64rem) {
+      max-width: 220px;
+    }
+  }
   .lg\:max-w-\[600px\] {
     @media (width >= 64rem) {
       max-width: 600px;
@@ -3943,6 +3975,11 @@
   .lg\:gap-8 {
     @media (width >= 64rem) {
       gap: calc(var(--spacing) * 8);
+    }
+  }
+  .lg\:gap-x-12 {
+    @media (width >= 64rem) {
+      column-gap: calc(var(--spacing) * 12);
     }
   }
   .lg\:gap-x-16 {
@@ -4120,6 +4157,11 @@
       display: block;
     }
   }
+  .xl\:flex {
+    @media (width >= 80rem) {
+      display: flex;
+    }
+  }
   .xl\:aspect-\[7\/3\] {
     @media (width >= 80rem) {
       aspect-ratio: 7/3;
@@ -4195,9 +4237,19 @@
       width: min(28vw, 320px);
     }
   }
+  .xl\:max-w-\[240px\] {
+    @media (width >= 80rem) {
+      max-width: 240px;
+    }
+  }
   .xl\:max-w-\[660px\] {
     @media (width >= 80rem) {
       max-width: 660px;
+    }
+  }
+  .xl\:max-w-none {
+    @media (width >= 80rem) {
+      max-width: none;
     }
   }
   .xl\:flex-row {
@@ -4205,9 +4257,24 @@
       flex-direction: row;
     }
   }
+  .xl\:flex-nowrap {
+    @media (width >= 80rem) {
+      flex-wrap: nowrap;
+    }
+  }
   .xl\:justify-between {
     @media (width >= 80rem) {
       justify-content: space-between;
+    }
+  }
+  .xl\:justify-center {
+    @media (width >= 80rem) {
+      justify-content: center;
+    }
+  }
+  .xl\:gap-0 {
+    @media (width >= 80rem) {
+      gap: calc(var(--spacing) * 0);
     }
   }
   .xl\:gap-6 {
@@ -4225,9 +4292,19 @@
       gap: 42px;
     }
   }
+  .xl\:gap-x-16 {
+    @media (width >= 80rem) {
+      column-gap: calc(var(--spacing) * 16);
+    }
+  }
   .xl\:px-0 {
     @media (width >= 80rem) {
       padding-inline: calc(var(--spacing) * 0);
+    }
+  }
+  .xl\:text-left {
+    @media (width >= 80rem) {
+      text-align: left;
     }
   }
   .xl\:text-\[20px\] {
@@ -4273,9 +4350,59 @@
       line-height: 110px;
     }
   }
+  .xl\:whitespace-nowrap {
+    @media (width >= 80rem) {
+      white-space: nowrap;
+    }
+  }
+  .\32 xl\:flex {
+    @media (width >= 96rem) {
+      display: flex;
+    }
+  }
   .\32 xl\:max-w-\[720px\] {
     @media (width >= 96rem) {
       max-width: 720px;
+    }
+  }
+  .\32 xl\:max-w-none {
+    @media (width >= 96rem) {
+      max-width: none;
+    }
+  }
+  .\32 xl\:flex-nowrap {
+    @media (width >= 96rem) {
+      flex-wrap: nowrap;
+    }
+  }
+  .\32 xl\:justify-center {
+    @media (width >= 96rem) {
+      justify-content: center;
+    }
+  }
+  .\32 xl\:gap-x-20 {
+    @media (width >= 96rem) {
+      column-gap: calc(var(--spacing) * 20);
+    }
+  }
+  .\32 xl\:gap-x-24 {
+    @media (width >= 96rem) {
+      column-gap: calc(var(--spacing) * 24);
+    }
+  }
+  .\32 xl\:gap-y-0 {
+    @media (width >= 96rem) {
+      row-gap: calc(var(--spacing) * 0);
+    }
+  }
+  .\32 xl\:text-left {
+    @media (width >= 96rem) {
+      text-align: left;
+    }
+  }
+  .\32 xl\:whitespace-nowrap {
+    @media (width >= 96rem) {
+      white-space: nowrap;
     }
   }
   .\[\&_p\]\:mb-4 {

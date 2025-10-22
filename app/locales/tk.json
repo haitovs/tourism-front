@@ -185,14 +185,10 @@
     "about_expo.numbers.exhibiting_companies": "Görkezişde çykyş edýän kompaniýalar",
     "about_expo.numbers.exhibiting_companies_value": "150",
 
-    "about_expo.stats.visitors.l1": "Myhmanlar",
-    "about_expo.stats.visitors.l2": "\u00A0",
-    "about_expo.stats.countries.l1": "Gatnaşýan",
-    "about_expo.stats.countries.l2": "ýurtlar",
-    "about_expo.stats.companies.l1": "Çykyş edýän",
-    "about_expo.stats.companies.l2": "kompaniýalar",
-    "about_expo.stats.areas.l1": "Sergi",
-    "about_expo.stats.areas.l2": "zonalary",
+    "about_expo.stats.visitors": "Myhmanlar",
+    "about_expo.stats.countries": "Gatnaşýan ýurtlar",
+    "about_expo.stats.companies": "Sergä gatnaşýan kompaniýalar",
+    "about_expo.stats.areas": "Sergi zonalary",
 
     "about_expo.map.ribbon": "Sergi kartasy",
     "about_expo.map.title": "Islendik görnüşe we pursada laýyk çeýe mümkinçilikler",
