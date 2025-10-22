@@ -1823,6 +1823,9 @@
   .font-\[\'Poppins\'\] {
     font-family: 'Poppins';
   }
+  .font-\[\'Roboto\'\,ui-sans-serif\] {
+    font-family: 'Roboto',ui-sans-serif;
+  }
   .font-\[\'Roboto\'\] {
     font-family: 'Roboto';
   }

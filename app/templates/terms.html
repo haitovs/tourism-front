@@ -23,7 +23,7 @@
         {% if not has_body %}
         <div class="text-center py-16">
             <h2 class="font-['Montserrat'] text-[32px] md:text-[40px] text-[#1E1E1E]">{{ t('terms.empty.title') }}</h2>
-            <p class="mt-4 font-['Lato','Roboto'] text-[18px] md:text-[20px] text-[#444]">{{ t('terms.empty.subtitle')
+            <p class="mt-4 font-['Roboto'] text-[18px] md:text-[20px] text-[#444]">{{ t('terms.empty.subtitle')
                 }}</p>
         </div>
         {% else %}
@@ -31,13 +31,12 @@
             {% for sec in (terms.sections or []) %}
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-start">
                 <div class="md:col-span-4">
-                    <div class="font-['Poppins','Montserrat'] text-[#000] text-[26px] md:text-[30px] leading-10">
+                    <div class="font-['Montserrat'] text-[#000] text-[26px] md:text-[30px] leading-10">
                         {{ sec.title }}
                     </div>
                 </div>
                 <div class="md:col-span-8">
-                    <div
-                        class="font-['Lato','Roboto'] text-[#000] text-[18px] md:text-[20px] leading-[28px] prose max-w-none">
+                    <div class="font-['Roboto'] text-[#000] text-[18px] md:text-[20px] leading-[28px] prose max-w-none">
                         {{ sec.body_html | safe }}
                     </div>
                 </div>
@@ -48,8 +47,7 @@
             {% endfor %}
 
             {% if (terms.sections or []) | length == 0 and terms.content_html %}
-            <article
-                class="prose max-w-none font-['Lato','Roboto'] text-[18px] md:text-[20px] leading-[28px] text-[#000]">
+            <article class="prose max-w-none font-['Roboto'] text-[18px] md:text-[20px] leading-[28px] text-[#000]">
                 {{ terms.content_html | safe }}
             </article>
             {% endif %}
