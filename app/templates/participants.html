@@ -60,9 +60,12 @@
     <!-- GRID -->
     <section class="max-w-[var(--container)] mx-auto px-4 py-12">
         {% if participants and participants|length > 0 %}
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div id="participants-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            data-offset="{{ participants|length }}" data-limit="12" data-role="{{ role or '' }}" data-q="{{ q or '' }}"
+            aria-live="polite" aria-busy="false">
             {% for p in participants %}
-            <article class="bg-white rounded-[15px] shadow hover:shadow-md transition overflow-hidden flex flex-col">
+            <a href="/participants/{{ p.id }}" aria-label="{{ t('participants.card.open_title_prefix') }} {{ p.name }}"
+                class="group block bg-white rounded-[15px] shadow hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#007A3D] transition overflow-hidden">
                 <div class="h-[200px] w-full bg-slate-100">
                     {% if p.logo_url %}
                     <img src="{{ p.logo_url }}" alt="{{ p.name }}" class="w-full h-full object-cover" />
@@ -71,10 +74,12 @@
                         class="w-full h-full object-cover" />
                     {% endif %}
                 </div>
-
-                <div class="p-5 flex-1 flex flex-col">
+                <div class="p-5">
                     <div class="flex items-start justify-between gap-3">
-                        <h3 class="font-['Roboto'] font-medium text-[22px] leading-7 text-[#1E1E1E]">{{ p.name }}</h3>
+                        <h3
+                            class="font-['Roboto'] font-medium text-[22px] leading-7 text-[#1E1E1E] transition-colors group-hover:text-[#007A3D]">
+                            {{ p.name }}
+                        </h3>
                         {% if p.role %}
                         <span
                             class="shrink-0 inline-flex items-center px-2.5 h-7 rounded-md bg-[#D3F2E2] text-[#007A3D] font-['Roboto'] text-sm font-medium">
@@ -82,28 +87,19 @@
                         </span>
                         {% endif %}
                     </div>
-
-                    {% if p.bio %}
-                    <p class="mt-2 text-[16px] leading-6 text-slate-800 line-clamp-5">{{ p.bio }}</p>
-                    {% else %}
-                    <p class="mt-2 text-[16px] leading-6 text-slate-600">{{ t('participants.card.no_bio') }}</p>
-                    {% endif %}
-
-                    <div class="mt-5">
-                        <a href="/participants/{{ p.id }}"
-                            title="{{ t('participants.card.open_title_prefix') }} {{ p.name }}"
-                            class="inline-flex items-center justify-between w-full sm:w-auto gap-3 px-4 h-[46px] rounded-md bg-[#D3F2E2] text-[#007A3D] font-['Roboto'] font-medium text-[16px] hover:bg-[#c8ecd9] transition">
-                            <span>{{ t('participants.card.more_info') }}</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </a>
-                    </div>
                 </div>
-            </article>
+            </a>
             {% endfor %}
         </div>
+
+        <!-- Loading sentinel + fallback button -->
+        <div class="mt-8 flex items-center justify-center">
+            <button id="load-more-btn"
+                class="hidden px-5 h-[46px] rounded-md bg-[#D3F2E2] text-[#007A3D] font-['Roboto'] font-medium text-[16px] hover:bg-[#c8ecd9] transition">
+                {{ t('participants.load_more') if t else 'Load more' }}
+            </button>
+        </div>
+        <div id="infinite-sentinel" class="h-8"></div>
         {% else %}
         <div class="bg-white rounded-[15px] p-8 text-center text-slate-500">
             {{ t('participants.none') }}

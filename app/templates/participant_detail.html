@@ -57,19 +57,6 @@
             {% if p and p.body_html %}
             <article
                 class="prose max-w-none mt-4 prose-p:my-4 prose-headings:mt-6 prose-headings:mb-2 prose-headings:font-['Montserrat'] prose-p:font-['Roboto'] prose-li:font-['Roboto'] prose-a:text-[#007A3D] hover:prose-a:underline">
-                <style>
-                    .prose p,
-                    .prose li {
-                        font-size: 25px;
-                        line-height: 40px;
-                        color: #000;
-                    }
-
-                    .prose img {
-                        border-radius: 20px;
-                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
-                    }
-                </style>
                 {{ p.body_html | safe }}
             </article>
             {% endif %}
