@@ -125,25 +125,26 @@
                         {{ t('about_forum.why.title') }}
                     </h2>
 
-                    <ul class="mt-3 md:mt-4 space-y-3 sm:space-y-4 max-w-[60ch]">
-                        <li class="font-['Roboto']
-                     text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px]
-                     text-black/70 leading-[1.65]">
+                    <!-- Hanging bullets: bullet in padding, wrapped lines align (no extra indent) -->
+                    <ul class="mt-3 md:mt-4 space-y-3 sm:space-y-4 list-none">
+                        <li
+                            class="relative pl-7 font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px] text-black/70 leading-[1.65]
+                     before:content-[''] before:absolute before:left-0 before:top-[0.75em] before:w-2 before:h-2 before:rounded-full before:bg-[#1E1E1E]/60">
                             {{ t('about_forum.why.points.0') }}
                         </li>
-                        <li class="font-['Roboto']
-                     text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px]
-                     text-black/70 leading-[1.65]">
+                        <li
+                            class="relative pl-7 font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px] text-black/70 leading-[1.65]
+                     before:content-[''] before:absolute before:left-0 before:top-[0.75em] before:w-2 before:h-2 before:rounded-full before:bg-[#1E1E1E]/60">
                             {{ t('about_forum.why.points.1') }}
                         </li>
-                        <li class="font-['Roboto']
-                     text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px]
-                     text-black/70 leading-[1.65]">
+                        <li
+                            class="relative pl-7 font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px] text-black/70 leading-[1.65]
+                     before:content-[''] before:absolute before:left-0 before:top-[0.75em] before:w-2 before:h-2 before:rounded-full before:bg-[#1E1E1E]/60">
                             {{ t('about_forum.why.points.2') }}
                         </li>
-                        <li class="font-['Roboto']
-                     text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px]
-                     text-black/70 leading-[1.65]">
+                        <li
+                            class="relative pl-7 font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px] text-black/70 leading-[1.65]
+                     before:content-[''] before:absolute before:left-0 before:top-[0.75em] before:w-2 before:h-2 before:rounded-full before:bg-[#1E1E1E]/60">
                             {{ t('about_forum.why.points.3') }}
                         </li>
                     </ul>
@@ -177,6 +178,7 @@
 
 
 
+
     <!-- FRAME 51 (By the Numbers + Expo sectors 2026) -->
     <section class="max-w-[var(--container)] mx-auto px-4 pb-10">
         <div class="bg-white rounded-[16px] md:rounded-[20px] p-4 sm:p-5 md:p-8 shadow-sm mx-auto max-w-[1310px]">
@@ -198,9 +200,10 @@
                         {{ t('about_forum.numbers.total_space') }}
                     </div>
                     <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
-                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        8,000 m²
+     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('about_forum.numbers.total_space_value') }}
                     </div>
+
                     <div class="col-span-2 mt-3 h-px bg-black/20"></div>
                 </div>
 
@@ -212,21 +215,10 @@
                     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
                         {{ t('about_forum.numbers.sectors_2026') }}
                     </div>
-                    <ul class="font-['Roboto'] text-black/70 text-left leading-[1.6] space-y-1
-                   text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        <li>{{ t('about_forum.numbers.sector_list.0') }}</li>
-                        <li>{{ t('about_forum.numbers.sector_list.1') }}</li>
-                        <li>{{ t('about_forum.numbers.sector_list.2') }}</li>
-                        <li>{{ t('about_forum.numbers.sector_list.3') }}</li>
-                        <li>{{ t('about_forum.numbers.sector_list.4') }}</li>
-                        <li>{{ t('about_forum.numbers.sector_list.5') }}</li>
-                        <li>{{ t('about_forum.numbers.sector_list.6') }}</li>
-                        <li>{{ t('about_forum.numbers.sector_list.7') }}</li>
-                        <li>{{ t('about_forum.numbers.sector_list.8') }}</li>
-                        <li>{{ t('about_forum.numbers.sector_list.9') }}</li>
-                        <li>{{ t('about_forum.numbers.sector_list.10') }}</li>
-                        <li>{{ t('about_forum.numbers.sector_list.11') }}</li>
-                    </ul>
+                    <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
+                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('about_forum.numbers.sector_list') }}
+                    </div>
                     <div class="col-span-2 mt-3 h-px bg-black/20"></div>
                 </div>
 
@@ -240,7 +232,8 @@
                     </div>
                     <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
                     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        5000+
+                        {{ t('about_forum.numbers.expected_attendance_value') }}
+
                     </div>
                     <div class="col-span-2 mt-3 h-px bg-black/20"></div>
                 </div>
@@ -251,11 +244,12 @@
                   md:grid-cols-[minmax(220px,400px)_1fr]">
                     <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
                     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_forum.numbers.expected_visitors') }}
+                        {{ t('about_forum.numbers.exhibiting_companies') }}
+
                     </div>
                     <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
                     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        150
+                        {{ t('about_forum.numbers.exhibiting_companies_value') }}
                     </div>
                 </div>
 
