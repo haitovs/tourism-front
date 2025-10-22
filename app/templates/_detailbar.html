@@ -87,23 +87,28 @@
 
                 <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
                     <button class="flex items-center gap-2 hover:text-[var(--c-text)]">
-                        {{ t('nav.about_forum') }} <span class="text-[var(--c-text)]/40">›</span>
+                        {{ t('nav.about_forum') }}
+                        <img src="/static/img/nav_down_arrow.svg" alt="" class="nav-caret" aria-hidden="true">
                     </button>
+
+                    <!-- dropdown still opens on hover of the parent -->
                     <div x-show="m" x-cloak x-transition class="menu-dd">
                         <div class="glass menu-panel menu-grid">
-                            <div class="menu-items relative" x-data="{open:false}" @mouseenter="open=true"
-                                @mouseleave="open=false">
+                            <div class="menu-items relative">
                                 <a href="/about-the-forum" class="menu-item">
-                                    <span>{{ t('nav.forum') }}</span>
+                                    <span>{{ t('nav.forum') }} </span>
                                     <span class="menu-items-arrow" aria-hidden="true"></span>
                                 </a>
-                                <div x-show="open" x-cloak x-transition.opacity class="menu-subcard">
+
+                                <!-- ✅ always visible now -->
+                                <div class="menu-subcard">
                                     <a href="/agenda" class="menu-items-item menu-subitem">{{ t('nav.agenda') }}</a>
                                     <a href="/speakers" class="menu-items-item menu-subitem">{{ t('nav.speakers') }}</a>
                                     <a href="/meeting-request" class="menu-items-item menu-subitem">{{
                                         t('nav.meeting_request') }}</a>
                                 </div>
                             </div>
+
                             <hr class="menu-sep" />
                             <a href="/about-the-expo" class="menu-item">{{ t('nav.about_expo') }}</a>
                             <hr class="menu-sep" />
@@ -114,9 +119,11 @@
                     </div>
                 </li>
 
+
                 <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
                     <button class="flex items-center gap-2 hover:text-[var(--c-text)]">
-                        {{ t('nav.participants') }} <span class="text-[var(--c-text)]/40">›</span>
+                        {{ t('nav.participants') }}
+                        <img src="/static/img/nav_down_arrow.svg" alt="" class="nav-caret" aria-hidden="true">
                     </button>
                     <div x-show="m" x-cloak x-transition class="menu-dd">
                         <div class="glass menu-panel">
@@ -140,7 +147,8 @@
 
                 <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
                     <button class="flex items-center gap-2 hover:text-[var(--c-text)]">
-                        {{ t('nav.travel_guide') }} <span class="text-[var(--c-text)]/40">›</span>
+                        {{ t('nav.travel_guide') }}
+                        <img src="/static/img/nav_down_arrow.svg" alt="" class="nav-caret" aria-hidden="true">
                     </button>
                     <div x-show="m" x-cloak x-transition class="menu-dd">
                         <div class="glass menu-panel">
