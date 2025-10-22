@@ -1,6 +1,7 @@
 # app/routers/news_router.py
 from __future__ import annotations
 
+import math
 from math import ceil
 
 from fastapi import APIRouter, HTTPException, Query, Request
@@ -21,16 +22,7 @@ def _filter_news(items: list[dict], q: str | None) -> list[dict]:
     ql = q.strip().lower()
     if not ql:
         return items
-    out: list[dict] = []
-    for n in items:
-        hay = " ".join([
-            str(n.get("title", "")),
-            str(n.get("summary", "")),
-            str(n.get("category", "")),
-        ]).lower()
-        if ql in hay:
-            out.append(n)
-    return out
+    return [n for n in items if ql in str(n.get("title", "")).lower()]
 
 
 @router.get("/news", response_class=HTMLResponse)
@@ -43,22 +35,21 @@ async def news_list(
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
 
     all_items = news_srv.get_latest_news(limit=200)
-    if q:
-        ql = q.lower()
-        all_items = [n for n in all_items if ql in (f"{n.get('title','')} {n.get('summary','')} {n.get('category','')}".lower())]
+    # ✅ title-only filter
+    all_items = _filter_news(all_items, q)
 
     if page == 1:
         visual_take = min(5, len(all_items))
         items = all_items[:visual_take]
         total_remaining = max(0, len(all_items) - visual_take)
         grid_per_page = per_page
-        total_pages = 1 + (ceil(total_remaining / grid_per_page) if total_remaining else 0)
+        total_pages = 1 + (math.ceil(total_remaining / grid_per_page) if total_remaining else 0)
     else:
         start_idx = 5 + (page - 2) * per_page
         end_idx = start_idx + per_page
         items = all_items[start_idx:end_idx]
         total_remaining = max(0, len(all_items) - 5)
-        total_pages = 1 + (ceil(total_remaining / per_page) if total_remaining else 0)
+        total_pages = 1 + (math.ceil(total_remaining / per_page) if total_remaining else 0)
 
     ctx = {
         "request": req,

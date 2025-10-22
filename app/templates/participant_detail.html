@@ -1,18 +1,21 @@
 {% extends "base.html" %} {% from "_hero_macros.html" import hero_buttons %} {% block content %} {% set p = participant
 %}
 <main>
-    <!-- HERO -->
+    {# HERO #}
     <section class="relative w-full h-[320px] md:h-[380px]">
         <img src="/static/img/unified-hero.png" alt="" class="absolute inset-0 w-full h-full object-cover" />
         <div class="absolute inset-0 bg-black/40"></div>
 
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
             <h1 class="font-['Montserrat'] font-bold text-white text-[clamp(30px,5vw,56px)] leading-tight">
-                {{ t('participants.hero.title') }}
+                {{ (p and p.name) or t('participants.hero.title') }}
             </h1>
+
+            <!-- {% if p and p.role %}
             <p class="mt-2 font-['Roboto'] text-white/90 text-[clamp(16px,2.4vw,20px)]">
-                {{ t('participants.hero.subtitle') }}
+                {{ p.role|capitalize }}
             </p>
+            {% endif %} -->
         </div>
 
         {{ hero_buttons(
@@ -26,6 +29,7 @@
         detail_refresh=False
         ) }}
     </section>
+
 
     <!-- BODY -->
     <section id="participant-body" class="max-w-[var(--container)] mx-auto px-4 py-10">

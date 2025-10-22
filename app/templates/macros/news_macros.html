@@ -14,13 +14,18 @@
             {% endif %}
         </div>
 
-        <div class="mt-3 flex items-center gap-3 flex-wrap">
+
+        {# OLD header row removed #}
+        <div class="mt-3 flex items-center justify-between gap-3">
+            <!-- LEFT: category -->
             <span class="inline-flex items-center justify-center h-[32px] px-3 rounded-[10px] bg-[#007A3D]">
                 <span class="font-['Roboto'] font-bold text-[14px] md:text-[16px] leading-[20px] text-white">
                     {{ n.category or t('news.category_default') }}
                 </span>
             </span>
-            <span class="flex items-center gap-2 text-[#8CC3A8]">
+
+            <!-- RIGHT: date -->
+            <span class="flex items-center gap-2 text-[#8CC3A8] shrink-0">
                 <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="12" cy="12" r="9" fill="none" stroke="#007A3D" stroke-width="2" />
                     <path d="M12 7v5l3 2" fill="none" stroke="#007A3D" stroke-width="2" stroke-linecap="round"
@@ -29,6 +34,7 @@
                 <span class="font-['Montserrat'] font-semibold text-[14px] md:text-[16px]">{{ n.date_human }}</span>
             </span>
         </div>
+
 
         <h4 class="mt-3 font-['Montserrat'] font-semibold text-[clamp(16px,2.2vw,20px)] leading-[1.2] text-[#1E1E1E]">
             {{ n.title }}
@@ -61,14 +67,18 @@
             {% endif %}
         </div>
 
-        <div class="mt-4 flex items-center gap-3 md:gap-4 flex-wrap">
+
+        <div class="mt-4 flex items-center justify-between gap-3 md:gap-4">
+            <!-- LEFT: category -->
             <span
                 class="inline-flex items-center justify-center h-[32px] md:h-[36px] px-3 md:px-4 rounded-[10px] bg-[#007A3D]">
                 <span class="font-['Roboto'] font-bold text-[14px] md:text-[16px] leading-[20px] text-white">
                     {{ n.category or t('news.category_default') }}
                 </span>
             </span>
-            <span class="flex items-center gap-2 text-[rgba(0,122,61,0.45)]">
+
+            <!-- RIGHT: date -->
+            <span class="flex items-center gap-2 text-[rgba(0,122,61,0.45)] shrink-0">
                 <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="12" cy="12" r="9" fill="none" stroke="#007A3D" stroke-width="2" />
                     <path d="M12 7v5l3 2" fill="none" stroke="#007A3D" stroke-width="2" stroke-linecap="round"
