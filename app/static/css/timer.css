@@ -3,7 +3,8 @@
     position: relative;
     overflow: hidden;
     border-radius: 20px;
-    background: #111;
+    /* background: #111;
+    background: transparent; */
 }
 .timer-bg {
     position: absolute;
@@ -26,20 +27,16 @@
     left: 0;
     top: 0;
     height: 100%;
-    z-index: 2;
+    z-index: 3;
 }
 
-/* Overlay: brand green on small; dark blur on large */
-.timer-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background: rgba(0, 0, 0, 0.5); /* var(--c-primary) with opacity */
-}
-@media (min-width: 1024px) {
-    .timer-overlay {
-        background: rgba(0, 0, 0, 0.45);
-    }
+.timer-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* exactly what you asked for */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: normal;
+    word-break: break-word;
 }
 
 /* Timer pill color: brand green on small, red on large */

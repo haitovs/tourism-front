@@ -44,17 +44,19 @@
                     <div class="absolute left-0 top-0 h-full w-[480px] xl:w-[564px]">
                         <div class="pl-[24px] pr-[20px] pt-[16px] flex items-center gap-3 w-full">
                             <img :src="logoUrl" alt="logo" class="w-[72px] xl:w-[80px] h-auto shrink-0" />
-                            <div class="font-['Montserrat'] font-medium text-[20px] xl:text-[22px] leading-[26px] xl:leading-[28px] line-clamp-3 text-white"
-                                style="max-width: calc(100% - 72px - 12px - 24px - 20px)"
-                                x-text="eventName  || {{ t('home.timer.default_event')|tojson }}">
-                            </div>
+                            <div x-data="{ defaultEvent: {{ t('home.timer.default_event')|tojson }} }"
+                                x-text="eventName || defaultEvent"
+                                class="timer-title font-['Montserrat'] font-medium text-[20px] xl:text-[22px] leading-[26px] xl:leading-[28px] text-white pr-1"
+                                style="max-width: calc(100% - 72px - 12px - 24px - 20px)"></div>
                         </div>
                     </div>
+
+
 
                     <!-- Center red bar -->
                     <div
                         class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[840px] h-[190px] xl:w-[922px] xl:h-[215px]">
-                        <div class="w-full h-full bg-[#BD280D] rounded-[40px] flex items-center justify-center px-8">
+                        <div class="w-full h-full bg-[#007A3D] rounded-[40px] flex items-center justify-center px-8">
                             <div class="flex items-center gap-[32px] xl:gap-[42px] text-white select-none">
                                 <!-- DAYS -->
                                 <div class="flex flex-col items-center">
@@ -106,7 +108,7 @@
                             </div>
                         </div>
                     </div>
-                </div><!-- /timer-content -->
+                </div>
             </div><!-- /timer-wrap -->
         </div>
 
@@ -122,9 +124,6 @@
                     <img src="{{ url_for('static', path='img/timer/timer_bg.png') }}" x-bind:src="bgUrl" alt=""
                         aria-hidden="true" />
                 </div>
-
-                <!-- Overlay (below content by z-index) -->
-                <div class="timer-overlay"></div>
 
                 <!-- Content ON TOP -->
                 <div class="timer-content px-4 sm:px-5 md:px-7 flex items-center text-white">
