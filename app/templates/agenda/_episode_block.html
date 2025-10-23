@@ -73,55 +73,78 @@
             </div>
         </div>
 
-        {# ===================== DESKTOP COLLAPSED ===================== #}
+        {# ===================== DESKTOP COLLAPSED (REWRITTEN) ===================== #}
         <div class="hidden md:block" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
-            {# COLLAPSED HEADER: title + short, then read more / divider / sponsor #}
-            <div class="mt-6 relative flex flex-col xl:flex-row xl:justify-between gap-6">
+            <header class="relative flex flex-col gap-4 xl:gap-6">
 
-                <!-- LEFT: Title + Short description -->
-                <div class="min-w-0">
-                    <h3 class="font-['Montserrat'] font-semibold text-[30px] leading-[37px] text-black">
-                        {{ ep.title }}
-                    </h3>
-                    {% if short %}
-                    <p class="mt-4 font-['Roboto'] text-[16px] leading-[20px] text-black max-w-[540px]">
-                        {{ short }}
-                    </p>
+                {# Meta chips (date + optional location) #}
+                <div class="flex flex-wrap items-center gap-3">
+                    {{ chip.info_chip('calendar', d.date.strftime('%d %B %Y')) }}
+                    {% if ep.location %}
+                    {{ chip.info_chip('map', ep.location) }}
                     {% endif %}
                 </div>
 
-                <!-- RIGHT: Read more + divider + sponsor -->
-                <div class="flex flex-col xl:flex-row items-end gap-4 xl:gap-6">
-                    <button type="button"
-                        class="h-[32px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]"
-                        @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
-                        x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}"
-                        :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
-                        {{ t('common.read_more') }}
-                    </button>
+                {# Content grid: left (title/short) | right (CTA + sponsor) #}
+                <div class="grid items-start gap-6 xl:gap-8 xl:grid-cols-[1fr_auto]">
 
-                    {% if top_sponsor %}
-                    <div class="hidden xl:block w-[2px] h-[125px] bg-[#007A3D] rounded-full"></div>
+                    <!-- LEFT: Title + Short description -->
+                    <div class="min-w-0">
+                        <h3
+                            class="font-['Montserrat'] font-semibold text-[28px] leading-[34px] md:text-[30px] md:leading-[37px] text-black">
+                            {{ ep.title }}
+                        </h3>
 
-                    <div class="shrink-0 flex flex-col items-center">
-                        {% if top_sponsor.logo_url %}
-                        <img src="{{ top_sponsor.logo_url }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
-                            class="w-[160px] h-[95px] object-contain" loading="lazy" />
-                        {% else %}
-                        <img src="/static/img/img_placeholder.png" alt="{{ t('sponsor.unknown') }}"
-                            class="w-[160px] h-[95px] object-contain opacity-70" loading="lazy" />
+                        {% if short %}
+                        <p class="mt-3 md:mt-4 font-['Roboto'] text-[16px] leading-[20px] text-black max-w-[720px]">
+                            {{ short }}
+                        </p>
                         {% endif %}
-
-                        {% set tier_key = (top_sponsor.tier or 'gold')|lower %}
-                        <div class="mt-2 text-center font-['Roboto'] font-semibold text-[15px] text-[#DDAC17]">
-                            {{ t('sponsor.tier.' ~ tier_key) }}
-                        </div>
                     </div>
-                    {% endif %}
-                </div>
 
-            </div>
+                    <!-- RIGHT: Read more + (xl) divider + sponsor -->
+                    <div class="flex items-end justify-end gap-4 xl:gap-6">
+                        <button type="button" class="h-[36px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]
+                 hover:bg-[#056b36] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0ea36a]"
+                            @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
+                            x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}"
+                            :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
+                            {{ t('common.read_more') }}
+                        </button>
+
+                        {% if top_sponsor %}
+                        <div class="hidden xl:flex items-center gap-6">
+                            <div class="w-px h-[125px] bg-[#007A3D] rounded-full"></div>
+
+                            <div class="shrink-0 flex flex-col items-center text-center">
+                                {% set _logo = top_sponsor.logo_url or '/static/img/img_placeholder.png' %}
+                                {% if top_sponsor.url %}
+                                <a href="{{ top_sponsor.url }}" target="_blank" rel="noopener noreferrer" class="block">
+                                    <img src="{{ _logo }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
+                                        class="w-[160px] h-[95px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
+                                        loading="lazy" />
+                                </a>
+                                {% else %}
+                                <img src="{{ _logo }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
+                                    class="w-[160px] h-[95px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
+                                    loading="lazy" />
+                                {% endif %}
+
+                                {% set tier_key = (top_sponsor.tier or 'gold')|lower %}
+                                <div
+                                    class="mt-2 font-['Roboto'] font-semibold text-[15px]
+                          {% if tier_key == 'gold' %}text-[#DDAC17]{% elif tier_key == 'silver' %}text-[#9CA3AF]{% elif tier_key == 'bronze' %}text-[#915D2D]{% else %}text-[#1E1E1E]{% endif %}">
+                                    {{ t('sponsor.tier.' ~ tier_key) }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </header>
         </div>
+        {# =================== END DESKTOP COLLAPSED (REWRITTEN) =================== #}
+
 
         {# ===================== MOBILE EXPANDED ===================== #}
         <div class="md:hidden" x-show="{{ expanded_var_name }} === {{ ep_id|tojson }}" x-collapse>

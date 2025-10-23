@@ -1,25 +1,29 @@
 {# app/templates/agenda/_time_badge.html #}
 {% macro time_badge(start_dt, end_dt) -%}
-{% set lc = lang_ctx() %}
-{% set use_12h = (lc == 'en') %}
+{# 24-hour format, no AM/PM #}
+{% set start = start_dt.strftime('%H:%M') if start_dt else '--:--' %}
+{% set end = end_dt.strftime('%H:%M') if end_dt else '--:--' %}
+<aside aria-label="{{ label }}" class="h-full" x-data="{
+    status: '{{ status|default('upcoming') }}', statusClasses: { upcoming: 'bg-[#007A3D] text-white' ,
+    live: 'bg-red-600 text-white ring-4 ring-red-100' , past: 'bg-gray-300 text-gray-900' } }">
+    <div class="flex flex-col items-center justify-center gap-1 shadow-soft rounded-[16px] md:rounded-[20px]
+           font-['Roboto'] font-bold tabular-nums leading-none
+           px-3
+           w-[clamp(112px,28vw,210px)]
+           h-[clamp(70px,18vw,86px)]
+           text-[clamp(18px,4.2vw,34px)]
+           dark:text-white" :class="statusClasses[status]">
+        {% if start %}
+        <time {% if start_dt %}datetime="{{ start_dt.isoformat() }}" {% endif %} class="block whitespace-nowrap"
+            aria-label="{{ t('common.start') }}">{{ start }}</time>
+        {% endif %}
 
-<aside class="flex items-center justify-center md:self-start
-              bg-white rounded-[20px] shadow-soft
-              h-[70px] sm:h-[80px] md:h-[86px]
-              px-3 sm:px-4">
-    <div class="font-['Roboto'] font-extrabold tabular-nums text-[#007A3D]
-              leading-[1.05] tracking-[0.02em]
-              text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px]
-              text-left md:text-center">
-        {% if use_12h %}
-        {{ start_dt.strftime('%I:%M') }}
-        <span class="hidden sm:inline"> {{ start_dt.strftime('%p') }}</span><br />
-        {{ end_dt.strftime('%I:%M') }}
-        <span class="hidden sm:inline"> {{ end_dt.strftime('%p') }}</span>
-        {% else %}
-        {{ start_dt.strftime('%H:%M') }}<br />
-        {{ end_dt.strftime('%H:%M') }}
+        {% if end %}
+        <time {% if end_dt %}datetime="{{ end_dt.isoformat() }}" {% endif %} class="block whitespace-nowrap opacity-90"
+            aria-label="{{ t('common.end') }}">{{ end }}</time>
         {% endif %}
     </div>
 </aside>
+
+
 {%- endmacro %}
