@@ -1,29 +1,33 @@
 /* === NAV PILL & DROPDOWNS === */
 
 :root {
-    --z-pill: 60;
-    --z-dd: 100;
+    --z-pill: 60; /* pill rail */
+    --z-dd: 2000; /* dropdowns above everything */
+    --header-h: 70px; /* top info row height */
+    --pill-h-desktop: 70px;
+    --pill-h-mobile: 56px;
 }
+
+/* Pill rail wrapper */
 .pill-rail {
     position: absolute;
     top: var(--pill-top);
-    inset-inline: 0; /* stretch full width */
+    inset-inline: 0;
     display: flex;
     justify-content: center;
     z-index: var(--z-pill);
-    background: transparent; /* remove outer tint if you don’t want side glow */
-
-    /* inner alignment */
-    > .navpill {
-        width: 100%;
-        max-width: var(--container); /* same width as header */
-        margin-inline: auto;
-    }
+    background: transparent;
+}
+.pill-rail > .navpill {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
 }
 
-/* NAV PILL fills the rail */
+/* NAV PILL core */
 .navpill {
-    height: 70px;
+    position: relative; /* stacking context for fades */
+    height: var(--pill-h-desktop);
     width: 100%;
     background: var(--c-surface);
     border-radius: 10px;
@@ -34,6 +38,14 @@
     gap: 12px;
     padding: 0 12px;
     box-sizing: border-box;
+    overflow: visible; /* menus can escape on desktop */
+    z-index: 1;
+}
+
+/* Edge fade helper (no mask that would clip) */
+.navpill--mask {
+    mask-image: none;
+    -webkit-mask-image: none;
 }
 
 /* Glass dropdown panel look */
@@ -44,27 +56,27 @@
     border-radius: 12px;
 }
 
-/* Down-caret icon used in navbar triggers */
+/* Down-caret icon */
 .nav-caret {
-    inline-size: 1em; /* scales with text size */
+    inline-size: 1em;
     block-size: 0.35em;
-    opacity: 0.5; /* same feel as your old /40 */
-    pointer-events: none; /* don’t capture hover/click */
-    transform: translateY(1px); /* slight optical align */
+    opacity: 0.5;
+    pointer-events: none;
+    transform: translateY(1px);
     transition: opacity 0.2s ease, transform 0.2s ease;
 }
-
 button:hover .nav-caret {
     opacity: 0.8;
-    transform: translateY(2px); /* subtle nudge on hover */
+    transform: translateY(2px);
 }
 
-/* Dropdown positioning */
+/* Dropdown positioning (desktop default) */
 .menu-dd {
     position: absolute;
-    top: 2.75rem;
+    top: 2.75rem; /* ~44px below trigger */
     left: 0;
     z-index: var(--z-dd);
+    overflow: visible;
 }
 
 /* Dropdown internals */
@@ -76,13 +88,11 @@ button:hover .nav-caret {
     text-align: center;
     box-sizing: border-box;
 }
-
 .menu-items-item {
     color: #fff;
     font: 700 1rem/1.2 Roboto, system-ui, sans-serif;
     text-align: center;
 }
-
 .menu-item,
 .menu-items-item {
     display: block;
@@ -90,52 +100,15 @@ button:hover .nav-caret {
     color: #fff;
     text-align: center;
     white-space: nowrap;
-
-    /* ✅ Added smooth hover animation base */
     transition: all 0.25s ease;
     border-radius: 8px;
 }
-
-/* ✅ New hover effect */
 .menu-item:hover,
 .menu-items-item:hover {
     background: rgba(255, 255, 255, 0.15);
     transform: scale(1.03);
     opacity: 1;
 }
-
-.menu-subcard {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: stretch;
-}
-
-.menu-subcard > a,
-.menu-subcard > div {
-    display: block;
-    width: 100%;
-}
-
-.menu-item {
-    display: block;
-    padding: 8px 12px;
-    color: #fff;
-}
-
-/* Remove old opacity-only hover (merged above) */
-/*
-.menu-item:hover {
-    opacity: 0.9;
-}
-*/
-
-.menu-sep {
-    border-color: rgba(255, 255, 255, 0.4);
-    margin: 8px 0;
-}
-
-/* Subcard inherits same “fit to content” behavior */
 .menu-subcard {
     display: inline-flex;
     flex-direction: column;
@@ -144,19 +117,108 @@ button:hover .nav-caret {
     inline-size: max-content;
     max-inline-size: 100vw;
 }
-
-.menu-subcard > a,
-.menu-subcard > div {
+.menu-subcard > * {
     display: block;
     inline-size: 100%;
     white-space: nowrap;
 }
+.menu-sep {
+    border-color: rgba(255, 255, 255, 0.4);
+    margin: 8px 0;
+}
 
-/* Utility z-index helpers if used */
+/* Utilities */
 .z-pill {
     z-index: 50;
 }
 .sticky-pill {
     position: sticky;
     top: 12px;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* ===== Mobile / tablet ===== */
+@media (max-width: 1024px) {
+    /* Pill placed in normal flow */
+    .pill-rail {
+        position: relative;
+        top: auto;
+        padding: 0;
+    }
+
+    .navpill {
+        height: var(--pill-h-mobile);
+        padding: 0 8px;
+        border-radius: 8px;
+        overflow: visible; /* UL scrolls horizontally, but we won't clip menus */
+    }
+
+    /* Edge fades as overlays (below content & menus) */
+    .navpill::before,
+    .navpill::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 24px;
+        pointer-events: none;
+        z-index: 0;
+    }
+    .navpill::before {
+        left: 0;
+        background: linear-gradient(to right, var(--c-surface), rgba(255, 255, 255, 0));
+    }
+    .navpill::after {
+        right: 0;
+        background: linear-gradient(to left, var(--c-surface), rgba(255, 255, 255, 0));
+    }
+
+    /* UL scrolls horizontally only, sits above fades */
+    .navpill > ul {
+        overflow-x: auto;
+        overflow-y: visible !important; /* helps in some browsers, but we still switch menus to fixed */
+        position: relative;
+        z-index: 1;
+    }
+
+    /* IMPORTANT: menus render as FIXED overlay so they are NOT clipped by the scrolling UL */
+    .menu-dd {
+        position: fixed;
+        left: 8px;
+        right: 8px;
+        top: calc(var(--header-h) + var(--pill-h-mobile) + 6px); /* just under the pill */
+        z-index: var(--z-dd);
+    }
+
+    /* Seal bottom edge to remove any green strip */
+    .pill-rail::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 1px;
+        background: var(--c-surface);
+        z-index: 1;
+    }
+}
+
+/* ===== Desktop ===== */
+@media (min-width: 1025px) {
+    .pill-rail {
+        position: absolute;
+    }
+    .navpill {
+        height: var(--pill-h-desktop);
+        overflow: visible;
+    }
+    .navpill > ul {
+        overflow: visible !important;
+    } /* ensure dropdowns can escape */
 }
