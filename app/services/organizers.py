@@ -5,12 +5,12 @@ from typing import Optional
 
 from fastapi import Request
 
-from app.core.http import _abs_media, api_get
+from app.core.http import abs_media, api_get
 from app.core.settings import settings
 
 
 def _resolve_media(path: str | None) -> str:
-    return _abs_media(path)
+    return abs_media(path)
 
 
 def _row_to_dict(row: dict) -> dict:

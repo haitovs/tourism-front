@@ -6,15 +6,23 @@
 {% from "agenda/_sponsor_badge.html" import sponsor_badge %}
 
 {% macro episode_block(d, ep, expanded_var_name) -%}
-{% set mod = ep.moderators[0] if ep.moderators else None %}
+{# ---- robust fallbacks (work across various backend shapes) ---- #}
+{% set _speakers = ep.speakers or ep.speakers_list or [] %}
+{% set _mods = ep.moderators or ep.moderator_list or [] %}
+{% set mod = (_mods[0] if _mods else (ep.first_moderator if ep.first_moderator is defined else None)) %}
+{% set _sponsors = ep.sponsors or ep.sponsors_list or [] %}
+{% set top_sponsor = (ep.top_sponsor if ep.top_sponsor else (_sponsors[0] if _sponsors else None)) %}
 {% set short = ep.short_desc or '' %}
 {% set topic = ep.topic_desc or '' %}
 {% set ep_id = ep.id %}
-{% set top_sponsor = ep.top_sponsor %}
-
+<div class="text-xs text-slate-500">
+    [ep {{ ep.id }}] sp={{ ep.speakers|length }} • mod={{ ep.moderators|length }} • sponsor={{ 'Y' if ep.top_sponsor
+    else 'N' }}
+</div>
 <article class="grid grid-cols-[72px_1fr] md:grid-cols-[160px_1fr] gap-4 md:gap-5" x-cloak>
     {{ tb.time_badge(ep.start_time, ep.end_time) }}
     <div class="relative bg-white shadow-soft rounded-[16px] p-0 md:p-6">
+        {# Sponsor tiny badge (mobile collapsed) #}
         {% if top_sponsor %}
         <div class="md:hidden absolute top-2 right-2 z-10">
             {% set _slogo = top_sponsor.logo_url or '/static/img/logo_placeholder.svg' %}
@@ -32,7 +40,7 @@
         </div>
         {% endif %}
 
-        {# ===================== MOBILE COLLAPSED (tap card to expand) ===================== #}
+        {# ===================== MOBILE COLLAPSED ===================== #}
         <div class="md:hidden" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
             <div class="cursor-pointer select-none outline-none p-4" role="button" tabindex="0"
                 @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
@@ -49,6 +57,7 @@
                 </p>
                 {% endif %}
             </div>
+
             {% if ep.location %}
             <div class="md:hidden col-start-2 col-end-3" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
                 <div class="bg-[#007A3D] text-white px-4 py-2">
@@ -60,16 +69,14 @@
             {% endif %}
         </div>
 
-
-
-        {# ===================== MOBILE EXPANDED (updated) ===================== #}
+        {# ===================== MOBILE EXPANDED ===================== #}
         <div class="md:hidden" x-show="{{ expanded_var_name }} === {{ ep_id|tojson }}" x-collapse>
             <section class="p-5 flex flex-col gap-6 cursor-pointer select-none" role="button" tabindex="0"
                 @click="{{ expanded_var_name }} = null" @keydown.enter.prevent="{{ expanded_var_name }} = null"
                 @keydown.space.prevent="{{ expanded_var_name }} = null"
                 :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'"
                 :id="'ep-panel-' + {{ ep_id|tojson }}">
-                {# Green header = Location #}
+
                 {% if ep.location %}
                 <div class="-mx-5 -mt-5 px-5 py-3 rounded-t-[20px] bg-[#007A3D] text-white">
                     <span class="font-['Roboto'] font-semibold text-[15px] leading-[18px]">
@@ -78,15 +85,13 @@
                 </div>
                 {% endif %}
 
-                {# Title under the header #}
                 <h3 class="mt-3 font-['Montserrat'] font-semibold text-[20px] leading-[24px] text-black">
                     {{ ep.title }}
                 </h3>
 
-                {# ========== Moderator (2 rows) ========== #}
+                {# Moderator #}
                 {% if mod %}
                 <div class="w-full max-w-[640px] mx-auto">
-                    {# Row 1: photo + (label + name) #}
                     <div class="grid grid-cols-[96px_1fr] gap-4 items-center">
                         <div class="shrink-0">
                             <div
@@ -111,7 +116,6 @@
                         </div>
                     </div>
 
-                    {# Row 2: full moderator text with a little extra top padding #}
                     {% set mdesc = mod.description_norm or '' %}
                     <div class="mt-3">
                         <p class="font-['Roboto'] text-[14px] leading-6 text-[#1E1E1E]">
@@ -127,27 +131,26 @@
                 </div>
                 {% endif %}
 
-                {# ========== Topic (centered container; slightly bigger heading; compact gaps) ========== #}
+                {# Topic #}
                 <div class="w-full max-w-[640px] mx-auto">
                     <h4 class="font-['Montserrat'] font-semibold text-[18px] leading-[22px] text-black text-center">
                         {{ t('agenda.topic') }}
                     </h4>
                     <div class="mt-2 font-['Roboto'] text-[14px] leading-6 text-[#1E1E1E]">
-                        {# Start with the short text from collapsed, then the full topic #}
                         {% if short %}<p>{{ short }}</p>{% endif %}
                         {% if topic %}<p class="{% if short %}mt-2{% endif %} whitespace-pre-line">{{ topic }}</p>{%
                         endif %}
                     </div>
                 </div>
 
-                {# (Optional) Speakers list – keep as-is #}
-                {% if ep.speakers %}
+                {# Speakers list #}
+                {% if _speakers %}
                 <div class="pt-2">
                     <h4 class="font-['Montserrat'] font-semibold text-[16px] leading-[20px] text-black">
                         {{ t('agenda.speakers') }}:
                     </h4>
                     <ul class="mt-4 space-y-3">
-                        {% for sp in ep.speakers %}
+                        {% for sp in _speakers %}
                         <li class="flex items-center gap-3">
                             <div class="w-[48px] h-[48px] rounded-full overflow-hidden bg-[#F3F3F6] shrink-0">
                                 <img src="{{ sp.photo_url or '/static/img/img_placeholder.png' }}"
@@ -168,21 +171,22 @@
                     </ul>
                 </div>
                 {% endif %}
+
+                {# Sponsor (nice to show in expanded too) #}
+                {% if top_sponsor %}
+                <div class="mt-4 flex justify-end">
+                    {{ sponsor_badge(top_sponsor) }}
+                </div>
+                {% endif %}
+
             </section>
         </div>
 
+        {# ================================================================== #}
 
-
-
-        {#
-        ==============================================================================================================================
-        #}
-
-        {# ===================== DESKTOP COLLAPSED (REWRITTEN) ===================== #}
+        {# ===================== DESKTOP COLLAPSED ===================== #}
         <div class="hidden md:block" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
             <header class="relative flex flex-col gap-4 xl:gap-6">
-
-                {# Meta chips (date + optional location) #}
                 <div class="flex flex-wrap items-center gap-3">
                     {{ chip.info_chip('calendar', d.date.strftime('%d %B %Y')) }}
                     {% if ep.location %}
@@ -190,10 +194,7 @@
                     {% endif %}
                 </div>
 
-                {# Content grid: left (title/short) | right (CTA + sponsor) #}
                 <div class="grid items-start gap-6 xl:gap-8 xl:grid-cols-[1fr_auto]">
-
-                    <!-- LEFT: Title + Short description -->
                     <div class="min-w-0">
                         <h3
                             class="font-['Montserrat'] font-semibold text-[28px] leading-[34px] md:text-[30px] md:leading-[37px] text-black">
@@ -207,10 +208,9 @@
                         {% endif %}
                     </div>
 
-                    <!-- RIGHT: Read more + (xl) divider + sponsor -->
                     <div class="flex items-end justify-end gap-4 xl:gap-6">
                         <button type="button" class="h-[36px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]
-                 hover:bg-[#056b36] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0ea36a]"
+                           hover:bg-[#056b36] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0ea36a]"
                             @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
                             x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}"
                             :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
@@ -218,9 +218,10 @@
                         </button>
 
                         {% if top_sponsor %}
-                        <div class="hidden xl:flex items-center gap-6">
+                        {# Previously: hidden xl:flex -> caused "missing" sponsor at md/lg. Show at all desktop sizes.
+                        #}
+                        <div class="flex items-center gap-6">
                             <div class="w-px h-[125px] bg-[#007A3D] rounded-full"></div>
-
                             <div class="shrink-0 flex flex-col items-center text-center">
                                 {% set _logo = top_sponsor.logo_url or '/static/img/img_placeholder.png' %}
                                 {% if top_sponsor.url %}
@@ -238,7 +239,7 @@
                                 {% set tier_key = (top_sponsor.tier or 'gold')|lower %}
                                 <div
                                     class="mt-2 font-['Roboto'] font-semibold text-[15px]
-                          {% if tier_key == 'gold' %}text-[#DDAC17]{% elif tier_key == 'silver' %}text-[#9CA3AF]{% elif tier_key == 'bronze' %}text-[#915D2D]{% else %}text-[#1E1E1E]{% endif %}">
+                              {% if tier_key == 'gold' %}text-[#DDAC17]{% elif tier_key == 'silver' %}text-[#9CA3AF]{% elif tier_key == 'bronze' %}text-[#915D2D]{% else %}text-[#1E1E1E]{% endif %}">
                                     {{ t('sponsor.tier.' ~ tier_key) }}
                                 </div>
                             </div>
@@ -248,7 +249,7 @@
                 </div>
             </header>
         </div>
-        {# =================== END DESKTOP COLLAPSED (REWRITTEN) =================== #}
+        {# =================== END DESKTOP COLLAPSED =================== #}
 
         {# ===================== DESKTOP EXPANDED ===================== #}
         <div class="hidden md:block" x-show="{{ expanded_var_name }} === {{ ep_id|tojson }}" x-collapse>
@@ -314,7 +315,7 @@
                     </div>
                     {% endif %}
 
-                    {% if ep.speakers %}
+                    {% if _speakers %}
                     <section x-data="{ track: null }">
                         <h4 class="font-['Montserrat'] font-semibold text-[22px] leading-[26px] text-black">
                             {{ t('agenda.speakers') }}
@@ -323,7 +324,7 @@
                             <ul x-ref="track" x-init="track = $refs.track"
                                 class="no-scrollbar snap-x snap-mandatory overflow-x-auto flex gap-6 pr-2"
                                 style="scroll-behavior: smooth" aria-label="{{ t('agenda.speakers_carousel') }}">
-                                {% for sp in ep.speakers %}
+                                {% for sp in _speakers %}
                                 <li class="snap-start shrink-0">
                                     <article
                                         class="relative w-[265px] h-[320px] rounded-[20px] overflow-hidden shadow-lg">
@@ -355,6 +356,12 @@
                             </ul>
                         </div>
                     </section>
+                    {% endif %}
+
+                    {% if top_sponsor %}
+                    <div class="mt-4 flex justify-end">
+                        {{ sponsor_badge(top_sponsor) }}
+                    </div>
                     {% endif %}
 
                     <div class="mt-4 flex justify-end">

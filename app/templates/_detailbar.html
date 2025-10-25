@@ -51,7 +51,7 @@
 
                 <!-- dropdown -->
                 <div x-show="open" x-cloak x-transition
-                    class="absolute right-0 top-full mt-2 w-24 p-2 glass text-white text-center z-[70]"
+                    class="absolute right-0 top-full mt-28 p-2 glass text-white text-center z-[70]"
                     @click.away="open=false">
                     {% set current = (lang or 'en') %}
                     {% for code in ['en','ru','tk','zh'] if code != current %}

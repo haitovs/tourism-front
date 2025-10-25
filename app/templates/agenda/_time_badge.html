@@ -1,24 +1,52 @@
 {# app/templates/agenda/_time_badge.html #}
 {% macro time_badge(start_dt, end_dt) -%}
-{% set start = start_dt.strftime('%H:%M') if start_dt else '--:--' %}
-{% set end = end_dt.strftime('%H:%M') if end_dt else '--:--' %}
+{# Build display HH:MM and datetime=... safely for both str and datetime #}
+
+{% set _s = (start_dt or '') %}
+{% set _e = (end_dt or '') %}
+
+{% if start_dt is string %}
+{% set _s1 = _s.replace('Z','') %}
+{% set _s2 = (_s1.split('T')[-1]).split(' ')[-1] %}
+{% set start = _s2[:5] %}
+{% set start_iso = _s1 %}
+{% elif start_dt %}
+{% set start = start_dt.strftime('%H:%M') %}
+{% set start_iso = start_dt.isoformat() %}
+{% else %}
+{% set start = '--:--' %}
+{% set start_iso = '' %}
+{% endif %}
+
+{% if end_dt is string %}
+{% set _e1 = _e.replace('Z','') %}
+{% set _e2 = (_e1.split('T')[-1]).split(' ')[-1] %}
+{% set end = _e2[:5] %}
+{% set end_iso = _e1 %}
+{% elif end_dt %}
+{% set end = end_dt.strftime('%H:%M') %}
+{% set end_iso = end_dt.isoformat() %}
+{% else %}
+{% set end = '--:--' %}
+{% set end_iso = '' %}
+{% endif %}
 
 <aside class="h-full flex items-start">
     <div class="mx-auto inline-flex flex-col items-center justify-center gap-1
-           bg-[#007A3D] text-white shadow-soft
-           rounded-[10px]
-           px-3 py-2 md:px-3 md:py-2
-           min-w-[70px] md:min-w-[120px]      {# keep it narrow #}
-           max-w-[168px]                       {# prevents stretching #}
-           font-['Roboto'] font-bold tabular-nums leading-none">
+         bg-[#007A3D] text-white shadow-soft
+         rounded-[10px]
+         px-3 py-2 md:px-3 md:py-2
+         min-w-[70px] md:min-w-[120px]
+         max-w-[168px]
+         font-['Roboto'] font-bold tabular-nums leading-none">
         {% if start %}
-        <time {% if start_dt %}datetime="{{ start_dt.isoformat() }}" {% endif %}
+        <time {% if start_iso %}datetime="{{ start_iso }}" {% endif %}
             class="block whitespace-nowrap text-[13px] md:text-[18px] lg:text-[20px]">
             {{ start }}
         </time>
         {% endif %}
         {% if end %}
-        <time {% if end_dt %}datetime="{{ end_dt.isoformat() }}" {% endif %}
+        <time {% if end_iso %}datetime="{{ end_iso }}" {% endif %}
             class="block whitespace-nowrap text-[13px] md:text-[18px] lg:text-[20px]">
             {{ end }}
         </time>

@@ -1,7 +1,6 @@
 {# app/templates/agenda/_day_pill.html #}
 {% macro day_pill(day) -%}
-{% set weekday_en = day.date.strftime('%A') %}
-{% set weekday_key = weekday_en|lower %}
+{% set weekday_key = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'][day.date.weekday()] %}
 {% set daynum = day.date.strftime('%d')|int %}
 
 <button type="button" @click="$dispatch('pickday', { id: {{ day.id }} })" :aria-pressed="selectedDayId === {{ day.id }}"

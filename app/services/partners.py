@@ -5,7 +5,7 @@ from typing import Dict, List, Optional
 
 from fastapi import Request
 
-from app.core.http import _abs_media, api_get
+from app.core.http import abs_media, api_get
 from app.core.settings import settings
 
 
@@ -14,7 +14,7 @@ def _row_to_dict(row: dict) -> dict:
         "id": row.get("id"),
         "name": row.get("name") or "",
         "website": row.get("website") or "",
-        "logo_url": _abs_media(row.get("logo")),
+        "logo_url": abs_media(row.get("logo")),
         "type": row.get("type") or "",
     }
 

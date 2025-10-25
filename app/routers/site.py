@@ -2,7 +2,7 @@
 from asyncio import gather
 
 from fastapi import APIRouter, Request, Response
-from starlette.responses import HTMLResponse
+from starlette.responses import HTMLResponse, RedirectResponse
 
 from app.core.language_middleware import LANG_COOKIE
 from app.services import expo_sectors as sectors_srv
@@ -28,12 +28,13 @@ def _resolve_site_id(req: Request) -> int | None:
 
 
 @router.post("/set-lang/{code}")
-def set_lang(code: str, response: Response):
+def set_lang(code: str, request: Request, response: Response):
     code = (code or "").lower().split("-")[0]
     if code not in settings.SUPPORTED_LANGS:
         code = settings.DEFAULT_LANG
     response.set_cookie(LANG_COOKIE, code, max_age=60 * 60 * 24 * 365, samesite="lax")
-    return {"ok": True, "lang": code}
+    referer = request.headers.get("referer") or "/"
+    return RedirectResponse(referer, status_code=303)
 
 
 @router.get("/", response_class=HTMLResponse)

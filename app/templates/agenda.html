@@ -22,10 +22,10 @@
 </section>
 
 <!-- BODY -->
-<section class="max-w-[1310px] mx-auto px-4 md:px-0 py-10"
-    x-data='{"selectedDayId": {{ (selected_day_id | tojson) if selected_day_id is not none else "null" }}, "expandedId": null }'
-    @pickday.window="selectedDayId = $event.detail.id; expandedId = null"
-    @toggle.window="expandedId = (expandedId === $event.detail.id ? null : $event.detail.id)">
+<section class="max-w-[1310px] mx-auto px-4 md:px-0 py-10" x-data='{
+    selectedDayId: {{ (selected_day_id | tojson) if selected_day_id is not none else "null" }},
+    expandedId: null
+  }' @pickday.window="selectedDayId = $event.detail.id; expandedId = null" x-cloak>
     {% if not days or days|length == 0 %}
     <div class="bg-white rounded-[12px] p-10 text-center">
         <h3 class="font-['Montserrat'] text-[28px] md:text-[32px] text-[#1E1E1E]">
@@ -36,13 +36,15 @@
         </p>
     </div>
     {% else %}
+
     <!-- Program header + day pills -->
     <div class="flex items-center gap-3 sm:gap-4">
         <h2 class="font-['Montserrat'] font-semibold
-                     text-[22px] sm:text-[28px] md:text-[36px] lg:text-[45px]
-                     leading-[1.2] underline text-[#000]">
+                 text-[22px] sm:text-[28px] md:text-[36px] lg:text-[45px]
+                 leading-[1.2] underline text-[#000]">
             {{ t('agenda.program') }}:
         </h2>
+
         <!-- Fixed-size, rounded scroller -->
         <div class="w-full max-w-[1310px]">
             <div class="rounded-[12px] bg-white/60 overflow-hidden">
@@ -61,12 +63,13 @@
     <div class="mt-8 space-y-6">
         {% for d in days %}
         <template
-            x-if="selectedDayId === {{ d.id }} || (selectedDayId === null && {{ 'true' if loop.first else 'false' }})"
-            x-init="if (selectedDayId===null && {{ 'true' if loop.first else 'false' }}) selectedDayId={{ d.id }}">
+            x-if="selectedDayId === {{ d.id|tojson }} || (selectedDayId === null && {{ 'true' if loop.first else 'false' }})"
+            x-init="if (selectedDayId === null && {{ 'true' if loop.first else 'false' }}) selectedDayId = {{ d.id|tojson }}">
             <div class="space-y-6">
                 {% for ep in d.episodes %}
                 {{ agenda.episode_block(d, ep, 'expandedId') }}
                 {% endfor %}
+
                 {% if d.episodes|length == 0 %}
                 <div class="bg-white rounded-[12px] p-8 text-center text-slate-500">
                     {{ t('agenda.no_sessions') }}
@@ -76,6 +79,7 @@
         </template>
         {% endfor %}
     </div>
+
     {% endif %}
 </section>
 {% endblock %}

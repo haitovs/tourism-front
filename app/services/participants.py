@@ -8,7 +8,7 @@ from typing import Any, Optional
 import markdown as _md_lib
 from fastapi import Request
 
-from app.core.http import _abs_media, api_get
+from app.core.http import abs_media, api_get
 from app.core.settings import settings
 
 _bullet_like = re.compile(r"(\S)\s-\s+")
@@ -42,23 +42,23 @@ def md_to_html(md_text: str) -> str:
 
 
 def _resolve_media(path: str | None) -> str:
-    return _abs_media(path)
+    return abs_media(path)
 
 
 def _resolve_logo_url(logo: str | None) -> str:
-    return _abs_media(logo) if logo else "/static/img/default_participant.png"
+    return abs_media(logo) if logo else "/static/img/default_participant.png"
 
 
 def _extract_media_url(obj) -> str:
     if obj is None:
         return ""
     if isinstance(obj, str):
-        return _abs_media(obj)
+        return abs_media(obj)
     if isinstance(obj, dict):
         for key in ("url", "image", "file", "path", "src"):
             val = obj.get(key)
             if isinstance(val, str) and val:
-                return _abs_media(val)
+                return abs_media(val)
     return ""
 
 
