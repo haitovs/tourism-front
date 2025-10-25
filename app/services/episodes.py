@@ -290,7 +290,6 @@ async def list_days_with_episode_views(
                 "sponsors": [_flatten_sponsor_like(sp) for sp in (e.get("sponsors") or []) if isinstance(sp, dict)],
             }
 
-            # Ensure moderator list is present even if only `first_moderator` exists
             if not ev["moderators"]:
                 fm = e.get("first_moderator")
                 ev["first_moderator"] = _flatten_person_like(fm) if isinstance(fm, dict) else None
@@ -302,7 +301,6 @@ async def list_days_with_episode_views(
             ev["top_sponsor"] = ev["sponsors"][0] if ev["sponsors"] else _sponsor_from_episode(e)
             evs.append(ev)
 
-        # Attach people from the global lists by matching id/slug/title
         _attach_people_from_rows(speakers_rows if isinstance(speakers_rows, list) else [], evs, role="speaker")
         _attach_people_from_rows(moderators_rows if isinstance(moderators_rows, list) else [], evs, role="moderator")
 
