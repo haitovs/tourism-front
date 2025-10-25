@@ -7,26 +7,12 @@ from typing import Generator, Optional
 from urllib.parse import urljoin
 
 import markdown as _md_lib
-from sqlalchemy import asc, desc, select
+from fastapi import Request
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
+from app.core.http import api_get
 from app.core.settings import settings
-from app.models.expo_sector_model import ExpoSector
-
-
-@contextmanager
-def _db_session() -> Generator[Session, None, None]:
-    gen = get_db()
-    db = next(gen)
-    try:
-        yield db
-    finally:
-        try:
-            gen.close()
-        except Exception:
-            pass
-
 
 _bullet_like = re.compile(r"(\S)\s-\s+")
 
@@ -74,6 +60,12 @@ def _resolve_media(url: str | None) -> str:
     if low.startswith("http://") or low.startswith("https://"):
         return url
     base = settings.MEDIA_BASE_URL.rstrip("/") + "/"
+    # honor MEDIA_PREFIX if present
+    if url.startswith("/"):
+        return urljoin(base, url.lstrip("/"))
+    pref = settings.MEDIA_PREFIX.strip("/")
+    if pref:
+        return urljoin(base, f"{pref}/{url.lstrip('/')}")
     return urljoin(base, url.lstrip("/"))
 
 
@@ -107,6 +99,9 @@ def _resolve_image_list(items) -> list[str]:
     """Coerce various ‘images’ shapes to a list of URLs."""
     if not items:
         return []
+    # Backend: [{id, path}]
+    if isinstance(items, list) and items and isinstance(items[0], dict) and "path" in items[0]:
+        return [_resolve_media(x.get("path")) for x in items if isinstance(x, dict) and x.get("path")]
     if isinstance(items, str):
         items = [items]
     if not isinstance(items, Iterable) or isinstance(items, (bytes, bytearray)):
@@ -125,66 +120,68 @@ def _first_paragraph_html(text: Optional[str]) -> str:
     return "<p>{}</p>".format(first)
 
 
-def list_home_sectors(
+async def list_home_sectors(
+    req: Request,
     limit: int = 3,
     latest_first: bool = True,
     site_id: Optional[int] = None,
 ) -> list[dict]:
-    with _db_session() as db:
-        stmt = select(ExpoSector)
-        if site_id:
-            stmt = stmt.where(ExpoSector.site_id == site_id)
-        order = desc(ExpoSector.created_at) if latest_first else asc(ExpoSector.created_at)
-        rows = db.execute(stmt.order_by(order).limit(limit)).scalars().all()
+    """
+    Fetch sectors from backend (already localized by middleware ?lang), then
+    return a lightweight view-model used on the home page.
+    """
+    # Backend list endpoint (tenant resolved server-side)
+    items = await api_get(req, "/expo-sectors/")
 
-        return [{
-            "id": r.id,
-            "header": r.header,
-            "description": r.description,
-            "logo_url": _resolve_logo_url(getattr(r, "logo", None)),
-        } for r in rows]
+    # Sort client-side if needed (fallback to id as proxy of recency)
+    if latest_first:
+        try:
+            items = sorted(items, key=lambda x: int(x.get("id", 0)), reverse=True)
+        except Exception:
+            pass
+
+    items = items[:limit]
+
+    return [{
+        "id": it.get("id"),
+        "header": it.get("header") or "",
+        "description": it.get("description") or "",
+        "logo_url": _resolve_logo_url(it.get("logo")),
+    } for it in items]
 
 
-def get_sector(sector_id: int, site_id: Optional[int] = None) -> Optional[dict]:
-    with _db_session() as db:
-        stmt = select(ExpoSector).where(ExpoSector.id == sector_id)
-        if site_id:
-            stmt = stmt.where(ExpoSector.site_id == site_id)
-        r = db.execute(stmt).scalars().first()
-        if not r:
-            return None
+async def get_sector(req: Request, sector_id: int, site_id: Optional[int] = None) -> Optional[dict]:
+    """
+    Fetch a single sector from backend and adapt it to the template view-model.
+    """
+    it = await api_get(req, f"/expo-sectors/{sector_id}")
+    if not it:
+        return None
 
-        header = getattr(r, "header", None)
-        subtitle = getattr(r, "subtitle", None)
-        description = getattr(r, "description", None)
-        extended_md = getattr(r, "extended_description", None)
+    header = it.get("header")
+    description = it.get("description")
+    extended_md = it.get("extended_description")
 
-        hero = getattr(r, "hero", None) or getattr(r, "cover", None)
-        tagline = getattr(r, "tagline", None)
+    intro_html = _first_paragraph_html(description)
+    body_html = md_to_html(extended_md or "")
 
-        intro_html = _first_paragraph_html(description)
-        body_html = md_to_html(extended_md or "")
+    # Backend returns images as [{id, path}], convert to URLs
+    all_images = _resolve_image_list((it.get("images") or []))
+    images_hero = all_images[:3]
+    images_rest = all_images[3:]
 
-        gallery = getattr(r, "gallery", None) or getattr(r, "images", None) or getattr(r, "photos", None)
-        all_images = _resolve_image_list(gallery)
-        images_hero = all_images[:3]
-        images_rest = all_images[3:]
-
-        points_left = getattr(r, "points_left", None)
-        points_right = getattr(r, "points_right", None)
-
-        return {
-            "id": r.id,
-            "header": header,
-            "subtitle": subtitle,
-            "description": description,
-            "logo_url": _resolve_logo_url(getattr(r, "logo", None)),
-            "hero_url": _resolve_media(hero) if hero else None,
-            "tagline": tagline,
-            "intro_html": intro_html,
-            "body_html": body_html,
-            "images_hero": images_hero,
-            "images_rest": images_rest,
-            "points_left": points_left if isinstance(points_left, list) else None,
-            "points_right": points_right if isinstance(points_right, list) else None,
-        }
+    return {
+        "id": it.get("id"),
+        "header": header,
+        "subtitle": None,  # not provided by backend
+        "description": description,
+        "logo_url": _resolve_logo_url(it.get("logo")),
+        "hero_url": None,  # not provided by backend
+        "tagline": None,  # not provided by backend
+        "intro_html": intro_html,
+        "body_html": body_html,
+        "images_hero": images_hero,
+        "images_rest": images_rest,
+        "points_left": None,  # not provided by backend
+        "points_right": None,  # not provided by backend
+    }

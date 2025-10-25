@@ -7,6 +7,7 @@ from contextlib import contextmanager
 from typing import Iterable, List, Optional
 from urllib.parse import urljoin
 
+from fastapi import Request
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
@@ -161,61 +162,96 @@ def episode_to_view(ep: Episode) -> dict:
     return base
 
 
-def list_days_with_episode_views(
+async def list_days_with_episode_views(
+    req: Request,
     *,
     site_id: Optional[int] = None,
     only_published: bool = True,
 ) -> List[dict]:
     """
-    Similar to previous list_days_with_episodes but returns episodes already converted
-    via episode_to_view.
+    Fetch days and episodes from the backend (already localized by ?lang),
+    then map each episode to the view dict used by templates.
+
+    NOTE:
+    - Expects app/services/agenda.py to expose async functions:
+        async def list_days(req, site_id: Optional[int], only_published: bool) -> List[dict]
+        async def list_episodes_for_day(req, day_id: int, site_id: Optional[int], only_published: bool) -> List[dict]
+      …and those should internally use api_get(req, ...) so ?lang is sent.
     """
     from app.services.agenda import list_days, list_episodes_for_day
 
-    out = []
-    days = list_days(site_id=site_id, only_published=only_published)
+    out: List[dict] = []
+    days = await list_days(req, site_id=site_id, only_published=only_published)
+
     for d in days:
-        eps = list_episodes_for_day(day_id=d["id"], site_id=site_id, only_published=only_published)
-        evs = []
+        eps = await list_episodes_for_day(req, day_id=d["id"], site_id=site_id, only_published=only_published)
+        evs: List[dict] = []
+
+        # Episodes coming from backend are plain dicts. Still keep the ORM branch for safety.
         for e in eps:
             if hasattr(e, "__dict__") and (hasattr(e, "speakers") or hasattr(e, "moderators")):
+                # Rare case: got ORM instances; normalize via the old mapper
                 evs.append(episode_to_view(e))
             else:
+                # Normal case: dict from backend (already localized)
                 ev = {
-                    "id": e.get("id"),
-                    "slug": e.get("slug", ""),
-                    "title": e.get("title", "") or "",
-                    "description_md": e.get("description_md", "") or "",
-                    "short_desc": e.get("short_desc") or _short_text(e.get("description_md", "") or "", 240),
-                    "topic_desc": e.get("topic_desc") or "",
-                    "start_time": e.get("start_time"),
-                    "end_time": e.get("end_time"),
-                    "location": e.get("location") or "",
-                    "published": bool(e.get("published", True)),
-                    "sort_order": e.get("sort_order", None),
-                    "hero_image_url": _resolve_media(e.get("hero_image_url")),
-                    "day_id": e.get("day_id"),
-                    "site_id": e.get("site_id"),
-                    # map nested lists
+                    "id":
+                        e.get("id"),
+                    "slug":
+                        e.get("slug", ""),
+                    "title":
+                        e.get("title", "") or "",
+                    "description_md":
+                        e.get("description_md", "") or "",
+                    "short_desc":
+                        e.get("short_desc") or _short_text(e.get("description_md", "") or "", 240),
+                    "topic_desc":
+                        e.get("topic_desc") or e.get("topic", "") or "",
+                    "start_time":
+                        e.get("start_time"),
+                    "end_time":
+                        e.get("end_time"),
+                    "location":
+                        e.get("location") or "",
+                    "published":
+                        bool(e.get("published", True)),
+                    "sort_order":
+                        e.get("sort_order", None),
+                    "hero_image_url":
+                        _resolve_media(e.get("hero_image_url")),
+                    "day_id":
+                        e.get("day_id"),
+                    "site_id":
+                        e.get("site_id"),
+                    # map nested lists (if backend returns them)
                     "speakers": [{
                         "id": s.get("id"),
-                        "fullname": s.get("fullname"),
-                        "position": s.get("position"),
-                        "company": s.get("company"),
+                        "fullname": s.get("fullname") or f"{(s.get('name') or '').strip()} {(s.get('surname') or '').strip()}".strip(),
+                        "position": s.get("position") or "",
+                        "company": s.get("company") or "",
                         "photo_url": _resolve_media(s.get("photo_url") or s.get("photo")),
                     } for s in (e.get("speakers") or [])],
                     "moderators": [{
                         "id": m.get("id"),
-                        "fullname": m.get("fullname"),
-                        "position": m.get("position"),
-                        "company": m.get("company"),
-                        "description_norm": m.get("description") or m.get("description_norm", ""),
+                        "fullname": m.get("fullname") or f"{(m.get('name') or '').strip()} {(m.get('surname') or '').strip()}".strip(),
+                        "position": m.get("position") or "",
+                        "company": m.get("company") or "",
+                        "description_norm": m.get("description") or m.get("description_norm", "") or "",
                         "photo_url": _resolve_media(m.get("photo_url") or m.get("photo")),
                     } for m in (e.get("moderators") or [])],
-                    "sponsors": [_sponsor_to_dict(s) for s in (e.get("sponsors") or [])],
+                    "sponsors": [{
+                        "id": sp.get("id"),
+                        "name": sp.get("name") or "",
+                        "logo_url": _resolve_media(sp.get("logo_url") or sp.get("logo")),
+                        "tier": (sp.get("tier") or "").lower(),
+                    } for sp in (e.get("sponsors") or [])],
                 }
-                ev["top_sponsor"] = _choose_top_sponsor(e.get("sponsors") or [])
+                # derive convenience fields
+                sponsors_list = ev["sponsors"]
+                ev["top_sponsor"] = sponsors_list[0] if sponsors_list else None
                 ev["first_moderator"] = ev["moderators"][0] if ev["moderators"] else None
                 evs.append(ev)
+
         out.append({**d, "episodes": evs})
+
     return out

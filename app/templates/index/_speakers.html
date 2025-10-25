@@ -26,7 +26,7 @@
                             {% if sp.photo_url %}
                             <img src="{{ sp.photo_url }}" alt="{{ sp.fullname }}" class="w-full h-full object-cover" />
                             {% else %}
-                            <img src="/static/img/person_placeholder.jpg" alt="{{ t('index.speakers.person_alt') }}"
+                            <img src="/static/img/person_placeholder.png" alt="{{ t('index.speakers.person_alt') }}"
                                 class="w-full h-full object-cover opacity-80" />
                             {% endif %}
                         </div>
@@ -68,7 +68,7 @@
                 <img src="{{ sp.photo_url }}" alt="{{ sp.fullname }}"
                     class="absolute inset-0 w-full h-full object-cover" />
                 {% else %}
-                <img src="/static/img/person_placeholder.jpg" alt="{{ t('index.speakers.person_alt') }}"
+                <img src="/static/img/person_placeholder.png" alt="{{ t('index.speakers.person_alt') }}"
                     class="absolute inset-0 w-full h-full object-cover opacity-80" />
                 {% endif %}
 

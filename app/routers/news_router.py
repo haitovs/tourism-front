@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import math
-from math import ceil
 
 from fastapi import APIRouter, HTTPException, Query, Request
 from starlette import status
@@ -33,9 +32,7 @@ async def news_list(
         per_page: int = Query(6, ge=1, le=24),
 ):
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
-
-    all_items = news_srv.get_latest_news(limit=200)
-    # ✅ title-only filter
+    all_items = await news_srv.get_latest_news(req, limit=200)
     all_items = _filter_news(all_items, q)
 
     if page == 1:
@@ -66,16 +63,8 @@ async def news_list(
 @router.get("/news/{news_id}", response_class=HTMLResponse)
 async def news_detail(req: Request, news_id: int):
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
-
-    record = news_srv.get_news(news_id=news_id)
-
+    record = await news_srv.get_news(req, news_id=news_id)
     if not record:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="News not found")
-
-    ctx = {
-        "request": req,
-        "lang": lang,
-        "settings": settings,
-        "item": record,
-    }
+    ctx = {"request": req, "lang": lang, "settings": settings, "item": record}
     return templates.TemplateResponse("news_detail.html", ctx)

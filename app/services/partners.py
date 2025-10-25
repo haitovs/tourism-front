@@ -1,82 +1,40 @@
 # app/services/partners.py
 from __future__ import annotations
 
-from contextlib import contextmanager
-from typing import Generator, Optional
-from urllib.parse import urljoin
+from typing import Dict, List, Optional
 
-from sqlalchemy import desc, select
-from sqlalchemy.orm import Session
+from fastapi import Request
 
-from app.core.db import get_db
+from app.core.http import _abs_media, api_get
 from app.core.settings import settings
-from app.models.partner_model import Partner  # file you already have
 
 
-@contextmanager
-def _db_session() -> Generator[Session, None, None]:
-    gen = get_db()
-    db = next(gen)
-    try:
-        yield db
-    finally:
-        try:
-            gen.close()
-        except Exception:
-            pass
-
-
-def _resolve_media(path: str | None) -> str:
-    """
-    Align with speakers.py:
-    - http(s) -> as-is
-    - else join: MEDIA_BASE_URL + MEDIA_PREFIX + path
-    """
-    if not path:
-        return ""
-    low = path.lower()
-    if low.startswith("http://") or low.startswith("https://"):
-        return path
-
-    base = settings.MEDIA_BASE_URL.rstrip("/") + "/"
-    if path.startswith("/"):
-        return urljoin(base, path.lstrip("/"))
-
-    pref = settings.MEDIA_PREFIX.strip("/")
-    return urljoin(base, f"{pref}/{path.lstrip('/')}")
-
-
-def list_partners(*, site_id: Optional[int] = None, limit: int | None = None) -> list[dict]:
-    """
-    Return partners as simple view dicts.
-    Order: newest first (id DESC). No default limit (fits a carousel).
-    """
-    out: list[dict] = []
-    with _db_session() as db:
-        stmt = select(Partner)
-        if site_id is not None:
-            stmt = stmt.where(Partner.site_id == site_id)
-        stmt = stmt.order_by(desc(Partner.id))
-        if limit:
-            stmt = stmt.limit(max(1, limit))
-
-        rows = db.execute(stmt).scalars().all()
-        for r in rows:
-            out.append({
-                "id": r.id,
-                "name": r.name,
-                "website": r.website or "",
-                "logo_url": _resolve_media(getattr(r, "logo", None)),
-                "type": getattr(r, "type", "") or "",  # NEW: expose partner type
-            })
-    return out
-
-
-def as_carousel_data(*, site_id: Optional[int] = None) -> dict:
-    """
-    Optional helper if you want a dedicated partners carousel include.
-    """
+def _row_to_dict(row: dict) -> dict:
     return {
-        "items": list_partners(site_id=site_id),
+        "id": row.get("id"),
+        "name": row.get("name") or "",
+        "website": row.get("website") or "",
+        "logo_url": _abs_media(row.get("logo")),
+        "type": row.get("type") or "",
+    }
+
+
+async def list_partners(
+    req: Request,
+    *,
+    limit: Optional[int] = None,
+    latest_first: bool = True,
+) -> List[Dict]:
+    rows = await api_get(req, "/partners/") or []
+    rows.sort(key=lambda x: x.get("id") or 0, reverse=latest_first)
+    if limit:
+        rows = rows[:max(1, int(limit))]
+    return [_row_to_dict(r) for r in rows]
+
+
+async def as_carousel_data(req: Request, *, limit: Optional[int] = None) -> dict:
+    return {
+        "items": await list_partners(req, limit=limit),
+        "label": "Partner",
         "kind": "partners",
     }

@@ -1,57 +1,42 @@
 # app/services/moderators.py
 from __future__ import annotations
 
-from contextlib import contextmanager
-from typing import Generator, Optional
-from urllib.parse import urljoin
+from typing import Optional
 
-from sqlalchemy import desc, func, select
-from sqlalchemy.orm import Session
+from fastapi import Request
 
-from app.core.db import get_db
+from app.core.http import api_get
 from app.core.settings import settings
-from app.models.moderator_model import Moderator
 
 
-# --- session helper (same pattern as speakers_srv) ---
-@contextmanager
-def _db_session() -> Generator[Session, None, None]:
-    gen = get_db()
-    db = next(gen)
-    try:
-        yield db
-    finally:
-        try:
-            gen.close()
-        except Exception:
-            pass
-
-
-# --- media resolver (same as speakers_srv) ---
 def _resolve_media(path: str | None) -> str:
+    """Turn a stored path into an absolute URL using MEDIA_BASE_URL / MEDIA_PREFIX."""
     if not path:
         return ""
     low = path.lower()
     if low.startswith("http://") or low.startswith("https://"):
         return path
-    base = settings.MEDIA_BASE_URL.rstrip("/") + "/"
-    if path.startswith("/"):
-        return urljoin(base, path.lstrip("/"))
+    base = settings.MEDIA_BASE_URL.rstrip("/")
     pref = settings.MEDIA_PREFIX.strip("/")
-    return urljoin(base, f"{pref}/{path.lstrip('/')}")
+    if path.startswith("/"):
+        return f"{base}/{path.lstrip('/')}"
+    return f"{base}/{pref}/{path.lstrip('/')}" if pref else f"{base}/{path.lstrip('/')}"
 
 
-# --- row → dict (fields aligned to what templates expect) ---
-def _row_to_dict(r: Moderator) -> dict:
-    fullname = (getattr(r, "name", "") or "").strip()
+def _row_to_dict(row: dict) -> dict:
+    """
+    Normalize backend Moderator payload to the shape templates use.
+    Backend fields: id, name, description, photo, ...
+    """
+    fullname = (row.get("name") or "").strip()
     return {
-        "id": r.id,
+        "id": row.get("id"),
         "fullname": fullname,  # templates use .fullname
-        "name": fullname,
-        "position": "",  # Moderator model has no position/company
+        "name": fullname,  # keep alias (harmless)
+        "position": "",  # Moderator has no position/company
         "company": "",
-        "description": getattr(r, "description", "") or "",
-        "photo_url": _resolve_media(getattr(r, "photo", None)),
+        "description": row.get("description") or "",
+        "photo_url": _resolve_media(row.get("photo")),
         # keep a consistent shape with speaker dicts
         "website": "",
         "email": "",
@@ -60,56 +45,55 @@ def _row_to_dict(r: Moderator) -> dict:
     }
 
 
-# --- public API ---
-
-
-def list_moderators(
+async def list_moderators(
+    req: Request,
     *,
-    site_id: Optional[int] = None,
     limit: Optional[int] = None,
     latest_first: bool = True,
 ) -> list[dict]:
-    with _db_session() as db:
-        stmt = select(Moderator)
-        if site_id is not None:
-            stmt = stmt.where(Moderator.site_id == site_id)
-        stmt = stmt.order_by(desc(Moderator.id) if latest_first else Moderator.id.asc())
-        if limit:
-            stmt = stmt.limit(max(1, limit))
-        rows = db.execute(stmt).scalars().all()
-        return [_row_to_dict(r) for r in rows]
+    """
+    Fetch moderators from backend (already localized via middleware cookies/headers).
+    Client-side order by id (desc/asc) and apply optional limit.
+    """
+    items = await api_get(req, "/moderators/") or []
+    # sort by id
+    items.sort(key=lambda x: x.get("id") or 0, reverse=latest_first)
+    if limit:
+        items = items[:max(1, int(limit))]
+    return [_row_to_dict(it) for it in items]
 
 
-def get_moderator(*, moderator_id: int, site_id: Optional[int] = None) -> Optional[dict]:
-    with _db_session() as db:
-        stmt = select(Moderator).where(Moderator.id == moderator_id)
-        if site_id is not None:
-            stmt = stmt.where(Moderator.site_id == site_id)
-        r = db.execute(stmt).scalars().first()
-        return _row_to_dict(r) if r else None
-
-
-def list_moderators_page(
+async def get_moderator(
+    req: Request,
     *,
-    site_id: Optional[int] = None,
+    moderator_id: int,
+) -> Optional[dict]:
+    row = await api_get(req, f"/moderators/{moderator_id}")
+    return _row_to_dict(row) if row else None
+
+
+async def list_moderators_page(
+    req: Request,
+    *,
     page: int = 1,
     per_page: int = 12,
     latest_first: bool = True,
 ) -> tuple[list[dict], int, int]:
-    page = max(1, page)
-    per_page = max(1, per_page)
-    with _db_session() as db:
-        base = select(Moderator)
-        if site_id is not None:
-            base = base.where(Moderator.site_id == site_id)
+    """
+    Simple client-side pagination: fetch all then slice.
+    Returns (items, total_pages, total_items).
+    """
+    page = max(1, int(page))
+    per_page = max(1, int(per_page))
 
-        total_items = db.execute(select(func.count()).select_from(base.subquery())).scalar_one()
+    items = await api_get(req, "/moderators/") or []
+    items.sort(key=lambda x: x.get("id") or 0, reverse=latest_first)
 
-        stmt = base.order_by(desc(Moderator.id) if latest_first else Moderator.id.asc()) \
-                   .offset((page - 1) * per_page).limit(per_page)
+    total_items = len(items)
+    total_pages = max(1, (total_items + per_page - 1) // per_page)
 
-        rows = db.execute(stmt).scalars().all()
-        items = [_row_to_dict(r) for r in rows]
+    start = (page - 1) * per_page
+    end = start + per_page
+    page_items = items[start:end]
 
-        total_pages = max(1, (total_items + per_page - 1) // per_page)
-        return items, total_pages, total_items
+    return ([_row_to_dict(it) for it in page_items], total_pages, total_items)

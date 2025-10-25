@@ -1,3 +1,4 @@
+# app/services/statistics.py
 from contextlib import contextmanager
 from typing import Generator, Optional
 
@@ -22,16 +23,28 @@ def _db_session() -> Generator[Session, None, None]:
 
 
 def get_statistics(site_id: Optional[int] = None) -> dict:
+    """
+    Always return a dict with 4 integer keys.
+    """
+    defaults = {
+        "episodes": 0,
+        "delegates": 0,
+        "speakers": 0,
+        "companies": 0,
+    }
+
     with _db_session() as db:
         stmt = select(Statistics)
         if site_id:
             stmt = stmt.where(Statistics.site_id == site_id)
+
         row = db.execute(stmt).scalars().first()
         if not row:
-            return None
+            return defaults
+
         return {
-            "episodes": row.episodes,
-            "delegates": row.delegates,
-            "speakers": row.speakers,
-            "companies": row.companies,
+            "episodes": int(getattr(row, "episodes", 0) or 0),
+            "delegates": int(getattr(row, "delegates", 0) or 0),
+            "speakers": int(getattr(row, "speakers", 0) or 0),
+            "companies": int(getattr(row, "companies", 0) or 0),
         }

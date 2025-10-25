@@ -13,37 +13,24 @@ router = APIRouter()
 
 @router.get("/participants", response_class=HTMLResponse)
 async def participants_page(req: Request):
-    # Grid/list page (first page server-rendered)
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
     role = req.query_params.get("role")
     q = req.query_params.get("q")
 
-    items = participants_srv.list_participants(limit=12, offset=0, latest_first=False, role=role, q=q)
-    ctx = {
-        "request": req,
-        "lang": lang,
-        "settings": settings,
-        "participants": items,
-        "role": role,
-        "q": q,
-    }
+    items = await participants_srv.list_participants(req, limit=12, offset=0, latest_first=False, role=role, q=q)
+    ctx = {"request": req, "lang": lang, "settings": settings, "participants": items, "role": role, "q": q}
     return templates.TemplateResponse("participants.html", ctx)
 
 
 @router.get("/api/participants", response_class=JSONResponse)
 async def participants_api(
+        req: Request,
         role: str | None = Query(default=None),
         q: str | None = Query(default=None),
         limit: int = Query(default=12, ge=1, le=60),
         offset: int = Query(default=0, ge=0),
 ):
-    items = participants_srv.list_participants(
-        limit=limit + 1,
-        offset=offset,
-        latest_first=False,
-        role=role,
-        q=q,
-    )
+    items = await participants_srv.list_participants(req, limit=limit + 1, offset=offset, latest_first=False, role=role, q=q)
     has_more = len(items) > limit
     items = items[:limit]
     next_offset = offset + limit if has_more else None
@@ -53,7 +40,7 @@ async def participants_api(
 @router.get("/participants/{participant_id}", response_class=HTMLResponse)
 async def participant_detail(req: Request, participant_id: int):
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
-    participant = participants_srv.get_participant(participant_id=participant_id)
+    participant = await participants_srv.get_participant(req, participant_id=participant_id)
     if not participant:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Participant not found")
     debug = req.query_params.get("debug")

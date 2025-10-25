@@ -1,4 +1,6 @@
 # app/routers/site.py
+from asyncio import gather
+
 from fastapi import APIRouter, Request, Response
 from starlette.responses import HTMLResponse
 
@@ -36,47 +38,89 @@ def set_lang(code: str, response: Response):
 
 @router.get("/", response_class=HTMLResponse)
 async def home(req: Request):
-    # use middleware-provided language
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
-
     site_id = _resolve_site_id(req)
 
-    # ⬇️ build timer context first
+    # timer (sync)
     deadline_dt = timer_srv.get_deadline_from_settings(settings)
     timer_ctx = timer_srv.build_timer_context(deadline_dt)
 
+    # fetch async data in parallel
+    sectors_task = sectors_srv.list_home_sectors(req, limit=3, latest_first=True)
+    news_task = news_srv.get_latest_news(req, limit=5)
+    faqs_task = faq_srv.list_faqs(req, limit=5)
+    speakers_task = speakers_srv.get_featured_speakers(req, limit=3)
+    organizers_task = org_srv.list_organizers(req, limit=None)
+    partners_task = partners_srv.list_partners(req, limit=None)
+    participants12_task = participants_srv.list_participants(req, limit=12, latest_first=True)
+    participants_expo_task = participants_srv.list_participants(req, limit=8, role="expo")
+    participants_forum_task = participants_srv.list_participants(req, limit=8, role="forum")
+    participants_both_task = participants_srv.list_participants(req, limit=8, role="both")
+
+    (
+        sectors,
+        news,
+        faqs,
+        speakers,
+        organizers,
+        partners,
+        participants12,
+        participants_expo,
+        participants_forum,
+        participants_both,
+    ) = await gather(
+        sectors_task,
+        news_task,
+        faqs_task,
+        speakers_task,
+        organizers_task,
+        partners_task,
+        participants12_task,
+        participants_expo_task,
+        participants_forum_task,
+        participants_both_task,
+    )
+
     ctx = {
         "request": req,
-        "lang": lang,  # optional (we also inject via templates middleware)
+        "lang": lang,
         "settings": settings,
 
-        # TOP sponsors (grouped + flat kept for backward-compat) + new view-model
+        # sponsors/statistics (sync)
         "sponsors_top": sponsor_srv.get_top_sponsors(lang=lang, site_id=site_id),
         "sponsors_top_flat": sponsor_srv.get_top_sponsors_flat(lang=lang, site_id=site_id, max_items=5),
         "sponsors_top_view": sponsor_srv.build_top_sponsors_view(lang=lang, site_id=site_id, max_items=5),
-
-        # LIST tiers (tenant-scoped)
         "gold": sponsor_srv.list_all_sponsors_by_tier(tier="gold", lang=lang, site_id=site_id),
         "silver": sponsor_srv.list_all_sponsors_by_tier(tier="silver", lang=lang, site_id=site_id),
         "bronze": sponsor_srv.list_all_sponsors_by_tier(tier="bronze", lang=lang, site_id=site_id),
-        "sectors": sectors_srv.list_home_sectors(limit=3, latest_first=True),
-        "stats": stats_srv.get_statistics(),
-        "speakers": speakers_srv.get_featured_speakers(limit=3, site_id=site_id),
-        "news": news_srv.get_latest_news(limit=5),
-        "faqs": faq_srv.list_faqs(limit=5),
-        "organizers": org_srv.list_organizers(),
+        "stats": stats_srv.get_statistics(site_id=site_id),
+
+        # async results
+        "sectors": sectors or [],
+        "news": news or [],
+        "faqs": faqs or [],
+        "speakers": speakers or [],
+
+        # organizers
+        "organizers": organizers or [],
         "organizers_data": {
-            "items": org_srv.list_organizers()
+            "items": organizers or []
         },
-        "partners": partners_srv.list_partners(),
+
+        # partners
+        "partners": partners or [],
+        "partners_data": {
+            "items": partners or []
+        },
 
         # participants
-        "participants": participants_srv.list_participants(limit=12, latest_first=True, site_id=site_id),
-        "participants_expo": participants_srv.list_participants(limit=8, role="expo", site_id=site_id),
-        "participants_forum": participants_srv.list_participants(limit=8, role="forum", site_id=site_id),
-        "participants_both": participants_srv.list_participants(limit=8, role="both", site_id=site_id),
+        "participants": participants12 or [],
+        "participants_expo": participants_expo or [],
+        "participants_forum": participants_forum or [],
+        "participants_both": participants_both or [],
+
+        # timer
         "timer": timer_ctx,
     }
 
-    # ✅ Middleware handles the cookie; no manual set_cookie needed here.
     return templates.TemplateResponse("index.html", ctx)

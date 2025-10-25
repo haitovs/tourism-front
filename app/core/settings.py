@@ -28,8 +28,11 @@ class Settings(BaseSettings):
     MEDIA_BASE_URL: str = "http://localhost:8000"
     MEDIA_PREFIX: str = "/uploads"
 
-    BACKEND_BASE_URL: str = "http://127.0.0.1:8000"
+    BACKEND_BASE_URL: str = "http://127.0.0.1:8000"  # <- run backend on a separate port
+    BACKEND_HOST_HEADER: str | None = None
     STATS_BG_IMAGE: str = "/static/img/stats_bg.png"
+
+    FRONT_SITE_ID: int = 10
 
     @property
     def SUPPORTED_LANGS(self) -> Tuple[str, ...]:

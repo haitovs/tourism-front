@@ -1,30 +1,13 @@
 # app/services/news.py
 from __future__ import annotations
 
-from contextlib import contextmanager
 from datetime import datetime
-from typing import Generator, Optional
-from urllib.parse import urljoin
+from typing import Optional
 
-from sqlalchemy import desc, select
-from sqlalchemy.orm import Session
+from fastapi import Request
 
-from app.core.db import get_db
+from app.core.http import api_get
 from app.core.settings import settings
-from app.models.news_model import News
-
-
-@contextmanager
-def _db_session() -> Generator[Session, None, None]:
-    gen = get_db()
-    db = next(gen)
-    try:
-        yield db
-    finally:
-        try:
-            gen.close()
-        except Exception:
-            pass
 
 
 def _resolve_media(path: str | None) -> str:
@@ -33,62 +16,70 @@ def _resolve_media(path: str | None) -> str:
     low = path.lower()
     if low.startswith("http://") or low.startswith("https://"):
         return path
-    base = settings.MEDIA_BASE_URL.rstrip("/") + "/"
-    if path.startswith("/"):
-        return urljoin(base, path.lstrip("/"))
+    base = settings.MEDIA_BASE_URL.rstrip("/")
     pref = settings.MEDIA_PREFIX.strip("/")
-    return urljoin(base, f"{pref}/{path.lstrip('/')}")
+    if path.startswith("/"):
+        return f"{base}/{path.lstrip('/')}"
+    return f"{base}/{pref}/{path.lstrip('/')}" if pref else f"{base}/{path.lstrip('/')}"
 
 
-def get_latest_news(*, limit: int = 5, site_id: Optional[int] = None) -> list[dict]:
+def _date_parts(iso_str: Optional[str]) -> tuple[Optional[str], str]:
+    if not iso_str:
+        return None, ""
+    try:
+        dt = datetime.fromisoformat(iso_str.replace("Z", "+00:00"))
+        return dt.isoformat(), dt.strftime("%d %b %y")
+    except Exception:
+        return iso_str, ""
+
+
+def _row_to_card(row: dict) -> dict:
+    date_iso, date_human = _date_parts(row.get("created_at"))
+    return {
+        "id": row.get("id"),
+        "title": row.get("header") or "",
+        "summary": row.get("description") or "",
+        "category": row.get("category") or "News",
+        "image_url": _resolve_media(row.get("photo")),
+        "date_iso": date_iso,
+        "date_human": date_human,
+    }
+
+
+async def get_latest_news(
+    req: Request,
+    *,
+    limit: int = 5,
+    include_unpublished: bool = False,
+) -> list[dict]:
+    items = await api_get(req, f"/news/?skip=0&limit={max(1, int(limit))}") or []
+
+    if not include_unpublished:
+        items = [it for it in items if it.get("is_published", True)]
+
+    def _sort_key(it: dict):
+        return (
+            it.get("created_at") or "",
+            it.get("id") or 0,
+        )
+
+    items.sort(key=_sort_key, reverse=True)
+    items = items[:max(1, int(limit))]
+
+    return [_row_to_card(it) for it in items]
+
+
+async def get_news(
+    req: Request,
+    news_id: int,
+) -> Optional[dict]:
     """
-    Latest published news by created_at desc (fallback id desc).
-    Exposes only what the template needs.
+    Fetch single news item and normalize to the card/detail shape.
     """
-    out: list[dict] = []
-    with _db_session() as db:
-        stmt = select(News).where(News.is_published.is_(True))
-        if site_id is not None:
-            stmt = stmt.where(News.site_id == site_id)
+    row = await api_get(req, f"/news/{news_id}")
+    if not row:
+        return None
 
-        # order newest first
-        if hasattr(News, "created_at"):
-            stmt = stmt.order_by(desc(News.created_at), desc(News.id))
-        else:
-            stmt = stmt.order_by(desc(News.id))
-
-        rows = db.execute(stmt.limit(max(1, limit))).scalars().all()
-
-        for r in rows:
-            dt: Optional[datetime] = getattr(r, "created_at", None)
-            out.append({
-                "id": r.id,
-                "title": getattr(r, "header", "") or "",
-                "summary": getattr(r, "description", "") or "",
-                "category": getattr(r, "category", "") or "News",
-                "image_url": _resolve_media(getattr(r, "photo", None)),
-                "date_iso": dt.isoformat() if dt else None,
-                "date_human": dt.strftime("%d %b %y") if dt else "",
-            })
-    return out
-
-
-def get_news(news_id: int, site_id: Optional[int] = None) -> Optional[dict]:
-    with _db_session() as db:
-        stmt = select(News).where(News.id == news_id, News.is_published.is_(True))
-        if site_id is not None:
-            stmt = stmt.where(News.site_id == site_id)
-        r = db.execute(stmt).scalars().first()
-        if not r:
-            return None
-        dt = getattr(r, "created_at", None)
-        return {
-            "id": r.id,
-            "title": getattr(r, "header", "") or "",
-            "summary": getattr(r, "description", "") or "",
-            "body": getattr(r, "body", None) or "",
-            "category": getattr(r, "category", "") or "News",
-            "image_url": _resolve_media(getattr(r, "photo", None)),
-            "date_iso": dt.isoformat() if dt else None,
-            "date_human": dt.strftime("%d %b %y") if dt else "",
-        }
+    card = _row_to_card(row)
+    card["body"] = row.get("body") or row.get("description") or ""
+    return card

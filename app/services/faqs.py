@@ -1,50 +1,28 @@
 # app/services/faq.py
 from __future__ import annotations
 
-from contextlib import contextmanager
-from typing import Generator, Optional
+from fastapi import Request
 
-from sqlalchemy import desc, select
-from sqlalchemy.orm import Session
-
-from app.core.db import get_db
-from app.models.faq_model import FAQ
+from app.core.http import api_get
 
 
-@contextmanager
-def _db_session() -> Generator[Session, None, None]:
-    gen = get_db()
-    db = next(gen)
-    try:
-        yield db
-    finally:
-        try:
-            gen.close()
-        except Exception:
-            pass
-
-
-def list_faqs(*, site_id: Optional[int] = None, limit: int | None = None) -> list[dict]:
+async def list_faqs(
+    req: Request,
+    *,
+    limit: int | None = None,
+) -> list[dict]:
     """
-    Return published FAQs ordered by sort_order (asc, NULLS LAST) then id desc.
+    Return published FAQs from backend (already localized via ?lang cookie/header),
+    preserving the {id, question, answer_md} shape used by templates.
     """
-    out: list[dict] = []
-    with _db_session() as db:
-        stmt = select(FAQ).where(FAQ.published.is_(True))
-        if site_id is not None:
-            stmt = stmt.where(FAQ.site_id == site_id)
+    params = {}
+    if limit:
+        params["limit"] = max(1, int(limit))
 
-        sort_col = FAQ.sort_order
-        stmt = stmt.order_by(sort_col.is_(None), sort_col.asc(), desc(FAQ.id))
+    items = await api_get(req, "/faq/", params=params or None)
 
-        if limit:
-            stmt = stmt.limit(max(1, limit))
-
-        rows = db.execute(stmt).scalars().all()
-        for r in rows:
-            out.append({
-                "id": r.id,
-                "question": r.question,
-                "answer_md": r.answer_md,
-            })
-    return out
+    return [{
+        "id": it.get("id"),
+        "question": it.get("question") or "",
+        "answer_md": it.get("answer_md") or "",
+    } for it in (items or [])]

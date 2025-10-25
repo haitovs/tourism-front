@@ -1,42 +1,16 @@
 # app/services/speakers.py
 from __future__ import annotations
 
-from contextlib import contextmanager
-from typing import Generator, Optional
-from urllib.parse import urljoin
+from typing import List, Optional, Tuple
 
-from sqlalchemy import desc, func, select
-from sqlalchemy.orm import Session
+from fastapi import Request
 
-from app.core.db import get_db
+from app.core.http import _abs_media, api_get
 from app.core.settings import settings
-from app.models.speaker_model import Speaker
-
-
-@contextmanager
-def _db_session() -> Generator[Session, None, None]:
-    gen = get_db()
-    db = next(gen)
-    try:
-        yield db
-    finally:
-        try:
-            gen.close()
-        except Exception:
-            pass
 
 
 def _resolve_media(path: str | None) -> str:
-    if not path:
-        return ""
-    low = path.lower()
-    if low.startswith("http://") or low.startswith("https://"):
-        return path
-    base = settings.MEDIA_BASE_URL.rstrip("/") + "/"
-    if path.startswith("/"):
-        return urljoin(base, path.lstrip("/"))
-    pref = settings.MEDIA_PREFIX.strip("/")
-    return urljoin(base, f"{pref}/{path.lstrip('/')}")
+    return _abs_media(path)
 
 
 def _display_full_name(first: str, surname: str, full_name_db: str) -> str:
@@ -46,91 +20,69 @@ def _display_full_name(first: str, surname: str, full_name_db: str) -> str:
     return " ".join(parts)
 
 
-def _row_to_dict(r: Speaker) -> dict:
-    first = (getattr(r, "name", "") or "").strip()
-    surname = (getattr(r, "surname", "") or "").strip()
-    full_name_db = (getattr(r, "full_name", "") or "").strip()
+def _row_to_dict(row: dict) -> dict:
+    first = (row.get("name") or "").strip()
+    surname = (row.get("surname") or "").strip()
+    full_name_db = (row.get("full_name") or "").strip()
 
     return {
-        "id": r.id,
+        "id": row.get("id"),
         "fullname": _display_full_name(first, surname, full_name_db),
         "name": first,
         "surname": surname,
-        "company": getattr(r, "company", "") or "",
-        "position": getattr(r, "position", "") or "",
-        "description": getattr(r, "description", "") or "",
-        "photo_url": _resolve_media(getattr(r, "photo", None)),
-        "company_photo_url": _resolve_media(getattr(r, "company_photo", None)),
-        "website": getattr(r, "website", "") or "",
-        "email": getattr(r, "email", "") or "",
-        "phone": getattr(r, "phone", "") or "",
-        "links": getattr(r, "social_links", None) or [],
-        "sessions": getattr(r, "sessions", None) or [],
+        "company": row.get("company") or "",
+        "position": row.get("position") or "",
+        "description": row.get("description") or "",
+        "photo_url": _resolve_media(row.get("photo")),
+        "company_photo_url": _resolve_media(row.get("company_photo")),
+        "website": row.get("website") or "",
+        "email": row.get("email") or "",
+        "phone": row.get("phone") or "",
+        "links": row.get("social_links") or [],
+        "sessions": row.get("sessions") or [],
     }
 
 
-def get_featured_speakers(*, limit: int = 3, site_id: Optional[int] = None) -> list[dict]:
-    out: list[dict] = []
-    with _db_session() as db:
-        stmt = select(Speaker)
-        if site_id is not None:
-            stmt = stmt.where(Speaker.site_id == site_id)
-        stmt = stmt.order_by(desc(Speaker.id)).limit(max(1, limit))
-        rows = db.execute(stmt).scalars().all()
-        out = [_row_to_dict(r) for r in rows]
-    return out
+async def get_featured_speakers(req: Request, *, limit: int = 3) -> list[dict]:
+    items = await api_get(req, "/speakers/") or []
+    # newest first by id
+    items.sort(key=lambda x: x.get("id") or 0, reverse=True)
+    return [_row_to_dict(r) for r in items[:max(1, int(limit))]]
 
 
-def list_speakers(
+async def list_speakers(
+    req: Request,
     *,
-    site_id: Optional[int] = None,
     limit: Optional[int] = None,
     latest_first: bool = True,
 ) -> list[dict]:
-    out: list[dict] = []
-    with _db_session() as db:
-        stmt = select(Speaker)
-        if site_id is not None:
-            stmt = stmt.where(Speaker.site_id == site_id)
-        stmt = stmt.order_by(desc(Speaker.id) if latest_first else Speaker.id.asc())
-        if limit:
-            stmt = stmt.limit(max(1, limit))
-        rows = db.execute(stmt).scalars().all()
-        out = [_row_to_dict(r) for r in rows]
-    return out
+    items = await api_get(req, "/speakers/") or []
+    items.sort(key=lambda x: x.get("id") or 0, reverse=latest_first)
+    if limit:
+        items = items[:max(1, int(limit))]
+    return [_row_to_dict(r) for r in items]
 
 
-def get_speaker(*, speaker_id: int, site_id: Optional[int] = None) -> Optional[dict]:
-    with _db_session() as db:
-        stmt = select(Speaker).where(Speaker.id == speaker_id)
-        if site_id is not None:
-            stmt = stmt.where(Speaker.site_id == site_id)
-        r = db.execute(stmt).scalars().first()
-        return _row_to_dict(r) if r else None
+async def get_speaker(req: Request, *, speaker_id: int) -> Optional[dict]:
+    row = await api_get(req, f"/speakers/{speaker_id}")
+    return _row_to_dict(row) if row else None
 
 
-def list_speakers_page(
+async def list_speakers_page(
+    req: Request,
     *,
-    site_id: Optional[int] = None,
     page: int = 1,
     per_page: int = 9,
     latest_first: bool = True,
 ) -> tuple[list[dict], int, int]:
-    page = max(1, page)
-    per_page = max(1, per_page)
+    page = max(1, int(page))
+    per_page = max(1, int(per_page))
+    items = await api_get(req, "/speakers/") or []
+    items.sort(key=lambda x: x.get("id") or 0, reverse=latest_first)
 
-    with _db_session() as db:
-        base = select(Speaker)
-        if site_id is not None:
-            base = base.where(Speaker.site_id == site_id)
-
-        total_items = db.execute(select(func.count()).select_from(base.subquery())).scalar_one()
-
-        stmt = base.order_by(desc(Speaker.id) if latest_first else Speaker.id.asc()) \
-                   .offset((page - 1) * per_page).limit(per_page)
-
-        rows = db.execute(stmt).scalars().all()
-        items = [_row_to_dict(r) for r in rows]
-
-        total_pages = max(1, (total_items + per_page - 1) // per_page)
-        return items, total_pages, total_items
+    total_items = len(items)
+    total_pages = max(1, (total_items + per_page - 1) // per_page)
+    start = (page - 1) * per_page
+    end = start + per_page
+    page_items = items[start:end]
+    return ([_row_to_dict(r) for r in page_items], total_pages, total_items)

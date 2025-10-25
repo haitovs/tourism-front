@@ -214,11 +214,6 @@ def list_days_with_episodes_bulk(
     site_id: Optional[int] = None,
     only_published: bool = True,
 ) -> List[dict]:
-    """
-    Loads all days, then ALL episodes for those days in a single query
-    (with `selectinload` for relations), and groups them by day_id.
-    Drop-in replacement for `list_days_with_episodes` if desired.
-    """
     with _db_session() as db:
         # 1) Days
         day_rows = list_days(site_id=site_id, only_published=only_published)
