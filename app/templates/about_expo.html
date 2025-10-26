@@ -229,71 +229,69 @@
             <div class="absolute inset-0 bg-black/40"></div>
 
             <div class="relative z-[1] max-w-[var(--container)] mx-auto h-full px-4">
-                <div class="h-full flex items-center">
-                    <!-- 2 columns on all sizes up to xl; becomes one-row flex only on 2xl -->
-                    <div class="w-full grid grid-cols-2 place-items-center gap-x-8 gap-y-8 sm:gap-y-10
-            2xl:flex 2xl:flex-wrap 2xl:justify-center 2xl:gap-x-20 2xl:gap-y-10">
+                <!-- 2 columns up to 2xl; 4 columns (one row) at 2xl -->
+                <div class="h-full grid grid-cols-2 place-items-center gap-x-8 gap-y-8 sm:gap-y-10
+           xl:grid-cols-4 xl:gap-x-16 xl:gap-y-10">
 
-
-                        <!-- Visitors -->
-                        <div class="inline-flex items-center justify-center gap-2 sm:gap-3">
-                            <div class="font-['Roboto'] font-medium text-white tabular-nums
-                        text-[clamp(32px,8vw,70px)] leading-[1.1]">
-                                453
-                            </div>
-                            <div class="font-['Roboto'] font-bold text-[#F4F4F2]
-                        text-[clamp(14px,3.2vw,30px)] leading-tight text-center
-                        max-w-[150px] sm:max-w-[180px] lg:max-w-[220px] xl:max-w-[240px]
-                        2xl:max-w-none 2xl:whitespace-nowrap 2xl:text-left">
-                                {{ t('about_expo.stats.visitors') }}
-                            </div>
+                    <!-- Visitors -->
+                    <div class="min-w-0 inline-flex items-center justify-center gap-2 sm:gap-3">
+                        <div class="font-['Roboto'] font-medium text-white tabular-nums
+                  text-[clamp(32px,8vw,70px)] leading-[1.1]">
+                            453
                         </div>
-
-                        <!-- Countries -->
-                        <div class="inline-flex items-center justify-center gap-2 sm:gap-3">
-                            <div class="font-['Roboto'] font-medium text-white tabular-nums
-                        text-[clamp(32px,8vw,70px)] leading-[1.1]">
-                                18
-                            </div>
-                            <div class="font-['Roboto'] font-bold text-[#F4F4F2]
-                        text-[clamp(14px,3.2vw,30px)] leading-tight text-center
-                        max-w-[150px] sm:max-w-[180px] lg:max-w-[220px] xl:max-w-[240px]
-                        2xl:max-w-none 2xl:whitespace-nowrap 2xl:text-left">
-                                {{ t('about_expo.stats.countries') }}
-                            </div>
+                        <div class="min-w-0 font-['Roboto'] font-bold text-[#F4F4F2]
+                  text-[clamp(14px,3.2vw,30px)] leading-tight text-center
+                  max-w-[150px] sm:max-w-[180px] lg:max-w-[220px] xl:max-w-[240px]
+                  2xl:text-left line-clamp-2">
+                            {{ t('about_expo.stats.visitors') }}
                         </div>
-
-                        <!-- Companies -->
-                        <div class="inline-flex items-center justify-center gap-2 sm:gap-3">
-                            <div class="font-['Roboto'] font-medium text-white tabular-nums
-                        text-[clamp(32px,8vw,70px)] leading-[1.1]">
-                                150
-                            </div>
-                            <div class="font-['Roboto'] font-bold text-[#F4F4F2]
-                        text-[clamp(14px,3.2vw,30px)] leading-tight text-center
-                        max-w-[150px] sm:max-w-[180px] lg:max-w-[220px] xl:max-w-[240px]
-                        2xl:max-w-none 2xl:whitespace-nowrap 2xl:text-left">
-                                {{ t('about_expo.stats.companies') }}
-                            </div>
-                        </div>
-
-                        <!-- Areas -->
-                        <div class="inline-flex items-center justify-center gap-2 sm:gap-3">
-                            <div class="font-['Roboto'] font-medium text-white tabular-nums
-                        text-[clamp(32px,8vw,70px)] leading-[1.1]">
-                                65
-                            </div>
-                            <div class="font-['Roboto'] font-bold text-[#F4F4F2]
-                        text-[clamp(14px,3.2vw,30px)] leading-tight text-center
-                        max-w-[150px] sm:max-w-[180px] lg:max-w-[220px] xl:max-w-[240px]
-                        2xl:max-w-none 2xl:whitespace-nowrap 2xl:text-left">
-                                {{ t('about_expo.stats.areas') }}
-                            </div>
-                        </div>
-
                     </div>
+
+                    <!-- Countries -->
+                    <div class="min-w-0 inline-flex items-center justify-center gap-2 sm:gap-3">
+                        <div class="font-['Roboto'] font-medium text-white tabular-nums
+                  text-[clamp(32px,8vw,70px)] leading-[1.1]">
+                            18
+                        </div>
+                        <div class="min-w-0 font-['Roboto'] font-bold text-[#F4F4F2]
+                  text-[clamp(14px,3.2vw,30px)] leading-tight text-center
+                  max-w-[150px] sm:max-w-[180px] lg:max-w-[220px] xl:max-w-[240px]
+                  2xl:text-left line-clamp-2">
+                            {{ t('about_expo.stats.countries') }}
+                        </div>
+                    </div>
+
+                    <!-- Companies -->
+                    <div class="min-w-0 inline-flex items-center justify-center gap-2 sm:gap-3">
+                        <div class="font-['Roboto'] font-medium text-white tabular-nums
+                  text-[clamp(32px,8vw,70px)] leading-[1.1]">
+                            150
+                        </div>
+                        <div class="min-w-0 font-['Roboto'] font-bold text-[#F4F4F2]
+                  text-[clamp(14px,3.2vw,30px)] leading-tight text-center
+                  max-w-[150px] sm:max-w-[180px] lg:max-w-[220px] xl:max-w-[240px]
+                  2xl:text-left line-clamp-2">
+                            {{ t('about_expo.stats.companies') }}
+                        </div>
+                    </div>
+
+                    <!-- Areas -->
+                    <div class="min-w-0 inline-flex items-center justify-center gap-2 sm:gap-3">
+                        <div class="font-['Roboto'] font-medium text-white tabular-nums
+                  text-[clamp(32px,8vw,70px)] leading-[1.1]">
+                            65
+                        </div>
+                        <div class="min-w-0 font-['Roboto'] font-bold text-[#F4F4F2]
+                  text-[clamp(14px,3.2vw,30px)] leading-tight text-center
+                  max-w-[150px] sm:max-w-[180px] lg:max-w-[220px] xl:max-w-[240px]
+                  2xl:text-left line-clamp-2">
+                            {{ t('about_expo.stats.areas') }}
+                        </div>
+                    </div>
+
                 </div>
             </div>
+
         </div>
     </section>
 

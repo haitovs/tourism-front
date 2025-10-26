@@ -128,14 +128,14 @@
 /* Seamless marquee (CSS keyframes + auto-duplication via tiny JS) */
 .marquee {
     --gap: 1rem;
-    --speed: 60; /* logical px/sec; overridden by data-speed */
-    --duration: 30s; /* computed in JS based on track width & speed */
+    --speed: 60;
+    --duration: 30s;
 }
 
 .marquee__viewport {
     overflow: hidden;
     width: 100%;
-    isolation: isolate; /* prevents subpixel bleed in some browsers */
+    isolation: isolate;
 }
 
 .marquee__track {
