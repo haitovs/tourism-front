@@ -27,12 +27,33 @@ async def list_organizers(
     *,
     limit: Optional[int] = None,
 ) -> list[dict]:
-    rows = await api_get(req, "/organizers/") or []
-    items = [_row_to_dict(r) for r in rows]
+    import asyncio
+    import logging
 
+    import httpx
+
+    log = logging.getLogger("services.organizers")
+
+    rows = None
+    for attempt in range(2):
+        try:
+            rows = await api_get(req, "/organizers/")
+            break
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            log.warning("organizers: timeout (attempt %d/2): %s", attempt + 1, e)
+            if attempt == 0:
+                await asyncio.sleep(0.5)
+                continue
+        except httpx.HTTPError as e:
+            log.error("organizers: HTTP error: %r", e)
+            break
+        except Exception as e:
+            log.exception("organizers: unexpected error: %r", e)
+            break
+
+    items = [_row_to_dict(r) for r in (rows or [])]
     if limit is not None:
         items = items[:max(1, int(limit))]
-
     return items
 
 

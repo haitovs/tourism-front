@@ -115,7 +115,6 @@ def _unwrap_object(payload: Any) -> dict | None:
     return None
 
 
-# ---------------- LIST PAGE ---------------- #
 async def list_participants(
     req: Request,
     *,
@@ -125,8 +124,31 @@ async def list_participants(
     role: Optional[str] = None,
     q: Optional[str] = None,
 ) -> list[dict]:
-    rows_raw = await api_get(req, "/participants/") or []
-    rows = _unwrap_collection(rows_raw)
+    import asyncio
+    import logging
+
+    import httpx
+
+    log = logging.getLogger("services.participants")
+
+    rows_raw = None
+    for attempt in range(2):
+        try:
+            rows_raw = await api_get(req, "/participants/")
+            break
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            log.warning("participants: timeout (attempt %d/2): %s", attempt + 1, e)
+            if attempt == 0:
+                await asyncio.sleep(0.5)
+                continue
+        except httpx.HTTPError as e:
+            log.error("participants: HTTP error: %r", e)
+            break
+        except Exception as e:
+            log.exception("participants: unexpected error: %r", e)
+            break
+
+    rows = _unwrap_collection(rows_raw or [])
 
     role_norm = (role or "").strip().lower()
     if role_norm in {"expo", "forum", "both"}:
@@ -169,13 +191,35 @@ async def list_participants(
     return out
 
 
-# ---------------- DETAIL PAGE ---------------- #
 async def get_participant(
     req: Request,
     *,
     participant_id: int,
 ) -> Optional[dict]:
-    raw = await api_get(req, f"/participants/{participant_id}")
+    import asyncio
+    import logging
+
+    import httpx
+
+    log = logging.getLogger("services.participants")
+
+    raw = None
+    for attempt in range(2):
+        try:
+            raw = await api_get(req, f"/participants/{participant_id}")
+            break
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            log.warning("participant %s: timeout (attempt %d/2): %s", participant_id, attempt + 1, e)
+            if attempt == 0:
+                await asyncio.sleep(0.5)
+                continue
+        except httpx.HTTPError as e:
+            log.error("participant %s: HTTP error: %r", participant_id, e)
+            return None
+        except Exception as e:
+            log.exception("participant %s: unexpected error: %r", participant_id, e)
+            return None
+
     r = _unwrap_object(raw)
     if not r:
         return None
@@ -185,7 +229,6 @@ async def get_participant(
     body_html = md_to_html(bio)
 
     images_in = r.get("images") or []
-    # backend often returns [{"id":..., "path":"..."}]; support other shapes, too
     if images_in and isinstance(images_in, list) and isinstance(images_in[0], dict) and "path" in images_in[0]:
         all_images = _resolve_image_list([{"path": it.get("path")} for it in images_in])
     else:

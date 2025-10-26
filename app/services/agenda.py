@@ -50,20 +50,68 @@ def _normalize_episode(row: dict) -> dict:
 
 
 async def list_days(req: Request, *, site_id: Optional[int] = None, only_published: bool = True) -> List[dict]:
+    import asyncio
+    import logging
+
+    import httpx
+    log = logging.getLogger("services.agenda")
     params = {}
     if site_id is not None:
         params["site_id"] = site_id
     if only_published:
         params["published"] = "true"
-    rows = await api_get(req, DAYS_PATH, params=params) or []
+
+    rows = None
+    for attempt in range(2):
+        try:
+            rows = await api_get(req, DAYS_PATH, params=params)
+            break
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            log.warning("agenda.list_days timeout (attempt %d/2): %s", attempt + 1, e)
+            if attempt == 0:
+                await asyncio.sleep(0.4)
+                continue
+        except httpx.HTTPError as e:
+            log.error("agenda.list_days HTTP error: %r", e)
+            break
+        except Exception as e:
+            log.exception("agenda.list_days unexpected: %r", e)
+            break
+
+    rows = rows or []
     return [_normalize_day(r) for r in rows]
 
 
 async def list_episodes_for_day(req: Request, *, day_id: int, site_id: Optional[int] = None, only_published: bool = True) -> List[dict]:
+    import asyncio
+    import logging
+
+    import httpx
+    log = logging.getLogger("services.agenda")
+
     params = {}
     if site_id is not None:
         params["site_id"] = site_id
     if only_published:
         params["published"] = "true"
-    rows = await api_get(req, DAY_EPISODES_PATH.format(day_id=day_id), params=params) or []
+
+    rows = None
+    path = DAY_EPISODES_PATH.format(day_id=day_id)
+    for attempt in range(2):
+        try:
+            rows = await api_get(req, path, params=params)
+            break
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            log.warning("agenda.list_episodes_for_day[%s] timeout (attempt %d/2): %s", day_id, attempt + 1, e)
+            if attempt == 0:
+                await asyncio.sleep(0.4)
+                continue
+        except httpx.HTTPError as e:
+            log.error("agenda.list_episodes_for_day[%s] HTTP error: %r", day_id, e)
+            break
+        except Exception as e:
+            log.exception("agenda.list_episodes_for_day[%s] unexpected: %r", day_id, e)
+            break
+
+    rows = rows or []
     return [_normalize_episode(r) for r in rows]

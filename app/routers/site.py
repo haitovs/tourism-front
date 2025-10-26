@@ -39,6 +39,10 @@ def set_lang(code: str, request: Request, response: Response):
 
 @router.get("/", response_class=HTMLResponse)
 async def home(req: Request):
+    import logging
+    from asyncio import create_task, gather
+    log = logging.getLogger("routers.site.home")
+
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
     site_id = _resolve_site_id(req)
 
@@ -47,40 +51,56 @@ async def home(req: Request):
     timer_ctx = timer_srv.build_timer_context(deadline_dt)
 
     # fetch async data in parallel
-    sectors_task = sectors_srv.list_home_sectors(req, limit=3, latest_first=True)
-    news_task = news_srv.get_latest_news(req, limit=5)
-    faqs_task = faq_srv.list_faqs(req, limit=5)
-    speakers_task = speakers_srv.get_featured_speakers(req, limit=3)
-    organizers_task = org_srv.list_organizers(req, limit=None)
-    partners_task = partners_srv.list_partners(req, limit=None)
-    participants12_task = participants_srv.list_participants(req, limit=12, latest_first=True)
-    participants_expo_task = participants_srv.list_participants(req, limit=8, role="expo")
-    participants_forum_task = participants_srv.list_participants(req, limit=8, role="forum")
-    participants_both_task = participants_srv.list_participants(req, limit=8, role="both")
+    # NOTE: we fetch participants ONCE and derive the four lists locally.
+    sectors_task = create_task(sectors_srv.list_home_sectors(req, limit=3, latest_first=True))
+    news_task = create_task(news_srv.get_latest_news(req, limit=5))
+    faqs_task = create_task(faq_srv.list_faqs(req, limit=5))
+    speakers_task = create_task(speakers_srv.get_featured_speakers(req, limit=3))
+    organizers_task = create_task(org_srv.list_organizers(req, limit=None))
+    partners_task = create_task(partners_srv.list_partners(req, limit=None))
+    participants_all_task = create_task(participants_srv.list_participants(req, limit=200, latest_first=True))
 
-    (
-        sectors,
-        news,
-        faqs,
-        speakers,
-        organizers,
-        partners,
-        participants12,
-        participants_expo,
-        participants_forum,
-        participants_both,
-    ) = await gather(
+    # Defensive gather: never raise, we’ll default to [] on exceptions
+    results = await gather(
         sectors_task,
         news_task,
         faqs_task,
         speakers_task,
         organizers_task,
         partners_task,
-        participants12_task,
-        participants_expo_task,
-        participants_forum_task,
-        participants_both_task,
+        participants_all_task,
+        return_exceptions=True,
     )
+
+    def _ok(idx):
+        val = results[idx]
+        if isinstance(val, Exception):
+            log.warning("home(): task %d failed: %r", idx, val)
+            return []
+        return val or []
+
+    sectors = _ok(0)
+    news = _ok(1)
+    faqs = _ok(2)
+    speakers = _ok(3)
+    organizers = _ok(4)
+    partners = _ok(5)
+    participants_all = _ok(6)
+
+    # Derive participants slices locally (keeps one backend call)
+    participants12 = participants_all[:12]
+    participants_expo = [p for p in participants_all if (p.get("role") in {"expo", "both"})][:8]
+    participants_forum = [p for p in participants_all if (p.get("role") in {"forum", "both"})][:8]
+    participants_both = [p for p in participants_all if p.get("role") == "both"][:8]
+
+    # sponsors/statistics (sync; services already hardened)
+    sponsors_top = sponsor_srv.get_top_sponsors(lang=lang, site_id=site_id)
+    sponsors_top_flat = sponsor_srv.get_top_sponsors_flat(lang=lang, site_id=site_id, max_items=5)
+    sponsors_top_view = sponsor_srv.build_top_sponsors_view(lang=lang, site_id=site_id, max_items=5)
+    gold = sponsor_srv.list_all_sponsors_by_tier(tier="gold", lang=lang, site_id=site_id)
+    silver = sponsor_srv.list_all_sponsors_by_tier(tier="silver", lang=lang, site_id=site_id)
+    bronze = sponsor_srv.list_all_sponsors_by_tier(tier="bronze", lang=lang, site_id=site_id)
+    stats = stats_srv.get_statistics(site_id=site_id)
 
     ctx = {
         "request": req,
@@ -88,37 +108,37 @@ async def home(req: Request):
         "settings": settings,
 
         # sponsors/statistics (sync)
-        "sponsors_top": sponsor_srv.get_top_sponsors(lang=lang, site_id=site_id),
-        "sponsors_top_flat": sponsor_srv.get_top_sponsors_flat(lang=lang, site_id=site_id, max_items=5),
-        "sponsors_top_view": sponsor_srv.build_top_sponsors_view(lang=lang, site_id=site_id, max_items=5),
-        "gold": sponsor_srv.list_all_sponsors_by_tier(tier="gold", lang=lang, site_id=site_id),
-        "silver": sponsor_srv.list_all_sponsors_by_tier(tier="silver", lang=lang, site_id=site_id),
-        "bronze": sponsor_srv.list_all_sponsors_by_tier(tier="bronze", lang=lang, site_id=site_id),
-        "stats": stats_srv.get_statistics(site_id=site_id),
+        "sponsors_top": sponsors_top,
+        "sponsors_top_flat": sponsors_top_flat,
+        "sponsors_top_view": sponsors_top_view,
+        "gold": gold,
+        "silver": silver,
+        "bronze": bronze,
+        "stats": stats,
 
         # async results
-        "sectors": sectors or [],
-        "news": news or [],
-        "faqs": faqs or [],
-        "speakers": speakers or [],
+        "sectors": sectors,
+        "news": news,
+        "faqs": faqs,
+        "speakers": speakers,
 
         # organizers
-        "organizers": organizers or [],
+        "organizers": organizers,
         "organizers_data": {
-            "items": organizers or []
+            "items": organizers
         },
 
         # partners
-        "partners": partners or [],
+        "partners": partners,
         "partners_data": {
-            "items": partners or []
+            "items": partners
         },
 
-        # participants
-        "participants": participants12 or [],
-        "participants_expo": participants_expo or [],
-        "participants_forum": participants_forum or [],
-        "participants_both": participants_both or [],
+        # participants (derived locally)
+        "participants": participants12,
+        "participants_expo": participants_expo,
+        "participants_forum": participants_forum,
+        "participants_both": participants_both,
 
         # timer
         "timer": timer_ctx,

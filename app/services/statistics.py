@@ -23,9 +23,9 @@ def _db_session() -> Generator[Session, None, None]:
 
 
 def get_statistics(site_id: Optional[int] = None) -> dict:
-    """
-    Always return a dict with 4 integer keys.
-    """
+    import logging
+    log = logging.getLogger("services.statistics")
+
     defaults = {
         "episodes": 0,
         "delegates": 0,
@@ -33,18 +33,28 @@ def get_statistics(site_id: Optional[int] = None) -> dict:
         "companies": 0,
     }
 
-    with _db_session() as db:
-        stmt = select(Statistics)
-        if site_id:
-            stmt = stmt.where(Statistics.site_id == site_id)
+    try:
+        with _db_session() as db:
+            stmt = select(Statistics)
+            if site_id is not None:
+                stmt = stmt.where(Statistics.site_id == site_id)
 
-        row = db.execute(stmt).scalars().first()
-        if not row:
-            return defaults
+            row = db.execute(stmt).scalars().first()
+            if not row:
+                return defaults
 
-        return {
-            "episodes": int(getattr(row, "episodes", 0) or 0),
-            "delegates": int(getattr(row, "delegates", 0) or 0),
-            "speakers": int(getattr(row, "speakers", 0) or 0),
-            "companies": int(getattr(row, "companies", 0) or 0),
-        }
+            def _to_int(v):
+                try:
+                    return int(v or 0)
+                except Exception:
+                    return 0
+
+            return {
+                "episodes": _to_int(getattr(row, "episodes", 0)),
+                "delegates": _to_int(getattr(row, "delegates", 0)),
+                "speakers": _to_int(getattr(row, "speakers", 0)),
+                "companies": _to_int(getattr(row, "companies", 0)),
+            }
+    except Exception as e:
+        log.exception("get_statistics unexpected: %r", e)
+        return defaults

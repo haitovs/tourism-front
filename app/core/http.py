@@ -1,9 +1,11 @@
 # app/core/http.py
 from __future__ import annotations
 
+import asyncio
 import logging
+import random
 import time
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 import httpx
 from fastapi import Request
@@ -55,6 +57,16 @@ def _current_site_id(req: Request):
     return sid
 
 
+def _norm_timeout(value: Optional[Union[float, int, httpx.Timeout]]) -> Optional[httpx.Timeout]:
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return httpx.Timeout(float(value))
+    if isinstance(value, httpx.Timeout):
+        return value
+    return None
+
+
 def _get_client(req: Request) -> httpx.AsyncClient:
     client = getattr(getattr(req, "app", None), "state", None)
     client = getattr(client, "http", None)
@@ -72,7 +84,15 @@ def _get_client(req: Request) -> httpx.AsyncClient:
     return _fallback_client
 
 
-async def api_get(req: Request, path: str, params=None):
+async def api_get(
+    req: Request,
+    path: str,
+    params=None,
+    *,
+    timeout: Optional[Union[float, int, httpx.Timeout]] = None,
+    retries: int = 0,
+    soft: bool = False,
+):
     params = dict(params or {})
     params.setdefault("lang", _current_lang(req))
 
@@ -96,36 +116,52 @@ async def api_get(req: Request, path: str, params=None):
         headers["Host"] = settings.BACKEND_HOST_HEADER
 
     url = settings.BACKEND_BASE_URL.rstrip("/") + "/" + path.lstrip("/")
-
     client = _get_client(req)
-    t0 = time.perf_counter()
-    try:
-        r = await client.get(url, params=params, headers=headers)
-        r.raise_for_status()
+    per_call_timeout = _norm_timeout(timeout)
 
-        if "application/json" in (r.headers.get("content-type") or ""):
-            data = r.json()
-        else:
-            data = r.text
+    attempt = 0
+    t0 = time.perf_counter()
+
+    while True:
         try:
-            kind = f"list:{len(data)}" if isinstance(data, list) else f"type={type(data).__name__}"
-            log.debug("[HTTP] GET %s -> %s (status=%s, %dB)", str(r.url), kind, r.status_code, len(r.content))
-        except Exception:
-            pass
-        return data
-    except httpx.HTTPError as e:
-        body_preview = ""
-        try:
-            resp = getattr(e, "response", None)
-            if resp is not None:
-                body_preview = _debug_preview(resp.text)
-        except Exception:
-            pass
-        log.error("[HTTP] GET %s failed: %s | %s", url, repr(e), body_preview)
-        raise
-    finally:
-        dt = (time.perf_counter() - t0) * 1000
-        log.info("[HTTP] GET %s in %.1f ms", url, dt)
+            r = await client.get(url, params=params, headers=headers, timeout=per_call_timeout)
+            r.raise_for_status()
+            data = r.json() if "application/json" in (r.headers.get("content-type") or "") else r.text
+            try:
+                kind = f"list:{len(data)}" if isinstance(data, list) else f"type={type(data).__name__}"
+                log.debug("[HTTP] GET %s -> %s (status=%s, %dB)", str(r.url), kind, r.status_code, len(r.content))
+            except Exception:
+                pass
+            return data
+
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            if attempt < retries:
+                backoff = 0.25 * (2**attempt) + random.uniform(0, 0.2)
+                log.warning("[HTTP] timeout on %s (attempt %d/%d), retrying in %.2fs", url, attempt + 1, retries + 1, backoff)
+                await asyncio.sleep(backoff)
+                attempt += 1
+                continue
+            log.error("[HTTP] GET %s failed (timeout): %r", url, e)
+            if soft:
+                return None
+            raise
+
+        except httpx.HTTPError as e:
+            body_preview = ""
+            try:
+                resp = getattr(e, "response", None)
+                if resp is not None:
+                    body_preview = (resp.text[:400] + "…") if len(resp.text) > 400 else resp.text
+            except Exception:
+                pass
+            log.error("[HTTP] GET %s failed: %s | %s", url, repr(e), body_preview)
+            if soft:
+                return None
+            raise
+
+        finally:
+            dt = (time.perf_counter() - t0) * 1000
+            log.info("[HTTP] GET %s in %.1f ms", url, dt)
 
 
 async def api_post(req: Request, path: str, data: Optional[Dict[str, Any]] = None, files=None) -> Any:

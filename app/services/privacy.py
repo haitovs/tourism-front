@@ -42,7 +42,6 @@ def _md_to_html(md_text: str | None) -> str:
         return "".join(html_blocks)
 
 
-# Split sections by "## Heading" or "1. Heading"
 _HEADING_RX = re.compile(r"^(?:\s{0,3}(?:#{2,6}\s+|(?:\d+)\.\s+))(?P<title>.+?)\s*$", re.MULTILINE)
 
 
@@ -65,28 +64,32 @@ def _split_sections(md_text: str) -> list[dict]:
 
 
 def get_latest_privacy(*, site_id: Optional[int] = None) -> Optional[dict]:
-    """
-    Return the most recently updated published PrivacyPolicy for the site, or global fallback.
-    """
-    with _db_session() as db:
-        base = select(PrivacyPolicy).where(PrivacyPolicy.published.is_(True))
+    import logging
+    log = logging.getLogger("services.privacy")
 
-        r = None
-        if site_id is not None:
-            r = (db.execute(base.where(PrivacyPolicy.site_id == site_id).order_by(desc(PrivacyPolicy.updated_at), desc(PrivacyPolicy.id)).limit(1)).scalars().first())
+    try:
+        with _db_session() as db:
+            base = select(PrivacyPolicy).where(PrivacyPolicy.published.is_(True))
 
-        if not r:
-            r = (db.execute(base.order_by(desc(PrivacyPolicy.updated_at), desc(PrivacyPolicy.id)).limit(1)).scalars().first())
+            r = None
+            if site_id is not None:
+                r = (db.execute(base.where(PrivacyPolicy.site_id == site_id).order_by(desc(PrivacyPolicy.updated_at), desc(PrivacyPolicy.id)).limit(1)).scalars().first())
 
-        if not r:
-            return None
+            if not r:
+                r = (db.execute(base.order_by(desc(PrivacyPolicy.updated_at), desc(PrivacyPolicy.id)).limit(1)).scalars().first())
 
-        return {
-            "id": r.id,
-            "title": r.title or "Privacy Policy",
-            "version": r.version,
-            "content_html": _md_to_html(r.content_md),
-            "sections": _split_sections(r.content_md or ""),
-            "created_at": r.created_at,
-            "updated_at": r.updated_at,
-        }
+            if not r:
+                return None
+
+            return {
+                "id": r.id,
+                "title": r.title or "Privacy Policy",
+                "version": r.version,
+                "content_html": _md_to_html(r.content_md),
+                "sections": _split_sections(r.content_md or ""),
+                "created_at": r.created_at,
+                "updated_at": r.updated_at,
+            }
+    except Exception as e:
+        log.exception("get_latest_privacy unexpected: %r", e)
+        return None

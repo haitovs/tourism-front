@@ -11,15 +11,32 @@ async def list_faqs(
     *,
     limit: int | None = None,
 ) -> list[dict]:
-    """
-    Return published FAQs from backend (already localized via ?lang cookie/header),
-    preserving the {id, question, answer_md} shape used by templates.
-    """
+    import asyncio
+    import logging
+
+    import httpx
+    log = logging.getLogger("services.faq")
+
     params = {}
     if limit:
         params["limit"] = max(1, int(limit))
 
-    items = await api_get(req, "/faq/", params=params or None)
+    items = None
+    for attempt in range(2):
+        try:
+            items = await api_get(req, "/faq/", params=params or None)
+            break
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            log.warning("list_faqs timeout (attempt %d/2): %s", attempt + 1, e)
+            if attempt == 0:
+                await asyncio.sleep(0.3)
+                continue
+        except httpx.HTTPError as e:
+            log.error("list_faqs HTTP error: %r", e)
+            break
+        except Exception as e:
+            log.exception("list_faqs unexpected: %r", e)
+            break
 
     return [{
         "id": it.get("id"),

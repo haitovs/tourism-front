@@ -52,16 +52,36 @@ async def get_latest_news(
     limit: int = 5,
     include_unpublished: bool = False,
 ) -> list[dict]:
-    items = await api_get(req, f"/news/?skip=0&limit={max(1, int(limit))}") or []
+    import asyncio
+    import logging
+
+    import httpx
+    log = logging.getLogger("services.news")
+
+    items = None
+    for attempt in range(2):
+        try:
+            items = await api_get(req, f"/news/?skip=0&limit={max(1, int(limit))}")
+            break
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            log.warning("get_latest_news timeout (attempt %d/2): %s", attempt + 1, e)
+            if attempt == 0:
+                await asyncio.sleep(0.35)
+                continue
+        except httpx.HTTPError as e:
+            log.error("get_latest_news HTTP error: %r", e)
+            break
+        except Exception as e:
+            log.exception("get_latest_news unexpected: %r", e)
+            break
+
+    items = items or []
 
     if not include_unpublished:
         items = [it for it in items if it.get("is_published", True)]
 
     def _sort_key(it: dict):
-        return (
-            it.get("created_at") or "",
-            it.get("id") or 0,
-        )
+        return (it.get("created_at") or "", it.get("id") or 0)
 
     items.sort(key=_sort_key, reverse=True)
     items = items[:max(1, int(limit))]
@@ -73,10 +93,29 @@ async def get_news(
     req: Request,
     news_id: int,
 ) -> Optional[dict]:
-    """
-    Fetch single news item and normalize to the card/detail shape.
-    """
-    row = await api_get(req, f"/news/{news_id}")
+    import asyncio
+    import logging
+
+    import httpx
+    log = logging.getLogger("services.news")
+
+    row = None
+    for attempt in range(2):
+        try:
+            row = await api_get(req, f"/news/{news_id}")
+            break
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            log.warning("get_news[%s] timeout (attempt %d/2): %s", news_id, attempt + 1, e)
+            if attempt == 0:
+                await asyncio.sleep(0.35)
+                continue
+        except httpx.HTTPError as e:
+            log.error("get_news[%s] HTTP error: %r", news_id, e)
+            return None
+        except Exception as e:
+            log.exception("get_news[%s] unexpected: %r", news_id, e)
+            return None
+
     if not row:
         return None
 

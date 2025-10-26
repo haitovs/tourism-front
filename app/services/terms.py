@@ -64,28 +64,32 @@ def _split_sections(md_text: str) -> list[dict]:
 
 
 def get_latest_terms(*, site_id: Optional[int] = None) -> Optional[dict]:
-    """
-    Return the most recently updated published TermsOfUse for the site, or global fallback.
-    """
-    with _db_session() as db:
-        base = select(TermsOfUse).where(TermsOfUse.published.is_(True))
+    import logging
+    log = logging.getLogger("services.terms")
 
-        r = None
-        if site_id is not None:
-            r = (db.execute(base.where(TermsOfUse.site_id == site_id).order_by(desc(TermsOfUse.updated_at), desc(TermsOfUse.id)).limit(1)).scalars().first())
+    try:
+        with _db_session() as db:
+            base = select(TermsOfUse).where(TermsOfUse.published.is_(True))
 
-        if not r:
-            r = (db.execute(base.order_by(desc(TermsOfUse.updated_at), desc(TermsOfUse.id)).limit(1)).scalars().first())
+            r = None
+            if site_id is not None:
+                r = (db.execute(base.where(TermsOfUse.site_id == site_id).order_by(desc(TermsOfUse.updated_at), desc(TermsOfUse.id)).limit(1)).scalars().first())
 
-        if not r:
-            return None
+            if not r:
+                r = (db.execute(base.order_by(desc(TermsOfUse.updated_at), desc(TermsOfUse.id)).limit(1)).scalars().first())
 
-        return {
-            "id": r.id,
-            "title": r.title or "Terms of Use",
-            "version": r.version,
-            "content_html": _md_to_html(r.content_md),
-            "sections": _split_sections(r.content_md or ""),
-            "created_at": r.created_at,
-            "updated_at": r.updated_at,
-        }
+            if not r:
+                return None
+
+            return {
+                "id": r.id,
+                "title": r.title or "Terms of Use",
+                "version": r.version,
+                "content_html": _md_to_html(r.content_md),
+                "sections": _split_sections(r.content_md or ""),
+                "created_at": r.created_at,
+                "updated_at": r.updated_at,
+            }
+    except Exception as e:
+        log.exception("get_latest_terms unexpected: %r", e)
+        return None

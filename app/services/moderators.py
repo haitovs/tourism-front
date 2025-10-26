@@ -45,7 +45,30 @@ async def list_moderators(
     limit: Optional[int] = None,
     latest_first: bool = True,
 ) -> list[dict]:
-    items = await api_get(req, "/moderators/") or []
+    import asyncio
+    import logging
+
+    import httpx
+    log = logging.getLogger("services.moderators")
+
+    items = None
+    for attempt in range(2):
+        try:
+            items = await api_get(req, "/moderators/")
+            break
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            log.warning("list_moderators timeout (attempt %d/2): %s", attempt + 1, e)
+            if attempt == 0:
+                await asyncio.sleep(0.35)
+                continue
+        except httpx.HTTPError as e:
+            log.error("list_moderators HTTP error: %r", e)
+            break
+        except Exception as e:
+            log.exception("list_moderators unexpected: %r", e)
+            break
+
+    items = items or []
     items.sort(key=lambda x: x.get("id") or 0, reverse=latest_first)
     if limit:
         items = items[:max(1, int(limit))]
@@ -57,7 +80,29 @@ async def get_moderator(
     *,
     moderator_id: int,
 ) -> Optional[dict]:
-    row = await api_get(req, f"/moderators/{moderator_id}")
+    import asyncio
+    import logging
+
+    import httpx
+    log = logging.getLogger("services.moderators")
+
+    row = None
+    for attempt in range(2):
+        try:
+            row = await api_get(req, f"/moderators/{moderator_id}")
+            break
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            log.warning("get_moderator[%s] timeout (attempt %d/2): %s", moderator_id, attempt + 1, e)
+            if attempt == 0:
+                await asyncio.sleep(0.35)
+                continue
+        except httpx.HTTPError as e:
+            log.error("get_moderator[%s] HTTP error: %r", moderator_id, e)
+            return None
+        except Exception as e:
+            log.exception("get_moderator[%s] unexpected: %r", moderator_id, e)
+            return None
+
     return _row_to_dict(row) if row else None
 
 
@@ -68,10 +113,33 @@ async def list_moderators_page(
     per_page: int = 12,
     latest_first: bool = True,
 ) -> tuple[list[dict], int, int]:
+    import asyncio
+    import logging
+
+    import httpx
+    log = logging.getLogger("services.moderators")
+
     page = max(1, int(page))
     per_page = max(1, int(per_page))
 
-    items = await api_get(req, "/moderators/") or []
+    items = None
+    for attempt in range(2):
+        try:
+            items = await api_get(req, "/moderators/")
+            break
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            log.warning("list_moderators_page timeout (attempt %d/2): %s", attempt + 1, e)
+            if attempt == 0:
+                await asyncio.sleep(0.35)
+                continue
+        except httpx.HTTPError as e:
+            log.error("list_moderators_page HTTP error: %r", e)
+            break
+        except Exception as e:
+            log.exception("list_moderators_page unexpected: %r", e)
+            break
+
+    items = items or []
     items.sort(key=lambda x: x.get("id") or 0, reverse=latest_first)
 
     total_items = len(items)

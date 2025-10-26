@@ -259,17 +259,46 @@ async def list_days_with_episode_views(
     site_id: Optional[int] = None,
     only_published: bool = True,
 ) -> List[dict]:
+    import asyncio
+    import logging
+    log = logging.getLogger("services.agenda.compose")
+
+    # Fetch days + people lists concurrently
+    days_task = asyncio.create_task(list_days(req, site_id=site_id, only_published=only_published))
+    speakers_task = asyncio.create_task(_safe_get(req, "/speakers/"))
+    moderators_task = asyncio.create_task(_safe_get(req, "/moderators/"))
+
+    days, speakers_rows, moderators_rows = await asyncio.gather(days_task, speakers_task, moderators_task)
+    speakers_rows = speakers_rows if isinstance(speakers_rows, list) else []
+    moderators_rows = moderators_rows if isinstance(moderators_rows, list) else []
+
     out: List[dict] = []
-    days = await list_days(req, site_id=site_id, only_published=only_published)
+    if not days:
+        return out
 
-    # Pull these once — your logs show they are available
-    speakers_rows = await _safe_get(req, "/speakers/") or []
-    moderators_rows = await _safe_get(req, "/moderators/") or []
+    # Fetch all episodes for all days concurrently
+    ep_tasks = [asyncio.create_task(list_episodes_for_day(req, day_id=d["id"], site_id=site_id, only_published=only_published)) for d in days if d and d.get("id") is not None]
+    ep_results = await asyncio.gather(*ep_tasks, return_exceptions=True)
 
+    # Map day -> episodes safely
+    day_to_eps: List[List[dict]] = []
+    i = 0
     for d in days:
-        raw_eps = await list_episodes_for_day(req, day_id=d["id"], site_id=site_id, only_published=only_published)
+        if d and d.get("id") is not None:
+            res = ep_results[i]
+            i += 1
+            if isinstance(res, Exception):
+                log.warning("episodes for day %s failed: %r", d.get("id"), res)
+                day_to_eps.append([])
+            else:
+                day_to_eps.append(res or [])
+        else:
+            day_to_eps.append([])
+
+    # Build views and attach speakers/moderators
+    for d, raw_eps in zip(days, day_to_eps):
         evs: List[dict] = []
-        for e in raw_eps:
+        for e in raw_eps or []:
             ev = {
                 "id": _as_int(e.get("id")),
                 "slug": e.get("slug", "") or "",
@@ -301,8 +330,8 @@ async def list_days_with_episode_views(
             ev["top_sponsor"] = ev["sponsors"][0] if ev["sponsors"] else _sponsor_from_episode(e)
             evs.append(ev)
 
-        _attach_people_from_rows(speakers_rows if isinstance(speakers_rows, list) else [], evs, role="speaker")
-        _attach_people_from_rows(moderators_rows if isinstance(moderators_rows, list) else [], evs, role="moderator")
+        _attach_people_from_rows(speakers_rows, evs, role="speaker")
+        _attach_people_from_rows(moderators_rows, evs, role="moderator")
 
         out.append({**d, "episodes": evs})
 

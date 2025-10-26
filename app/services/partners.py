@@ -25,7 +25,31 @@ async def list_partners(
     limit: Optional[int] = None,
     latest_first: bool = True,
 ) -> List[Dict]:
-    rows = await api_get(req, "/partners/") or []
+    import asyncio
+    import logging
+
+    import httpx
+
+    log = logging.getLogger("services.partners")
+
+    rows = None
+    for attempt in range(2):  # try once, then one retry
+        try:
+            rows = await api_get(req, "/partners/")
+            break
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            log.warning("partners: timeout (attempt %d/2): %s", attempt + 1, e)
+            if attempt == 0:
+                await asyncio.sleep(0.5)  # small backoff
+                continue
+        except httpx.HTTPError as e:
+            log.error("partners: HTTP error: %r", e)
+            break
+        except Exception as e:
+            log.exception("partners: unexpected error: %r", e)
+            break
+
+    rows = rows or []
     rows.sort(key=lambda x: x.get("id") or 0, reverse=latest_first)
     if limit:
         rows = rows[:max(1, int(limit))]

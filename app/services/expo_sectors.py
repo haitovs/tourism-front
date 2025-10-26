@@ -2,15 +2,12 @@ from __future__ import annotations
 
 import re
 from collections.abc import Iterable
-from contextlib import contextmanager
-from typing import Generator, Optional
+from typing import Optional
 from urllib.parse import urljoin
 
 import markdown as _md_lib
 from fastapi import Request
-from sqlalchemy.orm import Session
 
-from app.core.db import get_db
 from app.core.http import api_get
 from app.core.settings import settings
 
@@ -126,14 +123,31 @@ async def list_home_sectors(
     latest_first: bool = True,
     site_id: Optional[int] = None,
 ) -> list[dict]:
-    """
-    Fetch sectors from backend (already localized by middleware ?lang), then
-    return a lightweight view-model used on the home page.
-    """
-    # Backend list endpoint (tenant resolved server-side)
-    items = await api_get(req, "/expo-sectors/")
+    import asyncio
+    import logging
 
-    # Sort client-side if needed (fallback to id as proxy of recency)
+    import httpx
+    log = logging.getLogger("services.expo_sectors")
+
+    items = None
+    for attempt in range(2):  # 1 try + 1 retry
+        try:
+            items = await api_get(req, "/expo-sectors/")
+            break
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            log.warning("list_home_sectors timeout (attempt %d/2): %s", attempt + 1, e)
+            if attempt == 0:
+                await asyncio.sleep(0.35)
+                continue
+        except httpx.HTTPError as e:
+            log.error("list_home_sectors HTTP error: %r", e)
+            break
+        except Exception as e:
+            log.exception("list_home_sectors unexpected: %r", e)
+            break
+
+    items = items or []
+
     if latest_first:
         try:
             items = sorted(items, key=lambda x: int(x.get("id", 0)), reverse=True)
@@ -151,10 +165,29 @@ async def list_home_sectors(
 
 
 async def get_sector(req: Request, sector_id: int, site_id: Optional[int] = None) -> Optional[dict]:
-    """
-    Fetch a single sector from backend and adapt it to the template view-model.
-    """
-    it = await api_get(req, f"/expo-sectors/{sector_id}")
+    import asyncio
+    import logging
+
+    import httpx
+    log = logging.getLogger("services.expo_sectors")
+
+    it = None
+    for attempt in range(2):
+        try:
+            it = await api_get(req, f"/expo-sectors/{sector_id}")
+            break
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            log.warning("get_sector[%s] timeout (attempt %d/2): %s", sector_id, attempt + 1, e)
+            if attempt == 0:
+                await asyncio.sleep(0.35)
+                continue
+        except httpx.HTTPError as e:
+            log.error("get_sector[%s] HTTP error: %r", sector_id, e)
+            return None
+        except Exception as e:
+            log.exception("get_sector[%s] unexpected: %r", sector_id, e)
+            return None
+
     if not it:
         return None
 
@@ -165,7 +198,6 @@ async def get_sector(req: Request, sector_id: int, site_id: Optional[int] = None
     intro_html = _first_paragraph_html(description)
     body_html = md_to_html(extended_md or "")
 
-    # Backend returns images as [{id, path}], convert to URLs
     all_images = _resolve_image_list((it.get("images") or []))
     images_hero = all_images[:3]
     images_rest = all_images[3:]
@@ -173,15 +205,15 @@ async def get_sector(req: Request, sector_id: int, site_id: Optional[int] = None
     return {
         "id": it.get("id"),
         "header": header,
-        "subtitle": None,  # not provided by backend
+        "subtitle": None,
         "description": description,
         "logo_url": _resolve_logo_url(it.get("logo")),
-        "hero_url": None,  # not provided by backend
-        "tagline": None,  # not provided by backend
+        "hero_url": None,
+        "tagline": None,
         "intro_html": intro_html,
         "body_html": body_html,
         "images_hero": images_hero,
         "images_rest": images_rest,
-        "points_left": None,  # not provided by backend
-        "points_right": None,  # not provided by backend
+        "points_left": None,
+        "points_right": None,
     }
