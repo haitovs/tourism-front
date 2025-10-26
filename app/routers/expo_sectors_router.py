@@ -14,7 +14,8 @@ router = APIRouter()
 @router.get("/expo-sectors", response_class=HTMLResponse)
 async def expo_sectors_page(req: Request):
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
-    sectors = sectors_srv.list_home_sectors(limit=1000, latest_first=False)
+    # ⬇️ pass req and await the async function
+    sectors = await sectors_srv.list_home_sectors(req, limit=1000, latest_first=False)
     ctx = {"request": req, "lang": lang, "settings": settings, "sectors": sectors}
     return templates.TemplateResponse("expo_sectors.html", ctx)
 
@@ -22,7 +23,8 @@ async def expo_sectors_page(req: Request):
 @router.get("/expo-sectors/{sector_id}", response_class=HTMLResponse)
 async def expo_sector_detail(req: Request, sector_id: int):
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
-    sector = sectors_srv.get_sector(sector_id=sector_id)
+    # ⬇️ pass req and await the async function
+    sector = await sectors_srv.get_sector(req=req, sector_id=sector_id)
     if not sector:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Sector not found")
 
