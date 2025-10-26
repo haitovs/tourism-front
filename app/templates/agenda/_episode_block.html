@@ -167,14 +167,6 @@
                     </ul>
                 </div>
                 {% endif %}
-
-                {# Sponsor (nice to show in expanded too) #}
-                {% if top_sponsor %}
-                <div class="mt-4 flex justify-end">
-                    {{ sponsor_badge(top_sponsor) }}
-                </div>
-                {% endif %}
-
             </section>
         </div>
 
@@ -209,7 +201,7 @@
                             @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
                             x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}"
                             :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
-                            {{ t('common.read_more') }}
+                            {{ t('btn.read_more') }}
                         </button>
 
                         {% if top_sponsor %}

@@ -5,7 +5,6 @@
     {# ---------- HERO ---------- #}
     {% set hero_src = (sec.hero_url or sec.logo_url) if sec else None %}
     <section class="relative w-full h-[320px] md:h-[380px]">
-        {% set hero_src = (sec.hero_url or sec.logo_url) if sec else None %}
         {% if hero_src %}
         <img src="{{ hero_src }}" alt="" class="absolute inset-0 w-full h-full object-cover" />
         <div class="absolute inset-0 bg-black/40"></div>
@@ -54,16 +53,17 @@
             <p class="mt-6 text-black text-[25px] leading-[40px] font-['Roboto']">{{ sec.description }}</p>
             {% endif %}
 
+            {# ---------- TOP 3 IMAGES (LESS ROUNDED) ---------- #}
             {% set hero_imgs = sec.images_hero or [] %}
             {% if hero_imgs|length > 0 %}
             <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
                 {% for u in hero_imgs[:3] %}
-                <div class="mx-auto w-[min(100%,350px)] aspect-square rounded-[40px] overflow-hidden bg-slate-100">
+                <div class="mx-auto w-[min(100%,350px)] aspect-square rounded-[16px] overflow-hidden bg-slate-100">
                     <img src="{{ u }}" alt="" class="w-full h-full object-cover" />
                 </div>
                 {% endfor %}
                 {% if hero_imgs|length < 3 %} {% for _ in range(3 - hero_imgs|length) %} <div
-                    class="mx-auto w-[min(100%,350px)] aspect-square rounded-[40px] bg-slate-100/70">
+                    class="mx-auto w-[min(100%,350px)] aspect-square rounded-[16px] bg-slate-100/70">
             </div>
             {% endfor %}
             {% endif %}
@@ -109,21 +109,22 @@
         {% endif %}
         {% endif %}
 
+        {# ---------- REST GALLERY (SLIGHTLY MORE ROUNDED THAN TOP, BUT LESS THAN ORIGINAL) ---------- #}
         {% set rest = sec.images_rest or [] %}
         {% if rest|length > 0 %}
         <div class="mt-10">
             <div class="hidden lg:grid gap-4"
                 style="grid-template-columns: 390px 1fr 1fr; grid-template-rows: 261px 1fr">
-                <div class="row-span-2 rounded-[40px] overflow-hidden bg-slate-100 h-[571px]">
+                <div class="row-span-2 rounded-[24px] overflow-hidden bg-slate-100 h-[571px]">
                     <img src="{{ rest[0] }}" alt="" class="w-full h-full object-cover" />
                 </div>
-                <div class="rounded-[40px] overflow-hidden bg-slate-100 h-[261px]">
+                <div class="rounded-[24px] overflow-hidden bg-slate-100 h-[261px]">
                     <img src="{{ rest[1] if rest|length>1 else rest[0] }}" alt="" class="w-full h-full object-cover" />
                 </div>
-                <div class="rounded-[40px] overflow-hidden bg-slate-100 h-[261px]">
+                <div class="rounded-[24px] overflow-hidden bg-slate-100 h-[261px]">
                     <img src="{{ rest[2] if rest|length>2 else rest[0] }}" alt="" class="w-full h-full object-cover" />
                 </div>
-                <div class="col-span-2 rounded-[40px] overflow-hidden bg-slate-100 h-[280px]">
+                <div class="col-span-2 rounded-[24px] overflow-hidden bg-slate-100 h-[280px]">
                     <img src="{{ rest[3] if rest|length>3 else (rest[2] if rest|length>2 else rest[0]) }}" alt=""
                         class="w-full h-full object-cover" />
                 </div>
@@ -131,7 +132,7 @@
 
             <div class="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {% for u in rest %}
-                <div class="w-full rounded-[40px] overflow-hidden bg-slate-100 aspect-[4/3]">
+                <div class="w-full rounded-[24px] overflow-hidden bg-slate-100 aspect-[4/3]">
                     <img src="{{ u }}" alt="" class="w-full h-full object-cover" />
                 </div>
                 {% endfor %}
