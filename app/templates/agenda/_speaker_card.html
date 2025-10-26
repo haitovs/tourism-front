@@ -1,28 +1,44 @@
-{# app/templates/agenda/_speaker_card.html #} {% macro speaker_card(sp) -%}
-<div class="relative w-[265px] h-[320px] rounded-[20px] overflow-hidden bg-slate-100">
-    {% if sp.photo_url %}
-    <img src="{{ sp.photo_url }}" alt="{{ sp.fullname }}" class="absolute inset-0 w-full h-full object-cover" />
-    {% endif %}
-    <div class="absolute inset-x-0 bottom-0 h-[118px] bg-[rgba(30,30,30,0.65)] rounded-b-[20px] p-3">
-        <div class="font-['Roboto'] text-white">
-            <div class="font-bold text-[18px] leading-[21px] truncate">{{ sp.fullname }}</div>
-            {% if sp.position or sp.company %}
-            <div class="mt-1 text-[16px] leading-[19px] line-clamp-2 opacity-95">
-                {{ sp.position }}{% if sp.company %}, {{ sp.company }}{% endif %}
+{# ============================
+app/templates/agenda/_speaker_card.html
+- Desktop-only responsive sizing (md+): gets smaller on narrower desktop widths
+- Entire card is clickable: goes to the speaker page
+- Works anywhere you import it
+============================ #}
+{% macro speaker_card(sp, href=None) -%}
+{# Derive an href if one is not passed in. Adjust the fallback to match your routes. #}
+{% set _href = href or sp.url or ('/speakers/' ~ (sp.slug or sp.id)) %}
+<a href="{{ _href }}"
+    class="group relative block rounded-[20px] overflow-hidden bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0ea36a]"
+    aria-label="{{ sp.fullname }}">
+    <div class="relative
+                md:w-[232px] md:h-[285px]
+                lg:w-[248px] lg:h-[300px]
+                xl:w-[265px] xl:h-[320px]">
+        {% if sp.photo_url %}
+        <img src="{{ sp.photo_url }}" alt="{{ sp.fullname }}" class="absolute inset-0 w-full h-full object-cover" />
+        {% else %}
+        <img src="/static/img/img_placeholder.png" alt="{{ sp.fullname }}"
+            class="absolute inset-0 w-full h-full object-cover opacity-70" />
+        {% endif %}
+
+        <div class="absolute inset-x-0 bottom-0 h-[118px] bg-[rgba(30,30,30,0.65)] rounded-b-[20px] p-3">
+            <div class="font-['Roboto'] text-white">
+                <div class="font-bold text-[18px] leading-[21px] truncate">{{ sp.fullname }}</div>
+                {% if sp.position or sp.company %}
+                <div class="mt-1 text-[16px] leading-[19px] line-clamp-2 opacity-95">
+                    {{ sp.position }}{% if sp.company %}, {{ sp.company }}{% endif %}
+                </div>
+                {% endif %}
             </div>
-            {% endif %}
-        </div>
-        <div class="absolute right-3 bottom-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none">
-                <path
-                    d="M9 6l6 6-6 6"
-                    stroke="#FFFFFF"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                />
-            </svg>
+            <div
+                class="absolute right-3 bottom-3 transition-transform duration-200 ease-out group-hover:translate-x-0.5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none"
+                    aria-hidden="true">
+                    <path d="M9 6l6 6-6 6" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </div>
         </div>
     </div>
-</div>
+</a>
 {%- endmacro %}

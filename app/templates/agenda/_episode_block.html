@@ -345,40 +345,16 @@
                     {# Speakers list (unchanged) #}
                     {% if _speakers %}
                     <section x-data="{ track: null }">
-                        <h4 class="font-['Montserrat'] font-semibold text-[22px] leading-[26px] text-black">
-                            {{ t('agenda.speakers') }}
-                        </h4>
+                        <h4 class="font-['Montserrat'] font-semibold text-[22px] leading-[26px] text-black">{{
+                            t('agenda.speakers') }}</h4>
                         <div class="mt-6">
                             <ul x-ref="track" x-init="track = $refs.track"
                                 class="no-scrollbar snap-x snap-mandatory overflow-x-auto flex gap-6 pr-2"
                                 style="scroll-behavior: smooth" aria-label="{{ t('agenda.speakers_carousel') }}">
                                 {% for sp in _speakers %}
+                                {% set sp_href = sp.url or ('/speakers/' ~ (sp.slug or sp.id)) %}
                                 <li class="snap-start shrink-0">
-                                    <article
-                                        class="relative w-[265px] h-[320px] rounded-[20px] overflow-hidden shadow-lg">
-                                        <img src="{{ sp.photo_url or '/static/img/img_placeholder.png' }}"
-                                            alt="{{ sp.fullname }}" class="absolute inset-0 w-full h-full object-cover"
-                                            loading="lazy" />
-                                        <div
-                                            class="absolute bottom-0 left-0 right-0 h-[118px] bg-[rgba(30,30,30,0.65)] rounded-b-[20px] p-4">
-                                            <div
-                                                class="font-['Roboto'] font-bold text-[18px] leading-[21px] text-white truncate">
-                                                {{ sp.fullname }}
-                                            </div>
-                                            <div
-                                                class="mt-1 font-['Roboto'] font-normal text-[16px] leading-[19px] text-white line-clamp-2">
-                                                {{ sp.position }}{% if sp.company %}, {{ sp.company }}{% endif %}
-                                            </div>
-                                        </div>
-                                        <div class="absolute bottom-4 right-4 w-4 h-4 border border-white rounded-full flex items-center justify-center"
-                                            aria-hidden="true">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                                stroke="white" stroke-width="1.5" class="w-3 h-3">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                                            </svg>
-                                        </div>
-                                    </article>
+                                    {{ card.speaker_card(sp, href=sp_href) }}
                                 </li>
                                 {% endfor %}
                             </ul>

@@ -34,6 +34,7 @@
     --radius-lg: 0.5rem;
     --radius-xl: 0.75rem;
     --radius-2xl: 1rem;
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
     --blur-sm: 8px;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -864,6 +865,9 @@
   .w-\[190px\] {
     width: 190px;
   }
+  .w-\[210px\] {
+    width: 210px;
+  }
   .w-\[227px\] {
     width: 227px;
   }
@@ -1053,8 +1057,14 @@
   .flex-1 {
     flex: 1;
   }
+  .shrink {
+    flex-shrink: 1;
+  }
   .shrink-0 {
     flex-shrink: 0;
+  }
+  .grow {
+    flex-grow: 1;
   }
   .grow-0 {
     flex-grow: 0;
@@ -2512,9 +2522,17 @@
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
+  .duration-200 {
+    --tw-duration: 200ms;
+    transition-duration: 200ms;
+  }
   .duration-300 {
     --tw-duration: 300ms;
     transition-duration: 300ms;
+  }
+  .ease-out {
+    --tw-ease: var(--ease-out);
+    transition-timing-function: var(--ease-out);
   }
   .outline-none {
     --tw-outline-style: none;
@@ -2526,6 +2544,14 @@
   }
   .\[--gap\:\.75rem\] {
     --gap: .75rem;
+  }
+  .group-hover\:translate-x-0\.5 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        --tw-translate-x: calc(var(--spacing) * 0.5);
+        translate: var(--tw-translate-x) var(--tw-translate-y);
+      }
+    }
   }
   .group-hover\:translate-x-\[2px\] {
     &:is(:where(.group):hover *) {
@@ -2898,6 +2924,11 @@
       height: 96px;
     }
   }
+  .sm\:h-\[108px\] {
+    @media (width >= 40rem) {
+      height: 108px;
+    }
+  }
   .sm\:h-\[110px\] {
     @media (width >= 40rem) {
       height: 110px;
@@ -2911,6 +2942,11 @@
   .sm\:h-\[200px\] {
     @media (width >= 40rem) {
       height: 200px;
+    }
+  }
+  .sm\:h-\[290px\] {
+    @media (width >= 40rem) {
+      height: 290px;
     }
   }
   .sm\:h-\[320px\] {
@@ -2986,6 +3022,11 @@
   .sm\:w-\[220px\] {
     @media (width >= 40rem) {
       width: 220px;
+    }
+  }
+  .sm\:w-\[230px\] {
+    @media (width >= 40rem) {
+      width: 230px;
     }
   }
   .sm\:w-\[260px\] {
@@ -3210,6 +3251,11 @@
       font-size: 16px;
     }
   }
+  .sm\:text-\[17px\] {
+    @media (width >= 40rem) {
+      font-size: 17px;
+    }
+  }
   .sm\:text-\[28px\] {
     @media (width >= 40rem) {
       font-size: 28px;
@@ -3362,9 +3408,24 @@
       height: 108px;
     }
   }
+  .md\:h-\[112px\] {
+    @media (width >= 48rem) {
+      height: 112px;
+    }
+  }
   .md\:h-\[240px\] {
     @media (width >= 48rem) {
       height: 240px;
+    }
+  }
+  .md\:h-\[285px\] {
+    @media (width >= 48rem) {
+      height: 285px;
+    }
+  }
+  .md\:h-\[300px\] {
+    @media (width >= 48rem) {
+      height: 300px;
     }
   }
   .md\:h-\[380px\] {
@@ -3402,9 +3463,19 @@
       width: 104px;
     }
   }
+  .md\:w-\[232px\] {
+    @media (width >= 48rem) {
+      width: 232px;
+    }
+  }
   .md\:w-\[240px\] {
     @media (width >= 48rem) {
       width: 240px;
+    }
+  }
+  .md\:w-\[245px\] {
+    @media (width >= 48rem) {
+      width: 245px;
     }
   }
   .md\:w-\[284px\] {
@@ -3780,9 +3851,24 @@
       height: 24px;
     }
   }
+  .lg\:h-\[118px\] {
+    @media (width >= 64rem) {
+      height: 118px;
+    }
+  }
   .lg\:h-\[140px\] {
     @media (width >= 64rem) {
       height: 140px;
+    }
+  }
+  .lg\:h-\[300px\] {
+    @media (width >= 64rem) {
+      height: 300px;
+    }
+  }
+  .lg\:h-\[320px\] {
+    @media (width >= 64rem) {
+      height: 320px;
     }
   }
   .lg\:h-\[500px\] {
@@ -3803,6 +3889,16 @@
   .lg\:w-\[110px\] {
     @media (width >= 64rem) {
       width: 110px;
+    }
+  }
+  .lg\:w-\[248px\] {
+    @media (width >= 64rem) {
+      width: 248px;
+    }
+  }
+  .lg\:w-\[265px\] {
+    @media (width >= 64rem) {
+      width: 265px;
     }
   }
   .lg\:w-\[300px\] {
@@ -4046,6 +4142,11 @@
       height: 215px;
     }
   }
+  .xl\:h-\[320px\] {
+    @media (width >= 80rem) {
+      height: 320px;
+    }
+  }
   .xl\:h-\[420px\] {
     @media (width >= 80rem) {
       height: 420px;
@@ -4059,6 +4160,11 @@
   .xl\:w-\[80px\] {
     @media (width >= 80rem) {
       width: 80px;
+    }
+  }
+  .xl\:w-\[265px\] {
+    @media (width >= 80rem) {
+      width: 265px;
     }
   }
   .xl\:w-\[564px\] {
@@ -4429,6 +4535,10 @@
   syntax: "*";
   inherits: false;
 }
+@property --tw-ease {
+  syntax: "*";
+  inherits: false;
+}
 @property --tw-content {
   syntax: "*";
   initial-value: "";
@@ -4489,6 +4599,7 @@
       --tw-backdrop-saturate: initial;
       --tw-backdrop-sepia: initial;
       --tw-duration: initial;
+      --tw-ease: initial;
       --tw-content: "";
     }
   }
