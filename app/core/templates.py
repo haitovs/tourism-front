@@ -18,11 +18,11 @@ _LOCALES_DIR = Path(__file__).parent.parent / "locales"
 def _load_locale(lang: str) -> Dict[str, str]:
     path = _LOCALES_DIR / f"{lang}.json"
     if not path.exists():
-        print(f"[i18n] missing locale: {path}")  # debug
+        print(f"[i18n] missing locale: {path}")
         return {}
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
-        print(f"[i18n] loaded {lang}: {len(data)} keys")  # debug
+        print(f"[i18n] loaded {lang}: {len(data)} keys")
         return data
     except Exception as e:
         print(f"[i18n] failed to load {path}: {e}")
@@ -31,10 +31,6 @@ def _load_locale(lang: str) -> Dict[str, str]:
 
 @pass_context
 def t(ctx, key: str) -> str:
-    """
-    Usage in templates: {{ t("nav.home") }}
-    Falls back to English and then to the key itself.
-    """
     request = ctx.get("request")
     lang = getattr(getattr(request, "state", None), "lang", settings.DEFAULT_LANG)
     d_lang = _load_locale(lang)
@@ -48,17 +44,11 @@ def t(ctx, key: str) -> str:
 
 @pass_context
 def lang_ctx(ctx) -> str:
-    """
-    Returns current language from request.state.lang.
-    Usage (if needed): {{ lang_ctx() }}
-    """
     request = ctx.get("request")
     return getattr(getattr(request, "state", None), "lang", settings.DEFAULT_LANG)
 
 
-# Standard templates env
-templates = Jinja2Templates(directory="app/templates", auto_reload=True)
+templates = Jinja2Templates(directory="app/templates", auto_reload=settings.ENV == "dev")
 
-# Register helpers as Jinja globals
 templates.env.globals["t"] = t
 templates.env.globals["lang_ctx"] = lang_ctx

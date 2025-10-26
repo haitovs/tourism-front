@@ -1,12 +1,17 @@
 # app/core/http.py
 from __future__ import annotations
 
+import logging
+import time
 from typing import Any, Dict, Optional
 
 import httpx
 from fastapi import Request
 
 from app.core.settings import settings
+
+log = logging.getLogger("app.http")
+_fallback_client: Optional[httpx.AsyncClient] = None
 
 
 def _debug_preview(data: Any, max_len: int = 400) -> str:
@@ -50,12 +55,32 @@ def _current_site_id(req: Request):
     return sid
 
 
+def _get_client(req: Request) -> httpx.AsyncClient:
+    client = getattr(getattr(req, "app", None), "state", None)
+    client = getattr(client, "http", None)
+    if isinstance(client, httpx.AsyncClient):
+        return client
+
+    global _fallback_client
+    if _fallback_client is None:
+        _fallback_client = httpx.AsyncClient(
+            timeout=httpx.Timeout(12.0, connect=2.0, read=12.0, write=12.0, pool=12.0),
+            limits=httpx.Limits(max_connections=100, max_keepalive_connections=20),
+            follow_redirects=True,
+            http2=True,
+        )
+    return _fallback_client
+
+
 async def api_get(req: Request, path: str, params=None):
     params = dict(params or {})
     params.setdefault("lang", _current_lang(req))
 
-    headers = {}
-    headers["Accept-Language"] = _current_lang(req)
+    headers: Dict[str, str] = {
+        "Accept": "application/json",
+        "Accept-Language": _current_lang(req),
+        "Connection": "keep-alive",
+    }
 
     sid = _current_site_id(req)
     if sid is not None:
@@ -67,27 +92,85 @@ async def api_get(req: Request, path: str, params=None):
         params.setdefault("site", slug)
         headers["X-Site-Slug"] = slug
 
+    if settings.BACKEND_HOST_HEADER:
+        headers["Host"] = settings.BACKEND_HOST_HEADER
+
     url = settings.BACKEND_BASE_URL.rstrip("/") + "/" + path.lstrip("/")
 
-    async with httpx.AsyncClient(timeout=15.0, follow_redirects=True) as client:
+    client = _get_client(req)
+    t0 = time.perf_counter()
+    try:
         r = await client.get(url, params=params, headers=headers)
         r.raise_for_status()
-        data = r.json()
+
+        if "application/json" in (r.headers.get("content-type") or ""):
+            data = r.json()
+        else:
+            data = r.text
         try:
-            if isinstance(data, list):
-                print(f"[HTTP] GET {r.url} -> list: {len(data)}")
-            else:
-                print(f"[HTTP] GET {r.url} -> type={type(data).__name__}")
+            kind = f"list:{len(data)}" if isinstance(data, list) else f"type={type(data).__name__}"
+            log.debug("[HTTP] GET %s -> %s (status=%s, %dB)", str(r.url), kind, r.status_code, len(r.content))
         except Exception:
             pass
         return data
+    except httpx.HTTPError as e:
+        body_preview = ""
+        try:
+            resp = getattr(e, "response", None)
+            if resp is not None:
+                body_preview = _debug_preview(resp.text)
+        except Exception:
+            pass
+        log.error("[HTTP] GET %s failed: %s | %s", url, repr(e), body_preview)
+        raise
+    finally:
+        dt = (time.perf_counter() - t0) * 1000
+        log.info("[HTTP] GET %s in %.1f ms", url, dt)
 
 
 async def api_post(req: Request, path: str, data: Optional[Dict[str, Any]] = None, files=None) -> Any:
+    """
+    POST with pooled client, lang/site propagation for headers, robust timeout, and concise logging.
+    Matches original semantics (form 'data' + optional 'files').
+    """
+    headers: Dict[str, str] = {
+        "Accept": "application/json",
+        "Accept-Language": _current_lang(req),
+        "Connection": "keep-alive",
+    }
+
+    sid = _current_site_id(req)
+    if sid is not None:
+        headers["X-Site-Id"] = str(sid)
+
+    slug = req.cookies.get("admin_site_slug") or req.cookies.get("site") or None
+    if slug:
+        headers["X-Site-Slug"] = slug
+
+    if settings.BACKEND_HOST_HEADER:
+        headers["Host"] = settings.BACKEND_HOST_HEADER
+
     url = settings.BACKEND_BASE_URL.rstrip("/") + "/" + path.lstrip("/")
-    async with httpx.AsyncClient(timeout=30.0, follow_redirects=True) as client:
-        r = await client.post(url, data=data, files=files)
+
+    client = _get_client(req)
+    t0 = time.perf_counter()
+    try:
+        # Preserve original behavior: send as form data unless files are present.
+        r = await client.post(url, data=data, files=files, headers=headers)
         r.raise_for_status()
-        out = r.json()
-        print(f"[HTTP] POST {r.url} -> {type(out).__name__}: {_debug_preview(out)}")
+        out = r.json() if "application/json" in (r.headers.get("content-type") or "") else r.text
+        log.debug("[HTTP] POST %s -> %s: %s", str(r.url), type(out).__name__, _debug_preview(out))
         return out
+    except httpx.HTTPError as e:
+        body_preview = ""
+        try:
+            resp = getattr(e, "response", None)
+            if resp is not None:
+                body_preview = _debug_preview(resp.text)
+        except Exception:
+            pass
+        log.error("[HTTP] POST %s failed: %s | %s", url, repr(e), body_preview)
+        raise
+    finally:
+        dt = (time.perf_counter() - t0) * 1000
+        log.info("[HTTP] POST %s in %.1f ms", url, dt)

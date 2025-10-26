@@ -1,7 +1,12 @@
+# app/main.py
+from contextlib import asynccontextmanager
+
+import httpx
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from app.core.language_middleware import LanguageMiddleware
+from app.core.settings import settings  # keep only this one
 from app.routers.about_expo_router import router as about_expo_router
 from app.routers.about_forum_router import router as about_forum_router
 from app.routers.agenda_router import router as agenda_router
@@ -17,12 +22,24 @@ from app.routers.speaker_router import router as speaker_router
 from app.routers.terms_router import router as terms_router
 from app.routers.timer_router import router as timer_router
 
-from .core.settings import settings
 
-# app/main.py
-app = FastAPI(title=settings.APP_NAME)
+@asynccontextmanager
+async def lifespan(app):
+    app.state.http = httpx.AsyncClient(
+        timeout=httpx.Timeout(10.0, connect=2.0),
+        limits=httpx.Limits(max_connections=100, max_keepalive_connections=20),
+        http2=True,
+        follow_redirects=True,
+    )
+    try:
+        yield
+    finally:
+        await app.state.http.aclose()
 
-# add language middleware (after app init, before routes)
+
+# IMPORTANT: pass lifespan here
+app = FastAPI(title=settings.APP_NAME, lifespan=lifespan)
+
 app.add_middleware(LanguageMiddleware)
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")

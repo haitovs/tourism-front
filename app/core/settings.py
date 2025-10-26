@@ -22,13 +22,12 @@ class Settings(BaseSettings):
 
     # --- I18N (front) ---
     DEFAULT_LANG: str = "en"
-    # read from env var SUPPORTED_LANGS= "en,ru,tk,zh" using an alias
     SUPPORTED_LANGS_RAW: str = Field(default="en,ru,tk,zh", alias="SUPPORTED_LANGS")
 
     MEDIA_BASE_URL: str = "http://localhost:8000"
     MEDIA_PREFIX: str = "/uploads"
 
-    BACKEND_BASE_URL: str = "http://127.0.0.1:8000"  # <- run backend on a separate port
+    BACKEND_BASE_URL: str = "http://127.0.0.1:8000"
     BACKEND_HOST_HEADER: str | None = None
     STATS_BG_IMAGE: str = "/static/img/stats_bg.png"
 
