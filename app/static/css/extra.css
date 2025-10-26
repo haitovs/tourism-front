@@ -6,7 +6,7 @@
     --c-text: #1e1e1e;
     --c-surface: #ffffff;
     --radius-sm: 10px;
-    --container: 1310px;
+    --container: 1450px;
     --bar-h: 112px;
     --h1-lh: 73px;
     --pill-w: 1180px;
@@ -48,7 +48,7 @@
 
 /* Expo Sector style */
 .content-card {
-    max-width: 1310px;
+    max-width: 1450px;
     width: 100%;
 }
 

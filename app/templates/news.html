@@ -28,7 +28,7 @@
     </section>
 
     {# ---------- SEARCH BAR ---------- #}
-    <section class="max-w-[1310px] mx-auto px-4 mt-10">
+    <section class="max-w-[1450px] mx-auto px-4 mt-10">
         <form action="/news" method="get" class="flex" role="search" aria-label="{{ t('news.list.search.aria') }}">
             <label for="news-q" class="sr-only">{{ t('news.list.search.label') }}</label>
             <div
@@ -50,7 +50,7 @@
 
     {# ---------- CONTENT ---------- #}
     {% set has_items = items and items|length > 0 %}
-    <section class="max-w-[1310px] mx-auto px-4 pt-8 pb-20">
+    <section class="max-w-[1450px] mx-auto px-4 pt-8 pb-20">
         <div class="h-[3px] bg-[rgba(0,122,61,0.35)] w-full mb-8"></div>
 
         {% if not has_items %}

@@ -22,7 +22,7 @@
 </section>
 
 <!-- BODY -->
-<section class="max-w-[1310px] mx-auto px-4 md:px-0 py-10" x-data='{
+<section class="max-w-[1450px] mx-auto px-4 md:px-0 py-10" x-data='{
     selectedDayId: {{ (selected_day_id | tojson) if selected_day_id is not none else "null" }},
     expandedId: null
   }' @pickday.window="selectedDayId = $event.detail.id; expandedId = null" x-cloak>
@@ -46,7 +46,7 @@
         </h2>
 
         <!-- Fixed-size, rounded scroller -->
-        <div class="w-full max-w-[1310px]">
+        <div class="w-full max-w-[1450px]">
             <div class="rounded-[12px] bg-white/60 overflow-hidden">
                 <div class="overflow-x-auto overflow-y-hidden">
                     <div class="h-[61px] flex items-stretch gap-3 md:gap-4 px-4">
