@@ -1,5 +1,6 @@
 # app/routers/site.py
-from asyncio import gather
+import logging
+from asyncio import create_task, gather
 
 from fastapi import APIRouter, Request, Response
 from starlette.responses import HTMLResponse, RedirectResponse
@@ -39,8 +40,6 @@ def set_lang(code: str, request: Request, response: Response):
 
 @router.get("/", response_class=HTMLResponse)
 async def home(req: Request):
-    import logging
-    from asyncio import create_task, gather
     log = logging.getLogger("routers.site.home")
 
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)

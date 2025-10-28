@@ -52,9 +52,13 @@ def _current_lang(req: Request) -> str:
 def _current_site_id(req: Request):
     site = getattr(req.state, "site", None)
     sid = getattr(site, "id", None)
-    if sid is None:
-        sid = getattr(settings, "DEFAULT_TENANT_ID", None)
-    return sid
+    if sid is not None:
+        return sid
+    try:
+        sid = int(getattr(settings, "FRONT_SITE_ID", 0))
+    except Exception:
+        sid = 0
+    return sid if sid > 0 else None
 
 
 def _norm_timeout(value: Optional[Union[float, int, httpx.Timeout]]) -> Optional[httpx.Timeout]:

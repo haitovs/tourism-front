@@ -9,8 +9,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
         case_sensitive=True,
-        extra="ignore",  # <-- ignore env keys you don't map to fields
-        populate_by_name=True,  # <-- allow alias population
+        extra="ignore",
+        populate_by_name=True,
     )
 
     ENV: str = "dev"
