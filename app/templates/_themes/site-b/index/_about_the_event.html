@@ -1,0 +1,51 @@
+{# Site-B · About the Event #}
+{# app/templates/_themes/site-b/index/_about_the_event.html #}
+<section id="about" class="sb-about sb-about--siteb">
+    <div class="sb-about__inner">
+        <!-- LEFT: Copy (SiteB localized keys) -->
+        <article class="sb-about__copy">
+            <header class="sb-about__head">
+                <h2 class="sb-about__title">{{ t('siteb.about.title') }}</h2>
+                <hr class="sb-about__rule" />
+            </header>
+
+            <section class="sb-about__block">
+                <h3 class="sb-about__h3">{{ t('siteb.about.forum.heading') }}</h3>
+                <p class="sb-about__p">{{ t('siteb.about.forum.body') }}</p>
+            </section>
+
+            <section class="sb-about__block">
+                <h3 class="sb-about__h3">{{ t('siteb.about.why.heading') }}</h3>
+                <p class="sb-about__p">{{ t('siteb.about.why.body') }}</p>
+            </section>
+
+            <section class="sb-about__block">
+                <h3 class="sb-about__h3">{{ t('siteb.about.guests.heading') }}</h3>
+                <p class="sb-about__p">{{ t('siteb.about.guests.body') }}</p>
+            </section>
+
+            <a href="/about-the-forum" class="sb-about__cta">
+                <span>{{ t('siteb.about.cta') }}</span>
+                <svg class="sb-about__cta-ic" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M5 12h14" stroke="currentColor" stroke-width="1.8" />
+                    <path d="M13 5l7 7-7 7" stroke="currentColor" stroke-width="1.8" fill="none" />
+                </svg>
+            </a>
+        </article>
+
+        <!-- RIGHT: Media (SiteB image path) -->
+        <aside class="sb-about__media">
+            <img src="{{ theme('img/index/about-event.png') }}" alt="{{ t('siteb.about.video_alt') }}"
+                onerror="this.src='/static/img/img_placeholder.png'; this.style.objectFit='contain';" loading="lazy" />
+
+            <!-- Concentric glow (desktop only) -->
+            <span class="sb-about__bubble sb-about__bubble--outer" aria-hidden="true"></span>
+            <span class="sb-about__bubble sb-about__bubble--inner" aria-hidden="true"></span>
+
+            <!-- Play button styled per Figma -->
+            <button type="button" class="sb-about__play" aria-label="{{ t('siteb.about.video_play_aria') }}">
+                <!-- triangle made in CSS; container has 5px white border + 0 20 20 0 radius -->
+            </button>
+        </aside>
+    </div>
+</section>

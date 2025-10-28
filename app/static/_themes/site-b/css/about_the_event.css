@@ -1,0 +1,171 @@
+/* === Site-B · About the Event (uses SiteB localizations) === */
+.sb-about {
+    background: #20306c;
+    color: #f0f0f0;
+}
+.sb-about__inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    min-height: 585px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+/* LEFT */
+.sb-about__copy {
+    padding: 60px 24px 60px 65px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+.sb-about__title {
+    font-family: "Roboto", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: clamp(28px, 3.2vw, 40px);
+    line-height: 1;
+    margin: 0 0 18px 0;
+    color: #f0f0f0;
+}
+.sb-about__rule {
+    border: 0;
+    border-top: 1px solid #f0f0f0;
+    width: min(590px, 100%);
+    margin: 0;
+}
+
+.sb-about__block {
+    margin-top: 6px;
+}
+.sb-about__h3 {
+    font-family: "Lato", system-ui, sans-serif;
+    font-weight: 800;
+    font-size: clamp(16px, 2.2vw, 20px);
+    line-height: 30px;
+    margin: 20px 0 8px 45px;
+    color: #f0f0f0;
+}
+.sb-about__p {
+    font-family: "Lato", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: clamp(15px, 2.1vw, 20px);
+    line-height: 25px;
+    margin: 0 0 0 65px;
+    max-width: 46ch;
+    color: #f0f0f0;
+}
+.sb-about__block:last-of-type .sb-about__p {
+    font-weight: 400;
+}
+
+.sb-about__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 22px 0 0 65px;
+    font-family: "Lato", system-ui, sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    line-height: 25px;
+    color: #b8d779;
+    text-decoration: none;
+}
+.sb-about__cta:hover {
+    opacity: 0.9;
+}
+.sb-about__cta-ic {
+    width: 16px;
+    height: 16px;
+}
+
+/* RIGHT */
+.sb-about__media {
+    position: relative;
+    min-height: 585px;
+    overflow: hidden;
+}
+.sb-about__media > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1); /* mirror like figma */
+}
+
+/* Concentric glow near center/right */
+.sb-about__bubble {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+.sb-about__bubble--outer {
+    width: 200px;
+    height: 200px;
+    left: 260px;
+    top: 192px;
+    background: rgba(32, 48, 108, 0.6);
+}
+.sb-about__bubble--inner {
+    width: 150px;
+    height: 150px;
+    left: 285px;
+    top: 217px;
+    background: rgba(32, 48, 108, 0.75);
+}
+
+/* Play button — Figma spec: 70x70, 5px white stroke, radius 0 20 20 0 */
+.sb-about__play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 70px;
+    height: 70px;
+    background: transparent;
+    border: 5px solid #ffffff;
+    border-radius: 20px; /* top-left 0, top-right 20, bottom-right 20, bottom-left 0 */
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease, background 0.15s ease;
+}
+.sb-about__play::after {
+    /* white triangle (play) */
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 12px 0 12px 18px; /* triangle size */
+    border-color: transparent transparent transparent #ffffff;
+    transform: translateX(1px); /* nudge to optical center */
+}
+.sb-about__play:hover {
+    opacity: 0.92;
+    transform: scale(1.02);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .sb-about__inner {
+        grid-template-columns: 1fr;
+    }
+    .sb-about__media {
+        order: -1;
+        min-height: 320px;
+    }
+    .sb-about__bubble--outer,
+    .sb-about__bubble--inner {
+        display: none;
+    }
+    .sb-about__copy {
+        padding: 28px 16px 36px 16px;
+    }
+    .sb-about__h3 {
+        margin-left: 12px;
+    }
+    .sb-about__p {
+        margin-left: 22px;
+    }
+    .sb-about__cta {
+        margin-left: 22px;
+    }
+}
