@@ -7,19 +7,19 @@
 
 .sb-sponsors {
     position: relative;
-    padding-top: 80px;
+    padding-top: 60px;
 }
 
 .sb-sp-head {
-    margin-top: 80px;
-    margin-bottom: 80px;
+    margin-top: 60px;
+    margin-bottom: 60px;
     position: relative;
     height: 220px;
     margin-bottom: 1.75rem;
 }
 
 #sponsors-top {
-    margin-top: 80px;
+    margin-top: 60px;
 }
 
 .sb-stack {
@@ -42,9 +42,9 @@
     border-radius: 0 10px 10px 0;
 }
 .sb-rect--front {
-    left: 80px;
+    left: 60px;
     top: 20px;
-    width: min(750px, calc(85% - 80px));
+    width: min(750px, calc(85% - 60px));
     height: 200px;
     background: #b8d779;
     display: flex;
@@ -75,7 +75,7 @@
 
 @media (max-width: 1024px) {
     .sb-sp-head {
-        height: 180px;
+        height: 160px;
     }
     .sb-rect--back {
         top: -30px;

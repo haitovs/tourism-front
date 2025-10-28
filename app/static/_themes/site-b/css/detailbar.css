@@ -5,15 +5,19 @@
 
 /* Header */
 .sb-detailbar {
-    position: sticky;
+    position: fixed; /* was: sticky */
     top: 0;
-    z-index: 70;
+    left: 0;
+    right: 0;
+    z-index: 9999; /* above all content */
+    width: 100%;
     background: rgba(30, 30, 30, 0.55);
     color: #f0f0f0;
     backdrop-filter: saturate(120%) blur(8px);
     will-change: transform, box-shadow, backdrop-filter;
     transition: transform 0.2s ease, box-shadow 0.2s ease, backdrop-filter 0.2s ease;
 }
+
 #site-header {
     background: transparent;
 }
@@ -337,4 +341,44 @@
     .sb-lang-code {
         font-size: 16px;
     }
+}
+
+/* Site B hero background */
+.sb-hero-bg {
+    position: relative;
+    min-height: 600px;
+    background: #0f0f10 url("/static/_themes/site-b/img/hero/hero.png") center/cover no-repeat;
+    overflow: hidden;
+
+    /* Pull hero under the fixed detailbar so its background shows behind it */
+    margin-top: calc(-1 * var(--header-h));
+    padding-top: var(--header-h);
+}
+@media (max-width: 1024px) {
+    .sb-hero-bg {
+        min-height: 460px;
+    }
+}
+
+/* When not over the hero (or there is no hero) use a solid/darker bar */
+#site-header.detailbar--scrolled {
+    background: rgba(17, 17, 17, 0.92);
+    color: #f0f0f0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* Keep glassy look only when truly over the hero */
+#site-header.detailbar--at-top {
+    background: rgba(30, 30, 30, 0.55);
+    color: #f0f0f0;
+    box-shadow: none;
+}
+
+/* Inherit color for links/buttons and add subtle text shadow for busy images */
+#site-header .sb-nav > li > a,
+#site-header .sb-nav-btn,
+#site-header .sb-lang-code {
+    color: inherit;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
