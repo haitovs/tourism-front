@@ -1,36 +1,106 @@
-{# safe fallbacks when this partial is included without locals #}
+{# Site-B: single-bar header with inline nav (no navpill) #}
 {% set _req = request if request is defined else None %}
-{% set _path = _path if _path is defined else (_req.url.path if _req else '/') %}
-{% set _params = _params if _params is defined else (_req.query_params if _req else {}) %}
+{% set _path = _req.url.path if _req else '/' %}
+{% set _params = _req.query_params if _req else {} %}
 {% set current = (lang or 'en') %}
 
-<header id="site-header" class="sb-detailbar" x-data="{ langOpen:false, mobileOpen:false }">
+<header id="site-header" class="sb-detailbar">
     <div class="sb-bar-inner">
         <!-- Left: Logo -->
         <a href="/" class="sb-logo" aria-label="Home">
-            {# Prefer themed logo; fallback to text if missing #}
-            {% set logo_src = theme('img/logo.svg') %}
-            {% if logo_src and (logo_src != '/static/img/logo.svg') %}
-            <img src="{{ logo_src }}" alt="Logo" class="sb-logo-img" />
-            {% else %}
-            <span class="sb-logo-text">LOGO</span>
-            {% endif %}
+            <img src="{{ theme('img/detailbar/logo.svg') }}" alt="" class="sb-logo-img"
+                onerror="this.style.display='none'">
         </a>
+
+        <!-- Center: Inline Nav -->
+        <nav class="sb-navWrap">
+            <ul class="sb-nav">
+                <li><a href="/">{{ t('nav.home') }}</a></li>
+
+                <li class="sb-has-dd" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
+                    <button type="button" class="sb-nav-btn" @click.stop="m=!m" aria-haspopup="menu"
+                        :aria-expanded="m.toString()">
+                        {{ t('nav.about_event') }}
+                        <svg class="sb-caret" viewBox="0 0 12 8" aria-hidden="true">
+                            <path d="M1 1l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="sb-dd" x-cloak x-show="m" x-transition @click.outside="m=false"
+                        @keydown.escape.window="m=false" role="menu">
+                        <a href="/about-the-forum" class="sb-dd-item">{{ t('nav.about_forum') }}</a>
+                        <hr class="sb-dd-sep" />
+                        <a href="/agenda" class="sb-dd-item">{{ t('nav.agenda') }}</a>
+                        <a href="/speakers" class="sb-dd-item">{{ t('nav.speakers') }}</a>
+                        <a href="/meeting-request" class="sb-dd-item">{{ t('nav.meeting_request') }}</a>
+                        <hr class="sb-dd-sep" />
+                        <a href="/about-the-expo" class="sb-dd-item">{{ t('nav.about_expo') }}</a>
+                        <hr class="sb-dd-sep" />
+                        <a href="/official-support" class="sb-dd-item">{{ t('nav.official_support') }}</a>
+                        <hr class="sb-dd-sep" />
+                        <a href="/brochure" class="sb-dd-item">{{ t('nav.brochure') }}</a>
+                    </div>
+                </li>
+
+                <li class="sb-has-dd" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
+                    <button type="button" class="sb-nav-btn" @click.stop="m=!m" aria-haspopup="menu"
+                        :aria-expanded="m.toString()">
+                        {{ t('nav.participants') }}
+                        <svg class="sb-caret" viewBox="0 0 12 8" aria-hidden="true">
+                            <path d="M1 1l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="sb-dd" x-cloak x-show="m" x-transition @click.outside="m=false"
+                        @keydown.escape.window="m=false" role="menu">
+                        <a href="/participants" class="sb-dd-item">{{ t('nav.all') }}</a>
+                        <hr class="sb-dd-sep" />
+                        <a href="/participants?role=expo" class="sb-dd-item">{{ t('nav.expo') }}</a>
+                        <hr class="sb-dd-sep" />
+                        <a href="/participants?role=forum" class="sb-dd-item">{{ t('nav.forum') }}</a>
+                    </div>
+                </li>
+
+                <li><a href="/news">{{ t('nav.news') }}</a></li>
+
+                <li class="sb-has-dd" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
+                    <button type="button" class="sb-nav-btn" @click.stop="m=!m" aria-haspopup="menu"
+                        :aria-expanded="m.toString()">
+                        {{ t('nav.travel_guide') }}
+                        <svg class="sb-caret" viewBox="0 0 12 8" aria-hidden="true">
+                            <path d="M1 1l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="sb-dd" x-cloak x-show="m" x-transition @click.outside="m=false"
+                        @keydown.escape.window="m=false" role="menu">
+                        <a href="/visa" class="sb-dd-item">{{ t('nav.apply_visa') }}</a>
+                        <hr class="sb-dd-sep" />
+                        <a href="/hotel" class="sb-dd-item">{{ t('nav.book_hotel') }}</a>
+                        <hr class="sb-dd-sep" />
+                        <a href="/flight" class="sb-dd-item">{{ t('nav.book_flight') }}</a>
+                        <hr class="sb-dd-sep" />
+                        <a href="/faq" class="sb-dd-item">{{ t('nav.faq') }}</a>
+                    </div>
+                </li>
+
+                <li><a href="/registration">{{ t('nav.registration') }}</a></li>
+            </ul>
+        </nav>
 
         <!-- Right: user + language -->
         <div class="sb-right">
             <a href="/register" aria-label="Register" class="sb-user">
-                <img src="{{ theme('img/user.svg') if false else url_for('static', path='/img/detailbar/ic-user.svg') }}"
-                    class="sb-user-img" alt="User" />
+                <img class="sb-user-img" src="{{ theme('img/detailbar/user.svg') }}"
+                    onerror="this.src='{{ url_for('static', path='/img/detailbar/ic-user.svg') }}'">
             </a>
 
-            <!-- language switcher (behavior same as default, styled for Site B) -->
-            <div class="sb-lang" x-data="{
-          open:false, btnW:0,
-          toggle(){ this.open=!this.open; this.$nextTick(()=>{ this.btnW = this.$refs.btn?.offsetWidth || 0; }); },
-          close(){ this.open=false; },
-          init(){ this.btnW = this.$refs.btn?.offsetWidth || 0; window.addEventListener('resize', ()=>{ this.btnW = this.$refs.btn?.offsetWidth || 0; }); }
-        }" @keydown.escape.window="close()" @click.away="close()">
+            <div class="sb-lang"
+                x-data="{ open:false, btnW:0,
+                     toggle(){ this.open=!this.open; this.$nextTick(()=>{ this.btnW = this.$refs.btn?.offsetWidth || 0; }); },
+                     close(){ this.open=false; },
+                     init(){ this.btnW = this.$refs.btn?.offsetWidth || 0; window.addEventListener('resize', ()=>{ this.btnW = this.$refs.btn?.offsetWidth || 0; }); } }"
+                @keydown.escape.window="close()" @click.outside="close()">
 
                 <button x-ref="btn" type="button" class="sb-lang-btn" :aria-expanded="open.toString()"
                     aria-haspopup="menu" aria-controls="lang-menu" @click="toggle()">
@@ -55,103 +125,5 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    {# Keep the original Nav Pill exactly – behavior unchanged, themed by variables #}
-    {% set p = request.url.path %}
-    <div class="pill-rail">
-        <nav class="navpill navpill--mask px-4 md:px-6">
-            <ul class="flex flex-nowrap items-center gap-3 md:gap-6 overflow-x-auto no-scrollbar
-                 font-['Roboto'] font-bold
-                 text-[14px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[22px]
-                 text-[var(--c-primary)]">
-
-                <li>
-                    <a class="hover:text-[var(--c-text)]" href="/">{{ t('nav.home') }}</a>
-                </li>
-
-                <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
-                    <button class="flex items-center gap-2 hover:text-[var(--c-text)]" @click.stop="m = !m"
-                        @keydown.enter.prevent.stop="m = !m" @keydown.space.prevent.stop="m = !m">
-                        {{ t('nav.about_event') }}
-                        <img src="/static/img/nav_down_arrow.svg" class="nav-caret" aria-hidden="true">
-                    </button>
-
-                    <div x-show="m" x-cloak x-transition class="menu-dd" @click.outside="m=false"
-                        @keydown.escape.window="m=false">
-                        <div class="glass menu-panel menu-grid">
-                            <div class="menu-items relative">
-                                <a href="/about-the-forum" class="menu-item"><span>{{ t('nav.about_forum') }}</span></a>
-                                <div class="menu-subcard">
-                                    <a href="/agenda" class="menu-items-item menu-subitem">{{ t('nav.agenda') }}</a>
-                                    <a href="/speakers" class="menu-items-item menu-subitem">{{ t('nav.speakers') }}</a>
-                                    <a href="/meeting-request" class="menu-items-item menu-subitem">{{
-                                        t('nav.meeting_request') }}</a>
-                                </div>
-                            </div>
-                            <hr class="menu-sep" />
-                            <a href="/about-the-expo" class="menu-item">{{ t('nav.about_expo') }}</a>
-                            <hr class="menu-sep" />
-                            <a href="/official-support" class="menu-item">{{ t('nav.official_support') }}</a>
-                            <hr class="menu-sep" />
-                            <a href="/brochure" class="menu-item">{{ t('nav.brochure') }}</a>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
-                    <button class="flex items-center gap-2 hover:text-[var(--c-text)]" @click.stop="m = !m"
-                        @keydown.enter.prevent.stop="m = !m" @keydown.space.prevent.stop="m = !m">
-                        {{ t('nav.participants') }}
-                        <img src="/static/img/nav_down_arrow.svg" class="nav-caret" aria-hidden="true">
-                    </button>
-                    <div x-show="m" x-cloak x-transition class="menu-dd" @click.outside="m=false"
-                        @keydown.escape.window="m=false">
-                        <div class="glass menu-panel">
-                            <a href="/participants{% if q %}?q={{ q|urlencode }}{% endif %}" class="menu-item">{{
-                                t('nav.all') }}</a>
-                            <hr class="menu-sep" />
-                            <a href="/participants?role=expo{% if q %}&q={{ q|urlencode }}{% endif %}"
-                                class="menu-item">{{ t('nav.expo') }}</a>
-                            <hr class="menu-sep" />
-                            <a href="/participants?role=forum{% if q %}&q={{ q|urlencode }}{% endif %}"
-                                class="menu-item">{{ t('nav.forum') }}</a>
-                        </div>
-                    </div>
-                </li>
-
-                <li>
-                    <a href="/news"
-                        class="{{ 'text-[var(--c-text)]' if p.startswith('/news') else 'hover:text-[var(--c-text)]' }}">{{
-                        t('nav.news') }}</a>
-                </li>
-
-                <li class="relative" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
-                    <button class="flex items-center gap-2 hover:text-[var(--c-text)]" @click.stop="m = !m"
-                        @keydown.enter.prevent.stop="m = !m" @keydown.space.prevent.stop="m = !m">
-                        {{ t('nav.travel_guide') }}
-                        <img src="/static/img/nav_down_arrow.svg" class="nav-caret" aria-hidden="true">
-                    </button>
-                    <div x-show="m" x-cloak x-transition class="menu-dd" @click.outside="m=false"
-                        @keydown.escape.window="m=false">
-                        <div class="glass menu-panel">
-                            <a href="/visa" class="menu-item">{{ t('nav.apply_visa') }}</a>
-                            <hr class="menu-sep" />
-                            <a href="/hotel" class="menu-item">{{ t('nav.book_hotel') }}</a>
-                            <hr class="menu-sep" />
-                            <a href="/flight" class="menu-item">{{ t('nav.book_flight') }}</a>
-                            <hr class="menu-sep" />
-                            <a href="/faq" class="menu-item">{{ t('nav.faq') }}</a>
-                        </div>
-                    </div>
-                </li>
-
-                <li>
-                    <a href="/registration"
-                        class="{{ 'text-[var(--c-text)]' if p.startswith('/registration') else 'hover:text-[var(--c-text)]' }}">{{
-                        t('nav.registration') }}</a>
-                </li>
-            </ul>
-        </nav>
     </div>
 </header>

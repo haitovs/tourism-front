@@ -19,6 +19,19 @@
     --pill-top: var(--header-h); /* nav-pill vertical offset */
 }
 
+/* Site B hero background */
+.sb-hero-bg {
+    position: relative;
+    min-height: 600px;
+    background: #0f0f10 url("/static/_themes/site-b/img/hero/hero.png") center/cover no-repeat;
+    overflow: hidden;
+}
+
+@media (max-width: 1024px) {
+    .sb-hero-bg {
+        min-height: 460px;
+    }
+}
 /* Glass dropdown tint for Site B */
 .glass {
     background: rgba(30, 30, 30, 0.85);

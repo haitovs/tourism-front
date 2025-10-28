@@ -1,3 +1,4 @@
+// app/static/js/headerHide.js
 // Hide header when scrolling down; show as soon as the user scrolls up (by ~1px).
 (function () {
     const header = document.getElementById("site-header"); // single source of truth

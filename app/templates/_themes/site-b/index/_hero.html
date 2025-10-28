@@ -1,0 +1,20 @@
+{# Site B hero: dark glass bg with themed image + site-specific copy #}
+<section class="relative">
+    <div class="sb-hero-bg flex items-center">
+        <div class="max-w-[var(--container)] mx-auto px-4
+                flex flex-col items-center lg:items-start
+                justify-center lg:justify-start
+                text-center lg:text-left">
+            <h1 class="font-[700] font-['Montserrat'] text-white
+                 text-[clamp(34px,4.2vw,60px)]
+                 leading-[1.18] sm:leading-[1.14] lg:leading-[1.12]">
+                {{ t('siteb.hero.title') }}
+            </h1>
+
+            <p class="mt-6 font-['Roboto'] text-white text-[clamp(16px,2vw,25px)] leading-[29px]
+                max-w-[800px] mx-auto lg:mx-0">
+                {{ t('siteb.hero.subtitle') }}
+            </p>
+        </div>
+    </div>
+</section>

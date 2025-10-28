@@ -2,20 +2,20 @@
 
 {% block content %}
 
-{% include "index/_hero.html" %}
-{% include "index/_sponsors.html" %}
-{% include "index/_about_the_event.html" %}
-{% include "index/_statistics.html" %}
-{% include "index/_expo_sectors.html" %}
-{% include "index/_timer.html" %}
-{% include "index/_speakers.html" %}
-{% include "index/_news.html" %}
-{% include "index/_faq.html" %}
+{% include themed("index/_hero.html") %}
+{% include themed("index/_sponsors.html") %}
+{% include themed("index/_about_the_event.html") %}
+{% include themed("index/_statistics.html") %}
+{% include themed("index/_expo_sectors.html") %}
+{% include themed("index/_timer.html") %}
+{% include themed("index/_speakers.html") %}
+{% include themed("index/_news.html") %}
+{% include themed("index/_faq.html") %}
 
 {% with data=organizers_data %}
-{% include "index/_organizers.html" %}
+{% include themed("index/_organizers.html") %}
 {% endwith %}
 
-{% include "index/_partners.html" %}
+{% include themed("index/_partners.html") %}
 
 {% endblock %}

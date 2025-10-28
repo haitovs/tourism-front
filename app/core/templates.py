@@ -12,41 +12,32 @@ from starlette.templating import Jinja2Templates
 from app.core.settings import settings
 
 _LOCALES_DIR = Path(__file__).parent.parent / "locales"
-_THEME_TEMPLATES_DIR = Path(__file__).parent.parent / "templates" / "_themes"
+_TEMPLATES_DIR = Path(__file__).parent.parent / "templates"
+_THEME_TEMPLATES_DIR = _TEMPLATES_DIR / "_themes"
 
 
-@lru_cache(maxsize=64)
+@lru_cache(maxsize=128)
 def _load_locale(lang: str) -> Dict[str, str]:
-    path = _LOCALES_DIR / f"{lang}.json"
-    if not path.exists():
-        print(f"[i18n] missing locale: {path}")
+    p = _LOCALES_DIR / f"{lang}.json"
+    if not p.exists():
         return {}
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-        print(f"[i18n] loaded {lang}: {len(data)} keys")
-        return data
-    except Exception as e:
-        print(f"[i18n] failed to load {path}: {e}")
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
         return {}
 
 
-@pass_context
-def t(ctx, key: str) -> str:
-    request = ctx.get("request")
-    lang = getattr(getattr(request, "state", None), "lang", settings.DEFAULT_LANG)
-    d_lang = _load_locale(lang)
-    if key in d_lang and d_lang[key]:
-        return d_lang[key]
-    d_en = _load_locale(settings.DEFAULT_LANG)
-    if key in d_en and d_en[key]:
-        return d_en[key]
-    return key
-
-
-@pass_context
-def lang_ctx(ctx) -> str:
-    request = ctx.get("request")
-    return getattr(getattr(request, "state", None), "lang", settings.DEFAULT_LANG)
+@lru_cache(maxsize=128)
+def _load_theme_locale(slug: str | None, lang: str) -> Dict[str, str]:
+    if not slug:
+        return {}
+    p = _THEME_TEMPLATES_DIR / slug / "locales" / f"{lang}.json"
+    if not p.exists():
+        return {}
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
 
 
 @pass_context
@@ -68,7 +59,6 @@ def theme(ctx, path: str) -> str:
 
 @pass_context
 def themed(ctx, path: str) -> str:
-    """Return themed template path if exists, else the given path."""
     slug = site_slug(ctx)
     p = path.lstrip("/")
     if slug:
@@ -81,6 +71,38 @@ def themed(ctx, path: str) -> str:
 @pass_context
 def is_site(ctx, slug: str) -> bool:
     return (slug or "") == site_slug(ctx)
+
+
+@pass_context
+def t(ctx, key: str) -> str:
+    req = ctx.get("request")
+    lang = getattr(getattr(req, "state", None), "lang", settings.DEFAULT_LANG)
+    slug = site_slug(ctx)
+
+    # 1) Theme override (lang → default EN)
+    if slug:
+        td = _load_theme_locale(slug, lang)
+        if key in td and td[key]:
+            return td[key]
+        t_en = _load_theme_locale(slug, settings.DEFAULT_LANG)
+        if key in t_en and t_en[key]:
+            return t_en[key]
+
+    # 2) Global (lang → default EN)
+    d_lang = _load_locale(lang)
+    if key in d_lang and d_lang[key]:
+        return d_lang[key]
+    d_en = _load_locale(settings.DEFAULT_LANG)
+    if key in d_en and d_en[key]:
+        return d_en[key]
+
+    return key
+
+
+@pass_context
+def lang_ctx(ctx) -> str:
+    req = ctx.get("request")
+    return getattr(getattr(req, "state", None), "lang", settings.DEFAULT_LANG)
 
 
 templates = Jinja2Templates(directory="app/templates", auto_reload=settings.ENV == "dev")
