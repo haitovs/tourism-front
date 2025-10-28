@@ -61,6 +61,14 @@ def _current_site_id(req: Request):
     return sid if sid > 0 else None
 
 
+def _current_site_slug(req: Request) -> Optional[str]:
+    site = getattr(req.state, "site", None)
+    slug = getattr(site, "slug", None)
+    if slug:
+        return slug
+    return getattr(settings, "FRONT_SITE_SLUG", None) or None
+
+
 def _norm_timeout(value: Optional[Union[float, int, httpx.Timeout]]) -> Optional[httpx.Timeout]:
     if value is None:
         return None
@@ -112,6 +120,8 @@ async def api_get(
         headers["X-Site-Id"] = str(sid)
 
     slug = req.cookies.get("admin_site_slug") or req.cookies.get("site") or None
+    if not slug:
+        slug = _current_site_slug(req)
     if slug:
         params.setdefault("site", slug)
         headers["X-Site-Slug"] = slug
@@ -169,10 +179,6 @@ async def api_get(
 
 
 async def api_post(req: Request, path: str, data: Optional[Dict[str, Any]] = None, files=None) -> Any:
-    """
-    POST with pooled client, lang/site propagation for headers, robust timeout, and concise logging.
-    Matches original semantics (form 'data' + optional 'files').
-    """
     headers: Dict[str, str] = {
         "Accept": "application/json",
         "Accept-Language": _current_lang(req),
@@ -184,6 +190,8 @@ async def api_post(req: Request, path: str, data: Optional[Dict[str, Any]] = Non
         headers["X-Site-Id"] = str(sid)
 
     slug = req.cookies.get("admin_site_slug") or req.cookies.get("site") or None
+    if not slug:
+        slug = _current_site_slug(req)
     if slug:
         headers["X-Site-Slug"] = slug
 

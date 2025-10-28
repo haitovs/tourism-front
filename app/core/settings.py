@@ -1,7 +1,7 @@
 # app/core/settings.py
 from typing import Tuple
 
-from pydantic import Field  # <-- add this
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -20,7 +20,6 @@ class Settings(BaseSettings):
     TRANSLATE_BASE_URL: str = "https://libretranslate.de"
     TRANSLATE_API_KEY: str | None = None
 
-    # --- I18N (front) ---
     DEFAULT_LANG: str = "en"
     SUPPORTED_LANGS_RAW: str = Field(default="en,ru,tk,zh", alias="SUPPORTED_LANGS")
 
@@ -31,7 +30,13 @@ class Settings(BaseSettings):
     BACKEND_HOST_HEADER: str | None = None
     STATS_BG_IMAGE: str = "/static/img/stats_bg.png"
 
+    # Stage 2 fallbacks (still used if host not mapped)
     FRONT_SITE_ID: int = 10
+    FRONT_SITE_SLUG: str = "site-a"
+    THEME_STATIC_SUBDIR: str = "_themes"
+
+    # Stage 3 host→site map: "host:slug:id,host2:slug2:id2"
+    SITE_MAP_RAW: str = ""  # e.g. "sitea.com:site-a:11,siteb.com:site-b:12"
 
     @property
     def SUPPORTED_LANGS(self) -> Tuple[str, ...]:
