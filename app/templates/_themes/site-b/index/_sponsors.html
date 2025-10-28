@@ -1,0 +1,43 @@
+{# Site B sponsors section: new header; carousels unchanged #}
+{% set gold_items = (gold and 'items' in gold and gold['items']) or [] %}
+{% set silver_items = (silver and 'items' in silver and silver['items']) or [] %}
+{% set bronze_items = (bronze and 'items' in bronze and bronze['items']) or [] %}
+
+<section id="sponsors" class="sb-sponsors max-w-[var(--container)] mx-auto px-4 py-14 space-y-8">
+    <!-- stacked header cards -->
+    <header class="sb-sp-head relative isolation-isolate">
+        <div class="sb-stack">
+            <div class="sb-rect sb-rect--back"></div>
+            <div class="sb-rect sb-rect--front">
+                <h2 class="sb-sp-title">{{ t('siteb.sponsors.headline') }}</h2>
+                <p class="sb-sp-body">{{ t('siteb.sponsors.body') }}</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Top sponsors (uses default markup, but we style inside CSS) -->
+    <div id="sponsors-top" class="relative z-0 flex justify-center mt-4">
+        {% include themed('index/_sponsors_top.html') with context %}
+    </div>
+
+    <!-- Tier carousels (still marquee/rows—only visuals overridden) -->
+    <div class="relative z-0 space-y-5 sm:space-y-6">
+        {% if gold["items"]|length > 0 %}
+        <div id="carousel-gold" class="w-full">
+            {% with data=gold %}{% include themed('index/_sponsors_carousel.html') %}{% endwith %}
+        </div>
+        {% endif %}
+
+        {% if silver["items"]|length > 0 %}
+        <div id="carousel-silver" class="w-full">
+            {% with data=silver %}{% include themed('index/_sponsors_carousel.html') %}{% endwith %}
+        </div>
+        {% endif %}
+
+        {% if bronze["items"]|length > 0 %}
+        <div id="carousel-bronze" class="w-full">
+            {% with data=bronze %}{% include themed('index/_sponsors_carousel.html') %}{% endwith %}
+        </div>
+        {% endif %}
+    </div>
+</section>

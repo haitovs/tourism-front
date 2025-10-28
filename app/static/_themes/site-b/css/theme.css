@@ -3,8 +3,8 @@
 
 :root {
     /* colors */
-    --c-bg: #0f0f10;
-    --c-text: #f0f0f0;
+    --c-bg: #f0f0f0;
+    --c-text: #0f0f10;
     --c-primary: #f0f0f0; /* nav label color (inactive) */
     --c-primary-contrast: #1e1e1e;
     --c-border: rgba(255, 255, 255, 0.7);
@@ -36,9 +36,4 @@
 .glass {
     background: rgba(30, 30, 30, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-/* Optional tweak for hover text color consistency */
-.navpill a:hover {
-    color: var(--c-text);
 }

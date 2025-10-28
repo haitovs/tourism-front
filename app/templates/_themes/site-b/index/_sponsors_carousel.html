@@ -1,0 +1,102 @@
+{# _sponsors_carousel.html #}
+{% set vm = data|default({}) %}
+{% set items = (vm and 'items' in vm and vm['items']) or [] %}
+{% set layout = (vm and 'layout' in vm and vm['layout']) or 'marquee' %}
+{% set placeholder_src = (vm and 'placeholder_src' in vm and vm['placeholder_src']) or '/static/img/img_placeholder.png'
+%}
+
+{# sizing + classes reused from top sponsors #}
+{% set img_w = (vm and 'img_w' in vm and vm['img_w']) or 200 %}
+{% set img_h = (vm and 'img_h' in vm and vm['img_h']) or 120 %}
+{% set linkc = (vm and 'link_interactive_class' in vm and vm['link_interactive_class']) or '' %}
+{% set card_base = (vm and 'card_base_class' in vm and vm['card_base_class']) or '' %}
+{% set card_inter = (vm and 'card_interactive_suffix' in vm and vm['card_interactive_suffix']) or '' %}
+
+{# marquee config; single row + “unlimited” loop #}
+{% set speed = (vm and 'speed' in vm and vm['speed']) or 60 %}
+{% set min_items = (vm and 'min' in vm and vm['min']) or 20 %}
+{% set repeat = (vm and 'repeat' in vm and vm['repeat']) or 16 %}
+
+<div class="w-full mx-auto max-w-[var(--container)]">
+    {% if not items %}
+    <div class="text-slate-500 text-center">{{ t('sponsors.carousel.empty') }}</div>
+
+    {% elif layout == 'grid' %}
+    <ul class="flex flex-wrap justify-center gap-3 sm:gap-4">
+        {% for sp in items %}
+        {% set href = sp.website|default('') %}
+        {% set logo = sp.logo_url or placeholder_src %}
+        {% set name = sp.name|default(t('sponsors.common.sponsor')) %}
+        {% set tier_label = sp.tier_label|default('') %}
+        <li class="flex justify-center">
+            <div class="w-[180px] sm:w-[220px] md:w-[240px] sb-card-parent">
+                {% if href %}
+                <a href="{{ href }}" class="{{ linkc }}" target="_blank" rel="noopener noreferrer"
+                    aria-label="{{ name }} {{ t('sponsors.common.opens_new_tab') }}">
+                    <article class="sb-card {{ card_base }}{{ card_inter }}">
+                        <img src="{{ logo }}" alt="{{ name if logo else t('sponsors.common.sponsor') }}"
+                            title="{{ name }}"
+                            class="mx-auto select-none pointer-events-none object-contain w-[{{ img_w }}px] h-[{{ img_h }}px]"
+                            draggable="false" />
+                    </article>
+                </a>
+                {% else %}
+                <article class="sb-card {{ card_base }}">
+                    <img src="{{ logo }}" alt="{{ name if logo else t('sponsors.common.sponsor') }}" title="{{ name }}"
+                        class="mx-auto select-none pointer-events-none object-contain w-[{{ img_w }}px] h-[{{ img_h }}px]"
+                        draggable="false" />
+                </article>
+                {% endif %}
+                {% if tier_label %}
+                <div class="sb-tier">{{ tier_label }}</div>
+                {% endif %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+    {% else %}
+    {# Single-row marquee with same effect as top sponsors #}
+    <div class="marquee [--gap:.75rem]" data-marquee data-speed="{{ speed }}" data-min="{{ min_items }}"
+        data-respect-rm="false">
+        <div class="marquee__viewport overflow-x-hidden !overflow-y-visible">
+            <ul class="marquee__track">
+                {# repeat so it looks “unlimited” even with 1 sponsor #}
+                {% for _ in range(repeat) %}
+                {% for sp in items %}
+                {% set href = sp.website|default('') %}
+                {% set logo = sp.logo_url or placeholder_src %}
+                {% set name = sp.name|default(t('sponsors.common.sponsor')) %}
+                {% set tier_label = sp.tier_label|default('') %}
+                <li class="marquee__item">
+                    <div class="w-[180px] sm:w-[220px] md:w-[240px] sb-card-parent">
+                        {% if href %}
+                        <a href="{{ href }}" class="{{ linkc }}" target="_blank" rel="noopener noreferrer"
+                            aria-label="{{ name }} {{ t('sponsors.common.opens_new_tab') }}">
+                            <article class="sb-card {{ card_base }}{{ card_inter }}">
+                                <img src="{{ logo }}" alt="{{ name if logo else t('sponsors.common.sponsor') }}"
+                                    title="{{ name }}"
+                                    class="mx-auto select-none pointer-events-none object-contain w-[{{ img_w }}px] h-[{{ img_h }}px]"
+                                    draggable="false" />
+                            </article>
+                        </a>
+                        {% else %}
+                        <article class="sb-card {{ card_base }}">
+                            <img src="{{ logo }}" alt="{{ name if logo else t('sponsors.common.sponsor') }}"
+                                title="{{ name }}"
+                                class="mx-auto select-none pointer-events-none object-contain w-[{{ img_w }}px] h-[{{ img_h }}px]"
+                                draggable="false" />
+                        </article>
+                        {% endif %}
+                        {% if tier_label %}
+                        <div class="sb-tier">{{ tier_label }}</div>
+                        {% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+</div>
