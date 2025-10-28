@@ -32,11 +32,11 @@ class Settings(BaseSettings):
 
     # Stage 2 fallbacks (still used if host not mapped)
     FRONT_SITE_ID: int = 10
-    FRONT_SITE_SLUG: str = "site-a"
+    FRONT_SITE_SLUG: str = ""
     THEME_STATIC_SUBDIR: str = "_themes"
 
     # Stage 3 host→site map: "host:slug:id,host2:slug2:id2"
-    SITE_MAP_RAW: str = "127.0.0.1:sitea.local:10, 127.0.0.1 siteb.local:13"  # e.g. "sitea.com:site-a:11,siteb.com:site-b:12"
+    SITE_MAP_RAW: str = ""
 
     @property
     def SUPPORTED_LANGS(self) -> Tuple[str, ...]:

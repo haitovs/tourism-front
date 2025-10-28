@@ -6,7 +6,8 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from app.core.language_middleware import LanguageMiddleware
-from app.core.settings import settings  # keep only this one
+from app.core.settings import settings
+from app.core.site_resolver import SiteResolverMiddleware
 from app.routers.about_expo_router import router as about_expo_router
 from app.routers.about_forum_router import router as about_forum_router
 from app.routers.agenda_router import router as agenda_router
@@ -40,6 +41,7 @@ async def lifespan(app):
 # IMPORTANT: pass lifespan here
 app = FastAPI(title=settings.APP_NAME, lifespan=lifespan)
 
+app.add_middleware(SiteResolverMiddleware)  # ADD THIS (before requests use site)
 app.add_middleware(LanguageMiddleware)
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")

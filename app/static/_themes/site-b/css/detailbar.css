@@ -1,0 +1,147 @@
+/* Site B: header glass + layout + scroll states (keeps JS compatibility via #site-header classes) */
+
+.sb-detailbar {
+    position: sticky;
+    top: 0;
+    z-index: 70;
+    background: rgba(30, 30, 30, 0.55);
+    border-bottom: 0.5px solid #ffffff;
+    color: #f0f0f0;
+    backdrop-filter: saturate(120%) blur(8px);
+    will-change: transform, box-shadow, backdrop-filter;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, backdrop-filter 0.2s ease;
+}
+
+/* JS toggles these on #site-header */
+#site-header.header--hidden {
+    transform: translateY(-100%);
+}
+#site-header.header--at-top {
+    transform: translateY(0);
+    box-shadow: none;
+}
+#site-header.header--scrolled {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.sb-bar-inner {
+    max-width: 1440px; /* Figma */
+    height: 90px; /* Figma */
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+/* logo at ~100px from left in Figma (use padding/margin vs absolute) */
+.sb-logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    margin-left: 100px;
+}
+.sb-logo-img {
+    height: 40px;
+    width: auto;
+    display: block;
+}
+.sb-logo-text {
+    font: 600 35px/40px "Roboto", system-ui, sans-serif;
+    color: #f0f0f0;
+}
+
+/* Right cluster: user + lang */
+.sb-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    margin-right: 60px; /* roughly aligns with Figma’s 1265px/1325px elements */
+}
+
+/* user icon */
+.sb-user-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    display: block;
+}
+
+/* lang */
+.sb-lang {
+    position: relative;
+}
+.sb-lang-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 40px;
+    padding: 0 10px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+.sb-lang-code {
+    font: 600 20px/24px "Lato", system-ui, sans-serif;
+    color: #f0f0f0;
+}
+.sb-lang-caret {
+    width: 13px;
+    height: 10px;
+    transform: rotate(180deg);
+}
+
+.sb-lang-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    background: rgba(30, 30, 30, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+    padding: 6px;
+    min-width: 64px;
+}
+.sb-lang-item {
+    display: block;
+    padding: 6px 10px;
+    color: #f0f0f0;
+    text-decoration: none;
+    font: 600 16px/22px "Lato", system-ui, sans-serif;
+    border-radius: 4px;
+}
+.sb-lang-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+.sb-lang-item.is-current {
+    opacity: 0.75;
+    cursor: default;
+}
+
+/* Nav Pill sits under the 90px header */
+:root {
+    --pill-top: var(--header-h, 90px);
+}
+
+@media (max-width: 1024px) {
+    .sb-bar-inner {
+        height: 72px;
+    }
+    :root {
+        --header-h: 72px;
+        --pill-top: var(--header-h);
+    }
+    .sb-logo {
+        margin-left: 16px;
+    }
+    .sb-right {
+        margin-right: 16px;
+        gap: 12px;
+    }
+    .sb-lang-code {
+        font-size: 18px;
+    }
+    .sb-user-img {
+        width: 32px;
+        height: 32px;
+    }
+}

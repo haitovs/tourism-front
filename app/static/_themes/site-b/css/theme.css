@@ -1,0 +1,31 @@
+/* app/static/_themes/site-b/css/themes.css */
+/* Site B tokens & layout vars */
+
+:root {
+    /* colors */
+    --c-bg: #0f0f10;
+    --c-text: #f0f0f0;
+    --c-primary: #f0f0f0; /* nav label color (inactive) */
+    --c-primary-contrast: #1e1e1e;
+    --c-border: rgba(255, 255, 255, 0.7);
+
+    /* surfaces */
+    --c-surface: rgba(30, 30, 30, 0.55); /* nav-pill background */
+    --c-surface-contrast: #1e1e1e;
+
+    /* layout */
+    --container: 1440px;
+    --header-h: 90px; /* header bar height */
+    --pill-top: var(--header-h); /* nav-pill vertical offset */
+}
+
+/* Glass dropdown tint for Site B */
+.glass {
+    background: rgba(30, 30, 30, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Optional tweak for hover text color consistency */
+.navpill a:hover {
+    color: var(--c-text);
+}
