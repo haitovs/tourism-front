@@ -3,6 +3,7 @@
     "siteb.hero.subtitle": "Join Industry Leaders, Explore Groundbreaking Innovations, Engage in Insightful Discussions, and Shape the Future of Your Sector at Forum & Expo 2026",
     "siteb.sponsors.headline": "Thank You to Our Partners",
     "siteb.sponsors.body": "This event is proudly made possible thanks to the generosity, trust, and commitment of our sponsors.",
+
     "siteb.about.title": "About the Event",
     "siteb.about.forum.heading": "Who We Are",
     "siteb.about.forum.body": "The Forum & Expo brings together industry leaders, experts, and stakeholders to exchange ideas, showcase innovations, and build partnerships that drive growth.",
@@ -12,5 +13,14 @@
     "siteb.about.guests.body": "From government and enterprise to SMEs, investors, and startups, our audience is a diverse community united by learning, collaboration, and impact.",
     "siteb.about.cta": "More Details",
     "siteb.about.video_alt": "Event highlight image",
-    "siteb.about.video_play_aria": "Play event video"
+    "siteb.about.video_play_aria": "Play event video",
+
+    "siteb.stats.sessions": "Sessions",
+    "siteb.stats.sessions_desc": "Join expert-led sessions to share insights and explore solutions.",
+    "siteb.stats.delegates": "Delegates",
+    "siteb.stats.delegates_desc": "Connect with industry leaders and explore opportunities.",
+    "siteb.stats.speakers": "Speakers",
+    "siteb.stats.speakers_desc": "Share expertise, inspire ideas, and spark meaningful dialogue that drives collaboration.",
+    "siteb.stats.companies": "Companies",
+    "siteb.stats.companies_desc": "Engage with peers, build networks, and discover fresh perspectives for growth and collaboration."
 }

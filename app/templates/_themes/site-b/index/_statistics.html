@@ -1,0 +1,68 @@
+{# Site-B · Statistics #}
+<section id="statistics" class="sb-stats">
+    <div x-data="window.countup({
+      values: {
+        sessions:  {{ stats.episodes  | default(0) }},
+        delegates: {{ stats.delegates | default(0) }},
+        speakers:  {{ stats.speakers  | default(0) }},
+        companies: {{ stats.companies | default(0) }},
+      }
+    })" x-intersect.once="start()" class="max-w-[1300px] mx-auto px-4">
+
+        <div class="flex flex-col lg:flex-row items-stretch gap-[20px]">
+
+            {# 1 · Sessions #}
+            <article
+                class="bg-[#B8D779] rounded-[10px] w-full lg:w-[310px] h-[216px] p-[40px_25px] flex flex-col gap-[18px]">
+                <div class="font-['Roboto'] font-semibold text-[60px] leading-[50px] text-white tabular-nums"
+                    x-text="display.sessions">0</div>
+                <div class="font-['Roboto'] font-medium text-[25px] leading-[20px] text-white">
+                    {{ t('siteb.stats.sessions') }}
+                </div>
+                <p class="font-['Lato'] font-bold text-[16px] leading-[20px] text-white">
+                    {{ t('siteb.stats.sessions_desc') }}
+                </p>
+            </article>
+
+            {# 2 · Delegates #}
+            <article
+                class="bg-[#B8D779] rounded-[10px] w-full lg:w-[310px] h-[216px] p-[40px_25px] flex flex-col gap-[18px]">
+                <div class="font-['Roboto'] font-semibold text-[60px] leading-[50px] text-white tabular-nums"
+                    x-text="display.delegates">0</div>
+                <div class="font-['Roboto'] font-medium text-[25px] leading-[20px] text-white">
+                    {{ t('siteb.stats.delegates') }}
+                </div>
+                <p class="font-['Lato'] font-bold text-[16px] leading-[20px] text-white">
+                    {{ t('siteb.stats.delegates_desc') }}
+                </p>
+            </article>
+
+            {# 3 · Speakers #}
+            <article
+                class="bg-[#B8D779] rounded-[10px] w-full lg:w-[310px] h-[216px] p-[40px_25px] flex flex-col gap-[18px]">
+                <div class="font-['Roboto'] font-semibold text-[60px] leading-[50px] text-white tabular-nums"
+                    x-text="display.speakers">0</div>
+                <div class="font-['Roboto'] font-medium text-[25px] leading-[20px] text-white">
+                    {{ t('siteb.stats.speakers') }}
+                </div>
+                <p class="font-['Lato'] font-bold text-[16px] leading-[20px] text-white">
+                    {{ t('siteb.stats.speakers_desc') }}
+                </p>
+            </article>
+
+            {# 4 · Companies #}
+            <article
+                class="bg-[#B8D779] rounded-[10px] w-full lg:w-[310px] h-[216px] p-[40px_25px] flex flex-col gap-[18px]">
+                <div class="font-['Roboto'] font-semibold text-[60px] leading-[50px] text-white tabular-nums"
+                    x-text="display.companies">0</div>
+                <div class="font-['Roboto'] font-medium text-[25px] leading-[20px] text-white">
+                    {{ t('siteb.stats.companies') }}
+                </div>
+                <p class="font-['Lato'] font-bold text-[16px] leading-[20px] text-white">
+                    {{ t('siteb.stats.companies_desc') }}
+                </p>
+            </article>
+
+        </div>
+    </div>
+</section>

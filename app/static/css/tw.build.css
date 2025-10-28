@@ -698,6 +698,9 @@
   .h-\[200px\] {
     height: 200px;
   }
+  .h-\[216px\] {
+    height: 216px;
+  }
   .h-\[220px\] {
     height: 220px;
   }
@@ -1046,6 +1049,9 @@
   .max-w-\[1280px\] {
     max-width: 1280px;
   }
+  .max-w-\[1300px\] {
+    max-width: 1300px;
+  }
   .max-w-\[1400px\] {
     max-width: 1400px;
   }
@@ -1262,6 +1268,9 @@
   }
   .gap-\[18px\] {
     gap: 18px;
+  }
+  .gap-\[20px\] {
+    gap: 20px;
   }
   .gap-\[21px\] {
     gap: 21px;
@@ -1569,6 +1578,9 @@
   .bg-\[\#258C58\] {
     background-color: #258C58;
   }
+  .bg-\[\#B8D779\] {
+    background-color: #B8D779;
+  }
   .bg-\[\#D3F2E2\] {
     background-color: #D3F2E2;
   }
@@ -1728,6 +1740,9 @@
   .p-10 {
     padding: calc(var(--spacing) * 10);
   }
+  .p-\[40px_25px\] {
+    padding: 40px 25px;
+  }
   .px-1 {
     padding-inline: calc(var(--spacing) * 1);
   }
@@ -1859,6 +1874,9 @@
   }
   .font-\[\'Lato\'\,\'Roboto\'\] {
     font-family: 'Lato','Roboto';
+  }
+  .font-\[\'Lato\'\] {
+    font-family: 'Lato';
   }
   .font-\[\'Montserrat\'\] {
     font-family: 'Montserrat';
@@ -2275,6 +2293,10 @@
   .leading-\[43px\] {
     --tw-leading: 43px;
     line-height: 43px;
+  }
+  .leading-\[50px\] {
+    --tw-leading: 50px;
+    line-height: 50px;
   }
   .leading-\[73px\] {
     --tw-leading: 73px;
@@ -3909,6 +3931,11 @@
   .lg\:w-\[300px\] {
     @media (width >= 64rem) {
       width: 300px;
+    }
+  }
+  .lg\:w-\[310px\] {
+    @media (width >= 64rem) {
+      width: 310px;
     }
   }
   .lg\:max-w-\[220px\] {
