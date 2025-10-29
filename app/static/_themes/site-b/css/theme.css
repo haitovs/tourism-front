@@ -32,10 +32,28 @@
         min-height: 460px;
     }
 }
-/* Glass dropdown tint for Site B */
-.glass {
-    background: rgba(30, 30, 30, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.25);
+
+/* To Top button style */
+/* Site-B: Back-to-top */
+#to-top.sb-top {
+    position: fixed;
+    right: clamp(16px, 3vw, 24px);
+    bottom: clamp(16px, 3vw, 24px);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #20306c;
+    display: block;
+    place-items: center;
+    z-index: 50;
+    cursor: pointer;
+}
+#to-top.sb-top[data-show="true"] {
+    display: grid;
+}
+#to-top.sb-top:focus-visible {
+    outline: 2px solid #f0f0f0;
+    outline-offset: 3px;
 }
 
 /* Site-B: consistent vertical rhythm for main sections */
