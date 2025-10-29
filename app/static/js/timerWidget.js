@@ -50,7 +50,10 @@
             },
 
             async fetchTimer() {
-                const url = this.apiBase.replace(/\/+$/, "") + "/timer/active";
+                // tolerate empty base (same-origin), or a base with or without trailing slash
+                const base = (this.apiBase || "").replace(/\/+$/, "");
+                const url = base + "/timer/active";
+
                 try {
                     const res = await fetch(url, { credentials: "include" });
                     if (!res.ok) {
@@ -81,17 +84,40 @@
                 } catch {
                     return;
                 }
+
                 ws.onmessage = (ev) => {
+                    let msg;
                     try {
-                        const msg = JSON.parse(ev.data);
-                        if (msg && msg.event === "TIMER_CREATED" && msg.data) {
-                            const d = msg.data;
-                            this.eventName = d.event_name || "";
-                            this.mode = d.mode || "UNTIL_START";
-                            this.targetISO = (this.mode === "UNTIL_END" ? d.end_time : d.start_time) || null;
-                            this.deltaMs = 0;
+                        msg = JSON.parse(ev.data);
+                    } catch {
+                        return;
+                    }
+                    if (!msg || !msg.data) return;
+
+                    // Accept both events the backend emits
+                    if (msg.event === "TIMER_CREATED" || msg.event === "TIMER_UPDATE") {
+                        const d = msg.data;
+
+                        this.eventName = d.event_name || "";
+                        this.mode = d.mode || "UNTIL_START";
+
+                        // pick target based on mode
+                        this.targetISO = (this.mode === "UNTIL_END" ? d.end_time : d.start_time) || null;
+
+                        // re-sync drift using server_time if present
+                        const srv = d.server_time || null;
+                        this.serverISO = srv;
+                        this.deltaMs = srv ? Date.now() - Date.parse(srv) : 0;
+
+                        if (!this.targetISO) {
+                            console.warn("[timer] ws update without target time");
                         }
-                    } catch {}
+                    }
+                };
+
+                ws.onclose = () => {
+                    // naive retry
+                    setTimeout(() => this.openWS(), 3000);
                 };
             },
 
