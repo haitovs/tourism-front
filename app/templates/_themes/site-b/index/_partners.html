@@ -1,0 +1,98 @@
+{# app/templates/_partners.html — Site-B blue theme #}
+{% set _partners = partners or [] %}
+{% set count = _partners|length %}
+
+<section id="partners" class="relative mx-auto w-[min(1440px,92vw)] py-14 overflow-x-clip">
+    <div class="mx-auto w-[min(1268px,90vw)]">
+        {# Header with green ribbon #}
+        <div class="relative h-[90px] mb-6">
+            <div class="absolute left-0 top-[70px] h-5 w-[435px] bg-[#B8D779] rounded-r-[10px]"></div>
+            <h2
+                class="absolute left-[65px] top-0 font-['Roboto'] font-semibold text-[clamp(26px,4vw,40px)] leading-[1] text-[#1E1E1E]">
+                {{ t('siteb.partners.title') }}
+            </h2>
+        </div>
+
+        {# One-row partner logo card #}
+        {% macro partner_logo(p) -%}
+        <article class="box-border border-2 border-transparent hover:border-[#20306C]
+                   rounded-[10px] bg-[#F4F4F2] w-[170px] h-[123px] grid place-items-center">
+            {% if p.logo_url %}
+            <img src="{{ p.logo_url }}" alt="{{ p.name }}" title="{{ p.name }}"
+                class="max-w-[90%] max-h-[80%] object-contain select-none pointer-events-none" loading="lazy" />
+            {% else %}
+            <img src="/static/img/img_placeholder.png" alt="{{ p.name }}"
+                class="max-w-[90%] max-h-[80%] object-contain opacity-70 select-none pointer-events-none"
+                loading="lazy" />
+            {% endif %}
+        </article>
+        {%- endmacro %}
+
+        {% if count == 0 %}
+        <div class="text-center text-slate-500">{{ t('index.partners.none') }}</div>
+
+        {% elif count <= 6 %} <ul class="flex flex-wrap justify-center gap-[clamp(16px,3vw,32px)]">
+            {% for p in _partners %}
+            <li>
+                {# normalize website to absolute URL #}
+                {% set raw = (p.website|default('')|trim) %}
+                {% set href = raw %}
+                {% if raw and not raw.startswith('http://') and not raw.startswith('https://') and not
+                raw.startswith('mailto:') %}
+                {% set href = 'https://' ~ raw.lstrip('/') %}
+                {% endif %}
+
+                {% if href %}
+                <a href="{{ href }}" target="_blank" rel="noopener noreferrer nofollow"
+                    class="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#20306C] focus-visible:ring-offset-2"
+                    aria-label="{{ p.name }}">
+                    {{ partner_logo(p) }}
+                </a>
+                {% else %}
+                {{ partner_logo(p) }}
+                {% endif %}
+            </li>
+            {% endfor %}
+            </ul>
+
+            {% else %}
+            <div class="relative">
+                <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false"
+                    style="--gap: 1rem">
+                    <div class="marquee__viewport overflow-x-hidden">
+                        <ul class="marquee__track">
+                            {% for p in _partners %}
+                            <li class="marquee__item">
+                                {% set raw = (p.website|default('')|trim) %}
+                                {% set href = raw %}
+                                {% if raw and not raw.startswith('http://') and not raw.startswith('https://') and not
+                                raw.startswith('mailto:') %}
+                                {% set href = 'https://' ~ raw.lstrip('/') %}
+                                {% endif %}
+
+                                {% if href %}
+                                <a href="{{ href }}" target="_blank" rel="noopener noreferrer nofollow"
+                                    class="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#20306C] focus-visible:ring-offset-2"
+                                    aria-label="{{ p.name }}">
+                                    {{ partner_logo(p) }}
+                                </a>
+                                {% else %}
+                                {{ partner_logo(p) }}
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                {# edge fades to prevent visual overflow #}
+                <div
+                    class="pointer-events-none absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-white to-transparent">
+                </div>
+                <div
+                    class="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-white to-transparent">
+                </div>
+            </div>
+            {% endif %}
+    </div>
+</section>
