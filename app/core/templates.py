@@ -44,7 +44,7 @@ def _load_theme_locale(slug: str | None, lang: str) -> Dict[str, str]:
 def site_slug(ctx) -> str:
     req = ctx.get("request")
     s = getattr(getattr(req, "state", None), "site", None)
-    return getattr(s, "slug", None) or getattr(settings, "FRONT_SITE_SLUG", "") or ""
+    return getattr(s, "slug", "") or ""
 
 
 @pass_context

@@ -19,11 +19,6 @@ def _normalize_lang(code: str | None) -> str:
 
 
 class LanguageMiddleware(BaseHTTPMiddleware):
-    """
-    Sets request.state.lang.
-    Priority: ?lang= → cookie → Accept-Language → DEFAULT_LANG.
-    Also keeps a sticky cookie for 1 year.
-    """
 
     async def dispatch(self, request: Request, call_next):
         q = request.query_params.get("lang")

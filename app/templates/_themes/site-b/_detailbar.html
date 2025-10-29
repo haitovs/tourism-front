@@ -94,14 +94,7 @@
                 <img class="sb-user-img" src="{{ theme('img/detailbar/user.svg') }}"
                     onerror="this.src='{{ url_for('static', path='/img/detailbar/ic-user.svg') }}'">
             </a>
-
-            <div class="sb-lang"
-                x-data="{ open:false, btnW:0,
-                     toggle(){ this.open=!this.open; this.$nextTick(()=>{ this.btnW = this.$refs.btn?.offsetWidth || 0; }); },
-                     close(){ this.open=false; },
-                     init(){ this.btnW = this.$refs.btn?.offsetWidth || 0; window.addEventListener('resize', ()=>{ this.btnW = this.$refs.btn?.offsetWidth || 0; }); } }"
-                @keydown.escape.window="close()" @click.outside="close()">
-
+            <div class="sb-lang" x-data="siteBLangMenu()" @keydown.escape.window="close()" @click.outside="close()">
                 <button x-ref="btn" type="button" class="sb-lang-btn" :aria-expanded="open.toString()"
                     aria-haspopup="menu" aria-controls="lang-menu" @click="toggle()">
                     <span class="sb-lang-code">{{ current|upper }}</span>
@@ -126,4 +119,29 @@
             </div>
         </div>
     </div>
+
 </header>
+<script>
+    window.siteBLangMenu = function () {
+        return {
+            open: false,
+            btnW: 0,
+            toggle: function () {
+                this.open = !this.open;
+                this.$nextTick(() => {
+                    var el = this.$refs.btn;
+                    this.btnW = (el && el.offsetWidth) || 0;
+                });
+            },
+            close: function () { this.open = false; },
+            init: function () {
+                var set = () => {
+                    var el = this.$refs.btn;
+                    this.btnW = (el && el.offsetWidth) || 0;
+                };
+                set();
+                window.addEventListener('resize', set);
+            }
+        };
+    };
+</script>

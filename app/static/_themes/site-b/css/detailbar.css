@@ -81,13 +81,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    /* allow Y to show for dropdowns */
     overflow-x: auto;
-    overflow-y: hidden;
+    overflow-y: visible; /* was hidden */
     -webkit-overflow-scrolling: touch;
     padding: 0 8px;
     scroll-behavior: smooth;
     scroll-snap-type: x proximity;
 }
+
 .sb-navWrap::-webkit-scrollbar {
     display: none;
 }

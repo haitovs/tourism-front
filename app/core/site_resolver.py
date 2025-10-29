@@ -18,7 +18,6 @@ class SiteInfo:
 
 
 def _parse_site_map(raw: str) -> dict[str, Tuple[str, int]]:
-    # "host:slug:id,..."
     out: dict[str, Tuple[str, int]] = {}
     for item in (raw or "").split(","):
         item = item.strip()
@@ -62,10 +61,6 @@ class SiteResolverMiddleware(BaseHTTPMiddleware):
         slug, sid = None, None
         if host in site_map:
             slug, sid = site_map[host]
-        else:
-            # fallback to Stage 2 envs
-            slug = getattr(settings, "FRONT_SITE_SLUG", None)
-            sid = getattr(settings, "FRONT_SITE_ID", None)
 
         request.state.site = SiteInfo(id=sid, slug=slug, host=host)
         return await call_next(request)
