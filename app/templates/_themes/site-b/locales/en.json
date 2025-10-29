@@ -46,5 +46,7 @@
     "siteb.faq.center.body": "Find quick answers to the most common questions from participants and guests.",
     "siteb.faq.search_placeholder": "Search...",
     "siteb.faq.no_results.1": "No entries matched",
-    "siteb.faq.no_results.2": "Try a different keyword."
+    "siteb.faq.no_results.2": "Try a different keyword.",
+
+    "siteb.organizers.title": "Presented by the following organization:"
 }

@@ -863,6 +863,9 @@
   .max-h-\[140px\] {
     max-height: 140px;
   }
+  .max-h-\[154\.51px\] {
+    max-height: 154.51px;
+  }
   .max-h-\[clamp\(90px\,13vw\,154\.51px\)\] {
     max-height: clamp(90px, 13vw, 154.51px);
   }
@@ -1001,6 +1004,9 @@
   .w-\[227px\] {
     width: 227px;
   }
+  .w-\[280px\] {
+    width: 280px;
+  }
   .w-\[350px\] {
     width: 350px;
   }
@@ -1061,11 +1067,17 @@
   .w-\[min\(480px\,84vw\)\] {
     width: min(480px, 84vw);
   }
+  .w-\[min\(788px\,90\%\)\] {
+    width: min(788px, 90%);
+  }
   .w-\[min\(1210px\,90vw\)\] {
     width: min(1210px, 90vw);
   }
   .w-\[min\(1268px\,90vw\)\] {
     width: min(1268px, 90vw);
+  }
+  .w-\[min\(1325px\,92vw\)\] {
+    width: min(1325px, 92vw);
   }
   .w-\[min\(1440px\,92vw\)\] {
     width: min(1440px, 92vw);
@@ -1099,6 +1111,9 @@
   }
   .max-w-\[168px\] {
     max-width: 168px;
+  }
+  .max-w-\[213\.14px\] {
+    max-width: 213.14px;
   }
   .max-w-\[305px\] {
     max-width: 305px;
@@ -1558,6 +1573,9 @@
   }
   .overflow-x-auto {
     overflow-x: auto;
+  }
+  .overflow-x-clip {
+    overflow-x: clip;
   }
   .overflow-x-hidden {
     overflow-x: hidden;
@@ -2322,6 +2340,9 @@
   }
   .text-\[clamp\(22px\,5vw\,28px\)\] {
     font-size: clamp(22px, 5vw, 28px);
+  }
+  .text-\[clamp\(24px\,3\.5vw\,40px\)\] {
+    font-size: clamp(24px, 3.5vw, 40px);
   }
   .text-\[clamp\(24px\,4vw\,50px\)\] {
     font-size: clamp(24px, 4vw, 50px);
