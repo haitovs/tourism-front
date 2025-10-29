@@ -22,5 +22,11 @@
     "siteb.stats.speakers": "Speakers",
     "siteb.stats.speakers_desc": "Share expertise, inspire ideas, and spark meaningful dialogue that drives collaboration.",
     "siteb.stats.companies": "Companies",
-    "siteb.stats.companies_desc": "Engage with peers, build networks, and discover fresh perspectives for growth and collaboration."
+    "siteb.stats.companies_desc": "Engage with peers, build networks, and discover fresh perspectives for growth and collaboration.",
+
+    "siteb.sectors.title": "Expo Sectors",
+    "siteb.sectors.body": "The Expo sector showcases the latest innovations, products, and services. Exhibitors have the opportunity to present their solutions, connect with professionals, and engage with potential partners and clients. This platform fosters collaboration, highlights emerging trends, and encourages knowledge exchange.",
+    "siteb.sectors.read_more": "READ MORE",
+    "siteb.sectors.more_details": "MORE DETAILS",
+    "siteb.sectors.empty": "Sectors will be announced soon."
 }

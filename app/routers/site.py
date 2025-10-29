@@ -28,6 +28,62 @@ def _resolve_site_id(req: Request) -> int | None:
     return getattr(site, "id", None) if site else None
 
 
+def _resolve_home_limits(req: Request) -> dict:
+    """
+    Returns per-site limits for home widgets.
+    - Site-aware defaults via site.slug (or site.name lowercased)
+    - URL override: ?limit.sectors=6 (and similar)
+    """
+    q = req.query_params or {}
+
+    def _qint(key: str, default: int) -> int:
+        qkey = f"limit.{key}"
+        if qkey in q:
+            try:
+                v = int(q[qkey])
+                return max(0, v)
+            except Exception:
+                return default
+        return default
+
+    site = getattr(req.state, "site", None)
+    slug = (getattr(site, "slug", None) or getattr(site, "name", None) or "").lower()
+
+    # Defaults for the “default” site
+    limits = {
+        "sectors_fetch": 3,
+        "sectors_display": 6,
+        "speakers": 3,
+        "news": 5,
+        "faqs": 5,
+        "participants_all": 200,
+        "participants_home": 12,
+        "participants_expo": 8,
+        "participants_forum": 8,
+        "participants_both": 8,
+    }
+
+    # Site-specific overrides
+    overrides = {
+        "site-b": {
+            "sectors_fetch": 12,  # grab more; we’ll display 6
+            "sectors_display": 6,
+        },
+        # add more sites here...
+    }
+
+    limits.update(overrides.get(slug, {}))
+
+    for k in list(limits.keys()):
+        limits[k] = _qint(k, limits[k])
+
+    for k, v in list(limits.items()):
+        if v is None or v < 0:
+            limits[k] = 0
+
+    return limits
+
+
 @router.post("/set-lang/{code}")
 def set_lang(code: str, request: Request, response: Response):
     code = (code or "").lower().split("-")[0]
@@ -44,22 +100,21 @@ async def home(req: Request):
 
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
     site_id = _resolve_site_id(req)
+    limits = _resolve_home_limits(req)
 
     # timer (sync)
     deadline_dt = timer_srv.get_deadline_from_settings(settings)
     timer_ctx = timer_srv.build_timer_context(deadline_dt)
 
-    # fetch async data in parallel
-    # NOTE: we fetch participants ONCE and derive the four lists locally.
-    sectors_task = create_task(sectors_srv.list_home_sectors(req, limit=3, latest_first=True))
-    news_task = create_task(news_srv.get_latest_news(req, limit=5))
-    faqs_task = create_task(faq_srv.list_faqs(req, limit=5))
-    speakers_task = create_task(speakers_srv.get_featured_speakers(req, limit=3))
+    # async fetches — use site-aware limits
+    sectors_task = create_task(sectors_srv.list_home_sectors(req, limit=limits["sectors_fetch"], latest_first=True))
+    news_task = create_task(news_srv.get_latest_news(req, limit=limits["news"]))
+    faqs_task = create_task(faq_srv.list_faqs(req, limit=limits["faqs"]))
+    speakers_task = create_task(speakers_srv.get_featured_speakers(req, limit=limits["speakers"]))
     organizers_task = create_task(org_srv.list_organizers(req, limit=None))
     partners_task = create_task(partners_srv.list_partners(req, limit=None))
-    participants_all_task = create_task(participants_srv.list_participants(req, limit=200, latest_first=True))
+    participants_all_task = create_task(participants_srv.list_participants(req, limit=limits["participants_all"], latest_first=True))
 
-    # Defensive gather: never raise, we’ll default to [] on exceptions
     results = await gather(
         sectors_task,
         news_task,
@@ -86,13 +141,12 @@ async def home(req: Request):
     partners = _ok(5)
     participants_all = _ok(6)
 
-    # Derive participants slices locally (keeps one backend call)
-    participants12 = participants_all[:12]
-    participants_expo = [p for p in participants_all if (p.get("role") in {"expo", "both"})][:8]
-    participants_forum = [p for p in participants_all if (p.get("role") in {"forum", "both"})][:8]
-    participants_both = [p for p in participants_all if p.get("role") == "both"][:8]
+    # Derive participant slices with limits
+    participants = participants_all[:limits["participants_home"]]
+    participants_expo = [p for p in participants_all if (p.get("role") in {"expo", "both"})][:limits["participants_expo"]]
+    participants_forum = [p for p in participants_all if (p.get("role") in {"forum", "both"})][:limits["participants_forum"]]
+    participants_both = [p for p in participants_all if p.get("role") == "both"][:limits["participants_both"]]
 
-    # sponsors/statistics (sync; services already hardened)
     sponsors_top = sponsor_srv.get_top_sponsors(lang=lang, site_id=site_id)
     sponsors_top_flat = sponsor_srv.get_top_sponsors_flat(lang=lang, site_id=site_id, max_items=5)
     sponsors_top_view = sponsor_srv.build_top_sponsors_view(lang=lang, site_id=site_id, max_items=5)
@@ -106,7 +160,7 @@ async def home(req: Request):
         "lang": lang,
         "settings": settings,
 
-        # sponsors/statistics (sync)
+        # sponsors/statistics
         "sponsors_top": sponsors_top,
         "sponsors_top_flat": sponsors_top_flat,
         "sponsors_top_view": sponsors_top_view,
@@ -115,29 +169,42 @@ async def home(req: Request):
         "bronze": bronze,
         "stats": stats,
 
-        # async results
+        # async results (flat + {items:[…]} for theme compatibility)
         "sectors": sectors,
+        "sectors_data": {
+            "items": sectors
+        },
         "news": news,
+        "news_data": {
+            "items": news
+        },
         "faqs": faqs,
+        "faqs_data": {
+            "items": faqs
+        },
         "speakers": speakers,
+        "speakers_data": {
+            "items": speakers
+        },
 
-        # organizers
+        # organizers / partners (flat + items)
         "organizers": organizers,
         "organizers_data": {
             "items": organizers
         },
-
-        # partners
         "partners": partners,
         "partners_data": {
             "items": partners
         },
 
         # participants (derived locally)
-        "participants": participants12,
+        "participants": participants,
         "participants_expo": participants_expo,
         "participants_forum": participants_forum,
         "participants_both": participants_both,
+
+        # limits exposed to templates (e.g., sectors slice)
+        "limits": limits,
 
         # timer
         "timer": timer_ctx,

@@ -14,7 +14,7 @@
     --c-surface-contrast: #1e1e1e;
 
     /* layout */
-    --container: 1440px;
+    --container: 1650px;
     --header-h: 90px; /* header bar height */
     --pill-top: var(--header-h); /* nav-pill vertical offset */
 }

@@ -1,7 +1,6 @@
-/* Space before (top) and after (bottom) Statistics */
 .sb-stats {
-    margin-top: clamp(24px, 6vw, 80px);
-    margin-bottom: clamp(24px, 6vw, 80px);
-    display: flow-root; /* prevents margin-collapsing with neighbors */
-    scroll-margin-top: calc(var(--header-h) + 12px); /* nice when jumping to #statistics */
+    margin-top: clamp(80px, 6vw, 160px);
+    margin-bottom: clamp(80px, 6vw, 160px);
+    display: flow-root;
+    scroll-margin-top: calc(var(--header-h) + 12px);
 }

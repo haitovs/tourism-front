@@ -82,6 +82,7 @@
     position: relative;
     min-height: 585px;
     overflow: hidden;
+    isolation: isolate;
 }
 .sb-about__media > img {
     position: absolute;
@@ -89,58 +90,60 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transform: scaleX(-1); /* mirror like figma */
+    transform: scaleX(-1);
+    z-index: 0;
 }
 
-/* Concentric glow near center/right */
-.sb-about__bubble {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-}
-.sb-about__bubble--outer {
-    width: 200px;
-    height: 200px;
-    left: 260px;
-    top: 192px;
-    background: rgba(32, 48, 108, 0.6);
-}
-.sb-about__bubble--inner {
-    width: 150px;
-    height: 150px;
-    left: 285px;
-    top: 217px;
-    background: rgba(32, 48, 108, 0.75);
-}
-
-/* Play button — Figma spec: 70x70, 5px white stroke, radius 0 20 20 0 */
+/* Play button centered */
 .sb-about__play {
     position: absolute;
-    inset: 0;
+    inset: 0; /* centers with width/height below via margin:auto */
     margin: auto;
     width: 70px;
     height: 70px;
     background: transparent;
     border: 5px solid #ffffff;
-    border-radius: 20px; /* top-left 0, top-right 20, bottom-right 20, bottom-left 0 */
+    border-radius: 0 20px 20px 0; /* TL 0, TR 20, BR 20, BL 0 */
     display: grid;
     place-items: center;
     cursor: pointer;
     transition: transform 0.15s ease, opacity 0.15s ease, background 0.15s ease;
+    z-index: 3; /* above image */
+    overflow: visible; /* allow bubble to extend around the button */
 }
+
+/* Bubble as the button's background (always centered on the button) */
+.sb-about__play::before {
+    content: "";
+    position: absolute;
+    inset: 0; /* anchor to the button box */
+    margin: auto; /* perfect centering for fixed size */
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(32, 48, 108, 0.6);
+    pointer-events: none;
+    z-index: -1; /* behind the button, still above the image because the button creates a stacking context */
+}
+
+/* Play icon */
 .sb-about__play::after {
-    /* white triangle (play) */
     content: "";
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 12px 0 12px 18px; /* triangle size */
+    border-width: 12px 0 12px 18px;
     border-color: transparent transparent transparent #ffffff;
-    transform: translateX(1px); /* nudge to optical center */
+    transform: translateX(1px); /* optical nudge */
 }
+
 .sb-about__play:hover {
     opacity: 0.92;
     transform: scale(1.02);
+}
+.sb-about__play:focus-visible {
+    outline: 2px dashed #ffffff;
+    outline-offset: 4px;
 }
 
 /* Responsive */
@@ -148,12 +151,15 @@
     .sb-about__inner {
         grid-template-columns: 1fr;
     }
+    .sb-about__play::before {
+        display: none;
+    }
     .sb-about__media {
         order: -1;
         min-height: 320px;
     }
-    .sb-about__bubble--outer,
-    .sb-about__bubble--inner {
+    .sb-about__bubble {
+        /* hide bubble on mobile */
         display: none;
     }
     .sb-about__copy {
