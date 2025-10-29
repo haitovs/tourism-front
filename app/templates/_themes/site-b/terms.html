@@ -26,6 +26,10 @@
     </section>
 
     <!-- BODY -->
+    {% set _sections = terms.sections if terms else [] %}
+    {% set _content = terms.content_html if terms else '' %}
+    {% set _has_body = (_sections and _sections|length > 0) or (_content and _content|trim != '') %}
+
     <section id="terms-content" class="relative py-12 sm:py-14 lg:py-16">
         <div class="absolute inset-0 -z-[1] bg-[#0b163d]">
             <div class="absolute inset-0 opacity-[0.88]"
@@ -37,31 +41,39 @@
             <article
                 class="bg-white/95 backdrop-blur-sm rounded-[24px] shadow-[0_24px_60px_rgba(8,19,54,0.28)] px-6 py-8 sm:px-9 sm:py-10 lg:px-12 lg:py-12">
 
-                {% set terms_sections = [
-                    {'title': t('siteb.terms.sections.scope.title'), 'body': t('siteb.terms.sections.scope.body')},
-                    {'title': t('siteb.terms.sections.registration.title'), 'body': t('siteb.terms.sections.registration.body')},
-                    {'title': t('siteb.terms.sections.conduct.title'), 'body': t('siteb.terms.sections.conduct.body')},
-                    {'title': t('siteb.terms.sections.content.title'), 'body': t('siteb.terms.sections.content.body')},
-                    {'title': t('siteb.terms.sections.liability.title'), 'body': t('siteb.terms.sections.liability.body')},
-                    {'title': t('siteb.terms.sections.changes.title'), 'body': t('siteb.terms.sections.changes.body')}
-                ] %}
-
+                {% if not _has_body %}
+                <div class="bg-[#F3F5FF] border border-[#d6defd] rounded-[16px] px-6 py-10 text-center">
+                    <h2 class="font-['Montserrat'] text-[#20306C] text-[clamp(24px,3.4vw,34px)] leading-tight">
+                        {{ t('terms.empty.title') }}
+                    </h2>
+                    <p class="mt-4 font-['Roboto'] text-[#404a7a] text-[17px] leading-[1.6]">
+                        {{ t('terms.empty.subtitle') }}
+                    </p>
+                </div>
+                {% else %}
                 <div class="space-y-10">
-                    {% for sec in terms_sections %}
+                    {% for sec in (_sections or []) %}
                     <section class="grid gap-5 lg:gap-8 lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)]">
                         <h2 class="font-['Montserrat'] text-[#0E1B40] text-[clamp(22px,3.8vw,32px)] leading-tight">
                             {{ sec.title }}
                         </h2>
-                        <p class="font-['Roboto'] text-[#213269] text-[17px] sm:text-[18px] leading-[1.75]">
-                            {{ sec.body }}
-                        </p>
+                        <div class="font-['Roboto'] text-[#213269] text-[17px] sm:text-[18px] leading-[1.75] prose max-w-none">
+                            {{ sec.body_html | safe }}
+                        </div>
                     </section>
 
                     {% if not loop.last %}
                     <div class="h-px w-full bg-gradient-to-r from-[#dfe6ff] via-[#c5d4ff] to-transparent"></div>
                     {% endif %}
                     {% endfor %}
+
+                    {% if (_sections or [])|length == 0 and _content %}
+                    <article class="font-['Roboto'] text-[#213269] text-[17px] sm:text-[18px] leading-[1.75] prose max-w-none">
+                        {{ _content | safe }}
+                    </article>
+                    {% endif %}
                 </div>
+                {% endif %}
             </article>
         </div>
     </section>

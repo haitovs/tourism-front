@@ -33,16 +33,16 @@
              norm(s){ return (s||'').toString().toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,''); }
            }" style="--card-min: 240px;">
         <!-- Search -->
-        <div class="w-full h-[68px] rounded-[12px] flex overflow-hidden border border-[#AFCB70] bg-[#EEF6D1]
-                    shadow-[0_10px_28px_rgba(15,29,69,0.12)]">
+        <div class="w-full h-[64px] rounded-[12px] flex overflow-hidden border border-[#20306C] bg-[#E6EBFF]
+                    shadow-[0_12px_28px_rgba(12,26,71,0.12)]">
             <input x-model.trim="q" type="search" placeholder="{{ t('siteb.speakers.search.placeholder') }}"
-                class="flex-1 h-full px-5 md:px-6 bg-white/90 outline-none font-['Roboto'] font-semibold
-                       text-[18px] md:text-[22px] text-[#1E1E1E] placeholder:text-[#5E6B42]/80"
+                class="flex-1 h-full px-5 md:px-6 bg-white outline-none font-['Roboto'] font-semibold
+                       text-[18px] md:text-[21px] text-[#172042] placeholder:text-[#4B5788]/75"
                 autocomplete="off" />
-            <button type="button" class="w-[72px] h-[68px] grid place-items-center bg-[#7AA048]
-                    hover:bg-[#6B8F3E] transition-colors"
+            <button type="button" class="w-[68px] h-full grid place-items-center bg-[#20306C]
+                    hover:bg-[#1B2A59] transition-colors"
                 aria-label="{{ t('siteb.speakers.search.aria') }}">
-                <svg viewBox="0 0 24 24" class="w-[26px] h-[26px]" fill="none" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="w-[24px] h-[24px]" fill="none" aria-hidden="true">
                     <circle cx="11" cy="11" r="7" stroke="#FFFFFF" stroke-width="3" />
                     <path d="M20 20L16.65 16.65" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
                 </svg>

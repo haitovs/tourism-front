@@ -2,6 +2,139 @@
 {% from "_hero_macros.html" import hero_buttons %}
 {% from "speaker/_macros.html" import pager %}
 {% block content %}
+{% if is_site('site-b') %}
+<main>
+    <!-- HERO -->
+    <section class="relative w-full h-[420px]">
+        <img src="{{ theme('img/hero-bg.png') }}" alt="" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0" style="background: rgba(32,48,108,0.55);"></div>
+
+        <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
+            <h1 class="font-['Montserrat'] font-bold text-[clamp(34px,5vw,56px)] leading-tight text-white">
+                {{ t('siteb.speakers.hero.title') }}
+            </h1>
+            <p class="mt-3 font-['Roboto'] text-[clamp(16px,2.4vw,22px)] text-white/90">
+                {{ t('siteb.speakers.hero.subtitle') }}
+            </p>
+        </div>
+
+        {{ hero_buttons(
+        home_href = '/',
+        section_label = t('siteb.speakers.section_label'),
+        section_href = '/speakers',
+        is_detail = False
+        ) }}
+    </section>
+
+    <!-- BODY -->
+    <section class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8" x-data="{
+            q: '{{ (q or '')|e }}',
+            norm(s){ return (s||'').toString().toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,''); }
+        }" style="--card-min: 240px;">
+        <!-- Search -->
+        <div class="w-full h-[64px] rounded-[12px] flex overflow-hidden border border-[#20306C] bg-[#E6EBFF]
+                    shadow-[0_12px_28px_rgba(12,26,71,0.12)]">
+            <input x-model.trim="q" type="search" placeholder="{{ t('siteb.speakers.search.placeholder') }}"
+                class="flex-1 h-full px-5 md:px-6 bg-white outline-none font-['Roboto'] font-semibold
+                       text-[18px] md:text-[21px] text-[#172042] placeholder:text-[#4B5788]/75"
+                autocomplete="off" />
+            <button type="button" class="w-[68px] h-full grid place-items-center bg-[#20306C]
+                    hover:bg-[#1B2A59] transition-colors"
+                aria-label="{{ t('siteb.speakers.search.aria') }}">
+                <svg viewBox="0 0 24 24" class="w-[24px] h-[24px]" fill="none" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7" stroke="#FFFFFF" stroke-width="3" />
+                    <path d="M20 20L16.65 16.65" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Grid -->
+        <div class="mt-6 bg-white rounded-[12px] p-5 md:p-8">
+            <ul class="grid gap-6 md:gap-8 place-items-stretch
+                       grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {% set items = speakers or [] %}
+                {% for sp in items %}
+                <li x-show="!q || norm('{{ (sp.fullname or sp.name or '')|e }} {{ (sp.position or '')|e }} {{ (sp.company or '')|e }}').includes(norm(q))"
+                    x-cloak class="w-full flex justify-center">
+                    <!-- MOBILE card -->
+                    <a href="/speakers/{{ sp.id }}" class="block md:hidden w-full max-w-[380px]">
+                        <div class="relative w-full h-[320px] rounded-[14px] overflow-hidden shadow">
+                            <img src="{{ sp.photo_url or '/static/img/person_placeholder.png' }}"
+                                alt="{{ sp.fullname }}" class="absolute inset-0 w-full h-full object-cover"
+                                loading="lazy" />
+                            <div class="absolute inset-x-0 bottom-0 h-[118px] bg-black/65 rounded-b-[14px] p-3">
+                                <div class="font-['Roboto'] text-white pr-7">
+                                    <div class="font-bold text-[18px] leading-[21px] truncate"
+                                        title="{{ sp.fullname }}">
+                                        {{ sp.fullname }}
+                                    </div>
+                                    {% if sp.position or sp.company %}
+                                    <div class="mt-1 text-[14px] leading-[18px] line-clamp-2 opacity-95">
+                                        {{ sp.position }}{% if sp.company %}, {{ sp.company }}{% endif %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="absolute right-3 bottom-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px]"
+                                        viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="M9 6l6 6-6 6" stroke="#FFFFFF" stroke-width="1.8"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- DESKTOP/TABLET card -->
+                    <a href="/speakers/{{ sp.id }}" class="hidden md:block group w-full">
+                        <div
+                            class="relative w-full aspect-[4/5] rounded-[20px] lg:rounded-[24px] overflow-hidden shadow transition-transform duration-300 group-hover:scale-[1.01]">
+                            {% if sp.photo_url %}
+                            <img src="{{ sp.photo_url }}" alt="{{ sp.fullname }}"
+                                class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                            {% else %}
+                            <img src="/static/img/person_placeholder.png" alt="Speaker"
+                                class="absolute inset-0 w-full h-full object-cover opacity-80" loading="lazy" />
+                            {% endif %}
+
+                            <div
+                                class="absolute inset-x-0 bottom-0 h-[128px] lg:h-[140px] bg-black/65 rounded-b-[20px] lg:rounded-b-[24px] p-4 lg:p-5">
+                                <div class="font-['Roboto'] text-white pr-10">
+                                    <div class="font-bold text-[20px] lg:text-[22px] leading-tight truncate"
+                                        title="{{ sp.fullname }}">
+                                        {{ sp.fullname }}
+                                    </div>
+                                    {% if sp.position or sp.company %}
+                                    <div class="mt-1 text-[14px] lg:text-[16px] leading-snug line-clamp-2 opacity-95">
+                                        {{ sp.position }}{% if sp.company %}, {{ sp.company }}{% endif %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="absolute right-4 bottom-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="w-[22px] h-[22px] lg:w-[24px] lg:h-[24px] transition-transform group-hover:translate-x-[2px]"
+                                        viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="M9 6l6 6-6 6" stroke="#FFFFFF" stroke-width="1.8"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
+
+                {% if items|length == 0 %}
+                <li class="col-span-full text-center text-slate-500 py-10">{{ t('siteb.speakers.none') }}</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        {{ pager(current_page or 1, total_pages or 1, q, base='/speakers') }}
+    </section>
+</main>
+{% else %}
 <main>
     <!-- HERO -->
     <section class="relative w-full h-[420px]">
@@ -134,4 +267,5 @@
         {{ pager(current_page or 1, total_pages or 1, q, base='/speakers') }}
     </section>
 </main>
+{% endif %}
 {% endblock %}
