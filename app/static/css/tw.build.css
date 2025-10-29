@@ -3069,6 +3069,13 @@
       }
     }
   }
+  .hover\:border-\[\#20306C\] {
+    &:hover {
+      @media (hover: hover) {
+        border-color: #20306C;
+      }
+    }
+  }
   .hover\:border-\[var\(--c-primary\)\] {
     &:hover {
       @media (hover: hover) {
@@ -3212,6 +3219,11 @@
   .focus-visible\:ring-\[\#00B374\] {
     &:focus-visible {
       --tw-ring-color: #00B374;
+    }
+  }
+  .focus-visible\:ring-\[\#20306C\] {
+    &:focus-visible {
+      --tw-ring-color: #20306C;
     }
   }
   .focus-visible\:ring-\[var\(--c-primary\)\] {

@@ -24,35 +24,40 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-[50px] justify-items-center">
                 {% for n in cards %}
                 <article class="w-[min(100%,380px)] h-[460px] bg-white rounded-[10px] overflow-hidden
-                        shadow-[0_4px_10px_rgba(0,0,0,.15)] ring-1 ring-black/5">
+            shadow-[0_4px_10px_rgba(0,0,0,.15)] border-2 border-transparent hover:border-[#20306C]">
 
-                    <!-- FIXED MEDIA SLOT (fills with cover) -->
-                    <div class="w-full h-[230px] bg-slate-100">
-                        {% if n.image_url %}
-                        <img src="{{ n.image_url }}" alt="{{ n.title }}"
-                            class="w-full h-full object-cover object-center" loading="lazy">
-                        {% else %}
-                        <img src="/static/img/news_placeholder.jpg" alt=""
-                            class="w-full h-full object-cover object-center opacity-80">
-                        {% endif %}
-                    </div>
+                    <!-- Make the entire card clickable -->
+                    <a href="/news/{{ n.id }}"
+                        class="block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#20306C]"
+                        aria-label="{{ n.title }}">
+                        <!-- FIXED MEDIA SLOT (fills with cover) -->
+                        <div class="w-full h-[230px] bg-slate-100">
+                            {% if n.image_url %}
+                            <img src="{{ n.image_url }}" alt="{{ n.title }}"
+                                class="w-full h-full object-cover object-center" loading="lazy">
+                            {% else %}
+                            <img src="/static/img/news_placeholder.jpg" alt=""
+                                class="w-full h-full object-cover object-center opacity-80">
+                            {% endif %}
+                        </div>
 
-                    <!-- Fixed text slots -->
-                    <div class="px-5 pt-5 grid grid-rows-[auto_1fr] h-[230px]">
-                        <h3 class="font-['Lato'] font-bold text-[20px] leading-[25px] text-[#1E1E1E]
-                       min-h-[50px] line-clamp-2">
-                            {{ n.title }}
-                        </h3>
+                        <!-- Fixed text slots -->
+                        <div class="px-5 pt-5 grid grid-rows-[auto_1fr] h-[230px]">
+                            <h3 class="font-['Lato'] font-bold text-[20px] leading-[25px] text-[#1E1E1E]
+                                       min-h-[50px] line-clamp-2 hover:underline">
+                                {{ n.title }}
+                            </h3>
 
-                        {% if n.summary %}
-                        <p class="mt-4 font-['Lato'] font-bold text-[16px] leading-[20px] text-[rgba(30,30,30,0.7)]
-                      min-h-[100px] max-h-[140px] line-clamp-6">
-                            {{ n.summary }}
-                        </p>
-                        {% else %}
-                        <div></div>
-                        {% endif %}
-                    </div>
+                            {% if n.summary %}
+                            <p class="mt-4 font-['Lato'] font-bold text-[16px] leading-[20px] text-[rgba(30,30,30,0.7)]
+                                      min-h-[100px] max-h-[140px] line-clamp-6">
+                                {{ n.summary }}
+                            </p>
+                            {% else %}
+                            <div></div>
+                            {% endif %}
+                        </div>
+                    </a>
                 </article>
                 {% endfor %}
             </div>
@@ -67,7 +72,7 @@
         <div class="grid place-items-center mt-8">
             <a href="/news"
                 class="inline-flex items-center justify-center gap-3 w-[189px] h-[55px] rounded-[6px] bg-[#B8D779] text-white
-                font-['Lato'] font-black text-[16px] leading-[25px] hover:opacity-95 hover:-translate-y-[1px] transition">
+                      font-['Lato'] font-black text-[16px] leading-[25px] hover:opacity-95 hover:-translate-y-[1px] transition">
                 <span>{{ t('siteb.news.more_details') or 'More details' }}</span>
                 <svg viewBox="0 0 24 24" class="w-4 h-4" aria-hidden="true">
                     <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
