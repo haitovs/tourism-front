@@ -8,18 +8,15 @@
             </span>
             <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
         </div>
-        <h2
-            class="font-['Montserrat'] text-[clamp(28px,4vw,50px)] leading-[1.22] font-medium mt-1 text-center text-[#1E1E1E]">
-            {{ t('home.timer.title_main') }}
-        </h2>
     </header>
 
     <!-- Alpine state (init guarded so it won't throw if widget isn't present yet) -->
     <div x-data='window.timerWidget({
-    apiBase: "{{ settings.BACKEND_BASE_URL }}",
-    bgUrl: "{{ theme("img/timer/timer-bg.png") }}",
-    logoUrl: "{{ theme("img/timer/logo.svg") }}"
-  })' x-init='$nextTick(() => (typeof init === "function") && init())'>
+        apiBase: "{{ settings.BACKEND_BASE_URL }}",
+        bgUrl: "{{ theme("img/timer/timer-bg.png") }}",
+        logoUrl: "{{ theme("img/timer/logo.svg") }}",
+        site: "turkmen-tourism"             
+        })' x-init='$nextTick(()=> (typeof init==="function") && init())'>
 
         <!-- ===== DESKTOP (>=1024px) — Figma 1310×450 ===== -->
         <div class=" hidden lg:flex w-full justify-center">
@@ -46,62 +43,82 @@
                     <!-- Middle row -->
                     <div class="absolute left-0 bottom-0 w-full pb-10">
                         <div class="mx-12 flex items-center justify-between">
-                            <!-- Left counters (D:H:M) -->
-                            <div class="flex items-end gap-8">
+                            <!-- Left counters (D:H:M:S) -->
+                            <div class="flex items-center gap-6">
+
                                 <!-- DAYS -->
-                                <div class="text-center">
-                                    <div class="font-['Poppins'] tabular-nums font-normal text-[140px] leading-[110px]"
-                                        x-text="dd">00</div>
-                                    <div
-                                        class="font-['Lato'] font-normal text-[30px] leading-[50px] uppercase tracking-wide">
+                                <div class="flex flex-col items-center">
+                                    <div class="inline-flex items-center
+                    w-[150px] h-[100px]
+                    font-['Poppins'] tabular-nums text-[100px] leading-none justify-center" x-text="dd">00</div>
+                                    <div class="font-['Lato'] text-[26px] leading-[42px] uppercase tracking-wide">
                                         {{ t('home.timer.days') }}
                                     </div>
                                 </div>
 
                                 <!-- ':' -->
-                                <div class="font-['Roboto'] font-semibold text-[110px] leading-[35px] -mb-6">:</div>
+                                <div class="text-center w-[44px]">
+                                    <div class="font-['Roboto'] font-semibold text-[88px] leading-[32px] -mb-5">:</div>
+                                </div>
 
                                 <!-- HOURS -->
-                                <div class="text-center">
-                                    <div class="font-['Poppins'] tabular-nums font-normal text-[140px] leading-[110px]"
-                                        x-text="hh">00</div>
-                                    <div
-                                        class="font-['Lato'] font-normal text-[30px] leading-[50px] uppercase tracking-wide">
+                                <div class="flex flex-col items-center">
+                                    <div class="inline-flex items-center justify-center
+                    w-[150px] h-[100px]
+                    font-['Poppins'] tabular-nums text-[100px] leading-none" x-text="hh">00</div>
+                                    <div class="font-['Lato'] text-[26px] leading-[42px] uppercase tracking-wide">
                                         {{ t('home.timer.hours') }}
                                     </div>
                                 </div>
 
                                 <!-- ':' -->
-                                <div class="font-['Roboto'] font-semibold text-[110px] leading-[35px] -mb-6">:</div>
+                                <div class="text-center w-[44px]">
+                                    <div class="font-['Roboto'] font-semibold text-[88px] leading-[32px] -mb-5">:</div>
+                                </div>
 
                                 <!-- MINUTES -->
-                                <div class="text-center">
-                                    <div class="font-['Poppins'] tabular-nums font-normal text-[140px] leading-[110px]"
-                                        x-text="mm">00</div>
-                                    <div
-                                        class="font-['Lato'] font-normal text-[30px] leading-[50px] uppercase tracking-wide">
+                                <div class="flex flex-col items-center">
+                                    <div class="inline-flex items-center justify-center
+                    w-[150px] h-[100px]
+                    font-['Poppins'] tabular-nums text-[100px] leading-none" x-text="mm">00</div>
+                                    <div class="font-['Lato'] text-[26px] leading-[42px] uppercase tracking-wide">
                                         {{ t('home.timer.minutes') }}
+                                    </div>
+                                </div>
+
+                                <!-- ':' -->
+                                <div class="text-center w-[44px]">
+                                    <div class="font-['Roboto'] font-semibold text-[88px] leading-[32px] -mb-5">:</div>
+                                </div>
+
+                                <!-- SECONDS -->
+                                <div class="flex flex-col items-center">
+                                    <div class="inline-flex items-center justify-center
+                    w-[170px] h-[110px]
+                    font-['Poppins'] tabular-nums text-[110px] leading-none" x-text="ss">00</div>
+                                    <div class="font-['Lato'] text-[24px] leading-[40px] uppercase tracking-wide">
+                                        {{ t('home.timer.seconds') }}
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Divider -->
                             <div class="hidden xl:block h-[330px] w-[2px] bg-white/90"></div>
 
                             <!-- Right deadline -->
                             <div class="text-center shrink-0">
-                                <div class="font-['Poppins'] tabular-nums font-normal text-[140px] leading-[110px]">
+                                <div class="font-['Poppins'] tabular-nums font-normal text-[100px] leading-[96px]">
                                     {{ timer.deadline_day }}
                                 </div>
                                 <div
-                                    class="font-['Lato'] font-normal text-[30px] leading-[50px] uppercase tracking-wide">
+                                    class="font-['Lato'] font-normal text-[26px] leading-[42px] uppercase tracking-wide">
                                     {{ timer.deadline_month_upper }}
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
-            </div><!-- /card -->
+            </div>
         </div>
 
         <!-- ===== MOBILE/TABLET (<1024px) with seconds ===== -->
@@ -128,8 +145,8 @@
 
                         <div class="mt-2 sm:mt-2.5 md:mt-3 flex items-center gap-3 sm:gap-3.5 md:gap-4 tabular-nums">
                             <!-- DAYS -->
-                            <div class="text-center">
-                                <div class="font-['Poppins'] leading-none text-[28px] sm:text-[32px] md:text-[38px]"
+                            <div class="text-center min-w-[66px] sm:min-w-[74px] md:min-w-[86px]">
+                                <div class="font-['Poppins'] tabular-nums leading-none text-[28px] sm:text-[32px] md:text-[38px]"
                                     x-text="dd">00</div>
                                 <div
                                     class="font-['Lato'] tracking-wide text-[10px] sm:text-[11px] md:text-[12px] uppercase">
@@ -138,14 +155,14 @@
                             </div>
 
                             <div
-                                class="flex flex-col items-center justify-center gap-[12px] sm:gap-[13px] md:gap-[14px]">
+                                class="flex flex-col items-center justify-center gap-[12px] sm:gap-[13px] md:gap-[14px] w-[18px] sm:w-[20px] md:w-[22px] shrink-0">
                                 <span class="block w-2 h-2 rounded-full bg-white"></span>
                                 <span class="block w-2 h-2 rounded-full bg-white"></span>
                             </div>
 
                             <!-- HOURS -->
-                            <div class="text-center">
-                                <div class="font-['Poppins'] leading-none text-[28px] sm:text-[32px] md:text-[38px]"
+                            <div class="text-center min-w-[66px] sm:min-w-[74px] md:min-w-[86px]">
+                                <div class="font-['Poppins'] tabular-nums leading-none text-[28px] sm:text-[32px] md:text-[38px]"
                                     x-text="hh">00</div>
                                 <div
                                     class="font-['Lato'] tracking-wide text-[10px] sm:text-[11px] md:text-[12px] uppercase">
@@ -154,14 +171,14 @@
                             </div>
 
                             <div
-                                class="flex flex-col items-center justify-center gap-[12px] sm:gap-[13px] md:gap-[14px]">
+                                class="flex flex-col items-center justify-center gap-[12px] sm:gap-[13px] md:gap-[14px] w-[18px] sm:w-[20px] md:w-[22px] shrink-0">
                                 <span class="block w-2 h-2 rounded-full bg-white"></span>
                                 <span class="block w-2 h-2 rounded-full bg-white"></span>
                             </div>
 
                             <!-- MINUTES -->
-                            <div class="text-center">
-                                <div class="font-['Poppins'] leading-none text-[28px] sm:text-[32px] md:text-[38px]"
+                            <div class="text-center min-w-[66px] sm:min-w-[74px] md:min-w-[86px]">
+                                <div class="font-['Poppins'] tabular-nums leading-none text-[28px] sm:text-[32px] md:text-[38px]"
                                     x-text="mm">00</div>
                                 <div
                                     class="font-['Lato'] tracking-wide text-[10px] sm:text-[11px] md:text-[12px] uppercase">
@@ -170,14 +187,14 @@
                             </div>
 
                             <div
-                                class="flex flex-col items-center justify-center gap-[12px] sm:gap-[13px] md:gap-[14px]">
+                                class="flex flex-col items-center justify-center gap-[12px] sm:gap-[13px] md:gap-[14px] w-[18px] sm:w-[20px] md:w-[22px] shrink-0">
                                 <span class="block w-2 h-2 rounded-full bg-white"></span>
                                 <span class="block w-2 h-2 rounded-full bg-white"></span>
                             </div>
 
                             <!-- SECONDS -->
-                            <div class="text-center">
-                                <div class="font-['Poppins'] leading-none text-[28px] sm:text-[32px] md:text-[38px]"
+                            <div class="text-center min-w-[66px] sm:min-w-[74px] md:min-w-[86px]">
+                                <div class="font-['Poppins'] tabular-nums leading-none text-[28px] sm:text-[32px] md:text-[38px]"
                                     x-text="ss">00</div>
                                 <div
                                     class="font-['Lato'] tracking-wide text-[10px] sm:text-[11px] md:text-[12px] uppercase">

@@ -1,0 +1,76 @@
+{# Site-B · Speakers (left fixed width, right JS marquee) #}
+{% set raw =
+(speakers if (speakers is defined and speakers)
+else (speakers_data['items'] if (speakers_data is defined and speakers_data and ('items' in speakers_data)) else [])) %}
+{% set items = raw or [] %}
+
+<section id="speakers" class="my-[clamp(32px,6vw,90px)]">
+    <div class="max-w-[1440px] mx-auto px-4 lg:px-[65px]
+           grid grid-cols-1 md:grid-cols-[var(--aside)_1fr] gap-8 items-start" style="--aside:clamp(260px,32vw,415px)">
+
+        {# LEFT — fixed text column #}
+        <aside class="md:max-w-[var(--aside)]">
+            <h2 class="font-['Roboto'] font-semibold text-[clamp(40px,5.2vw,64px)] leading-[1] text-[#1E1E1E]">
+                {{ t('siteb.speakers.title') }}
+            </h2>
+            <p class="mt-4 font-['Lato'] font-semibold text-[clamp(18px,2.2vw,25px)] leading-[1.2] text-[#1E1E1E]">
+                {{ t('siteb.speakers.body') }}
+            </p>
+
+            <div class="mt-6">
+                <a href="/speakers"
+                    class="inline-flex items-center justify-center gap-3 w-[189px] h-[55px] rounded-[6px] bg-[#B8D779] text-[#F0F0F0]
+                  font-['Lato'] font-black text-[16px] leading-[25px] hover:opacity-95 hover:-translate-y-[1px] transition">
+                    <span>{{ t('siteb.speakers.more_details') }}</span>
+                    <svg viewBox="0 0 24 24" class="w-4 h-4" aria-hidden="true">
+                        <path d="M9 5l7 7-7 7" fill="none" stroke="#F0F0F0" stroke-width="1.8" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </a>
+            </div>
+        </aside>
+
+        {# RIGHT — marquee carousel powered by your marquee.js #}
+        <div class="relative">
+            {% if items|length %}
+            <div class="marquee marquee--js [--gap:1.5rem]" data-marquee data-speed="60" data-min="1"
+                data-respect-rm="false">
+                <div class="marquee__viewport overflow-x-hidden !overflow-y-visible">
+                    <ul class="marquee__track">
+                        {% for sp in items %}
+                        {% set photo = sp.photo_url or sp.image_url or '/static/img/person_placeholder.png' %}
+                        {% set name = sp.fullname or sp.name or '' %}
+                        {% set role = sp.position or '' %}
+                        {% set comp = sp.company or '' %}
+                        {% set href = '/speakers/' ~ (sp.id or sp.slug or loop.index) %}
+
+                        <li class="marquee__item">
+                            <a href="{{ href }}" class="block">
+                                <article class="w-[350px] h-[522px] bg-white rounded-[10px] overflow-hidden
+                                    shadow-[0_4px_10px_rgba(0,0,0,.15)] ring-1 ring-black/5">
+                                    <div class="h-[400px] w-full bg-[#D9D9D9]">
+                                        <img src="{{ photo }}" alt="{{ name or t('siteb.speakers.person_alt') }}"
+                                            loading="lazy" decoding="async" class="w-full h-full object-contain"
+                                            onerror="this.src='/static/img/person_placeholder.png'; this.style.objectFit='contain';" />
+                                    </div>
+                                    <div class="px-6 py-4 text-center">
+                                        <h3 class="font-['Lato'] font-bold text-[20px] leading-[24px] text-black truncate"
+                                            title="{{ name }}">{{ name }}</h3>
+                                        <p class="mt-2 font-['Lato'] font-semibold text-[16px] leading-[19px] text-black/90 line-clamp-2"
+                                            title="{{ (role ~ (', ' if comp else '')) ~ comp }}">
+                                            {{ role }}{% if comp %}, {{ comp }}{% endif %}
+                                        </p>
+                                    </div>
+                                </article>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% else %}
+            <div class="text-center text-slate-500 py-8">{{ t('siteb.speakers.empty') }}</div>
+            {% endif %}
+        </div>
+    </div>
+</section>

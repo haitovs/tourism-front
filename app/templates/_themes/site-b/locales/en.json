@@ -28,5 +28,15 @@
     "siteb.sectors.body": "The Expo sector showcases the latest innovations, products, and services. Exhibitors have the opportunity to present their solutions, connect with professionals, and engage with potential partners and clients. This platform fosters collaboration, highlights emerging trends, and encourages knowledge exchange.",
     "siteb.sectors.read_more": "READ MORE",
     "siteb.sectors.more_details": "MORE DETAILS",
-    "siteb.sectors.empty": "Sectors will be announced soon."
+    "siteb.sectors.empty": "Sectors will be announced soon.",
+
+    "siteb.speakers.title": "Meet our respected speakers",
+    "siteb.speakers.body": "Discover knowledge and perspectives from prominent figures in their fields.",
+    "siteb.speakers.more_details": "MORE DETAILS",
+    "siteb.speakers.person_alt": "Speaker photo",
+    "siteb.speakers.empty": "Speakers will be announced soon.",
+
+    "siteb.news.title": "Latest News",
+    "siteb.news.body": "Stay updated with the latest announcements, developments, and insights. Here you can find timely information on recent events, initiatives, and important updates from exhibitors and organizers, keeping visitors informed and engaged.",
+    "siteb.news.more_details": "MORE DETAILS"
 }

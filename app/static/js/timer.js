@@ -3,12 +3,13 @@
     const pad2 = (n) => String(Math.max(0, n)).padStart(2, "0");
 
     function splitDiff(ms) {
-        if (ms <= 0) return { d: 0, h: 0, m: 0 };
+        if (ms <= 0) return { d: 0, h: 0, m: 0, s: 0 };
         const s = Math.floor(ms / 1000);
         const d = Math.floor(s / 86400);
         const h = Math.floor((s % 86400) / 3600);
         const m = Math.floor((s % 3600) / 60);
-        return { d, h, m };
+        const sec = s % 60;
+        return { d, h, m, s: sec };
     }
 
     async function fetchDeadlineISO() {
@@ -27,6 +28,7 @@
         const daysEl = root.querySelector("[data-days]");
         const hoursEl = root.querySelector("[data-hours]");
         const minsEl = root.querySelector("[data-mins]");
+        const secsEl = root.querySelector("[data-secs]");
         const stateEl = root.querySelector("[data-state]");
 
         const targetMs = Date.parse(isoUTC);
@@ -42,14 +44,16 @@
                 if (daysEl) daysEl.textContent = "00";
                 if (hoursEl) hoursEl.textContent = "00";
                 if (minsEl) minsEl.textContent = "00";
+                if (secsEl) secsEl.textContent = "00";
                 return true; // stop
             }
 
-            const { d, h, m } = splitDiff(diff);
+            const { d, h, m, s } = splitDiff(diff);
             if (stateEl) stateEl.textContent = "The remaining";
             if (daysEl) daysEl.textContent = pad2(d);
             if (hoursEl) hoursEl.textContent = pad2(h);
             if (minsEl) minsEl.textContent = pad2(m);
+            if (secsEl) secsEl.textContent = pad2(s);
             return false;
         }
 

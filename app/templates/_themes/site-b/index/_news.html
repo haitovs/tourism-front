@@ -1,0 +1,79 @@
+{# Site-B · Latest News (blue band + 3 equal cards, fixed media) #}
+{% set lst = news or [] %}
+{% set cards = lst[:3] %}
+
+<section id="news" class="sb-section relative">
+    {# Blue band occupies the top half visually #}
+    <div class="absolute inset-x-0 top-0 h-[420px] md:h-[500px] lg:h-[550px] bg-[#20306C] z-0"></div>
+
+    <div class="relative z-10 max-w-[1440px] mx-auto px-4 lg:px-[65px]">
+        <!-- Header -->
+        <header class="grid grid-cols-1 md:grid-cols-[auto_2px_1fr] items-start gap-[30px] pt-[60px]">
+            <h2 class="font-['Roboto'] font-semibold text-[clamp(40px,5.2vw,64px)] leading-[1] text-white">
+                {{ t('siteb.news.title') or 'Latest News' }}
+            </h2>
+            <span class="hidden md:block w-[2px] h-[75px] bg-white rounded"></span>
+            <p class="font-['Lato'] font-semibold text-[clamp(18px,2.1vw,22px)] leading-[25px] text-white">
+                {{ t('siteb.news.body') or 'Stay updated with the latest announcements and insights.' }}
+            </p>
+        </header>
+
+        <!-- Cards (equal height, fixed media) -->
+        <div class="mt-10 md:mt-12">
+            {% if cards|length %}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-[50px] justify-items-center">
+                {% for n in cards %}
+                <article class="w-[min(100%,380px)] h-[460px] bg-white rounded-[10px] overflow-hidden
+                        shadow-[0_4px_10px_rgba(0,0,0,.15)] ring-1 ring-black/5">
+
+                    <!-- FIXED MEDIA SLOT (fills with cover) -->
+                    <div class="w-full h-[230px] bg-slate-100">
+                        {% if n.image_url %}
+                        <img src="{{ n.image_url }}" alt="{{ n.title }}"
+                            class="w-full h-full object-cover object-center" loading="lazy">
+                        {% else %}
+                        <img src="/static/img/news_placeholder.jpg" alt=""
+                            class="w-full h-full object-cover object-center opacity-80">
+                        {% endif %}
+                    </div>
+
+                    <!-- Fixed text slots -->
+                    <div class="px-5 pt-5 grid grid-rows-[auto_1fr] h-[230px]">
+                        <h3 class="font-['Lato'] font-bold text-[20px] leading-[25px] text-[#1E1E1E]
+                       min-h-[50px] line-clamp-2">
+                            {{ n.title }}
+                        </h3>
+
+                        {% if n.summary %}
+                        <p class="mt-4 font-['Lato'] font-bold text-[16px] leading-[20px] text-[rgba(30,30,30,0.7)]
+                      min-h-[100px] max-h-[140px] line-clamp-6">
+                            {{ n.summary }}
+                        </p>
+                        {% else %}
+                        <div></div>
+                        {% endif %}
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center text-white/80 py-10">
+                {{ t('siteb.news.empty') if 'siteb.news.empty' in translations else 'No news yet.' }}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- CTA -->
+        <div class="grid place-items-center mt-8">
+            <a href="/news"
+                class="inline-flex items-center justify-center gap-3 w-[189px] h-[55px] rounded-[6px] bg-[#B8D779] text-white
+                font-['Lato'] font-black text-[16px] leading-[25px] hover:opacity-95 hover:-translate-y-[1px] transition">
+                <span>{{ t('siteb.news.more_details') or 'More details' }}</span>
+                <svg viewBox="0 0 24 24" class="w-4 h-4" aria-hidden="true">
+                    <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>

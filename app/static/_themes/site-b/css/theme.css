@@ -37,3 +37,20 @@
     background: rgba(30, 30, 30, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.25);
 }
+
+/* Site-B: consistent vertical rhythm for main sections */
+.sb-section {
+    margin-block: clamp(32px, 6vw, 90px);
+}
+
+/* Index Speakers */
+#speakers .splide {
+    visibility: visible !important;
+}
+#speakers .splide__list {
+    display: flex;
+    gap: 24px;
+}
+#speakers .splide__slide {
+    flex: 0 0 auto;
+}
