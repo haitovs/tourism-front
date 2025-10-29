@@ -1217,6 +1217,9 @@
   .flex-grow {
     flex-grow: 1;
   }
+  .grow {
+    flex-grow: 1;
+  }
   .grow-0 {
     flex-grow: 0;
   }
@@ -1409,6 +1412,9 @@
   }
   .gap-\[50px\] {
     gap: 50px;
+  }
+  .gap-\[var\(--gap\)\] {
+    gap: var(--gap);
   }
   .space-y-1 {
     :where(& > :not(:last-child)) {
