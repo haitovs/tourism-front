@@ -38,5 +38,13 @@
 
     "siteb.news.title": "Latest News",
     "siteb.news.body": "Stay updated with the latest announcements, developments, and insights. Here you can find timely information on recent events, initiatives, and important updates from exhibitors and organizers, keeping visitors informed and engaged.",
-    "siteb.news.more_details": "MORE DETAILS"
+    "siteb.news.more_details": "MORE DETAILS",
+
+    "siteb.faq.band": "FAQ",
+    "siteb.faq.title": "Have any questions?",
+    "siteb.faq.center.heading": "Let us answer the questions for you.",
+    "siteb.faq.center.body": "Find quick answers to the most common questions from participants and guests.",
+    "siteb.faq.search_placeholder": "Search...",
+    "siteb.faq.no_results.1": "No entries matched",
+    "siteb.faq.no_results.2": "Try a different keyword."
 }

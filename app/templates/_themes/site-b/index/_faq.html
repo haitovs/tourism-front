@@ -1,0 +1,125 @@
+{# app/templates/index/_faq.html — BLUE THEME (Site-B keys) #}
+{% set _faqs = faqs or [] %}
+<section id="faq" class="mx-auto w-[min(1450px,92vw)] select-none" x-data="faqWidget()">
+
+    <!-- Title band -->
+    <div class="mb-8">
+        <div class="flex items-center justify-center gap-4">
+            <span class="block h-px w-[60px] bg-[#20306C]"></span>
+            <span class="text-[clamp(18px,2.8vw,30px)] leading-[1.6] text-[#20306C] font-['Montserrat']">
+                {{ t('siteb.faq.band') }}
+            </span>
+            <span class="block h-px w-[60px] bg-[#20306C]"></span>
+        </div>
+        <h2 class="mt-2 text-center text-[clamp(22px,4vw,50px)] leading-[1.2] text-[#1E1E1E] font-['Montserrat']">
+            {{ t('siteb.faq.title') }}
+        </h2>
+    </div>
+
+    <!-- Top strip -->
+    <div
+        class="mb-6 ml-auto flex flex-col sm:flex-row gap-3 sm:gap-4 items-end sm:items-center sm:justify-end rounded-[10px] bg-[rgba(96,125,232,0.35)] px-4 sm:px-6 py-3">
+        <label
+            class="relative flex h-[clamp(40px,5.2vw,49px)] w-full sm:w-[min(420px,60%)] items-center rounded-[5px] border border-[#BFBFC3] bg-white px-3">
+            <svg aria-hidden="true" class="mr-2 w-[clamp(18px,2.6vw,25px)] h-[clamp(18px,2.6vw,25px)]"
+                viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="7" stroke="#20306C" stroke-width="2"></circle>
+                <path d="M20 20L16.65 16.65" stroke="#20306C" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+            <input x-model.trim="q" type="search"
+                class="h-full w-full outline-none placeholder-[#BEC8ED] text-[#20306C] text-[clamp(14px,2.2vw,22px)] leading-[1.2] bg-transparent"
+                placeholder="{{ t('siteb.faq.search_placeholder') }}" autocomplete="off" />
+        </label>
+    </div>
+
+    <!-- Center banner -->
+    <div class="mb-8 rounded-[10px] bg-[rgba(96,125,232,0.35)] py-8 sm:py-10 px-3">
+        <h3 class="text-center text-[clamp(20px,4vw,50px)] leading-[1.2] text-[#1E1E1E] mb-2 font-['Montserrat']">
+            {{ t('siteb.faq.center.heading') }}
+        </h3>
+        <p class="text-center text-[clamp(14px,2.4vw,25px)] leading-[1.35] text-[#1E1E1E] font-['Roboto']">
+            {{ t('siteb.faq.center.body') }}
+        </p>
+    </div>
+
+    <!-- Accordion -->
+    <div class="space-y-3">
+        {% for faq in _faqs %}
+        <article x-show="isVisible({{ faq.id }})" x-data="{ open: {{ 'true' if loop.first else 'false' }} }"
+            class="overflow-hidden rounded-[10px] bg-white">
+            <button type="button"
+                class="flex w-full items-center justify-between rounded-[10px] bg-[rgba(96,125,232,0.35)] px-4 sm:px-6 py-3 sm:py-4 text-left cursor-pointer"
+                @click="open = !open" :aria-expanded="open" aria-controls="faq-{{ faq.id }}">
+                <span class="pr-4 text-[clamp(16px,3.6vw,35px)] leading-[1.25] text-[#1E1E1E] font-['Roboto']">
+                    {{ faq.question }}
+                </span>
+                <svg class="w-[clamp(24px,4vw,41px)] h-[clamp(24px,4vw,41px)] shrink-0 transition-transform"
+                    :class="open ? 'rotate-[-90deg]' : 'rotate-90'" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M8 5l8 7-8 7" stroke="#1E1E1E" stroke-width="4" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+
+            <div id="faq-{{ faq.id }}" class="rounded-b-[10px] bg-white px-4 sm:px-6 pb-5 pt-3" x-cloak x-show="open"
+                x-collapse x-html="md(`{{ faq.answer_md|replace('`', '\\`') | replace('</','&lt;/') }}`)" style="
+          font-family:'Roboto',ui-sans-serif,system-ui;
+          font-size: clamp(14px,2.4vw,22px);
+          line-height: clamp(22px,3.6vw,32px);
+          color: #20306C;
+        "></div>
+        </article>
+        {% endfor %}
+
+        <template x-if="filteredIds.size === 0">
+            <div class="rounded-[10px] border border-dashed border-[#BFBFC3] px-6 py-10 text-center">
+                <p class="text-[clamp(14px,2.4vw,20px)] font-['Montserrat']">
+                    {{ t('siteb.faq.no_results.1') }}
+                    “<span class="font-semibold" x-text="q"></span>”.
+                    {{ t('siteb.faq.no_results.2') }}
+                </p>
+            </div>
+        </template>
+    </div>
+
+    <script type="application/json" id="faq-index">
+  [
+    {% for faq in _faqs -%}
+      {"id": {{ faq.id }}, "q": {{ faq.question|tojson }}, "a": {{ faq.answer_md|tojson }} }{{ "," if not loop.last else "" }}
+    {%- endfor %}
+  ]
+  </script>
+</section>
+
+<script>
+    function faqWidget() {
+        const raw = document.getElementById("faq-index")?.textContent || "[]";
+        const INDEX = JSON.parse(raw);
+        const normalize = (s) =>
+            (s || "").toString().toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
+
+        return {
+            q: "",
+            get filteredIds() {
+                const term = normalize(this.q);
+                if (!term) return new Set(INDEX.map((x) => x.id));
+                const ids = new Set();
+                for (const item of INDEX) {
+                    const hay = normalize(item.q + " " + item.a);
+                    if (hay.includes(term)) ids.add(item.id);
+                }
+                return ids;
+            },
+            isVisible(id) { return this.filteredIds.has(id); },
+            md(raw) {
+                const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                let out = esc(raw || "");
+                out = out.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g,
+                    (m, t, u) => `<a href="${u}" target="_blank" rel="noopener" class="underline decoration-[#20306C] text-[#20306C]">${esc(t)}</a>`);
+                out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+                out = out.replace(/\*([^*]+)\*/g, "<em>$1</em>");
+                out = out.replace(/\n/g, "<br />");
+                return out;
+            },
+        };
+    }
+</script>

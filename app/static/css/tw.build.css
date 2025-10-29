@@ -1773,6 +1773,9 @@
   .bg-\[rgba\(32\,48\,108\,0\.50\)\] {
     background-color: rgba(32,48,108,0.50);
   }
+  .bg-\[rgba\(96\,125\,232\,0\.35\)\] {
+    background-color: rgba(96,125,232,0.35);
+  }
   .bg-\[var\(--c-bg\)\] {
     background-color: var(--c-bg);
   }
@@ -2775,6 +2778,9 @@
   .decoration-\[\#007A3D\] {
     text-decoration-color: #007A3D;
   }
+  .decoration-\[\#20306C\] {
+    text-decoration-color: #20306C;
+  }
   .placeholder-\[\#007A3D\] {
     &::placeholder {
       color: #007A3D;
@@ -2783,6 +2789,11 @@
   .placeholder-\[\#A6D0BB\] {
     &::placeholder {
       color: #A6D0BB;
+    }
+  }
+  .placeholder-\[\#BEC8ED\] {
+    &::placeholder {
+      color: #BEC8ED;
     }
   }
   .placeholder-\[rgba\(0\,122\,61\,0\.45\)\] {
