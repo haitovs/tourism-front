@@ -114,7 +114,7 @@
                     </button>
 
                     <!-- dropdown (desktop hover) -->
-                    <div x-show="m" x-cloak x-transition class="menu-dd" @click.outside="m=false"
+                    <div x-show="m" x-cloak x-transition class="menu-dd" @click.away="m=false"
                         @keydown.escape.window="m=false">
                         <div class="glass menu-panel menu-grid">
                             <div class="menu-items relative">
@@ -146,7 +146,7 @@
                         {{ t('nav.participants') }}
                         <img src="/static/img/nav_down_arrow.svg" class="nav-caret" aria-hidden="true">
                     </button>
-                    <div x-show="m" x-cloak x-transition class="menu-dd" @click.outside="m=false"
+                    <div x-show="m" x-cloak x-transition class="menu-dd" @click.away="m=false"
                         @keydown.escape.window="m=false">
 
 
@@ -175,7 +175,7 @@
                         {{ t('nav.travel_guide') }}
                         <img src="/static/img/nav_down_arrow.svg" class="nav-caret" aria-hidden="true">
                     </button>
-                    <div x-show="m" x-cloak x-transition class="menu-dd" @click.outside="m=false"
+                    <div x-show="m" x-cloak x-transition class="menu-dd" @click.away="m=false"
                         @keydown.escape.window="m=false">
                         <div class="glass menu-panel">
                             <a href="/visa" class="menu-item">{{ t('nav.apply_visa') }}</a>

@@ -34,7 +34,6 @@
 }
 
 /* To Top button style */
-/* Site-B: Back-to-top */
 #to-top.sb-top {
     position: fixed;
     right: clamp(16px, 3vw, 24px);

@@ -1,101 +1,81 @@
-<footer class="relative text-[#F1F1F6]">
-    <div class="absolute inset-0 bg-center bg-cover" style="background-image:url(' {{ theme('img/footer/footer-bg.png')
-        }}');"></div>
+<footer class="sb-footer">
+    <div class="sb-footer__backdrop" style="background-image:url('{{ theme('img/footer/footer-bg.png') }}');"></div>
 
-    <div class="relative mx-auto w-full max-w-[1440px] px-6 sm:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-[minmax(260px,1fr)_repeat(3,minmax(180px,1fr))] gap-10">
-
-            <!-- Brand / About + Social -->
-            <div>
-                <div class="w-[225px] h-[70px] bg-[#F0F0F0] rounded flex items-center justify-center">
-                    <span class="font-['Lato'] font-extrabold text-[28px] sm:text-[32px] leading-none text-[#073B6A]">
-                        {{ t('siteb.footer.logo_text') }}
-                    </span>
+    <div class="sb-footer__inner">
+        <div class="sb-footer__sections">
+            <div class="sb-footer__section sb-footer__brand">
+                <div class="sb-footer__logo">
+                    <span>{{ t('siteb.footer.logo_text') }}</span>
                 </div>
-
-                <p class="mt-6 max-w-[380px] font-['Lato'] text-[clamp(14px,2.0vw,20px)] leading-[1.25]">
+                <p class="sb-footer__tagline">
                     {{ t('siteb.footer.tagline') }}
                 </p>
-
-                <div class="mt-6 flex gap-5">
-                    <a href="https://www.facebook.com/yourpage" target="_blank" rel="noopener" aria-label="Facebook">
+                <div class="sb-footer__social">
+                    <a href="https://www.facebook.com/yourpage" target="_blank" rel="noopener" aria-label="Facebook"
+                        class="sb-footer__social-link">
                         <img src="{{ theme('img/footer/facebook.svg') }}" alt="Facebook"
-                            class="w-[22px] h-[22px] sm:w-7 sm:h-7 md:w-8 md:h-8 hover:opacity-80" />
+                            class="sb-footer__social-icon" />
                     </a>
-                    <a href="https://www.instagram.com/yourpage" target="_blank" rel="noopener" aria-label="Instagram">
+                    <a href="https://www.instagram.com/yourpage" target="_blank" rel="noopener" aria-label="Instagram"
+                        class="sb-footer__social-link">
                         <img src="{{ theme('img/footer/instagram.svg') }}" alt="Instagram"
-                            class="w-[22px] h-[22px] sm:w-7 sm:h-7 md:w-8 md:h-8 hover:opacity-80" />
+                            class="sb-footer__social-icon" />
                     </a>
-                    <a href="https://www.linkedin.com/yourpage" target="_blank" rel="noopener" aria-label="LinkedIn">
+                    <a href="https://www.linkedin.com/yourpage" target="_blank" rel="noopener" aria-label="LinkedIn"
+                        class="sb-footer__social-link">
                         <img src="{{ theme('img/footer/linkedin.svg') }}" alt="LinkedIn"
-                            class="w-[22px] h-[22px] sm:w-7 sm:h-7 md:w-8 md:h-8 hover:opacity-80" />
+                            class="sb-footer__social-icon" />
                     </a>
                 </div>
             </div>
 
-            <!-- Navigation -->
-            <nav>
-                <h3 class="font-['Lato'] font-bold text-[clamp(20px,2.6vw,30px)] leading-[1.2]">
-                    {{ t('siteb.footer.nav_title') }}
-                </h3>
-                <div class="mt-2 h-px bg-[#F0F0F0]/80"></div>
-                <ul class="mt-4 space-y-3 font-['Lato'] text-[clamp(16px,2.0vw,25px)] leading-[1.25]">
-                    <li><a href="/about-the-event" class="hover:underline">{{ t('siteb.footer.about_event') }}</a></li>
-                    <li><a href="/about-the-expo" class="hover:underline">{{ t('siteb.footer.about_expo') }}</a></li>
-                    <li><a href="/agenda" class="hover:underline">{{ t('siteb.footer.agenda') }}</a></li>
-                    <li><a href="/news" class="hover:underline">{{ t('siteb.footer.news') }}</a></li>
+            <nav class="sb-footer__section sb-footer__links">
+                <h3 class="sb-footer__title">{{ t('siteb.footer.nav_title') }}</h3>
+                <ul class="sb-footer__list">
+                    <li><a href="/about-the-event">{{ t('siteb.footer.about_event') }}</a></li>
+                    <li><a href="/about-the-expo">{{ t('siteb.footer.about_expo') }}</a></li>
+                    <li><a href="/agenda">{{ t('siteb.footer.agenda') }}</a></li>
+                    <li><a href="/news">{{ t('siteb.footer.news') }}</a></li>
                 </ul>
             </nav>
 
-            <!-- Quick Links -->
-            <div>
-                <h3 class="font-['Lato'] font-bold text-[clamp(20px,2.6vw,30px)] leading-[1.2]">
-                    {{ t('siteb.footer.quick_title') }}
-                </h3>
-                <div class="mt-2 h-px bg-[#F0F0F0]/80"></div>
-                <ul class="mt-4 space-y-3 font-['Lato'] text-[clamp(16px,2.0vw,25px)] leading-[1.25]">
-                    <li><a href="/official-support" class="hover:underline">{{ t('siteb.footer.official_support') }}</a>
-                    </li>
-                    <li><a href="/register" class="hover:underline">{{ t('siteb.footer.registration') }}</a></li>
-                    <li><a href="/faq" class="hover:underline">{{ t('siteb.footer.faq') }}</a></li>
+            <div class="sb-footer__section sb-footer__links">
+                <h3 class="sb-footer__title">{{ t('siteb.footer.quick_title') }}</h3>
+                <ul class="sb-footer__list">
+                    <li><a href="/official-support">{{ t('siteb.footer.official_support') }}</a></li>
+                    <li><a href="/register">{{ t('siteb.footer.registration') }}</a></li>
+                    <li><a href="/faq">{{ t('siteb.footer.faq') }}</a></li>
                 </ul>
             </div>
 
-            <!-- Contact Us -->
-            <address class="not-italic">
-                <h3 class="font-['Lato'] font-bold text-[clamp(20px,2.6vw,30px)] leading-[1.2]">
-                    {{ t('siteb.footer.contact_title') }}
-                </h3>
-                <div class="mt-2 h-px bg-[#F0F0F0]/80"></div>
-                <ul class="mt-4 space-y-3 font-['Lato'] text-[clamp(16px,2.0vw,25px)] leading-[1.25]">
+            <address class="sb-footer__section sb-footer__contact">
+                <h3 class="sb-footer__title">{{ t('siteb.footer.contact_title') }}</h3>
+                <ul class="sb-footer__list">
                     <li>{{ t('siteb.footer.address') }}</li>
-                    <li class="flex items-center gap-3 text-[clamp(14px,2.2vw,22px)] leading-[1.4]">
-                        <img src="{{ theme('img/footer/mail.svg') }}" alt="mail"
-                            class="h-[18px] w-[18px] sm:h-5 sm:w-5 md:h-6 md:w-6" />
-                        <a href="mailto:info@ciet-turkmenistan.com"
-                            class="hover:underline">info@ciet-turkmenistan.com</a>
+                    <li class="sb-footer__contact-item">
+                        <img src="{{ theme('img/footer/mail.svg') }}" alt="mail" class="sb-footer__contact-icon" />
+                        <a href="mailto:info@ciet-turkmenistan.com">info@ciet-turkmenistan.com</a>
                     </li>
-                    <li class="flex items-center gap-3 text-[clamp(14px,2.2vw,22px)] leading-[1.4]">
-                        <img src="{{ theme('img/footer/phone.svg') }}" alt="phone"
-                            class="h-[18px] w-[18px] sm:h-5 sm:w-5 md:h-6 md:w-6" />
-                        <a href="tel:+99361480080" class="hover:underline">+993 61 480080</a>
+                    <li class="sb-footer__contact-item">
+                        <img src="{{ theme('img/footer/phone.svg') }}" alt="phone" class="sb-footer__contact-icon" />
+                        <a href="tel:+99361480080">+993 61 480080</a>
                     </li>
                 </ul>
             </address>
         </div>
 
-        <div class="mt-10 mx-auto w-[min(1310px,100%)] h-px bg-[#F0F0F0]/90"></div>
+        <div class="sb-footer__divider"></div>
 
-        <div
-            class="mt-4 flex flex-col md:flex-row items-center justify-center gap-3 md:gap-4 text-[clamp(14px,2.0vw,18px)]">
-            <span class="text-[#F1F1F6]/95">
-                {{ t('siteb.footer.rights_prefix') }} 2025
-                | <a href="/terms" class="hover:underline">{{ t('siteb.footer.terms') }}</a>
-                | <a href="/privacy" class="hover:underline">{{ t('siteb.footer.privacy') }}</a>
-                | {{ t('siteb.footer.powered_by') }}
+        <div class="sb-footer__bottom">
+            <span class="sb-footer__legal">
+                {{ t('siteb.footer.rights_prefix') }} 2025 |
+                <a href="/terms">{{ t('siteb.footer.terms') }}</a> |
+                <a href="/privacy">{{ t('siteb.footer.privacy') }}</a> |
+                {{ t('siteb.footer.powered_by') }}
+                <img src="{{ theme('img/footer/rotating-logo.gif') }}" alt="Logo"
+                    class="sb-footer__badge rotating-icon" />
+
             </span>
-            <img src="{{ theme('img/footer/rotating-logo.gif') }}" alt="Logo"
-                class="rotating-icon h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] md:h-[24px] md:w-[24px] object-contain" />
         </div>
     </div>
 </footer>

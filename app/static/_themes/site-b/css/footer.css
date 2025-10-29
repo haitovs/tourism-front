@@ -1,0 +1,212 @@
+/* Site B footer */
+.sb-footer {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: #f1f1f6;
+    background: #04172c;
+    font-family: "Lato", system-ui, sans-serif;
+}
+
+.sb-footer__backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-position: center;
+    background-size: cover;
+    opacity: 0.85;
+}
+
+.sb-footer__inner {
+    position: relative;
+    width: min(100%, 1160px);
+    margin: 0 auto;
+    padding: clamp(32px, 6vw, 56px) clamp(20px, 5vw, 48px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(6px, 1vw, 10px);
+}
+
+.sb-footer__sections {
+    display: grid;
+    gap: clamp(20px, 4vw, 36px);
+}
+
+@media (min-width: 600px) {
+    .sb-footer__sections {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1100px) {
+    .sb-footer__sections {
+        display: flex;
+        align-items: flex-start;
+        gap: clamp(28px, 4vw, 56px);
+    }
+}
+
+.sb-footer__section {
+    flex: 1 1 0;
+    min-width: 200px;
+}
+
+.sb-footer__brand {
+    flex: 1.25 1 0;
+    max-width: 320px;
+}
+
+.sb-footer__logo {
+    display: grid;
+    place-items: center;
+    width: clamp(140px, 24vw, 200px);
+    height: clamp(48px, 12vw, 68px);
+    border-radius: 12px;
+    background: #f0f0f0;
+    margin-bottom: clamp(16px, 4vw, 24px);
+}
+
+.sb-footer__logo span {
+    color: #073b6a;
+    font-weight: 800;
+    font-size: clamp(20px, 4vw, 28px);
+    letter-spacing: 0.4px;
+}
+
+.sb-footer__tagline {
+    margin-bottom: clamp(18px, 4vw, 26px);
+    font-size: clamp(14px, 2.4vw, 16px);
+    line-height: 1.5;
+    color: rgba(241, 241, 246, 0.9);
+}
+
+.sb-footer__social {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(12px, 3vw, 18px);
+}
+
+.sb-footer__social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.sb-footer__social-link:hover {
+    background: rgba(255, 255, 255, 0.22);
+    transform: translateY(-2px);
+}
+
+.sb-footer__social-icon {
+    width: 18px;
+    height: 18px;
+}
+
+@media (min-width: 768px) {
+    .sb-footer__social-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.sb-footer__title {
+    margin-bottom: clamp(12px, 2.5vw, 18px);
+    font-weight: 700;
+    font-size: clamp(16px, 2vw, 19px);
+    line-height: 1.25;
+    color: #ffffff;
+}
+
+.sb-footer__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: clamp(10px, 3vw, 16px);
+    font-size: clamp(14px, 2.2vw, 16px);
+    line-height: 1.45;
+    color: rgba(241, 241, 246, 0.9);
+}
+
+.sb-footer__list a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.sb-footer__list a:hover {
+    color: #ffffff;
+    opacity: 0.9;
+}
+
+.sb-footer__contact {
+    font-style: normal;
+}
+
+.sb-footer__contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.sb-footer__contact-icon {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    opacity: 0.9;
+}
+
+@media (min-width: 768px) {
+    .sb-footer__contact-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.sb-footer__divider {
+    height: 1px;
+    width: min(100%, 880px);
+    background: rgba(240, 240, 240, 0.45);
+    margin: clamp(16px, 4vw, 32px) auto 0;
+}
+
+.sb-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(12px, 3vw, 20px);
+    text-align: center;
+    font-size: clamp(13px, 2vw, 15px);
+    color: rgba(241, 241, 246, 0.85);
+}
+
+.sb-footer__bottom a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.sb-footer__bottom a:hover {
+    opacity: 0.85;
+    text-decoration: underline;
+}
+
+.sb-footer__badge {
+    width: 20px;
+    height: 20px;
+}
+
+@media (min-width: 768px) {
+    .sb-footer__badge {
+        width: 22px;
+        height: 22px;
+    }
+}

@@ -4,96 +4,153 @@
 {% set _params = _req.query_params if _req else {} %}
 {% set current = (lang or 'en') %}
 
+<style>
+    [x-cloak] {
+        display: none !important;
+    }
+</style>
+
 <header id="site-header" class="sb-detailbar shadow-soft">
     <div class="sb-bar-inner">
+
         <!-- Left: Logo -->
         <a href="/" class="sb-logo" aria-label="Home">
             <img src="{{ theme('img/detailbar/logo.svg') }}" alt="" class="sb-logo-img"
                 onerror="this.style.display='none'">
         </a>
 
-        <!-- Center: Inline Nav -->
-        <nav class="sb-navWrap">
-            <ul class="sb-nav">
+        <!-- Center: Inline Nav (scrollable with arrows) -->
+        <nav class="sb-navWrap" aria-label="Primary" x-data="{
+           scroller: null,
+           canL: false, canR: false,
+           step: 220,
+           init(){
+             this.scroller = this.$refs.scroller;
+             const update = () => {
+               const el = this.scroller;
+               if(!el) return;
+               this.canL = el.scrollLeft > 0;
+               this.canR = (el.scrollLeft + el.clientWidth) < (el.scrollWidth - 1);
+             };
+             update();
+             this.scroller.addEventListener('scroll', update, { passive: true });
+             window.addEventListener('resize', update);
+             // slight delay so fonts/images don’t mis-measure
+             requestAnimationFrame(update);
+             setTimeout(update, 150);
+           }
+         }">
+            <!-- Left arrow -->
+            <button class="sb-nav-arrow sb-nav-arrow--left" type="button" x-show="canL"
+                @click="scroller && scroller.scrollBy({left: -step, behavior: 'smooth'})" x-cloak
+                aria-label="Scroll navigation left">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                    <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+
+            <ul class="sb-nav" x-ref="scroller">
                 <li><a href="/">{{ t('nav.home') }}</a></li>
 
-                <li class="sb-has-dd" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
+                <!-- About Event -->
+                <li class="sb-has-dd" x-data="{ m:false }" @pointerenter="m=true" @pointerleave="m=false"
+                    style="position:relative;">
                     <button type="button" class="sb-nav-btn" @click.stop="m=!m" aria-haspopup="menu"
-                        :aria-expanded="m.toString()">
+                        :aria-expanded="m.toString()" aria-controls="dd-about">
                         {{ t('nav.about_event') }}
                         <svg class="sb-caret" viewBox="0 0 12 8" aria-hidden="true">
                             <path d="M1 1l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </button>
-                    <div class="sb-dd" x-cloak x-show="m" x-transition @click.outside="m=false"
-                        @keydown.escape.window="m=false" role="menu">
-                        <a href="/about-the-forum" class="sb-dd-item">{{ t('nav.about_forum') }}</a>
+                    <div id="dd-about" class="sb-dd" x-cloak x-show="m" x-transition @click.outside="m=false"
+                        @keydown.escape.window="m=false" role="menu"
+                        style="top:100%;left:0;z-index:999999;pointer-events:auto;">
+                        <a href="/about-the-forum" class="sb-dd-item" role="menuitem">{{ t('nav.about_forum') }}</a>
                         <hr class="sb-dd-sep" />
-                        <a href="/agenda" class="sb-dd-item">{{ t('nav.agenda') }}</a>
-                        <a href="/speakers" class="sb-dd-item">{{ t('nav.speakers') }}</a>
-                        <a href="/meeting-request" class="sb-dd-item">{{ t('nav.meeting_request') }}</a>
+                        <a href="/agenda" class="sb-dd-item" role="menuitem">{{ t('nav.agenda') }}</a>
+                        <a href="/speakers" class="sb-dd-item" role="menuitem">{{ t('nav.speakers') }}</a>
+                        <a href="/meeting-request" class="sb-dd-item" role="menuitem">{{ t('nav.meeting_request') }}</a>
                         <hr class="sb-dd-sep" />
-                        <a href="/about-the-expo" class="sb-dd-item">{{ t('nav.about_expo') }}</a>
+                        <a href="/about-the-expo" class="sb-dd-item" role="menuitem">{{ t('nav.about_expo') }}</a>
                         <hr class="sb-dd-sep" />
-                        <a href="/official-support" class="sb-dd-item">{{ t('nav.official_support') }}</a>
+                        <a href="/official-support" class="sb-dd-item" role="menuitem">{{ t('nav.official_support')
+                            }}</a>
                         <hr class="sb-dd-sep" />
-                        <a href="/brochure" class="sb-dd-item">{{ t('nav.brochure') }}</a>
+                        <a href="/brochure" class="sb-dd-item" role="menuitem">{{ t('nav.brochure') }}</a>
                     </div>
                 </li>
 
-                <li class="sb-has-dd" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
+                <!-- Participants -->
+                <li class="sb-has-dd" x-data="{ m:false }" @pointerenter="m=true" @pointerleave="m=false"
+                    style="position:relative;">
                     <button type="button" class="sb-nav-btn" @click.stop="m=!m" aria-haspopup="menu"
-                        :aria-expanded="m.toString()">
+                        :aria-expanded="m.toString()" aria-controls="dd-participants">
                         {{ t('nav.participants') }}
                         <svg class="sb-caret" viewBox="0 0 12 8" aria-hidden="true">
                             <path d="M1 1l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </button>
-                    <div class="sb-dd" x-cloak x-show="m" x-transition @click.outside="m=false"
-                        @keydown.escape.window="m=false" role="menu">
-                        <a href="/participants" class="sb-dd-item">{{ t('nav.all') }}</a>
+                    <div id="dd-participants" class="sb-dd" x-cloak x-show="m" x-transition @click.outside="m=false"
+                        @keydown.escape.window="m=false" role="menu"
+                        style="top:100%;left:0;z-index:999999;pointer-events:auto;">
+                        <a href="/participants" class="sb-dd-item" role="menuitem">{{ t('nav.all') }}</a>
                         <hr class="sb-dd-sep" />
-                        <a href="/participants?role=expo" class="sb-dd-item">{{ t('nav.expo') }}</a>
+                        <a href="/participants?role=expo" class="sb-dd-item" role="menuitem">{{ t('nav.expo') }}</a>
                         <hr class="sb-dd-sep" />
-                        <a href="/participants?role=forum" class="sb-dd-item">{{ t('nav.forum') }}</a>
+                        <a href="/participants?role=forum" class="sb-dd-item" role="menuitem">{{ t('nav.forum') }}</a>
                     </div>
                 </li>
 
                 <li><a href="/news">{{ t('nav.news') }}</a></li>
 
-                <li class="sb-has-dd" x-data="{m:false}" @mouseenter="m=true" @mouseleave="m=false">
+                <!-- Travel Guide -->
+                <li class="sb-has-dd" x-data="{ m:false }" @pointerenter="m=true" @pointerleave="m=false"
+                    style="position:relative;">
                     <button type="button" class="sb-nav-btn" @click.stop="m=!m" aria-haspopup="menu"
-                        :aria-expanded="m.toString()">
+                        :aria-expanded="m.toString()" aria-controls="dd-travel">
                         {{ t('nav.travel_guide') }}
                         <svg class="sb-caret" viewBox="0 0 12 8" aria-hidden="true">
                             <path d="M1 1l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </button>
-                    <div class="sb-dd" x-cloak x-show="m" x-transition @click.outside="m=false"
-                        @keydown.escape.window="m=false" role="menu">
-                        <a href="/visa" class="sb-dd-item">{{ t('nav.apply_visa') }}</a>
+                    <div id="dd-travel" class="sb-dd" x-cloak x-show="m" x-transition @click.outside="m=false"
+                        @keydown.escape.window="m=false" role="menu"
+                        style="top:100%;left:0;z-index:999999;pointer-events:auto;">
+                        <a href="/visa" class="sb-dd-item" role="menuitem">{{ t('nav.apply_visa') }}</a>
                         <hr class="sb-dd-sep" />
-                        <a href="/hotel" class="sb-dd-item">{{ t('nav.book_hotel') }}</a>
+                        <a href="/hotel" class="sb-dd-item" role="menuitem">{{ t('nav.book_hotel') }}</a>
                         <hr class="sb-dd-sep" />
-                        <a href="/flight" class="sb-dd-item">{{ t('nav.book_flight') }}</a>
+                        <a href="/flight" class="sb-dd-item" role="menuitem">{{ t('nav.book_flight') }}</a>
                         <hr class="sb-dd-sep" />
-                        <a href="/faq" class="sb-dd-item">{{ t('nav.faq') }}</a>
+                        <a href="/faq" class="sb-dd-item" role="menuitem">{{ t('nav.faq') }}</a>
                     </div>
                 </li>
 
                 <li><a href="/registration">{{ t('nav.registration') }}</a></li>
             </ul>
+
+            <!-- Right arrow -->
+            <button class="sb-nav-arrow sb-nav-arrow--right" type="button" x-show="canR"
+                @click="scroller && scroller.scrollBy({left: step, behavior: 'smooth'})" x-cloak
+                aria-label="Scroll navigation right">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                    <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
         </nav>
 
-        <!-- Right: user + language -->
+        <!-- Right: user + language (kept compact so nav gets space) -->
         <div class="sb-right">
             <a href="/register" aria-label="Register" class="sb-user">
                 <img class="sb-user-img" src="{{ theme('img/detailbar/user.svg') }}"
                     onerror="this.src='{{ url_for('static', path='/img/detailbar/ic-user.svg') }}'">
             </a>
+
             <div class="sb-lang" x-data="siteBLangMenu()" @keydown.escape.window="close()" @click.outside="close()">
                 <button x-ref="btn" type="button" class="sb-lang-btn" :aria-expanded="open.toString()"
                     aria-haspopup="menu" aria-controls="lang-menu" @click="toggle()">
@@ -118,25 +175,27 @@
                 </div>
             </div>
         </div>
-    </div>
 
+    </div>
 </header>
+
 <script>
+    // Alpine v3 language menu
     window.siteBLangMenu = function () {
         return {
             open: false,
             btnW: 0,
-            toggle: function () {
+            toggle() {
                 this.open = !this.open;
                 this.$nextTick(() => {
-                    var el = this.$refs.btn;
+                    const el = this.$refs.btn;
                     this.btnW = (el && el.offsetWidth) || 0;
                 });
             },
-            close: function () { this.open = false; },
-            init: function () {
-                var set = () => {
-                    var el = this.$refs.btn;
+            close() { this.open = false; },
+            init() {
+                const set = () => {
+                    const el = this.$refs.btn;
                     this.btnW = (el && el.offsetWidth) || 0;
                 };
                 set();
