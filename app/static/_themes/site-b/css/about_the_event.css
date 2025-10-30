@@ -113,18 +113,6 @@
 }
 
 /* Bubble as the button's background (always centered on the button) */
-.sb-about__play::before {
-    content: "";
-    position: absolute;
-    inset: 0; /* anchor to the button box */
-    margin: auto; /* perfect centering for fixed size */
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: rgba(32, 48, 108, 0.6);
-    pointer-events: none;
-    z-index: -1; /* behind the button, still above the image because the button creates a stacking context */
-}
 
 /* Play icon */
 .sb-about__play::after {

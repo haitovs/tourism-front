@@ -110,7 +110,7 @@
 /* === Site B · Sponsor card + tier label === */
 .sb-sponsors .sb-card {
     border: 2px solid transparent;
-    background: transparent;
+    /* background: transparent; */
     padding: 0;
     transition: border-color 0.15s ease, transform 0.15s ease;
 }
