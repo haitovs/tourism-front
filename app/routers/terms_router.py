@@ -7,7 +7,7 @@ from app.routers.site import _resolve_site_id
 from app.services import terms as legal_srv
 
 from ..core.settings import settings
-from ..core.templates import templates
+from ..core.templates import templates, themed_name
 
 router = APIRouter()
 
@@ -26,4 +26,5 @@ async def terms_of_use_page(req: Request):
         "settings": settings,
         "terms": doc,
     }
-    return templates.TemplateResponse("terms.html", ctx)
+    template_name = themed_name(req, "terms.html")
+    return templates.TemplateResponse(template_name, ctx)

@@ -7,7 +7,7 @@ from app.services import episodes as episodes_srv
 from app.services.text_utils import normalize_textblock, split_short_and_topic
 
 from ..core.settings import settings
-from ..core.templates import templates
+from ..core.templates import templates, themed_name
 
 router = APIRouter()
 
@@ -41,4 +41,5 @@ async def agenda_page(req: Request):
         "days": days,
         "selected_day_id": selected_day_id,
     }
-    return templates.TemplateResponse("agenda.html", ctx)
+    template_name = themed_name(req, "agenda.html")
+    return templates.TemplateResponse(template_name, ctx)

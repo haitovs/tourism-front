@@ -32,86 +32,104 @@
     </section>
 
     <!-- BODY -->
-    <section id="participant-body" class="max-w-[var(--container)] mx-auto px-4 py-10">
-        <div class="bg-white rounded-[18px] p-6 md:p-8 lg:p-10 shadow-sm relative">
-            <!-- Title + Logo -->
-            <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
-                <h2
-                    class="font-['Montserrat'] font-semibold text-[#0E1B40] text-[clamp(26px,3.2vw,40px)] leading-[1.2]">
-                    {{ p.name }}
-                </h2>
+    <section id="participant-body" class="w-full px-4 py-10">
+        <!-- Centered card; grows to full width up to your container cap -->
+        <div class="relative mx-auto w-full max-w-[var(--container)]">
+            <div class="bg-white rounded-[18px] p-6 md:p-8 lg:p-10 shadow-sm">
 
-                {% if p.logo_url %}
-                <div class="shrink-0 w-[180px] md:w-[240px] h-[80px] md:h-[110px] rounded-[10px] overflow-hidden bg-[#F3F5FF] flex items-center justify-center">
-                    <img src="{{ p.logo_url }}" alt="{{ p.name }}" class="h-full w-full object-contain" />
+                <!-- Title + Logo -->
+                <div class="flex flex-col items-center gap-6 lg:flex-row lg:items-start lg:justify-between">
+                    <h2
+                        class="text-center lg:text-left font-['Montserrat'] font-semibold text-[#0E1B40] text-[clamp(26px,3.2vw,40px)] leading-[1.2]">
+                        {{ p.name }}
+                    </h2>
+
+                    {% if p.logo_url %}
+                    <div
+                        class="shrink-0 w-[180px] md:w-[240px] h-[80px] md:h-[110px] rounded-[10px] overflow-hidden bg-[#F3F5FF] grid place-items-center">
+                        <img src="{{ p.logo_url }}" alt="{{ p.name }}" class="h-full w-full object-contain" />
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Divider (full card width) -->
+                <div class="mt-6 h-[2px] w-full border-t-2 border-[#20306C]"></div>
+
+                <!-- Intro / Bio (centered text block, comfy line-length) -->
+                {% if p and p.intro_html %}
+                <article
+                    class="mx-auto mt-6 w-full max-w-[72ch] text-center lg:text-left text-[#1A2550] font-['Roboto'] text-[20px] md:text-[22px] leading-8 md:leading-9 space-y-4">
+                    {{ p.intro_html | safe }}
+                </article>
+                {% elif p and p.bio %}
+                <p
+                    class="mx-auto mt-6 w-full max-w-[72ch] text-center lg:text-left text-[#1A2550] font-['Roboto'] text-[20px] md:text-[22px] leading-8 md:leading-9">
+                    {{ p.bio }}
+                </p>
+                {% endif %}
+
+                {% if p and p.body_html %}
+                <article class="prose prose-slate max-w-none mx-auto mt-6 lg:mx-0
+               prose-headings:font-['Montserrat'] prose-headings:text-[#0E1B40]
+               prose-p:font-['Roboto'] prose-li:font-['Roboto']
+               prose-a:text-[#20306C] hover:prose-a:underline">
+                    {{ p.body_html | safe }}
+                </article>
+                {% endif %}
+
+                {% set rest = (p.images_hero or []) + (p.images_rest or []) %}
+                {% if rest|length > 0 %}
+                <div class="mt-10">
+                    <!-- Desktop / Large: curated grid centered in card -->
+                    <div class="hidden lg:grid mx-auto w-full max-w-[1190px] gap-4"
+                        style="grid-template-columns: repeat(12, minmax(0,1fr)); grid-auto-rows: minmax(0, 1fr); height: 780px;">
+                        {% if rest|length >= 1 %}
+                        <div class="col-span-4 row-span-8 rounded-[12px] overflow-hidden bg-slate-100">
+                            <img src="{{ rest[0] }}" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        {% endif %}
+                        {% if rest|length >= 2 %}
+                        <div class="col-span-8 row-span-4 rounded-[12px] overflow-hidden bg-slate-100">
+                            <img src="{{ rest[1] }}" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        {% endif %}
+                        {% if rest|length >= 3 %}
+                        <div class="col-span-4 row-span-4 rounded-[12px] overflow-hidden bg-slate-100">
+                            <img src="{{ rest[2] }}" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        {% endif %}
+                        {% if rest|length >= 4 %}
+                        <div class="col-span-4 row-span-4 rounded-[12px] overflow-hidden bg-slate-100">
+                            <img src="{{ rest[3] }}" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        {% endif %}
+                        {% if rest|length >= 5 %}
+                        <div class="col-span-4 row-span-4 rounded-[12px] overflow-hidden bg-slate-100">
+                            <img src="{{ rest[4] }}" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        {% endif %}
+                        {% if rest|length >= 6 %}
+                        <div
+                            class="col-start-9 col-span-4 row-start-5 row-span-8 rounded-[12px] overflow-hidden bg-slate-100">
+                            <img src="{{ rest[5] }}" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Mobile / Tablet: simple responsive grid -->
+                    <div class="grid lg:hidden grid-cols-1 sm:grid-cols-2 gap-4">
+                        {% for u in rest %}
+                        <div class="w-full rounded-[12px] overflow-hidden bg-slate-100 aspect-[4/3]">
+                            <img src="{{ u }}" class="w-full h-full object-cover" alt="" />
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
                 {% endif %}
+
             </div>
-
-            <div class="mt-6 h-[2px] w-full max-w-[1190px] border-t-2 border-[#20306C]"></div>
-
-            {% if p and p.intro_html %}
-            <article class="mt-6 max-w-[1190px] text-[#1A2550] font-['Roboto'] text-[22px] leading-9 space-y-4">
-                {{ p.intro_html | safe }}
-            </article>
-            {% elif p and p.bio %}
-            <p class="mt-6 max-w-[1190px] text-[#1A2550] font-['Roboto'] text-[22px] leading-9">{{ p.bio }}</p>
-            {% endif %}
-
-            {% if p and p.body_html %}
-            <article
-                class="prose max-w-none mt-6 prose-headings:font-['Montserrat'] prose-headings:text-[#0E1B40]
-                       prose-p:font-['Roboto'] prose-li:font-['Roboto'] prose-a:text-[#20306C] hover:prose-a:underline">
-                {{ p.body_html | safe }}
-            </article>
-            {% endif %}
-
-            {% set rest = (p.images_hero or []) + (p.images_rest or []) %}
-            {% if rest|length > 0 %}
-            <div class="mt-10">
-                <div class="hidden lg:grid lg:grid-cols-12 lg:grid-rows-12 gap-4 h-[780px] max-w-[1190px]">
-                    {% if rest|length >= 1 %}
-                    <div class="col-span-4 row-span-8 rounded-[12px] overflow-hidden bg-slate-100">
-                        <img src="{{ rest[0] }}" alt="" class="w-full h-full object-cover" />
-                    </div>
-                    {% endif %}
-                    {% if rest|length >= 2 %}
-                    <div class="col-span-8 row-span-4 rounded-[12px] overflow-hidden bg-slate-100">
-                        <img src="{{ rest[1] }}" alt="" class="w-full h-full object-cover" />
-                    </div>
-                    {% endif %}
-                    {% if rest|length >= 3 %}
-                    <div class="col-span-4 row-span-4 rounded-[12px] overflow-hidden bg-slate-100">
-                        <img src="{{ rest[2] }}" alt="" class="w-full h-full object-cover" />
-                    </div>
-                    {% endif %}
-                    {% if rest|length >= 4 %}
-                    <div class="col-span-4 row-span-4 rounded-[12px] overflow-hidden bg-slate-100">
-                        <img src="{{ rest[3] }}" alt="" class="w-full h-full object-cover" />
-                    </div>
-                    {% endif %}
-                    {% if rest|length >= 5 %}
-                    <div class="col-span-4 row-span-4 rounded-[12px] overflow-hidden bg-slate-100">
-                        <img src="{{ rest[4] }}" alt="" class="w-full h-full object-cover" />
-                    </div>
-                    {% endif %}
-                    {% if rest|length >= 6 %}
-                    <div class="col-start-9 col-span-4 row-start-5 row-span-8 rounded-[12px] overflow-hidden bg-slate-100">
-                        <img src="{{ rest[5] }}" alt="" class="w-full h-full object-cover" />
-                    </div>
-                    {% endif %}
-                </div>
-
-                <div class="grid lg:hidden grid-cols-1 sm:grid-cols-2 gap-4">
-                    {% for u in rest %}
-                    <div class="w-full rounded-[12px] overflow-hidden bg-slate-100 aspect-[4/3]">
-                        <img src="{{ u }}" class="w-full h-full object-cover" alt="" />
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
         </div>
     </section>
+
 </main>
 {% endblock %}

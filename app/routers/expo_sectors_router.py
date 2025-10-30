@@ -6,7 +6,7 @@ from starlette.responses import HTMLResponse
 from app.services import expo_sectors as sectors_srv
 
 from ..core.settings import settings
-from ..core.templates import templates
+from ..core.templates import templates, themed_name
 
 router = APIRouter()
 
@@ -17,7 +17,8 @@ async def expo_sectors_page(req: Request):
     # ⬇️ pass req and await the async function
     sectors = await sectors_srv.list_home_sectors(req, limit=1000, latest_first=False)
     ctx = {"request": req, "lang": lang, "settings": settings, "sectors": sectors}
-    return templates.TemplateResponse("expo_sectors.html", ctx)
+    template_name = themed_name(req, "expo_sectors.html")
+    return templates.TemplateResponse(template_name, ctx)
 
 
 @router.get("/expo-sectors/{sector_id}", response_class=HTMLResponse)
@@ -30,4 +31,5 @@ async def expo_sector_detail(req: Request, sector_id: int):
 
     debug = req.query_params.get("debug")
     ctx = {"request": req, "lang": lang, "settings": settings, "sector": sector, "debug": debug}
-    return templates.TemplateResponse("expo_sector_detail.html", ctx)
+    template_name = themed_name(req, "expo_sector_detail.html")
+    return templates.TemplateResponse(template_name, ctx)

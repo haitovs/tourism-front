@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Dict
 
 from jinja2 import pass_context
+from starlette.requests import Request
 from starlette.templating import Jinja2Templates
 
 from app.core.settings import settings
@@ -40,6 +41,25 @@ def _load_theme_locale(slug: str | None, lang: str) -> Dict[str, str]:
         return {}
 
 
+def _resolve_themed_path(slug: str | None, path: str) -> str | None:
+    p = path.lstrip("/")
+    if not slug:
+        return None
+    candidate = _THEME_TEMPLATES_DIR / slug / p
+    if candidate.exists():
+        return f"_themes/{slug}/{p}"
+    return None
+
+
+def themed_name(req: Request | None, path: str) -> str:
+    slug = None
+    if req is not None:
+        site = getattr(req.state, "site", None)
+        slug = getattr(site, "slug", None)
+    resolved = _resolve_themed_path(slug, path)
+    return resolved or path.lstrip("/")
+
+
 @pass_context
 def site_slug(ctx) -> str:
     req = ctx.get("request")
@@ -59,13 +79,8 @@ def theme(ctx, path: str) -> str:
 
 @pass_context
 def themed(ctx, path: str) -> str:
-    slug = site_slug(ctx)
-    p = path.lstrip("/")
-    if slug:
-        candidate = _THEME_TEMPLATES_DIR / slug / p
-        if candidate.exists():
-            return f"_themes/{slug}/{p}"
-    return p
+    req = ctx.get("request")
+    return themed_name(req, path)
 
 
 @pass_context

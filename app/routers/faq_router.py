@@ -3,7 +3,7 @@ from fastapi import APIRouter, Request
 from starlette.responses import HTMLResponse
 
 from app.core.settings import settings
-from app.core.templates import templates
+from app.core.templates import templates, themed_name
 from app.services import faqs as faq_srv
 
 router = APIRouter()
@@ -14,4 +14,5 @@ async def faq_page(req: Request):
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
     items = await faq_srv.list_faqs(req, limit=None)
     ctx = {"request": req, "lang": lang, "settings": settings, "faqs": items or []}
-    return templates.TemplateResponse("faq.html", ctx)
+    template_name = themed_name(req, "faq.html")
+    return templates.TemplateResponse(template_name, ctx)

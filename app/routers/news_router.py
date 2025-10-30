@@ -10,7 +10,7 @@ from starlette.responses import HTMLResponse
 from app.services import news as news_srv
 
 from ..core.settings import settings
-from ..core.templates import templates
+from ..core.templates import templates, themed_name
 
 router = APIRouter()
 
@@ -57,7 +57,8 @@ async def news_list(
         "per_page": per_page,
         "total_pages": max(total_pages, 1),
     }
-    return templates.TemplateResponse("news.html", ctx)
+    template_name = themed_name(req, "news.html")
+    return templates.TemplateResponse(template_name, ctx)
 
 
 @router.get("/news/{news_id}", response_class=HTMLResponse)
@@ -67,4 +68,5 @@ async def news_detail(req: Request, news_id: int):
     if not record:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="News not found")
     ctx = {"request": req, "lang": lang, "settings": settings, "item": record}
-    return templates.TemplateResponse("news_detail.html", ctx)
+    template_name = themed_name(req, "news_detail.html")
+    return templates.TemplateResponse(template_name, ctx)

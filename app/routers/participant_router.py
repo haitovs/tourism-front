@@ -6,7 +6,7 @@ from starlette.responses import HTMLResponse, JSONResponse
 from app.services import participants as participants_srv
 
 from ..core.settings import settings
-from ..core.templates import templates
+from ..core.templates import templates, themed_name
 
 router = APIRouter()
 
@@ -19,7 +19,8 @@ async def participants_page(req: Request):
 
     items = await participants_srv.list_participants(req, limit=12, offset=0, latest_first=False, role=role, q=q)
     ctx = {"request": req, "lang": lang, "settings": settings, "participants": items, "role": role, "q": q}
-    return templates.TemplateResponse("participants.html", ctx)
+    template_name = themed_name(req, "participants.html")
+    return templates.TemplateResponse(template_name, ctx)
 
 
 @router.get("/api/participants", response_class=JSONResponse)
@@ -45,4 +46,5 @@ async def participant_detail(req: Request, participant_id: int):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Participant not found")
     debug = req.query_params.get("debug")
     ctx = {"request": req, "lang": lang, "settings": settings, "participant": participant, "debug": debug}
-    return templates.TemplateResponse("participant_detail.html", ctx)
+    template_name = themed_name(req, "participant_detail.html")
+    return templates.TemplateResponse(template_name, ctx)
