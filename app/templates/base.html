@@ -46,7 +46,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" />
 </head>
 
-<body class="flex min-h-screen flex-col bg-[var(--c-bg)] text-[var(--c-text)]">
+<body class="flex min-h-screen flex-col bg-[var(--c-bg)] text-[var(--c-text)]"
+    data-site="{{ site_slug() or 'main' }}">
     {% include themed('_detailbar.html') %}
     <main class="flex-1">{% block content %}{% endblock %}</main>
     {% include themed('_footer.html') %}

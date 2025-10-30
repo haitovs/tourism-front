@@ -112,3 +112,4 @@ templates.env.globals["theme"] = theme
 templates.env.globals["themed"] = themed
 templates.env.globals["site_slug"] = site_slug
 templates.env.globals["is_site"] = is_site
+templates.env.globals["settings"] = settings

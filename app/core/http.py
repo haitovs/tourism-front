@@ -66,7 +66,17 @@ def _current_site_slug(req: Request) -> Optional[str]:
     slug = getattr(site, "slug", None)
     if slug:
         return slug
-    return getattr(settings, "FRONT_SITE_SLUG", None) or None
+
+    fallback = getattr(settings, "FRONT_SITE_SLUG", None)
+    if not fallback:
+        return None
+
+    try:
+        sid = int(getattr(settings, "FRONT_SITE_ID", 0))
+    except Exception:
+        sid = 10
+
+    return fallback if sid <= 0 else None
 
 
 def _norm_timeout(value: Optional[Union[float, int, httpx.Timeout]]) -> Optional[httpx.Timeout]:
@@ -96,6 +106,9 @@ def _get_client(req: Request) -> httpx.AsyncClient:
     return _fallback_client
 
 
+# app/core/http.py
+
+
 async def api_get(
     req: Request,
     path: str,
@@ -114,14 +127,13 @@ async def api_get(
         "Connection": "keep-alive",
     }
 
+    # Use only the site from state/config, not cookies
     sid = _current_site_id(req)
     if sid is not None:
         params.setdefault("site_id", sid)
         headers["X-Site-Id"] = str(sid)
 
-    slug = req.cookies.get("admin_site_slug") or req.cookies.get("site") or None
-    if not slug:
-        slug = _current_site_slug(req)
+    slug = _current_site_slug(req)  # <-- single source of truth
     if slug:
         params.setdefault("site", slug)
         headers["X-Site-Slug"] = slug
@@ -185,13 +197,12 @@ async def api_post(req: Request, path: str, data: Optional[Dict[str, Any]] = Non
         "Connection": "keep-alive",
     }
 
+    # Use only the site from state/config, not cookies
     sid = _current_site_id(req)
     if sid is not None:
         headers["X-Site-Id"] = str(sid)
 
-    slug = req.cookies.get("admin_site_slug") or req.cookies.get("site") or None
-    if not slug:
-        slug = _current_site_slug(req)
+    slug = _current_site_slug(req)  # <-- single source of truth
     if slug:
         headers["X-Site-Slug"] = slug
 
@@ -203,7 +214,7 @@ async def api_post(req: Request, path: str, data: Optional[Dict[str, Any]] = Non
     client = _get_client(req)
     t0 = time.perf_counter()
     try:
-        # Preserve original behavior: send as form data unless files are present.
+        # Send as form data unless files are present (unchanged behavior)
         r = await client.post(url, data=data, files=files, headers=headers)
         r.raise_for_status()
         out = r.json() if "application/json" in (r.headers.get("content-type") or "") else r.text

@@ -1,0 +1,38 @@
+{# Site-B agenda macros wrapper #}
+{% import "_themes/site-b/agenda/_time_badge.html" as time %}
+{% import "_themes/site-b/agenda/_info_chip.html" as info %}
+{% import "agenda/_sponsor_badge.html" as sponsor %}
+{% import "agenda/_speaker_card.html" as speaker %}
+{% import "agenda/_speakers_scroller.html" as scroller %}
+{% import "_themes/site-b/agenda/_day_pill.html" as daypill %}
+{% import "_themes/site-b/agenda/_episode_block.html" as episode %}
+
+{% macro time_badge(start_dt, end_dt) -%}
+{{ time.time_badge(start_dt, end_dt) }}
+{%- endmacro %}
+
+{% macro info_chip(icon='calendar', text='') -%}
+{{ info.info_chip(icon, text) }}
+{%- endmacro %}
+
+{% macro sponsor_badge(sp) -%}
+{{ sponsor.sponsor_badge(sp) }}
+{%- endmacro %}
+
+{% macro speaker_card(sp) -%}
+{{ speaker.speaker_card(sp) }}
+{%- endmacro %}
+
+{% macro speakers_scroller(speakers) -%}
+{% call(sp) scroller.speakers_scroller(speakers) %}
+{{ speaker.speaker_card(sp) }}
+{% endcall %}
+{%- endmacro %}
+
+{% macro day_pill(day) -%}
+{{ daypill.day_pill(day) }}
+{%- endmacro %}
+
+{% macro episode_block(d, ep, expanded_var_name) -%}
+{{ episode.episode_block(d, ep, expanded_var_name) }}
+{%- endmacro %}

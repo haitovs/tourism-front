@@ -1,33 +1,33 @@
-{# app/templates/agenda/_day_pill.html #}
+{# Site-B agenda/_day_pill.html #}
 {% macro day_pill(day) -%}
 {% set weekday_key = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'][day.date.weekday()] %}
 {% set daynum = day.date.strftime('%d')|int %}
 
 <button type="button" @click="$dispatch('pickday', { id: {{ day.id }} })" :aria-pressed="selectedDayId === {{ day.id }}"
-    :class="(selectedDayId === {{ day.id }}) ? 'bg-[#007A3D] text-white shadow' : 'bg-white text-[#007A3D]'" class="shrink-0 snap-start rounded-[10px] border-2 border-[#007A3D]
+    :class="(selectedDayId === {{ day.id }}) ? 'bg-[#20306C] text-white shadow' : 'bg-white text-[#20306C]'" class="shrink-0 snap-start rounded-[10px] border-2 border-[#20306C]
                px-3 py-2 md:px-6 md:py-0
                h-auto md:h-[61px]
-               focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#00B374] focus-visible:ring-offset-white
+               focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8FA5F7] focus-visible:ring-offset-white
                transition-colors select-none">
 
     <span class="md:hidden flex flex-col items-center leading-none min-w-[82px]">
         <span class="font-['Roboto'] font-medium text-[14px]"
-            :class="(selectedDayId === {{ day.id }}) ? 'text-[#F4F4F2]/90' : 'text-[#007A3D]'">
+            :class="(selectedDayId === {{ day.id }}) ? 'text-[#F4F4F2]/90' : 'text-[#20306C]'">
             {{ t('weekday.' ~ weekday_key) }}
         </span>
         <span class="mt-0.5 font-['Roboto'] font-bold text-[22px]"
-            :class="(selectedDayId === {{ day.id }}) ? 'text-[#F4F4F2]' : 'text-[#007A3D]'">
+            :class="(selectedDayId === {{ day.id }}) ? 'text-[#F4F4F2]' : 'text-[#20306C]'">
             {{ daynum }}
         </span>
     </span>
 
     <span class="hidden md:grid grid-cols-[32px_1px_auto] items-center gap-3">
         <span class="font-['Roboto'] font-bold text-[22px] md:text-[25px]"
-            :class="(selectedDayId === {{ day.id }}) ? 'text-[#F4F4F2]' : 'text-[#007A3D]'">
+            :class="(selectedDayId === {{ day.id }}) ? 'text-[#F4F4F2]' : 'text-[#20306C]'">
             {{ daynum }}
         </span>
         <span class="w-[2px] h-[36px]"
-            :class="(selectedDayId === {{ day.id }}) ? 'bg-[#F4F4F2]' : 'bg-[#007A3D]'"></span>
+            :class="(selectedDayId === {{ day.id }}) ? 'bg-[#F4F4F2]' : 'bg-[#20306C]'"></span>
         <span class="font-['Roboto'] text-[20px] md:text-[25px]">
             {{ t('weekday.' ~ weekday_key) }}
         </span>

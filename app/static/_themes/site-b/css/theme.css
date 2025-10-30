@@ -17,8 +17,77 @@
     --container: 1650px;
     --header-h: 90px; /* header bar height */
     --pill-top: var(--header-h); /* nav-pill vertical offset */
+
+    /* theme palette overrides */
+    --site-primary: #20306c;
+    --site-primary-dark: #1b2a59;
+    --site-primary-contrast: #f0f0f0;
+    --site-primary-border: rgba(32, 48, 108, 0.4);
+    --site-primary-muted: #6e78a8;
+    --site-primary-soft: #dce3ff;
+    --site-primary-soft-hover: #d8defc;
+    --site-primary-pale: #e2e7ff;
+    --site-primary-subtle: rgba(32, 48, 108, 0.12);
+    --site-primary-overlay: rgba(32, 48, 108, 0.55);
+    --site-primary-ring: rgba(32, 48, 108, 0.7);
+    --site-primary-rgb: 32, 48, 108;
+    --site-divider: rgba(32, 48, 108, 0.25);
+    --site-muted-40: rgba(32, 48, 108, 0.4);
+    --site-muted-45: rgba(32, 48, 108, 0.45);
+    --site-muted-50: rgba(32, 48, 108, 0.5);
 }
 
+/* Tailwind class overrides mapped to palette tokens */
+.text-\[\#20306C\] { color: var(--site-primary) !important; }
+.hover\:text-\[\#20306C\]:hover { color: var(--site-primary) !important; }
+.group:hover .group-hover\:text-\[\#20306C\] { color: var(--site-primary) !important; }
+.group:hover .group-hover\:bg-\[\#1B2A59\],
+.group:hover .group-hover\:bg-\[\#1b2a59\] { background-color: var(--site-primary-dark) !important; }
+.text-\[\#6E78A8\] { color: var(--site-primary-muted) !important; }
+.hover\:text-\[\#6E78A8\]:hover { color: var(--site-primary-muted) !important; }
+.text-\[rgba\(32,48,108,0\.4\)\] { color: var(--site-muted-40) !important; }
+.text-\[rgba\(32,48,108,0\.45\)\] { color: var(--site-muted-45) !important; }
+.text-\[rgba\(32,48,108,0\.5\)\] { color: var(--site-muted-50) !important; }
+
+.bg-\[\#20306C\] { background-color: var(--site-primary) !important; }
+.hover\:bg-\[\#20306C\]:hover { background-color: var(--site-primary) !important; }
+.bg-\[\#1B2A59\],
+.bg-\[\#1b2a59\] { background-color: var(--site-primary-dark) !important; }
+.hover\:bg-\[\#1B2A59\]:hover,
+.hover\:bg-\[\#1b2a59\]:hover { background-color: var(--site-primary-dark) !important; }
+.bg-\[\#B8D779\] { background-color: var(--site-primary) !important; }
+.hover\:bg-\[\#B8D779\]:hover { background-color: var(--site-primary-dark) !important; }
+.bg-\[\#DCE3FF\] { background-color: var(--site-primary-soft) !important; }
+.bg-\[\#E2E7FF\] { background-color: var(--site-primary-pale) !important; }
+.bg-\[\#E1E6FF\] { background-color: var(--site-primary-pale) !important; }
+.hover\:bg-\[\#d8defc\]:hover,
+.hover\:bg-\[\#d8ddfb\]:hover { background-color: var(--site-primary-soft-hover) !important; }
+.bg-\[rgba\(32,48,108,0\.12\)\] { background-color: var(--site-primary-subtle) !important; }
+.bg-\[rgba\(32,48,108,0\.25\)\] { background-color: var(--site-divider) !important; }
+.bg-\[rgba\(32,48,108,0\.45\)\] { background-color: rgba(var(--site-primary-rgb), 0.45) !important; }
+.bg-\[rgba\(32,48,108,0\.50\)\] { background-color: rgba(var(--site-primary-rgb), 0.5) !important; }
+
+.border-\[\#20306C\] { border-color: var(--site-primary) !important; }
+.border-\[\#20306c\] { border-color: var(--site-primary) !important; }
+
+.focus\:ring-\[\#20306C\]:focus,
+.focus\:ring-\[\#20306c\]:focus { --tw-ring-color: var(--site-primary); }
+.focus-visible\:ring-\[\#20306C\]\/70:focus-visible,
+.focus-visible\:ring-\[\#20306c\]\/70:focus-visible { --tw-ring-color: var(--site-primary-ring); }
+
+.placeholder-\[\#6E78A8\]::-webkit-input-placeholder { color: var(--site-primary-muted) !important; }
+.placeholder-\[\#6E78A8\]::-moz-placeholder { color: var(--site-primary-muted) !important; }
+.placeholder-\[\#6E78A8\]::placeholder { color: var(--site-primary-muted) !important; }
+.placeholder-\[\#6E78A8\]:-ms-input-placeholder { color: var(--site-primary-muted) !important; }
+.placeholder-\[\#6E78A8\]:-moz-placeholder { color: var(--site-primary-muted) !important; }
+
+.from-\[\#B8D779\]\/60 {
+    --tw-gradient-from: rgba(var(--site-primary-rgb), 0.6) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(var(--site-primary-rgb), 0));
+}
+.to-\[\#779F4E\]\/40 {
+    --tw-gradient-to: rgba(var(--site-primary-rgb), 0.22) !important;
+}
 /* Site B hero background */
 .sb-hero-bg {
     position: relative;
@@ -41,7 +110,7 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: #20306c;
+    background: var(--site-primary);
     display: block;
     place-items: center;
     z-index: 50;

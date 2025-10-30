@@ -103,7 +103,7 @@
     height: 70px;
     background: transparent;
     border: 5px solid #ffffff;
-    border-radius: 0 20px 20px 0; /* TL 0, TR 20, BR 20, BL 0 */
+    border-radius: 20px;
     display: grid;
     place-items: center;
     cursor: pointer;

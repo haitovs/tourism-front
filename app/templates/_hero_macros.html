@@ -11,19 +11,14 @@ detail_refresh=False
 ) -%}
 {# fallback section label if none provided #}
 {% set _section_label = section_label or t('hero.section') %}
-{% set _site_b = is_site('site-b') %}
-{% set _accent = '#20306C' if _site_b else '#0B703C' %}
-{% set _btn_size = '48px' if _site_b else '52px' %}
-{% set _text_sz = '16px' if _site_b else '18px' %}
-{% set _ring_class = 'focus:outline-none focus-visible:ring-2 focus-visible:ring-[' ~ _accent ~ ']/70' if _site_b else 'focus:outline-none' %}
 <div class="relative z-[1]">
     <div class="absolute left-4 md:left-[65px] bottom-4 flex flex-wrap items-center gap-3">
         <!-- Home icon -->
         <a href="{{ home_href }}"
-            class="inline-flex w-[{{ _btn_size }}] h-[{{ _btn_size }}] md:w-[52px] md:h-[52px] rounded-md bg-white/95 items-center justify-center shadow hover:bg-white {{ _ring_class }}"
+            class="inline-flex w-[52px] h-[52px] rounded-md bg-white/95 items-center justify-center shadow"
             aria-label="{{ t('hero.go_home') }}">
             <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" aria-hidden="true">
-                <path d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" stroke="{{ _accent }}"
+                <path d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" stroke="#0B703C"
                     stroke-width="2.2" />
             </svg>
         </a>
@@ -32,20 +27,20 @@ detail_refresh=False
         {# Detail page: choose behavior #}
         {% set section_target = (current_path if (detail_refresh or not section_href) else section_href) %}
         <a href="{{ section_target }}"
-            class="h-[{{ _btn_size }}] md:h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[{{ _text_sz }}] md:text-[20px] shadow hover:bg-white {{ _ring_class }}"
+            class="h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow hover:bg-white"
             {% if detail_refresh %} aria-current="page" title="{{ t('hero.refresh') }}" {% endif %}>{{ _section_label
             }}</a>
 
         {% if detail_label %}
         <a href="{{ detail_href or '#section-body' }}"
-            class="h-[{{ _btn_size }}] md:h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[{{ _text_sz }}] md:text-[20px] shadow hover:bg-white {{ _ring_class }}">
+            class="h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow hover:bg-white">
             {{ detail_label }}
         </a>
         {% endif %}
         {% else %}
         {# List page: always go to section list #}
         <a href="{{ section_href or '#' }}"
-            class="h-[{{ _btn_size }}] md:h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[{{ _text_sz }}] md:text-[20px] shadow hover:bg-white {{ _ring_class }}">
+            class="h-[52px] inline-flex items-center px-4 rounded-md bg-white/95 text-[#1E1E1E] font-['Roboto'] text-[18px] md:text-[20px] shadow hover:bg-white">
             {{ _section_label }}
         </a>
         {% endif %}

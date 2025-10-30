@@ -11,6 +11,21 @@
     --h1-lh: 73px;
     --pill-w: 1180px;
     --pill-top: 60px;
+
+    /* Theme tokens (main site defaults in green palette) */
+    --site-primary: #007a3d;
+    --site-primary-dark: #006332;
+    --site-primary-contrast: #ffffff;
+    --site-primary-border: rgba(0, 122, 61, 0.7);
+    --site-primary-muted: rgba(0, 122, 61, 0.45);
+    --site-primary-soft: #d3f2e2;
+    --site-primary-soft-hover: #c8ecd9;
+    --site-primary-pale: #e3f7ec;
+    --site-primary-subtle: rgba(0, 122, 61, 0.1);
+    --site-primary-overlay: rgba(0, 0, 0, 0.4);
+    --site-primary-ring: rgba(0, 122, 61, 0.7);
+    --site-primary-rgb: 0, 122, 61;
+    --site-divider: rgba(0, 122, 61, 0.25);
 }
 
 /* soft shadow utility */

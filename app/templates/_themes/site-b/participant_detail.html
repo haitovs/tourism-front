@@ -6,7 +6,7 @@
     <!-- HERO -->
     <section class="relative w-full h-[320px] md:h-[380px]">
         <img src="{{ theme('img/hero-bg.png') }}" alt="" class="absolute inset-0 w-full h-full object-cover" />
-        <div class="absolute inset-0" style="background: rgba(32,48,108,0.55);"></div>
+        <div class="absolute inset-0" style="background: var(--site-primary-overlay);"></div>
 
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
             <h1 class="font-['Montserrat'] font-bold text-white text-[clamp(30px,5vw,56px)] leading-tight">
@@ -42,8 +42,8 @@
                 </h2>
 
                 {% if p.logo_url %}
-                <div class="shrink-0 w-[180px] md:w-[240px] h-[80px] md:h-[110px] rounded-[10px] overflow-hidden bg-[#F3F5FF]">
-                    <img src="{{ p.logo_url }}" alt="{{ p.name }}" class="w-full h-full object-cover" />
+                <div class="shrink-0 w-[180px] md:w-[240px] h-[80px] md:h-[110px] rounded-[10px] overflow-hidden bg-[#F3F5FF] flex items-center justify-center">
+                    <img src="{{ p.logo_url }}" alt="{{ p.name }}" class="h-full w-full object-contain" />
                 </div>
                 {% endif %}
             </div>

@@ -1,7 +1,5 @@
-{# app/templates/agenda/_time_badge.html #}
+{# Site-B agenda/_time_badge.html #}
 {% macro time_badge(start_dt, end_dt) -%}
-{# Build display HH:MM and datetime=... safely for both str and datetime #}
-
 {% set _s = (start_dt or '') %}
 {% set _e = (end_dt or '') %}
 
@@ -33,7 +31,7 @@
 
 <aside class="h-full flex items-start">
     <div class="mx-auto inline-flex flex-col items-center justify-center gap-1
-         bg-[#007A3D] text-white shadow-soft
+         bg-[#20306C] text-white shadow-soft
          rounded-[10px]
          px-3 py-2 md:px-3 md:py-2
          min-w-[70px] md:min-w-[120px]

@@ -1,0 +1,383 @@
+{# app/templates/agenda/_episode_block.html #}
+{% import "agenda/_time_badge.html" as tb %}
+{% import "agenda/_info_chip.html" as chip %}
+{% import "agenda/_speaker_card.html" as card %}
+{% import "agenda/_speakers_scroller.html" as scroller %}
+{% from "agenda/_sponsor_badge.html" import sponsor_badge %}
+
+{% macro episode_block(d, ep, expanded_var_name) -%}
+{# ---- robust fallbacks (work across various backend shapes) ---- #}
+{% set _speakers = ep.speakers or ep.speakers_list or [] %}
+{% set _mods = ep.moderators or ep.moderator_list or [] %}
+{% set mod = (_mods[0] if _mods else (ep.first_moderator if ep.first_moderator is defined else None)) %}
+{% set _sponsors = ep.sponsors or ep.sponsors_list or [] %}
+{% set top_sponsor = (ep.top_sponsor if ep.top_sponsor else (_sponsors[0] if _sponsors else None)) %}
+{% set short = ep.short_desc or '' %}
+{% set topic = ep.topic_desc or '' %}
+{% set ep_id = ep.id %}
+<article class="grid grid-cols-[72px_1fr] md:grid-cols-[160px_1fr] gap-4 md:gap-5" x-cloak>
+    {{ tb.time_badge(ep.start_time, ep.end_time) }}
+    <div class="relative bg-white shadow-soft rounded-[16px] p-0 md:p-6">
+        {# Sponsor tiny badge (mobile collapsed) #}
+        {% if top_sponsor %}
+        <div class="md:hidden absolute top-2 right-2 z-10">
+            {% set _slogo = top_sponsor.logo_url or '/static/img/logo_placeholder.svg' %}
+            {% if top_sponsor.url %}
+            <a href="{{ top_sponsor.url }}" target="_blank" rel="noopener noreferrer" class="block">
+                <img src="{{ _slogo }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
+                    class="w-8 h-8 object-contain bg-white/90 border border-[#E5E7EB] rounded-md p-1 shadow"
+                    loading="lazy" />
+            </a>
+            {% else %}
+            <img src="{{ _slogo }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
+                class="w-8 h-8 object-contain bg-white/90 border border-[#E5E7EB] rounded-md p-1 shadow"
+                loading="lazy" />
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {# ===================== MOBILE COLLAPSED ===================== #}
+        <div class="md:hidden" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
+            <div class="cursor-pointer select-none outline-none p-4" role="button" tabindex="0"
+                @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
+                @keydown.enter.prevent="{{ expanded_var_name }} = {{ ep_id|tojson }}"
+                @keydown.space.prevent="{{ expanded_var_name }} = {{ ep_id|tojson }}"
+                :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'"
+                :aria-controls="'ep-panel-' + {{ ep_id|tojson }}">
+                <h3 class="font-['Montserrat'] font-semibold text-[18px] leading-[22px] text-black">
+                    {{ ep.title }}
+                </h3>
+                {% if short %}
+                <p class="mt-2 font-['Roboto'] text-[14px] leading-[18px] text-[#1E1E1E]">
+                    {{ short }}
+                </p>
+                {% endif %}
+            </div>
+
+            {% if ep.location %}
+            <div class="md:hidden col-start-2 col-end-3" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
+                <div class="bg-[#20306C] text-white px-4 py-2">
+                    <span class="font-['Roboto'] font-medium text-[13px] leading-[16px]">
+                        {{ ep.location }}
+                    </span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        {# ===================== MOBILE EXPANDED ===================== #}
+        <div class="md:hidden" x-show="{{ expanded_var_name }} === {{ ep_id|tojson }}" x-collapse>
+            <section class="p-5 flex flex-col gap-6 cursor-pointer select-none" role="button" tabindex="0"
+                @click="{{ expanded_var_name }} = null" @keydown.enter.prevent="{{ expanded_var_name }} = null"
+                @keydown.space.prevent="{{ expanded_var_name }} = null"
+                :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'"
+                :id="'ep-panel-' + {{ ep_id|tojson }}">
+
+                {% if ep.location %}
+                <div class="-mx-5 -mt-5 px-5 py-3 rounded-t-[20px] bg-[#20306C] text-white">
+                    <span class="font-['Roboto'] font-semibold text-[15px] leading-[18px]">
+                        {{ ep.location }}
+                    </span>
+                </div>
+                {% endif %}
+
+                <h3 class="mt-3 font-['Montserrat'] font-semibold text-[20px] leading-[24px] text-black">
+                    {{ ep.title }}
+                </h3>
+
+                {# Moderator #}
+                {% if mod %}
+                <div class="w-full max-w-[640px] mx-auto">
+                    <div class="grid grid-cols-[96px_1fr] gap-4 items-center">
+                        <div class="shrink-0">
+                            <div
+                                class="w-[96px] aspect-square rounded-[12px] overflow-hidden bg-[#F5F5F7] flex items-center justify-center">
+                                {% if mod.photo_url %}
+                                <img src="{{ mod.photo_url }}" alt="{{ mod.fullname }}"
+                                    class="w-full h-full object-cover" loading="lazy" />
+                                {% else %}
+                                <img src="/static/img/img_placeholder.png" alt="{{ mod.fullname }}"
+                                    class="w-full h-full object-cover opacity-70" loading="lazy" />
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="min-w-0">
+                            <h4 class="font-['Montserrat'] font-semibold text-[16px] leading-[20px] text-black">
+                                {{ t('agenda.moderator') }}
+                            </h4>
+                            <div
+                                class="mt-1 font-['Roboto'] font-bold text-[16px] leading-[20px] text-[#1E1E1E] truncate">
+                                {{ mod.fullname }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {% set mdesc = mod.description_norm or '' %}
+                    <div class="mt-3">
+                        <p class="font-['Roboto'] text-[14px] leading-6 text-[#1E1E1E]">
+                            {% if mdesc %}
+                            {{ mdesc }}
+                            {% else %}
+                            {% if mod.position or mod.company %}
+                            {{ mod.position }}{% if mod.company %}, {{ mod.company }}{% endif %}
+                            {% endif %}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+
+                {# Topic #}
+                <div class="w-full max-w-[640px] mx-auto">
+                    <h4 class="font-['Montserrat'] font-semibold text-[18px] leading-[22px] text-black text-center">
+                        {{ t('agenda.topic') }}
+                    </h4>
+                    <div class="mt-2 font-['Roboto'] text-[14px] leading-6 text-[#1E1E1E]">
+                        {% if short %}<p>{{ short }}</p>{% endif %}
+                        {% if topic %}<p class="{% if short %}mt-2{% endif %} whitespace-pre-line">{{ topic }}</p>{%
+                        endif %}
+                    </div>
+                </div>
+
+                {# Speakers list #}
+                {% if _speakers %}
+                <div class="pt-2">
+                    <h4 class="font-['Montserrat'] font-semibold text-[16px] leading-[20px] text-black">
+                        {{ t('agenda.speakers') }}:
+                    </h4>
+                    <ul class="mt-4 space-y-3">
+                        {% for sp in _speakers %}
+                        <li class="flex items-center gap-3">
+                            <div class="w-[48px] h-[48px] rounded-full overflow-hidden bg-[#F3F3F6] shrink-0">
+                                <img src="{{ sp.photo_url or '/static/img/img_placeholder.png' }}"
+                                    alt="{{ sp.fullname }}" class="w-full h-full object-cover" loading="lazy" />
+                            </div>
+                            <div class="min-w-0">
+                                <div
+                                    class="font-['Roboto'] font-bold text-[14px] leading-[16px] text-[#1E1E1E] truncate">
+                                    {{ sp.fullname }}
+                                </div>
+                                <div
+                                    class="font-['Roboto'] font-semibold text-[12px] leading-[16px] text-[#6C6C6F] truncate">
+                                    {{ sp.position }}{% if sp.company %}, {{ sp.company }}{% endif %}
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </section>
+        </div>
+
+
+        {# ===================== DESKTOP COLLAPSED ===================== #}
+        <div class="hidden md:block" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
+            <header class="relative flex flex-col gap-4 xl:gap-6">
+                <div class="flex flex-wrap items-center gap-3">
+                    {{ chip.info_chip('calendar', d.date.strftime('%d %B %Y')) }}
+                    {% if ep.location %}
+                    {{ chip.info_chip('map', ep.location) }}
+                    {% endif %}
+                </div>
+
+                <div class="grid items-start gap-6 xl:gap-8 xl:grid-cols-[1fr_auto]">
+                    <div class="min-w-0">
+                        <h3
+                            class="font-['Montserrat'] font-semibold text-[28px] leading-[34px] md:text-[30px] md:leading-[37px] text-black">
+                            {{ ep.title }}
+                        </h3>
+
+                        {% if short %}
+                        <p class="mt-3 md:mt-4 font-['Roboto'] text-[16px] leading-[20px] text-black max-w-[720px]">
+                            {{ short }}
+                        </p>
+                        {% endif %}
+                    </div>
+
+                    <div class="flex items-end justify-end gap-4 xl:gap-6">
+                        <button type="button" class="h-[36px] px-5 rounded-[10px] bg-[#20306C] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]
+                           hover:bg-[#1B2A59] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8FA5F7]"
+                            @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
+                            x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}"
+                            :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
+                            {{ t('btn.read_more') }}
+                        </button>
+
+                        {% if top_sponsor %}
+                        <div class="hidden xl:flex items-center gap-6">
+                            <div class="w-px h-[125px] bg-[#20306C] rounded-full"></div>
+                            <div class="shrink-0 flex flex-col items-center text-center">
+                                {% set _logo = top_sponsor.logo_url or '/static/img/img_placeholder.png' %}
+                                {% if top_sponsor.url %}
+                                <a href="{{ top_sponsor.url }}" target="_blank" rel="noopener noreferrer" class="block">
+                                    <img src="{{ _logo }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
+                                        class="w-[160px] h-[95px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
+                                        loading="lazy" />
+                                </a>
+                                {% else %}
+                                <img src="{{ _logo }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
+                                    class="w-[160px] h-[95px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
+                                    loading="lazy" />
+                                {% endif %}
+                                {% set tier_key = (top_sponsor.tier or 'gold')|lower %}
+                                <div
+                                    class="mt-2 font-['Roboto'] font-semibold text-[15px]
+      {% if tier_key == 'gold' %}text-[#DDAC17]{% elif tier_key == 'silver' %}text-[#9CA3AF]{% elif tier_key == 'bronze' %}text-[#915D2D]{% else %}text-[#1E1E1E]{% endif %}">
+                                    {{ t('sponsor.tier.' ~ tier_key) }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </header>
+        </div>
+        {# =================== END DESKTOP COLLAPSED =================== #}
+
+        {# ===================== DESKTOP EXPANDED ===================== #}
+        <div class="hidden md:block" x-show="{{ expanded_var_name }} === {{ ep_id|tojson }}" x-collapse>
+            <header class="relative flex flex-col gap-4 xl:gap-6">
+                <div class="flex flex-wrap items-center gap-3">
+                    {{ chip.info_chip('calendar', d.date.strftime('%d %B %Y')) }}
+                    {% if ep.location %}
+                    {{ chip.info_chip('map', ep.location) }}
+                    {% endif %}
+                </div>
+
+                <div class="grid items-start gap-6 xl:gap-8 xl:grid-cols-[1fr_auto]">
+                    <div class="min-w-0">
+                        <h3
+                            class="font-['Montserrat'] font-semibold text-[28px] leading-[34px] md:text-[30px] md:leading-[37px] text-black">
+                            {{ ep.title }}
+                        </h3>
+
+                        {# keep the short topic in expanded too #}
+                        {% if short %}
+                        <p class="mt-3 md:mt-4 font-['Roboto'] text-[16px] leading-[20px] text-black max-w-[720px]">
+                            {{ short }}
+                        </p>
+                        {% endif %}
+                    </div>
+
+                    <div class="flex items-end justify-end gap-4 xl:gap-6">
+                        {# sponsor stays in the same (old) place as collapsed #}
+                        {% if top_sponsor %}
+                        <!-- Sponsor + divider only at xl+ -->
+                        <div class="hidden xl:flex items-center gap-6">
+                            <div class="w-px h-[125px] bg-[#20306C] rounded-full"></div>
+                            <div class="shrink-0 flex flex-col items-center text-center">
+                                {% set _logo = top_sponsor.logo_url or '/static/img/img_placeholder.png' %}
+                                {% if top_sponsor.url %}
+                                <a href="{{ top_sponsor.url }}" target="_blank" rel="noopener noreferrer" class="block">
+                                    <img src="{{ _logo }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
+                                        class="w-[160px] h-[95px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
+                                        loading="lazy" />
+                                </a>
+                                {% else %}
+                                <img src="{{ _logo }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
+                                    class="w-[160px] h-[95px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
+                                    loading="lazy" />
+                                {% endif %}
+                                {% set tier_key = (top_sponsor.tier or 'gold')|lower %}
+                                <div
+                                    class="mt-2 font-['Roboto'] font-semibold text-[15px]
+      {% if tier_key == 'gold' %}text-[#DDAC17]{% elif tier_key == 'silver' %}text-[#9CA3AF]{% elif tier_key == 'bronze' %}text-[#915D2D]{% else %}text-[#1E1E1E]{% endif %}">
+                                    {{ t('sponsor.tier.' ~ tier_key) }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </header>
+
+            <div class="py-10 grid grid-cols-1 gap-8">
+                <div class="flex flex-col gap-6">
+
+                    {# Moderator #}
+                    {% if mod %}
+                    <div class="m-auto w-full max-w-[980px] flex flex-col md:flex-row  gap-6">
+                        {% if mod.photo_url %}
+                        <div class="shrink-0 grow-0" style="width:112px;height:112px;flex:0 0 112px;">
+                            <img src="{{ mod.photo_url or '/static/img/img_placeholder.png' }}" alt="{{ mod.fullname }}"
+                                style="display:block;width:112px;height:112px;max-width:none;object-fit:cover;border-radius:14px;background:#F5F5F7;border:1px solid #E5E7EB;"
+                                loading="eager" />
+                        </div>
+
+                        {% endif %}
+
+                        <div class="flex-1 min-w-0 text-left items-center">
+                            <h4 class="font-['Montserrat'] font-semibold text-[20px] leading-[24px] text-black">
+                                {{ t('agenda.moderator') }}
+                            </h4>
+
+                            <div class="mt-1 font-['Roboto'] font-bold text-[18px] leading-[22px] text-black">
+                                {{ mod.fullname }}
+                            </div>
+                        </div>
+                    </div>
+                    {% set mdesc = mod.description or mod.description_norm or '' %}
+                    <div class="mt-2 font-['Roboto'] text-[16px] leading-6 whitespace-pre-line text-[#1E1E1E]">
+                        {% if mdesc %}
+                        {{ mdesc }}
+                        {% elif mod.position or mod.company %}
+                        {{ mod.position }}{% if mod.company %}, {{ mod.company }}{% endif %}
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+
+                    {# Topic (show short again + full topic) #}
+                    {% if topic or short %}
+                    <div>
+                        <h4 class="font-['Montserrat'] font-semibold text-[22px] leading-[26px] text-black">
+                            {{ t('agenda.topic') }}
+                        </h4>
+                        <div class="mt-3 font-['Roboto'] text-[16px] leading-6 text-black max-w-[980px]">
+                            {% if short %}<p>{{ short }}</p>{% endif %}
+                            {% if topic %}<p class="{% if short %}mt-2{% endif %} whitespace-pre-line">{{ topic }}</p>{%
+                            endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {# Speakers list (unchanged) #}
+                    {% if _speakers %}
+                    <section x-data="{ track: null }">
+                        <h4 class="font-['Montserrat'] font-semibold text-[22px] leading-[26px] text-black">{{
+                            t('agenda.speakers') }}</h4>
+                        <div class="mt-6">
+                            <ul x-ref="track" x-init="track = $refs.track"
+                                class="no-scrollbar snap-x snap-mandatory overflow-x-auto flex gap-6 pr-2"
+                                style="scroll-behavior: smooth" aria-label="{{ t('agenda.speakers_carousel') }}">
+                                {% for sp in _speakers %}
+                                {% set sp_href = sp.url or ('/speakers/' ~ (sp.slug or sp.id)) %}
+                                <li class="snap-start shrink-0">
+                                    {{ card.speaker_card(sp, href=sp_href) }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </section>
+                    {% endif %}
+
+                    {# keep only the Hide button down here #}
+                    <div class="mt-4 flex justify-end">
+                        <button type="button"
+                            class="h-[36px] px-5 rounded-[10px] bg-[#20306C] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]"
+                            @click="{{ expanded_var_name }} = null"
+                            x-show="{{ expanded_var_name }} === {{ ep_id|tojson }}"
+                            :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
+                            {{ t('common.hide') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {# =================== END DESKTOP EXPANDED =================== #}
+
+
+    </div>
+</article>
+{%- endmacro %}
