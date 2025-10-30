@@ -37,7 +37,9 @@
     {% set faq_items = faqs if (faqs is defined and faqs) else default_faqs %}
 
     <section class="mt-10 mb-16">
-        {% include "_themes/site-b/index/_faq.html" with faqs=faq_items %}
+        {% with faqs = faq_items %}
+            {% include themed('index/_faq.html') %}
+        {% endwith %}
     </section>
 </main>
 {% endblock %}

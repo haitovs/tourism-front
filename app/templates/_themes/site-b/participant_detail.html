@@ -46,8 +46,10 @@
 
                     {% if p.logo_url %}
                     <div
-                        class="shrink-0 w-[180px] md:w-[240px] h-[80px] md:h-[110px] rounded-[10px] overflow-hidden bg-[#F3F5FF] grid place-items-center">
-                        <img src="{{ p.logo_url }}" alt="{{ p.name }}" class="h-full w-full object-contain" />
+                        class="relative shrink-0 w-[180px] md:w-[240px] h-[80px] md:h-[110px] rounded-[10px] overflow-hidden bg-[#F3F5FF]">
+                        <!-- absolute = image can’t affect layout size; p-2 gives breathing room -->
+                        <img src="{{ p.logo_url }}" alt="{{ p.name }}"
+                            class="absolute inset-0 p-2 w-full h-full object-contain" />
                     </div>
                     {% endif %}
                 </div>
