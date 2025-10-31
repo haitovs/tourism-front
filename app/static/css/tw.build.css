@@ -765,6 +765,9 @@
   .h-\[95px\] {
     height: 95px;
   }
+  .h-\[96px\] {
+    height: 96px;
+  }
   .h-\[99px\] {
     height: 99px;
   }
@@ -5122,6 +5125,11 @@
   .lg\:w-\[110px\] {
     @media (width >= 64rem) {
       width: 110px;
+    }
+  }
+  .lg\:w-\[220px\] {
+    @media (width >= 64rem) {
+      width: 220px;
     }
   }
   .lg\:w-\[248px\] {

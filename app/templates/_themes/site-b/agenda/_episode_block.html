@@ -1,6 +1,6 @@
-{# app/templates/agenda/_episode_block.html #}
-{% import "agenda/_time_badge.html" as tb %}
-{% import "agenda/_info_chip.html" as chip %}
+            </section>\n        </div>\n\n{# app/templates/agenda/_episode_block.html #}
+{% import "_themes/site-b/agenda/_time_badge.html" as tb %}
+{% import "_themes/site-b/agenda/_info_chip.html" as chip %}
 {% import "agenda/_speaker_card.html" as card %}
 {% import "agenda/_speakers_scroller.html" as scroller %}
 {% from "agenda/_sponsor_badge.html" import sponsor_badge %}
@@ -85,80 +85,65 @@
                     {{ ep.title }}
                 </h3>
 
-                {# Moderator #}
                 {% if mod %}
-                <div class="w-full max-w-[640px] mx-auto">
-                    <div class="grid grid-cols-[96px_1fr] gap-4 items-center">
-                        <div class="shrink-0">
-                            <div
-                                class="w-[96px] aspect-square rounded-[12px] overflow-hidden bg-[#F5F5F7] flex items-center justify-center">
-                                {% if mod.photo_url %}
-                                <img src="{{ mod.photo_url }}" alt="{{ mod.fullname }}"
-                                    class="w-full h-full object-cover" loading="lazy" />
-                                {% else %}
-                                <img src="/static/img/img_placeholder.png" alt="{{ mod.fullname }}"
-                                    class="w-full h-full object-cover opacity-70" loading="lazy" />
-                                {% endif %}
-                            </div>
+                {% set mdesc = mod.description or mod.description_html or mod.description_norm or mod.bio or mod.bio_html or '' %}
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-[96px] h-[96px] rounded-[14px] overflow-hidden bg-[#F5F5F7] flex items-center justify-center border border-[#E5E7EB]">
+                            <img src="{{ mod.photo_url or '/static/img/img_placeholder.png' }}" alt="{{ mod.fullname }}"
+                                class="w-full h-full object-cover" loading="lazy" />
                         </div>
                         <div class="min-w-0">
-                            <h4 class="font-['Montserrat'] font-semibold text-[16px] leading-[20px] text-black">
+                            <h4 class="font-['Montserrat'] font-semibold text-[24px] leading-[30px] text-black">
                                 {{ t('agenda.moderator') }}
                             </h4>
-                            <div
-                                class="mt-1 font-['Roboto'] font-bold text-[16px] leading-[20px] text-[#1E1E1E] truncate">
+                            <div class="mt-1 font-['Roboto'] font-bold text-[16px] leading-[20px] text-[#1E1E1E]">
                                 {{ mod.fullname }}
                             </div>
+                            {% if mod.position or mod.company %}
+                            <div class="font-['Roboto'] text-[13px] leading-[18px] text-[#6C6C6F]">
+                                {{ mod.position }}{% if mod.company %}, {{ mod.company }}{% endif %}
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
+                    {% if mdesc %}
+                    <div class="font-['Roboto'] text-[15px] leading-[1.6] text-[#1E1E1E] whitespace-pre-line">
+                        {{ mdesc|safe }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
 
-                    {% set mdesc = mod.description_norm or '' %}
-                    <div class="mt-3">
-                        <p class="font-['Roboto'] text-[14px] leading-6 text-[#1E1E1E]">
-                            {% if mdesc %}
-                            {{ mdesc }}
-                            {% else %}
-                            {% if mod.position or mod.company %}
-                            {{ mod.position }}{% if mod.company %}, {{ mod.company }}{% endif %}
-                            {% endif %}
-                            {% endif %}
-                        </p>
+                {% if topic or short %}
+                <div class="flex flex-col gap-3">
+                    <h4 class="font-['Montserrat'] font-semibold text-[24px] leading-[30px] text-black">
+                        {{ t('agenda.topic') }}
+                    </h4>
+                    <div class="font-['Roboto'] text-[15px] leading-[1.6] text-[#1E1E1E]">
+                        {% if short %}<p>{{ short }}</p>{% endif %}
+                        {% if topic %}<p class="{% if short %}mt-2{% endif %} whitespace-pre-line">{{ topic }}</p>{% endif %}
                     </div>
                 </div>
                 {% endif %}
 
-                {# Topic #}
-                <div class="w-full max-w-[640px] mx-auto">
-                    <h4 class="font-['Montserrat'] font-semibold text-[18px] leading-[22px] text-black text-center">
-                        {{ t('agenda.topic') }}
-                    </h4>
-                    <div class="mt-2 font-['Roboto'] text-[14px] leading-6 text-[#1E1E1E]">
-                        {% if short %}<p>{{ short }}</p>{% endif %}
-                        {% if topic %}<p class="{% if short %}mt-2{% endif %} whitespace-pre-line">{{ topic }}</p>{%
-                        endif %}
-                    </div>
-                </div>
-
-                {# Speakers list #}
                 {% if _speakers %}
                 <div class="pt-2">
-                    <h4 class="font-['Montserrat'] font-semibold text-[16px] leading-[20px] text-black">
-                        {{ t('agenda.speakers') }}:
+                    <h4 class="font-['Montserrat'] font-semibold text-[24px] leading-[30px] text-black">
+                        {{ t('agenda.speakers') }}
                     </h4>
                     <ul class="mt-4 space-y-3">
                         {% for sp in _speakers %}
                         <li class="flex items-center gap-3">
                             <div class="w-[48px] h-[48px] rounded-full overflow-hidden bg-[#F3F3F6] shrink-0">
-                                <img src="{{ sp.photo_url or '/static/img/img_placeholder.png' }}"
-                                    alt="{{ sp.fullname }}" class="w-full h-full object-cover" loading="lazy" />
+                                <img src="{{ sp.photo_url or '/static/img/img_placeholder.png' }}" alt="{{ sp.fullname }}"
+                                    class="w-full h-full object-cover" loading="lazy" />
                             </div>
                             <div class="min-w-0">
-                                <div
-                                    class="font-['Roboto'] font-bold text-[14px] leading-[16px] text-[#1E1E1E] truncate">
+                                <div class="font-['Roboto'] font-bold text-[14px] leading-[16px] text-[#1E1E1E] truncate">
                                     {{ sp.fullname }}
                                 </div>
-                                <div
-                                    class="font-['Roboto'] font-semibold text-[12px] leading-[16px] text-[#6C6C6F] truncate">
+                                <div class="font-['Roboto'] text-[12px] leading-[16px] text-[#6C6C6F] truncate">
                                     {{ sp.position }}{% if sp.company %}, {{ sp.company }}{% endif %}
                                 </div>
                             </div>
@@ -169,7 +154,6 @@
                 {% endif %}
             </section>
         </div>
-
 
         {# ===================== DESKTOP COLLAPSED ===================== #}
         <div class="hidden md:block" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
@@ -288,33 +272,38 @@
 
                     {# Moderator #}
                     {% if mod %}
-                    <div class="m-auto w-full max-w-[980px] flex flex-col md:flex-row  gap-6">
-                        {% if mod.photo_url %}
-                        <div class="shrink-0 grow-0" style="width:112px;height:112px;flex:0 0 112px;">
-                            <img src="{{ mod.photo_url or '/static/img/img_placeholder.png' }}" alt="{{ mod.fullname }}"
-                                style="display:block;width:112px;height:112px;max-width:none;object-fit:cover;border-radius:14px;background:#F5F5F7;border:1px solid #E5E7EB;"
-                                loading="eager" />
-                        </div>
-
-                        {% endif %}
-
-                        <div class="flex-1 min-w-0 text-left items-center">
-                            <h4 class="font-['Montserrat'] font-semibold text-[20px] leading-[24px] text-black">
-                                {{ t('agenda.moderator') }}
-                            </h4>
-
-                            <div class="mt-1 font-['Roboto'] font-bold text-[18px] leading-[22px] text-black">
-                                {{ mod.fullname }}
+                    {% set mdesc = mod.description or mod.description_html or mod.description_norm or mod.bio or mod.bio_html or '' %}
+                    <div class="w-full max-w-[980px] mx-auto flex flex-col gap-6">
+                        <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 items-stretch">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-['Montserrat'] font-semibold text-[24px] leading-[30px] text-black">
+                                    {{ t('agenda.moderator') }}
+                                </h4>
+                                {% if mdesc %}
+                                <div class="mt-3 font-['Roboto'] text-[16px] leading-6 text-[#1E1E1E] whitespace-pre-line">
+                                    {{ mdesc|safe }}
+                                </div>
+                                {% elif mod.position or mod.company %}
+                                <div class="mt-3 font-['Roboto'] text-[16px] leading-6 text-[#1E1E1E]">
+                                    {{ mod.position }}{% if mod.company %}, {{ mod.company }}{% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="lg:w-[220px] flex flex-col items-center justify-center text-center gap-3">
+                                <div class="w-[140px] h-[140px] rounded-[18px] overflow-hidden bg-[#F5F5F7] border border-[#E5E7EB] shadow-[0_12px_28px_rgba(12,26,71,0.15)]">
+                                    <img src="{{ mod.photo_url or '/static/img/img_placeholder.png' }}" alt="{{ mod.fullname }}"
+                                        class="w-full h-full object-cover" loading="lazy">
+                                </div>
+                                <div class="font-['Roboto'] text-[#1E1E1E] flex flex-col gap-1">
+                                    <span class="font-bold text-[18px] leading-[22px]">{{ mod.fullname }}</span>
+                                    {% if mod.position or mod.company %}
+                                    <span class="text-[14px] leading-[18px] text-[#6C6C6F]">
+                                        {{ mod.position }}{% if mod.company %}, {{ mod.company }}{% endif %}
+                                    </span>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    {% set mdesc = mod.description or mod.description_norm or '' %}
-                    <div class="mt-2 font-['Roboto'] text-[16px] leading-6 whitespace-pre-line text-[#1E1E1E]">
-                        {% if mdesc %}
-                        {{ mdesc }}
-                        {% elif mod.position or mod.company %}
-                        {{ mod.position }}{% if mod.company %}, {{ mod.company }}{% endif %}
-                        {% endif %}
                     </div>
                     {% endif %}
 
@@ -322,7 +311,7 @@
                     {# Topic (show short again + full topic) #}
                     {% if topic or short %}
                     <div>
-                        <h4 class="font-['Montserrat'] font-semibold text-[22px] leading-[26px] text-black">
+                        <h4 class="font-['Montserrat'] font-semibold text-[24px] leading-[30px] text-black">
                             {{ t('agenda.topic') }}
                         </h4>
                         <div class="mt-3 font-['Roboto'] text-[16px] leading-6 text-black max-w-[980px]">
@@ -336,7 +325,7 @@
                     {# Speakers list (unchanged) #}
                     {% if _speakers %}
                     <section x-data="{ track: null }">
-                        <h4 class="font-['Montserrat'] font-semibold text-[22px] leading-[26px] text-black">{{
+                        <h4 class="font-['Montserrat'] font-semibold text-[24px] leading-[30px] text-black">{{
                             t('agenda.speakers') }}</h4>
                         <div class="mt-6">
                             <ul x-ref="track" x-init="track = $refs.track"
@@ -372,3 +361,13 @@
     </div>
 </article>
 {%- endmacro %}
+
+
+
+
+
+
+
+
+
+
