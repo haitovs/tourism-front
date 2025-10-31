@@ -3,12 +3,11 @@
 {% block content %}
 <main>
     <!-- HERO -->
-    <section class="relative w-full h-[320px] md:h-[380px]">
+    <section class="sb-page-hero relative w-full h-[320px] md:h-[380px]">
         <img src="{{ theme('img/hero-bg.png') }}" alt="" class="absolute inset-0 w-full h-full object-cover" />
         <div class="absolute inset-0" style="background: var(--site-primary-overlay);"></div>
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
-            <h1
-                class="font-['Montserrat'] font-bold text-white text-[clamp(30px,5vw,60px)] lg:text-[clamp(44px,3.6vw,72px)] leading-[1.15]">
+            <h1 class="font-['Montserrat'] font-bold text-white text-[clamp(30px,5vw,60px)] lg:text-[clamp(44px,3.6vw,72px)] leading-[1.15]">
                 {{ t('about_forum.hero.title') }}
             </h1>
             <p class="mt-2 font-['Roboto'] text-white/90 text-[clamp(16px,2.4vw,20px)]">
@@ -16,107 +15,58 @@
             </p>
         </div>
         {{ hero_buttons(
-        home_href = '/',
-        section_label = t('nav.about_forum'),
-        section_href = '/about-the-forum',
-        is_detail = False
+            home_href='/',
+            section_label=t('nav.about_forum'),
+            section_href='/about-the-forum',
+            is_detail=False
         ) }}
     </section>
 
-    <div
-        class="relative z-[1] max-w-[1310px] mx-auto bg-white rounded-[24px] shadow-[0_22px_50px_rgba(18,30,70,0.12)] mt-12 mb-16 px-6 sm:px-8 md:px-10 lg:px-12 py-10 space-y-12">
+    <div class="relative z-[1] max-w-[1310px] mx-auto bg-white rounded-[24px] shadow-[0_22px_50px_rgba(18,30,70,0.12)] mt-12 mb-16 px-6 sm:px-8 md:px-10 lg:px-12 py-10 space-y-12">
         <section class="py-6 md:py-10">
             <div class="rounded-[20px] border border-[#E2E8F0] shadow-sm p-6 sm:p-8 md:p-10">
-                <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E] text-[clamp(24px,4vw,40px)] leading-[1.2]">
-                    International Forum 2026
-                </h2>
-                <div
-                    class="mt-6 space-y-5 font-['Roboto'] text-[16px] sm:text-[17px] md:text-[18px] leading-[1.7] text-[#1E1E1E]">
-                    <p>
-                        We are pleased to welcome you to the 30th International Conference and Exhibition "Oil and Gas
-                        of
-                        Turkmenistan - 2025" (OGT 2025), which brings together leading national and international oil
-                        and gas
-                        companies, as well as experts and financial institutions that shape the future of the oil and
-                        gas industry
-                        both nationally and throughout the region.
-                    </p>
-                    <p>
-                        The purpose of the Conference and Exhibition is to strengthen the dialogue on further
-                        sustainable
-                        development of the energy sector, review the latest trends in the global energy system, and
-                        expand
-                        opportunities for attracting foreign direct investment in the oil and gas industry of
-                        Turkmenistan.
-                    </p>
-                    <p>
-                        In an epoch when the world is striving for a large-scale transition to new types of energy,
-                        Turkmenistan is
-                        changing too. The country can offer a wide field of activity for investors: from the development
-                        of one of
-                        the largest onshore gas fields, Galkynysh, to favorable natural and climatic conditions for the
-                        effective
-                        development of solar and wind energy. Turkmenistan’s rich resource potential will be the focus
-                        of OGT 2025,
-                        where leading energy companies of Turkmenistan will provide extensive opportunities for foreign
-                        investors in
-                        this strategically important area.
-                    </p>
+                <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E] text-[clamp(24px,4vw,40px)] leading-[1.2]">International Forum 2026</h2>
+                <div class="mt-6 space-y-5 font-['Roboto'] text-[16px] sm:text-[17px] md:text-[18px] leading-[1.7] text-[#1E1E1E]">
+                    <p>We are pleased to welcome you to the 30th International Conference and Exhibition "Oil and Gas of Turkmenistan - 2025" (OGT 2025), which brings together leading national and international oil and gas companies, as well as experts and financial institutions that shape the future of the oil and gas industry both nationally and throughout the region.</p>
+                    <p>The purpose of the Conference and Exhibition is to strengthen the dialogue on further sustainable development of the energy sector, review the latest trends in the global energy system, and expand opportunities for attracting foreign direct investment in the oil and gas industry of Turkmenistan.</p>
+                    <p>In an epoch when the world is striving for a large-scale transition to new types of energy, Turkmenistan is changing too. The country can offer a wide field of activity for investors: from the development of one of the largest onshore gas fields, Galkynysh, to favorable natural and climatic conditions for the effective development of solar and wind energy. Turkmenistan’s rich resource potential will be the focus of OGT 2025, where leading energy companies of Turkmenistan will provide extensive opportunities for foreign investors in this strategically important area.</p>
                 </div>
             </div>
         </section>
 
         <section class="pb-6 md:pb-10">
             <div class="rounded-[20px] border border-[#E2E8F0] shadow-sm p-6 sm:p-8 md:p-10">
-                <!-- Mobile/tablet: simple stack; LG+: 3x3 matrix -->
-                <div class="grid gap-4 sm:gap-5 lg:gap-6 lg:grid-cols-3 lg:grid-rows-3"
-                    style="--rh: 260px; grid-template-rows: repeat(3, var(--rh));">
-
-                    <!-- 1: col 1, rows 1-2 -->
-                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow-lg
-                     lg:col-start-1 lg:row-start-1 lg:row-span-2 h-[300px] lg:h-auto">
-                        <img src="{{ theme('img/about-forum/forum1.png') }}" alt="" class="w-full h-full object-cover"
-                            loading="lazy">
+                <div class="grid gap-4 sm:gap-5 lg:hidden">
+                    {% for idx in range(1, 7) %}
+                    {% set img_path = 'img/about-forum/forum%s.png' % idx %}
+                    <figure class="rounded-[16px] overflow-hidden bg-slate-100 shadow-[0_10px_22px_rgba(12,26,71,0.14)]">
+                        <img src="{{ theme(img_path) }}" alt="Forum photo {{ idx }}" class="w-full h-full object-cover" loading="lazy">
                     </figure>
+                    {% endfor %}
+                </div>
 
-                    <!-- 2: row 1, cols 2-3 -->
-                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow-lg
-                     lg:col-start-2 lg:col-span-2 lg:row-start-1 h-[200px] lg:h-auto">
-                        <img src="{{ theme('img/about-forum/forum2.png') }}" alt="" class="w-full h-full object-cover"
-                            loading="lazy">
+                <div class="hidden lg:grid gap-6" style="grid-template-columns: 380px 380px 380px; grid-template-rows: 280px 280px; grid-auto-flow: dense;">
+                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow-[0_18px_36px_rgba(12,26,71,0.18)] row-span-2">
+                        <img src="{{ theme('img/about-forum/forum1.png') }}" alt="Forum photo 1" class="w-full h-full object-cover" loading="lazy">
                     </figure>
-
-                    <!-- 3: row 2, col 2 -->
-                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow
-                     lg:col-start-2 lg:row-start-2 h-[200px] lg:h-auto">
-                        <img src="{{ theme('img/about-forum/forum3.png') }}" alt="" class="w-full h-full object-cover"
-                            loading="lazy">
+                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow-[0_18px_36px_rgba(12,26,71,0.18)] col-span-2">
+                        <img src="{{ theme('img/about-forum/forum2.png') }}" alt="Forum photo 2" class="w-full h-full object-cover" loading="lazy">
                     </figure>
-
-                    <!-- 4: col 3, rows 2-3 -->
-                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow-lg
-                     lg:col-start-3 lg:row-start-2 lg:row-span-2 h-[300px] lg:h-auto">
-                        <img src="{{ theme('img/about-forum/forum4.png') }}" alt="" class="w-full h-full object-cover"
-                            loading="lazy">
+                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow-[0_12px_28px_rgba(12,26,71,0.15)]">
+                        <img src="{{ theme('img/about-forum/forum3.png') }}" alt="Forum photo 3" class="w-full h-full object-cover" loading="lazy">
                     </figure>
-
-                    <!-- 5: row 3, col 1 -->
-                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow
-                     lg:col-start-1 lg:row-start-3 h-[200px] lg:h-auto">
-                        <img src="{{ theme('img/about-forum/forum5.png') }}" alt="" class="w-full h-full object-cover"
-                            loading="lazy">
+                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow-[0_18px_36px_rgba(12,26,71,0.18)] row-span-2">
+                        <img src="{{ theme('img/about-forum/forum4.png') }}" alt="Forum photo 4" class="w-full h-full object-cover" loading="lazy">
                     </figure>
-
-                    <!-- 6: row 3, col 2 -->
-                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow
-                     lg:col-start-2 lg:row-start-3 h-[200px] lg:h-auto">
-                        <img src="{{ theme('img/about-forum/forum6.png') }}" alt="" class="w-full h-full object-cover"
-                            loading="lazy">
+                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow-[0_12px_28px_rgba(12,26,71,0.15)]">
+                        <img src="{{ theme('img/about-forum/forum5.png') }}" alt="Forum photo 5" class="w-full h-full object-cover" loading="lazy">
+                    </figure>
+                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow-[0_12px_28px_rgba(12,26,71,0.15)]">
+                        <img src="{{ theme('img/about-forum/forum6.png') }}" alt="Forum photo 6" class="w-full h-full object-cover" loading="lazy">
                     </figure>
                 </div>
             </div>
         </section>
-
     </div>
 </main>
 {% endblock %}

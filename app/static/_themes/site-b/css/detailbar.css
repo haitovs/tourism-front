@@ -380,23 +380,35 @@
 
 @media (max-width: 920px) {
     :root {
-        --sb-nav-gap: 14px;
+        --sb-nav-gap: 12px;
         --sb-nav-font-size: 15.5px;
     }
     .sb-user {
         display: none;
     }
-    .sb-nav {
-        flex-wrap: wrap;
+    .sb-navWrap {
         justify-content: flex-start;
-        row-gap: 10px;
+        overflow-x: auto;
+        padding: 0 4px;
+    }
+    .sb-nav {
+        flex-wrap: nowrap;
+        gap: 12px;
     }
     .sb-nav > li {
-        flex: 1 1 calc(50% - 14px);
+        flex: 0 0 auto;
+    }
+    .sb-nav > li > a,
+    .sb-nav-btn {
+        padding: 8px 12px;
+        font-size: 15px;
     }
 }
 
 @media (max-width: 760px) {
+    :root {
+        --header-h: 64px;
+    }
     .sb-right {
         gap: 10px;
     }
@@ -407,25 +419,31 @@
     .sb-lang-code {
         font-size: 16px;
     }
-    .sb-nav > li {
-        flex: 1 1 48%;
+    .sb-navWrap {
+        padding: 0 2px;
+    }
+    .sb-nav {
+        gap: 10px;
+    }
+    .sb-nav > li > a,
+    .sb-nav-btn {
+        padding: 6px 10px;
+        font-size: 14.5px;
     }
 }
 
 @media (max-width: 640px) {
-    :root {
-        --header-h: 68px;
+    .sb-navWrap {
+        overflow-x: auto;
+        gap: 6px;
     }
     .sb-nav {
-        gap: 12px;
-    }
-    .sb-nav > li {
-        flex: 1 1 100%;
+        gap: 8px;
     }
     .sb-nav > li > a,
     .sb-nav-btn {
-        width: 100%;
-        justify-content: space-between;
+        padding: 6px 9px;
+        font-size: 14px;
     }
     .sb-right {
         justify-content: flex-end;
@@ -460,4 +478,10 @@
 
 .sb-dd {
     z-index: 2147483647 !important;
+}
+
+/* Hero offset so header stays translucent over imagery */
+.sb-page-hero {
+    margin-top: calc(-1 * var(--header-h));
+    padding-top: var(--header-h);
 }

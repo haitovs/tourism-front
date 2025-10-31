@@ -221,11 +221,7 @@
                                     loading="lazy" />
                                 {% endif %}
                                 {% set tier_key = (top_sponsor.tier or 'gold')|lower %}
-                                <div
-                                    class="mt-2 font-['Roboto'] font-semibold text-[15px]
-      {% if tier_key == 'gold' %}text-[#DDAC17]{% elif tier_key == 'silver' %}text-[#9CA3AF]{% elif tier_key == 'bronze' %}text-[#915D2D]{% else %}text-[#1E1E1E]{% endif %}">
-                                    {{ t('sponsor.tier.' ~ tier_key) }}
-                                </div>
+
                             </div>
                         </div>
                         {% endif %}
@@ -279,12 +275,7 @@
                                     class="w-[160px] h-[95px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
                                     loading="lazy" />
                                 {% endif %}
-                                {% set tier_key = (top_sponsor.tier or 'gold')|lower %}
-                                <div
-                                    class="mt-2 font-['Roboto'] font-semibold text-[15px]
-      {% if tier_key == 'gold' %}text-[#DDAC17]{% elif tier_key == 'silver' %}text-[#9CA3AF]{% elif tier_key == 'bronze' %}text-[#915D2D]{% else %}text-[#1E1E1E]{% endif %}">
-                                    {{ t('sponsor.tier.' ~ tier_key) }}
-                                </div>
+
                             </div>
                         </div>
                         {% endif %}
