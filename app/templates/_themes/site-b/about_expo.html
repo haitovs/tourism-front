@@ -1,10 +1,32 @@
 {% extends "base.html" %}
 {% from "_themes/site-b/_hero_macros.html" import hero_buttons %}
 {% block content %}
+
+<script>
+    // Alpine helper for endless, smooth-rotating collage
+    function sitebGallery({ base, items }) {
+        return {
+            base, items,
+            i: 0, // current offset
+            n() { return this.items.length; },
+            idx(offset) {
+                const n = this.n();
+                return ((this.i + offset) % n + n) % n; // safe modulo
+            },
+            // Dynamic getters
+            at(offset) { return this.items[this.idx(offset)]; },
+            src(offset) { return this.base + this.at(offset).src; },
+            title(offset) { return this.at(offset).title; },
+            desc(offset) { return this.at(offset).desc; },
+            // Controls
+            next() { this.i = this.idx(1); },
+            prev() { this.i = this.idx(-1); }
+        }
+    }
+</script>
 <main>
     <section class="relative w-full h-[320px] md:h-[380px]">
-        <img src="{{ theme('img/hero-bg.png') }}" alt=""
-            class="absolute inset-0 w-full h-full object-cover" />
+        <img src="{{ theme('img/hero-bg.png') }}" alt="" class="absolute inset-0 w-full h-full object-cover" />
         <div class="absolute inset-0" style="background: var(--site-primary-overlay);"></div>
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
             <h1
@@ -22,7 +44,7 @@
 
     <section class="max-w-[var(--container)] mx-auto px-4 py-8 md:py-10">
         <div class="bg-white rounded-[16px] md:rounded-[24px] p-4 sm:p-5 md:p-8 shadow-sm mx-auto max-w-[1450px]">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
                 <div class="lg:col-span-6">
                     <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
                         <div class="aspect-[4/3] rounded-[12px] overflow-hidden bg-slate-100">
@@ -69,28 +91,28 @@
                     </p>
                     <ul class="mt-4 md:mt-5 space-y-2.5 sm:space-y-3">
                         <li class="flex items-start gap-2.5 sm:gap-3">
-                            <img src="/static/img/about-expo/about_expo_checkbox.svg" alt=""
+                            <img src="{{ theme('img/about-expo/checkbox.svg') }}" alt=""
                                 class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 shrink-0" />
                             <span
                                 class="font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[24px] leading-[1.6] text-black/70">{{
                                 t('about_expo.intro.bullets.0') }}</span>
                         </li>
                         <li class="flex items-start gap-2.5 sm:gap-3">
-                            <img src="/static/img/about-expo/about_expo_checkbox.svg" alt=""
+                            <img src="{{ theme('img/about-expo/checkbox.svg') }}" alt=""
                                 class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 shrink-0" />
                             <span
                                 class="font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[24px] leading-[1.6] text-black/70">{{
                                 t('about_expo.intro.bullets.1') }}</span>
                         </li>
                         <li class="flex items-start gap-2.5 sm:gap-3">
-                            <img src="/static/img/about-expo/about_expo_checkbox.svg" alt=""
+                            <img src="{{ theme('img/about-expo/checkbox.svg') }}" alt=""
                                 class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 shrink-0" />
                             <span
                                 class="font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[24px] leading-[1.6] text-black/70">{{
                                 t('about_expo.intro.bullets.2') }}</span>
                         </li>
                         <li class="flex items-start gap-2.5 sm:gap-3">
-                            <img src="/static/img/about-expo/about_expo_checkbox.svg" alt=""
+                            <img src="{{ theme('img/about-expo/checkbox.svg') }}" alt=""
                                 class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 shrink-0" />
                             <span
                                 class="font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[24px] leading-[1.6] text-black/70">{{
@@ -159,144 +181,240 @@
             </h2>
 
             <div class="mx-auto max-w-[min(92vw,1190px)] mt-4 md:mt-6 space-y-4">
-                <!-- Total space -->
+                <!-- Row 1 -->
                 <div class="grid items-start gap-x-4 md:gap-x-8
-                  grid-cols-[minmax(150px,180px)_1fr]
-                  md:grid-cols-[minmax(220px,400px)_1fr]">
+              grid-cols-[minmax(150px,180px)_1fr]
+              md:grid-cols-[minmax(220px,400px)_1fr]">
                     <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
-                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_expo.numbers.total_space') }}
+                text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('siteb.title_1_header') }}
                     </div>
                     <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
-                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_expo.numbers.total_space_value') }}
+                text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('siteb.title_1_content') }}
                     </div>
                     <div class="col-span-2 mt-3 h-px bg-black/20"></div>
                 </div>
 
-                <!-- Sectors (single text line) -->
+                <!-- Row 2 -->
                 <div class="grid items-start gap-x-4 md:gap-x-8
-                  grid-cols-[minmax(150px,180px)_1fr]
-                  md:grid-cols-[minmax(220px,400px)_1fr]">
+              grid-cols-[minmax(150px,180px)_1fr]
+              md:grid-cols-[minmax(220px,400px)_1fr]">
                     <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
-                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_expo.numbers.sectors_2026') }}
+                text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('siteb.title_2_header') }}
                     </div>
                     <p class="font-['Roboto'] text-black/70 text-left leading-[1.6]
-                  text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_expo.numbers.sector_list') }}
+               text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('siteb.title_2_content') }}
                     </p>
                     <div class="col-span-2 mt-3 h-px bg-black/20"></div>
                 </div>
 
-                <!-- Expected attendance -->
+                <!-- Row 3 -->
                 <div class="grid items-start gap-x-4 md:gap-x-8
-                  grid-cols-[minmax(150px,180px)_1fr]
-                  md:grid-cols-[minmax(220px,400px)_1fr]">
+              grid-cols-[minmax(150px,180px)_1fr]
+              md:grid-cols-[minmax(220px,400px)_1fr]">
                     <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
-                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_expo.numbers.expected_attendance') }}
+                text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('siteb.title_3_header') }}
                     </div>
                     <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
-                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_expo.numbers.expected_attendance_value') }}
+                text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('siteb.title_3_content') }}
                     </div>
                     <div class="col-span-2 mt-3 h-px bg-black/20"></div>
                 </div>
 
-                <!-- Exhibiting companies -->
+                <!-- Row 4 -->
                 <div class="grid items-start gap-x-4 md:gap-x-8
-                  grid-cols-[minmax(150px,180px)_1fr]
-                  md:grid-cols-[minmax(220px,400px)_1fr]">
+              grid-cols-[minmax(150px,180px)_1fr]
+              md:grid-cols-[minmax(220px,400px)_1fr]">
                     <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
-                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_expo.numbers.exhibiting_companies') }}
+                text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('siteb.title_4_header') }}
                     </div>
                     <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
-                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_expo.numbers.exhibiting_companies_value') }}
+                text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
+                        {{ t('siteb.title_4_content') }}
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <section class="relative w-full">
-        <div class="relative h-[420px] sm:h-[456px] w-full">
-            <img src="/static/img/about-expo/abouttheexpo-stats.png" alt=""
-                class="absolute inset-0 w-full h-full object-cover" />
-            <div class="absolute inset-0" style="background: var(--site-primary-overlay);"></div>
-
-            <div class="relative z-[1] max-w-[var(--container)] mx-auto h-full px-4">
-                <!-- 2 columns up to 2xl; 4 columns (one row) at 2xl -->
-                <div class="h-full grid grid-cols-2 place-items-center gap-x-8 gap-y-8 sm:gap-y-10
-           xl:grid-cols-4 xl:gap-x-16 xl:gap-y-10">
-
-                    <!-- Visitors -->
-                    <div class="min-w-0 inline-flex items-center justify-center gap-2 sm:gap-3">
-                        <div class="font-['Roboto'] font-medium text-white tabular-nums
-                  text-[clamp(32px,8vw,70px)] leading-[1.1]">
-                            453
-                        </div>
-                        <div class="min-w-0 font-['Roboto'] font-bold text-[#F4F4F2]
-                  text-[clamp(14px,3.2vw,30px)] leading-tight text-center
-                  max-w-[150px] sm:max-w-[180px] lg:max-w-[220px] xl:max-w-[240px]
-                  2xl:text-left line-clamp-2">
-                            {{ t('about_expo.stats.visitors') }}
-                        </div>
-                    </div>
-
-                    <!-- Countries -->
-                    <div class="min-w-0 inline-flex items-center justify-center gap-2 sm:gap-3">
-                        <div class="font-['Roboto'] font-medium text-white tabular-nums
-                  text-[clamp(32px,8vw,70px)] leading-[1.1]">
-                            18
-                        </div>
-                        <div class="min-w-0 font-['Roboto'] font-bold text-[#F4F4F2]
-                  text-[clamp(14px,3.2vw,30px)] leading-tight text-center
-                  max-w-[150px] sm:max-w-[180px] lg:max-w-[220px] xl:max-w-[240px]
-                  2xl:text-left line-clamp-2">
-                            {{ t('about_expo.stats.countries') }}
-                        </div>
-                    </div>
-
-                    <!-- Companies -->
-                    <div class="min-w-0 inline-flex items-center justify-center gap-2 sm:gap-3">
-                        <div class="font-['Roboto'] font-medium text-white tabular-nums
-                  text-[clamp(32px,8vw,70px)] leading-[1.1]">
-                            150
-                        </div>
-                        <div class="min-w-0 font-['Roboto'] font-bold text-[#F4F4F2]
-                  text-[clamp(14px,3.2vw,30px)] leading-tight text-center
-                  max-w-[150px] sm:max-w-[180px] lg:max-w-[220px] xl:max-w-[240px]
-                  2xl:text-left line-clamp-2">
-                            {{ t('about_expo.stats.companies') }}
-                        </div>
-                    </div>
-
-                    <!-- Areas -->
-                    <div class="min-w-0 inline-flex items-center justify-center gap-2 sm:gap-3">
-                        <div class="font-['Roboto'] font-medium text-white tabular-nums
-                  text-[clamp(32px,8vw,70px)] leading-[1.1]">
-                            65
-                        </div>
-                        <div class="min-w-0 font-['Roboto'] font-bold text-[#F4F4F2]
-                  text-[clamp(14px,3.2vw,30px)] leading-tight text-center
-                  max-w-[150px] sm:max-w-[180px] lg:max-w-[220px] xl:max-w-[240px]
-                  2xl:text-left line-clamp-2">
-                            {{ t('about_expo.stats.areas') }}
-                        </div>
-                    </div>
-
                 </div>
             </div>
 
         </div>
     </section>
 
+    <section class="mx-auto w-full max-w-[var(--container)] px-4 py-8 md:py-10" x-data="sitebGallery({
+           base: '{{ theme('img/about-expo/gallery/') }}',
+           items: [
+             { src: 'ashgabat-city.jpg', title: 'Ashgabat City', desc: 'Marble cityscapes, grand monuments, and wide boulevards in the Turkmen capital.' },
+             { src: 'ashgabat.jpg',       title: 'Ashgabat',      desc: 'Modern architecture meets tradition across the city’s striking skyline.' },
+             { src: 'ashgabat2.jpg',      title: 'Ashgabat',      desc: 'Golden domes, white marble, and immaculate public spaces.' },
+             { src: 'darwaza.jpg',        title: 'Darvaza Gas Crater', desc: 'The Door to Hell — a dramatic burning crater in the Karakum Desert.' },
+             { src: 'gonurdepe.jpg',      title: 'Gonur Depe',    desc: 'Ancient Bronze Age city of Margiana with archaeological riches.' },
+             { src: 'koneurgench.jpg',    title: 'Köneürgenç',    desc: 'UNESCO World Heritage site with medieval monuments and minarets.' },
+             { src: 'koytendag.jpg',      title: 'Köýtendag',     desc: 'Canyons, caves, and dinosaur footprints in a wild mountain region.' },
+             { src: 'merw.jpg',           title: 'Merv (Ancient Merv)', desc: 'Once one of the world’s largest cities on the Silk Road.' },
+             { src: 'merw2.webp',         title: 'Merv (Ancient Merv)', desc: 'Ruins and fortifications stretching across the desert plain.' },
+             { src: 'nohur.jpg',          title: 'Nohur',         desc: 'Mountain village life and serene, rugged landscapes.' },
+             { src: 'nusay.jpg',          title: 'Nisa (Nusay)',  desc: 'Parthian royal fortress and ceremonial complex near Ashgabat.' },
+             { src: 'nusay2.jpg',         title: 'Nisa (Nusay)',  desc: 'Mud-brick walls and archaeological remains of Parthian history.' },
+             { src: 'yangykala.jpg',      title: 'Yangykala Canyon', desc: 'Flaming cliffs and layered canyons glowing at sunset.' },
+             { src: 'yangykala2.jpg',     title: 'Yangykala Canyon', desc: 'Vast amphitheaters of rock strata in vivid colors.' }
+           ]
+         })">
 
+        <div
+            class="relative mx-auto w-full max-w-[1450px] rounded-[20px] border border-[#E2E8F0] shadow-sm p-4 sm:p-6 md:p-8 lg:p-10">
+            <div class="relative mx-auto w-full max-w-[1380px]" style="filter: drop-shadow(0 4px 4px rgba(0,0,0,.25));">
 
+                <!-- LG+: 3 cols (444 | 405 | 405), 2 rows (315 | 315) -->
+                <div class="grid gap-4 md:gap-5 lg:gap-6 grid-cols-1 lg:grid-cols-[444px_405px_405px] lg:grid-rows-[315px_315px]
+             w-full mx-auto lg:w-fit">
+
+                    <!-- LEFT: tall (spans 2 rows) -->
+                    <figure class="group relative rounded-[16px] overflow-hidden bg-slate-100 lg:row-span-2 lg:h-[660px] h-[320px]
+                       shadow-[0_16px_32px_rgba(12,26,71,0.18)] transition-transform duration-300
+                       ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform">
+                        <div class="absolute inset-0">
+                            <img :key="src(0)" :src="src(0)" :alt="title(0)" class="absolute inset-0 w-full h-full object-cover transition
+                     group-hover:scale-[1.02] group-hover:brightness-95
+                     duration-500 ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform"
+                                x-transition:enter="transition-opacity duration-400 ease-out"
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                                x-transition:leave="transition-opacity duration-400 ease-out"
+                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                                loading="lazy" />
+                        </div>
+
+                        <!-- Auto-height caption with blur -->
+                        <figcaption class="absolute inset-x-4 bottom-4">
+                            <div class="inline-block max-w-[95%] rounded-md bg-black/55 backdrop-blur-sm px-3 py-2 text-[#F0F0F0]
+                        transition-all duration-300 ease-[cubic-bezier(.22,.61,.36,1)]
+                        will-change-transform group-hover:-translate-y-0.5">
+                                <div
+                                    class="font-['Poppins'] font-semibold text-[18px] sm:text-[20px] lg:text-[24px] leading-6 sm:leading-7">
+                                    <span x-text="title(0)"></span>
+                                </div>
+                                <p
+                                    class="mt-1.5 font-['Lato'] font-semibold text-[12px] sm:text-[13px] lg:text-[16px] leading-[1.2]">
+                                    <span x-text="desc(0)"></span>
+                                </p>
+                            </div>
+                        </figcaption>
+                    </figure>
+
+                    <!-- TOP-RIGHT: col 2 -->
+                    <figure class="group relative rounded-[16px] overflow-hidden bg-slate-100 h-[220px] lg:h-[315px]
+                       shadow-[0_12px_28px_rgba(12,26,71,0.15)] transition-transform duration-300
+                       ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform">
+                        <div class="absolute inset-0">
+                            <img :key="src(1)" :src="src(1)" :alt="title(1)" class="absolute inset-0 w-full h-full object-cover transition
+                     group-hover:scale-[1.02] group-hover:brightness-95
+                     duration-500 ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform"
+                                x-transition:enter="transition-opacity duration-400 ease-out"
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                                x-transition:leave="transition-opacity duration-400 ease-out"
+                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                                loading="lazy" />
+                        </div>
+
+                        <figcaption class="absolute inset-x-3 sm:inset-x-4 bottom-3 sm:bottom-4">
+                            <div class="inline-block max-w-[95%] rounded-md bg-black/55 backdrop-blur-sm px-3 py-2 text-[#F0F0F0]
+                        transition-all duration-300 ease-[cubic-bezier(.22,.61,.36,1)]
+                        will-change-transform group-hover:-translate-y-0.5">
+                                <div
+                                    class="font-['Poppins'] font-semibold text-[16px] sm:text-[18px] lg:text-[20px] leading-6">
+                                    <span x-text="title(1)"></span>
+                                </div>
+                                <p
+                                    class="mt-1 font-['Lato'] font-semibold text-[12px] sm:text-[13px] lg:text-[14px] leading-[1.2]">
+                                    <span x-text="desc(1)"></span>
+                                </p>
+                            </div>
+                        </figcaption>
+                    </figure>
+
+                    <!-- TOP-RIGHT: col 3 -->
+                    <figure class="group relative rounded-[16px] overflow-hidden bg-slate-100 h-[220px] lg:h-[315px]
+                       shadow-[0_12px_28px_rgba(12,26,71,0.15)] transition-transform duration-300
+                       ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform">
+                        <div class="absolute inset-0">
+                            <img :key="src(2)" :src="src(2)" :alt="title(2)" class="absolute inset-0 w-full h-full object-cover transition
+                     group-hover:scale-[1.02] group-hover:brightness-95
+                     duration-500 ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform"
+                                x-transition:enter="transition-opacity duration-400 ease-out"
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                                x-transition:leave="transition-opacity duration-400 ease-out"
+                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                                loading="lazy" />
+                        </div>
+
+                        <figcaption class="absolute inset-x-3 sm:inset-x-4 bottom-3 sm:bottom-4">
+                            <div class="inline-block max-w-[95%] rounded-md bg-black/55 backdrop-blur-sm px-3 py-2 text-[#F0F0F0]
+                        transition-all duration-300 ease-[cubic-bezier(.22,.61,.36,1)]
+                        will-change-transform group-hover:-translate-y-0.5">
+                                <div
+                                    class="font-['Poppins'] font-semibold text-[16px] sm:text-[18px] lg:text-[20px] leading-6">
+                                    <span x-text="title(2)"></span>
+                                </div>
+                                <p
+                                    class="mt-1 font-['Lato'] font-semibold text-[12px] sm:text-[13px] lg:text-[14px] leading-[1.2]">
+                                    <span x-text="desc(2)"></span>
+                                </p>
+                            </div>
+                        </figcaption>
+                    </figure>
+
+                    <!-- BOTTOM-RIGHT: wide (spans 2 cols) -->
+                    <figure class="group relative rounded-[16px] overflow-hidden bg-slate-100 h-[240px] sm:h-[280px] lg:h-[315px] lg:col-span-2
+                       shadow-[0_12px_28px_rgba(12,26,71,0.15)] transition-transform duration-300
+                       ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform">
+                        <div class="absolute inset-0">
+                            <img :key="src(3)" :src="src(3)" :alt="title(3)" class="absolute inset-0 w-full h-full object-cover transition
+                     group-hover:scale-[1.02] group-hover:brightness-95
+                     duration-500 ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform"
+                                x-transition:enter="transition-opacity duration-400 ease-out"
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                                x-transition:leave="transition-opacity duration-400 ease-out"
+                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                                loading="lazy" />
+                        </div>
+
+                        <figcaption
+                            class="absolute inset-x-3 sm:inset-x-4 bottom-3 sm:bottom-4 text-center lg:text-left">
+                            <div class="inline-block max-w-[95%] rounded-md bg-black/55 backdrop-blur-sm px-3 py-2 text-[#F0F0F0]
+                        transition-all duration-300 ease-[cubic-bezier(.22,.61,.36,1)]
+                        will-change-transform group-hover:-translate-y-0.5">
+                                <div
+                                    class="font-['Poppins'] font-semibold text-[16px] sm:text-[18px] lg:text-[24px] leading-6 lg:leading-8">
+                                    <span x-text="title(3)"></span>
+                                </div>
+                                <p
+                                    class="mt-1 lg:mt-1.5 font-['Lato'] font-semibold text-[12px] sm:text-[13px] lg:text-[16px] leading-[1.2]">
+                                    <span x-text="desc(3)"></span>
+                                </p>
+                            </div>
+                        </figcaption>
+                    </figure>
+                </div>
+
+                <!-- Prev / Next (subtle hover) -->
+                <button type="button" @click="prev()" class="hidden lg:flex absolute left-[-28px] top-1/2 -translate-y-1/2 h-12 w-8 items-center justify-center
+                     rounded-md border border-[#20306C] text-[#20306C] bg-white
+                     transition-all duration-200 ease-out hover:bg-black/5 hover:shadow-sm active:scale-95"
+                    aria-label="Previous">
+                    ‹
+                </button>
+                <button type="button" @click="next()" class="hidden lg:flex absolute right-[-28px] top-1/2 -translate-y-1/2 h-12 w-8 items-center justify-center
+                     rounded-md border border-[#20306C] text-[#20306C] bg-white
+                     transition-all duration-200 ease-out hover:bg-black/5 hover:shadow-sm active:scale-95"
+                    aria-label="Next">
+                    ›
+                </button>
+            </div>
+        </div>
+    </section>
 
 
     <section class="max-w-[var(--container)] mx-auto px-4 py-10">
