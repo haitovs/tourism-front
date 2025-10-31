@@ -4,13 +4,11 @@
 <main>
     <!-- HERO -->
     <section class="relative w-full h-[320px] md:h-[380px]">
-        <img src="{{ theme('img/hero-bg.png') }}" alt=""
-            class="absolute inset-0 w-full h-full object-cover" />
+        <img src="{{ theme('img/hero-bg.png') }}" alt="" class="absolute inset-0 w-full h-full object-cover" />
         <div class="absolute inset-0" style="background: var(--site-primary-overlay);"></div>
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
-            <h1 class="font-['Montserrat'] font-bold text-white
-               text-[clamp(30px,5vw,60px)] lg:text-[clamp(44px,3.6vw,72px)]
-               leading-[1.15]">
+            <h1
+                class="font-['Montserrat'] font-bold text-white text-[clamp(30px,5vw,60px)] lg:text-[clamp(44px,3.6vw,72px)] leading-[1.15]">
                 {{ t('about_forum.hero.title') }}
             </h1>
             <p class="mt-2 font-['Roboto'] text-white/90 text-[clamp(16px,2.4vw,20px)]">
@@ -25,238 +23,100 @@
         ) }}
     </section>
 
-    <!-- FRAME 49 (Card 1) -->
-    <section class="max-w-[var(--container)] mx-auto px-4 py-8 md:py-10">
-        <div class="bg-white rounded-[16px] md:rounded-[20px] p-4 sm:p-5 md:p-8 shadow-sm mx-auto max-w-[1450px]">
-            <!-- Title -->
-            <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E]
-               text-[clamp(22px,5vw,28px)]
-               md:text-[clamp(30px,3.6vw,54px)]
-               lg:text-[clamp(36px,2.8vw,60px)]
-               leading-[1.22]">
-                {{ t('about_forum.intro.title') }}
-            </h2>
-
-            <!-- Text -->
-            <div class="mt-3 md:mt-6 space-y-4 md:space-y-6">
-                <p class="font-['Roboto',ui-sans-serif]
-                text-[15px] sm:text-[16px] md:text-[18px] lg:text-[21px] xl:text-[22px]
-                leading-[1.65] text-[#1E1E1E]">
-                    {{ t('about_forum.intro.p1') }}
-                </p>
-
-                <!-- mobile/touch: 2-col rounded tiles -->
-                <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
-                    <div class="aspect-[4/3] rounded-[12px] overflow-hidden bg-slate-100">
-                        <img src="/static/img/about-forum/abouttheforum1.png" alt=""
-                            class="w-full h-full object-cover" />
-                    </div>
-                    <div class="aspect-[4/3] rounded-[12px] overflow-hidden bg-slate-100">
-                        <img src="/static/img/about-forum/abouttheforum2.png" alt=""
-                            class="w-full h-full object-cover" />
-                    </div>
-                </div>
-
-                <p class="font-['Roboto',ui-sans-serif]
-                text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] leading-[1.6] text-[#1E1E1E]">
-                    {{ t('about_forum.intro.p2') }}
-                </p>
-
-                <!-- second pair of tiles -->
-                <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
-                    <div class="aspect-[4/3] rounded-[12px] overflow-hidden bg-slate-100">
-                        <img src="/static/img/about-forum/abouttheforum3.png" alt=""
-                            class="w-full h-full object-cover" />
-                    </div>
-                    <div class="aspect-[4/3] rounded-[12px] overflow-hidden bg-slate-100">
-                        <img src="/static/img/about-forum/abouttheforum4.png" alt=""
-                            class="w-full h-full object-cover" />
-                    </div>
-                </div>
-
-                <p class="font-['Roboto',ui-sans-serif]
-                text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] leading-[1.6] text-[#1E1E1E]">
-                    {{ t('about_forum.intro.p3') }}
-                </p>
-            </div>
-
-            <!-- Divider -->
-            <div class="mt-4 md:mt-6 h-px w-full bg-[#20306C] opacity-60"></div>
-
-            <!-- Desktop mosaic (lg+) -->
-            <div class="mt-6 hidden lg:block">
-                <div class="mx-auto w-[min(92vw,1200px)] h-[clamp(380px,38vw,520px)]
-                  grid grid-cols-5 grid-rows-5 gap-4">
-                    <figure
-                        class="col-start-1 col-span-2 row-start-1 row-span-5 rounded-xl overflow-hidden bg-slate-100">
-                        <img src="/static/img/about-forum/abouttheforum1.png" alt=""
-                            class="block w-full h-full object-cover" />
-                    </figure>
-                    <figure
-                        class="col-start-3 col-span-1 row-start-1 row-span-2 rounded-xl overflow-hidden bg-slate-100">
-                        <img src="/static/img/about-forum/abouttheforum2.png" alt=""
-                            class="block w-full h-full object-cover" />
-                    </figure>
-                    <figure
-                        class="col-start-4 col-span-2 row-start-1 row-span-2 rounded-xl overflow-hidden bg-slate-100">
-                        <img src="/static/img/about-forum/abouttheforum3.png" alt=""
-                            class="block w-full h-full object-cover" />
-                    </figure>
-                    <figure
-                        class="col-start-3 col-span-3 row-start-3 row-span-3 rounded-xl overflow-hidden bg-slate-100">
-                        <img src="/static/img/about-forum/abouttheforum4.png" alt=""
-                            class="block w-full h-full object-cover" />
-                    </figure>
+    <div
+        class="relative z-[1] max-w-[1310px] mx-auto bg-white rounded-[24px] shadow-[0_22px_50px_rgba(18,30,70,0.12)] mt-12 mb-16 px-6 sm:px-8 md:px-10 lg:px-12 py-10 space-y-12">
+        <section class="py-6 md:py-10">
+            <div class="rounded-[20px] border border-[#E2E8F0] shadow-sm p-6 sm:p-8 md:p-10">
+                <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E] text-[clamp(24px,4vw,40px)] leading-[1.2]">
+                    International Forum 2026
+                </h2>
+                <div
+                    class="mt-6 space-y-5 font-['Roboto'] text-[16px] sm:text-[17px] md:text-[18px] leading-[1.7] text-[#1E1E1E]">
+                    <p>
+                        We are pleased to welcome you to the 30th International Conference and Exhibition "Oil and Gas
+                        of
+                        Turkmenistan - 2025" (OGT 2025), which brings together leading national and international oil
+                        and gas
+                        companies, as well as experts and financial institutions that shape the future of the oil and
+                        gas industry
+                        both nationally and throughout the region.
+                    </p>
+                    <p>
+                        The purpose of the Conference and Exhibition is to strengthen the dialogue on further
+                        sustainable
+                        development of the energy sector, review the latest trends in the global energy system, and
+                        expand
+                        opportunities for attracting foreign direct investment in the oil and gas industry of
+                        Turkmenistan.
+                    </p>
+                    <p>
+                        In an epoch when the world is striving for a large-scale transition to new types of energy,
+                        Turkmenistan is
+                        changing too. The country can offer a wide field of activity for investors: from the development
+                        of one of
+                        the largest onshore gas fields, Galkynysh, to favorable natural and climatic conditions for the
+                        effective
+                        development of solar and wind energy. Turkmenistan’s rich resource potential will be the focus
+                        of OGT 2025,
+                        where leading energy companies of Turkmenistan will provide extensive opportunities for foreign
+                        investors in
+                        this strategically important area.
+                    </p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
+        <section class="pb-6 md:pb-10">
+            <div class="rounded-[20px] border border-[#E2E8F0] shadow-sm p-6 sm:p-8 md:p-10">
+                <!-- Mobile/tablet: simple stack; LG+: 3x3 matrix -->
+                <div class="grid gap-4 sm:gap-5 lg:gap-6 lg:grid-cols-3 lg:grid-rows-3"
+                    style="--rh: 260px; grid-template-rows: repeat(3, var(--rh));">
 
-    <!-- FRAME 50 (Card 2: Why to participate?) -->
-    <section class="max-w-[var(--container)] mx-auto px-4 pb-8 md:pb-10">
-        <div class="bg-white rounded-[16px] md:rounded-[20px] p-4 sm:p-5 md:p-8 shadow-sm mx-auto max-w-[1450px]">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-                <!-- LEFT -->
-                <div class="lg:col-span-7">
-                    <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E]
-                   text-[clamp(18px,5vw,22px)]
-                   md:text-[clamp(28px,3.6vw,48px)]
-                   lg:text-[clamp(34px,2.8vw,56px)]
-                   leading-[1.22]">
-                        {{ t('about_forum.why.title') }}
-                    </h2>
+                    <!-- 1: col 1, rows 1-2 -->
+                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow-lg
+                     lg:col-start-1 lg:row-start-1 lg:row-span-2 h-[300px] lg:h-auto">
+                        <img src="{{ theme('img/about-forum/forum1.png') }}" alt="" class="w-full h-full object-cover"
+                            loading="lazy">
+                    </figure>
 
-                    <!-- Hanging bullets: bullet in padding, wrapped lines align (no extra indent) -->
-                    <ul class="mt-3 md:mt-4 space-y-3 sm:space-y-4 list-none">
-                        <li
-                            class="relative pl-7 font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px] text-black/70 leading-[1.65]
-                     before:content-[''] before:absolute before:left-0 before:top-[0.75em] before:w-2 before:h-2 before:rounded-full before:bg-[#1E1E1E]/60">
-                            {{ t('about_forum.why.points.0') }}
-                        </li>
-                        <li
-                            class="relative pl-7 font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px] text-black/70 leading-[1.65]
-                     before:content-[''] before:absolute before:left-0 before:top-[0.75em] before:w-2 before:h-2 before:rounded-full before:bg-[#1E1E1E]/60">
-                            {{ t('about_forum.why.points.1') }}
-                        </li>
-                        <li
-                            class="relative pl-7 font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px] text-black/70 leading-[1.65]
-                     before:content-[''] before:absolute before:left-0 before:top-[0.75em] before:w-2 before:h-2 before:rounded-full before:bg-[#1E1E1E]/60">
-                            {{ t('about_forum.why.points.2') }}
-                        </li>
-                        <li
-                            class="relative pl-7 font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px] xl:text-[21px] text-black/70 leading-[1.65]
-                     before:content-[''] before:absolute before:left-0 before:top-[0.75em] before:w-2 before:h-2 before:rounded-full before:bg-[#1E1E1E]/60">
-                            {{ t('about_forum.why.points.3') }}
-                        </li>
-                    </ul>
-                </div>
+                    <!-- 2: row 1, cols 2-3 -->
+                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow-lg
+                     lg:col-start-2 lg:col-span-2 lg:row-start-1 h-[200px] lg:h-auto">
+                        <img src="{{ theme('img/about-forum/forum2.png') }}" alt="" class="w-full h-full object-cover"
+                            loading="lazy">
+                    </figure>
 
-                <!-- RIGHT -->
-                <div class="lg:col-span-5 lg:flex lg:items-stretch">
-                    <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
-                        <div class="aspect-[4/3] rounded-[12px] overflow-hidden bg-slate-100">
-                            <img src="/static/img/about-forum/abouttheforum5.png" alt=""
-                                class="w-full h-full object-cover" />
-                        </div>
-                        <div class="aspect-[4/3] rounded-[12px] overflow-hidden bg-slate-100">
-                            <img src="/static/img/about-forum/abouttheforum6.png" alt=""
-                                class="w-full h-full object-cover" />
-                        </div>
-                    </div>
+                    <!-- 3: row 2, col 2 -->
+                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow
+                     lg:col-start-2 lg:row-start-2 h-[200px] lg:h-auto">
+                        <img src="{{ theme('img/about-forum/forum3.png') }}" alt="" class="w-full h-full object-cover"
+                            loading="lazy">
+                    </figure>
 
-                    <div class="hidden lg:block lg:flex-1">
-                        <div class="relative mx-auto w-[clamp(360px,34vw,460px)] min-h-[580px] lg:h-full">
-                            <img src="/static/img/about-forum/abouttheforum5.png" alt=""
-                                class="absolute top-0 right-0 w-[68%] h-[62%] object-cover rounded-[10px]" />
-                            <img src="/static/img/about-forum/abouttheforum6.png" alt=""
-                                class="absolute bottom-0 left-0 w-[60%] h-[58%] object-cover rounded-[10px]" />
-                        </div>
-                    </div>
+                    <!-- 4: col 3, rows 2-3 -->
+                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow-lg
+                     lg:col-start-3 lg:row-start-2 lg:row-span-2 h-[300px] lg:h-auto">
+                        <img src="{{ theme('img/about-forum/forum4.png') }}" alt="" class="w-full h-full object-cover"
+                            loading="lazy">
+                    </figure>
+
+                    <!-- 5: row 3, col 1 -->
+                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow
+                     lg:col-start-1 lg:row-start-3 h-[200px] lg:h-auto">
+                        <img src="{{ theme('img/about-forum/forum5.png') }}" alt="" class="w-full h-full object-cover"
+                            loading="lazy">
+                    </figure>
+
+                    <!-- 6: row 3, col 2 -->
+                    <figure class="rounded-[18px] overflow-hidden bg-slate-100 shadow
+                     lg:col-start-2 lg:row-start-3 h-[200px] lg:h-auto">
+                        <img src="{{ theme('img/about-forum/forum6.png') }}" alt="" class="w-full h-full object-cover"
+                            loading="lazy">
+                    </figure>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-
-
-
-    <!-- FRAME 51 (By the Numbers + Expo sectors 2026) -->
-    <section class="max-w-[var(--container)] mx-auto px-4 pb-10">
-        <div class="bg-white rounded-[16px] md:rounded-[20px] p-4 sm:p-5 md:p-8 shadow-sm mx-auto max-w-[1450px]">
-            <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E]
-               text-[clamp(20px,4.2vw,26px)]
-               md:text-[42px] lg:text-[52px] xl:text-[58px]
-               leading-[1.18]">
-                {{ t('about_forum.numbers.title') }}
-            </h2>
-
-            <div class="mx-auto max-w-[min(92vw,1190px)] mt-4 md:mt-6 space-y-4">
-
-                <!-- Row 1 -->
-                <div class="grid items-start gap-x-4 md:gap-x-8
-                  grid-cols-[minmax(150px,180px)_1fr]
-                  md:grid-cols-[minmax(220px,400px)_1fr]">
-                    <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
-                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_forum.numbers.total_space') }}
-                    </div>
-                    <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
-     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_forum.numbers.total_space_value') }}
-                    </div>
-
-                    <div class="col-span-2 mt-3 h-px bg-black/20"></div>
-                </div>
-
-                <!-- Row 2 -->
-                <div class="grid items-start gap-x-4 md:gap-x-8
-                  grid-cols-[minmax(150px,180px)_1fr]
-                  md:grid-cols-[minmax(220px,400px)_1fr]">
-                    <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
-                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_forum.numbers.sectors_2026') }}
-                    </div>
-                    <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
-                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_forum.numbers.sector_list') }}
-                    </div>
-                    <div class="col-span-2 mt-3 h-px bg-black/20"></div>
-                </div>
-
-                <!-- Row 3 -->
-                <div class="grid items-start gap-x-4 md:gap-x-8
-                  grid-cols-[minmax(150px,180px)_1fr]
-                  md:grid-cols-[minmax(220px,400px)_1fr]">
-                    <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
-                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_forum.numbers.expected_attendance') }}
-                    </div>
-                    <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
-                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_forum.numbers.expected_attendance_value') }}
-
-                    </div>
-                    <div class="col-span-2 mt-3 h-px bg-black/20"></div>
-                </div>
-
-                <!-- Row 4 -->
-                <div class="grid items-start gap-x-4 md:gap-x-8
-                  grid-cols-[minmax(150px,180px)_1fr]
-                  md:grid-cols-[minmax(220px,400px)_1fr]">
-                    <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
-                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_forum.numbers.exhibiting_companies') }}
-
-                    </div>
-                    <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
-                    text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_forum.numbers.exhibiting_companies_value') }}
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
+    </div>
 </main>
 {% endblock %}
