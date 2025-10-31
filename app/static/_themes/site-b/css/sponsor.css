@@ -110,9 +110,12 @@
 /* === Site B · Sponsor card + tier label === */
 .sb-sponsors .sb-card {
     border: 2px solid transparent;
-    /* background: transparent; */
     padding: 0;
     transition: border-color 0.15s ease, transform 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
 }
 .sb-sponsors .sb-card-parent {
     border-radius: 12px;
@@ -122,6 +125,20 @@
 .sb-sponsors .sb-card-parent:hover {
     border-radius: 12px;
     border-color: #20306c;
+}
+
+.sb-card--top {
+    min-height: 180px;
+    padding: 24px 18px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(16, 28, 68, 0.12);
+}
+
+.sb-card--tier {
+    min-height: 150px;
+    padding: 18px 14px;
+    border-radius: 12px;
+    background: #f9f9fb;
 }
 
 .sb-sponsors .sb-tier {

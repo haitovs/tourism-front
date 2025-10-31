@@ -19,9 +19,24 @@ async def get_active_timer(
     client: httpx.AsyncClient = request.app.state.http
 
     # ✅ Auto-detect current site slug from SiteResolverMiddleware
-    resolved = getattr(getattr(request.state, "site", None), "slug", None)
-    if not site and not site_id and resolved:
-        site = resolved
+    resolved_slug = getattr(getattr(request.state, "site", None), "slug", None) or None
+    if not site and site_id is None and resolved_slug:
+        site = resolved_slug
+
+    # Fallback to configured default site (main theme) if nothing resolved
+    if not site and site_id is None:
+        default_site_id = getattr(settings, "FRONT_SITE_ID", None)
+        if default_site_id:
+            try:
+                candidate_id = int(default_site_id)
+                if candidate_id > 0:
+                    site_id = candidate_id
+            except (TypeError, ValueError):
+                site_id = None
+        if site_id is None and not site:
+            default_slug = getattr(settings, "FRONT_SITE_SLUG", None) or None
+            if default_slug:
+                site = default_slug
 
     params = {}
     if site_id is not None:

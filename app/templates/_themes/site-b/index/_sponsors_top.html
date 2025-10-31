@@ -21,17 +21,19 @@
                 <a href="{{ href }}" class="{{ vm.link_interactive_class|default('') }}" target="_blank"
                     rel="noopener noreferrer" aria-label="{{ name }} {{ t('sponsors.common.opens_new_tab') }}">
                     <article
-                        class="sb-card {{ vm.card_base_class|default('') }}{{ vm.card_interactive_suffix|default('') }}">
+                        class="sb-card sb-card--top {{ vm.card_base_class|default('') }}{{ vm.card_interactive_suffix|default('') }}">
                         <img src="{{ logo }}" alt="{{ name if logo else t('sponsors.common.sponsor') }}"
                             title="{{ name }}"
-                            class="mx-auto select-none pointer-events-none object-contain w-[{{ vm.img_w|default(200) }}px] h-[{{ vm.img_h|default(120) }}px]"
+                            class="block mx-auto select-none pointer-events-none object-contain h-auto"
+                            style="max-width: {{ vm.img_w|default(240) }}px; max-height: {{ vm.img_h|default(140) }}px;"
                             draggable="false" />
                     </article>
                 </a>
                 {% else %}
-                <article class="sb-card {{ vm.card_base_class|default('') }}">
+                <article class="sb-card sb-card--top {{ vm.card_base_class|default('') }}">
                     <img src="{{ logo }}" alt="{{ name if logo else t('sponsors.common.sponsor') }}" title="{{ name }}"
-                        class="mx-auto select-none pointer-events-none object-contain w-[{{ vm.img_w|default(200) }}px] h-[{{ vm.img_h|default(120) }}px]"
+                        class="block mx-auto select-none pointer-events-none object-contain h-auto"
+                        style="max-width: {{ vm.img_w|default(240) }}px; max-height: {{ vm.img_h|default(140) }}px;"
                         draggable="false" />
                 </article>
                 {% endif %}
@@ -59,18 +61,20 @@
                         <a href="{{ href }}" class="{{ vm.link_interactive_class|default('') }}" target="_blank"
                             rel="noopener noreferrer" aria-label="{{ name }} {{ t('sponsors.common.opens_new_tab') }}">
                             <article
-                                class="sb-card {{ vm.card_base_class|default('') }}{{ vm.card_interactive_suffix|default('') }}">
+                                class="sb-card sb-card--top {{ vm.card_base_class|default('') }}{{ vm.card_interactive_suffix|default('') }}">
                                 <img src="{{ logo }}" alt="{{ name if logo else t('sponsors.common.sponsor') }}"
                                     title="{{ name }}"
-                                    class="mx-auto select-none pointer-events-none object-contain w-[{{ vm.img_w|default(200) }}px] h-[{{ vm.img_h|default(120) }}px]"
+                                    class="block mx-auto select-none pointer-events-none object-contain h-auto"
+                                    style="max-width: {{ vm.img_w|default(240) }}px; max-height: {{ vm.img_h|default(140) }}px;"
                                     draggable="false" />
                             </article>
                         </a>
                         {% else %}
-                        <article class="sb-card {{ vm.card_base_class|default('') }}">
+                        <article class="sb-card sb-card--top {{ vm.card_base_class|default('') }}">
                             <img src="{{ logo }}" alt="{{ name if logo else t('sponsors.common.sponsor') }}"
                                 title="{{ name }}"
-                                class="mx-auto select-none pointer-events-none object-contain w-[{{ vm.img_w|default(200) }}px] h-[{{ vm.img_h|default(120) }}px]"
+                                class="block mx-auto select-none pointer-events-none object-contain h-auto"
+                                style="max-width: {{ vm.img_w|default(240) }}px; max-height: {{ vm.img_h|default(140) }}px;"
                                 draggable="false" />
                         </article>
                         {% endif %}

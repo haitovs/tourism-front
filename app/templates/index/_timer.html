@@ -17,8 +17,8 @@
     <!-- One Alpine instance drives BOTH -->
     <div x-data="window.timerWidget({
       apiBase: '{{ settings.BACKEND_BASE_URL }}',
-      bgUrl: '/static/img/timer/timer_bg.png',
-      logoUrl: '/static/img/timer/logo.svg'
+      bgUrl: '{{ url_for('static', path='/img/timer/timer_bg.png') }}',
+      logoUrl: '{{ url_for('static', path='/img/timer/logo.svg') }}'
     })" x-init="$nextTick(() => init())">
 
         <!-- ===== BIG TIMER (>=1024px) ===== -->
@@ -220,3 +220,5 @@
 
     </div>
 </section>
+
+
