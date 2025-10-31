@@ -163,7 +163,7 @@
 
                 <div id="lang-menu" class="sb-lang-menu" x-cloak x-show="open" x-transition
                     :style="{ minWidth: (btnW || 0) + 'px' }" role="menu">
-                    {% for code in ['en','ru','tk','zh'] %}
+                    {% for code in ['en','ru','tk'] %}
                     {% if code == current %}
                     <span class="sb-lang-item is-current" aria-current="true">{{ code|upper }}</span>
                     {% else %}

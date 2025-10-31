@@ -555,12 +555,6 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 5;
   }
-  .line-clamp-6 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 6;
-  }
   .block {
     display: block;
   }
@@ -777,9 +771,6 @@
   .h-\[200px\] {
     height: 200px;
   }
-  .h-\[216px\] {
-    height: 216px;
-  }
   .h-\[220px\] {
     height: 220px;
   }
@@ -824,9 +815,6 @@
   }
   .h-\[450px\] {
     height: 450px;
-  }
-  .h-\[460px\] {
-    height: 460px;
   }
   .h-\[522px\] {
     height: 522px;
@@ -897,20 +885,11 @@
   .max-h-\[80\%\] {
     max-height: 80%;
   }
-  .max-h-\[140px\] {
-    max-height: 140px;
-  }
   .max-h-\[154\.51px\] {
     max-height: 154.51px;
   }
   .max-h-\[clamp\(90px\,13vw\,154\.51px\)\] {
     max-height: clamp(90px, 13vw, 154.51px);
-  }
-  .min-h-\[50px\] {
-    min-height: 50px;
-  }
-  .min-h-\[100px\] {
-    min-height: 100px;
   }
   .min-h-\[260px\] {
     min-height: 260px;
@@ -1372,9 +1351,6 @@
   }
   .grid-rows-5 {
     grid-template-rows: repeat(5, minmax(0, 1fr));
-  }
-  .grid-rows-\[auto_1fr\] {
-    grid-template-rows: auto 1fr;
   }
   .flex-col {
     flex-direction: column;
@@ -2057,9 +2033,6 @@
   .p-10 {
     padding: calc(var(--spacing) * 10);
   }
-  .p-\[40px_25px\] {
-    padding: 40px 25px;
-  }
   .px-1 {
     padding-inline: calc(var(--spacing) * 1);
   }
@@ -2173,9 +2146,6 @@
   }
   .pb-5 {
     padding-bottom: calc(var(--spacing) * 5);
-  }
-  .pb-6 {
-    padding-bottom: calc(var(--spacing) * 6);
   }
   .pb-8 {
     padding-bottom: calc(var(--spacing) * 8);
@@ -2904,9 +2874,6 @@
   }
   .text-\[rgba\(21\,25\,56\,0\.85\)\] {
     color: rgba(21,25,56,0.85);
-  }
-  .text-\[rgba\(30\,30\,30\,0\.7\)\] {
-    color: rgba(30,30,30,0.7);
   }
   .text-\[rgba\(32\,48\,108\,0\.4\)\] {
     color: rgba(32,48,108,0.4);
@@ -4776,11 +4743,6 @@
   .lg\:w-\[300px\] {
     @media (width >= 64rem) {
       width: 300px;
-    }
-  }
-  .lg\:w-\[310px\] {
-    @media (width >= 64rem) {
-      width: 310px;
     }
   }
   .lg\:w-\[320px\] {

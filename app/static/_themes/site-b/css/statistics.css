@@ -4,3 +4,21 @@
     display: flow-root;
     scroll-margin-top: calc(var(--header-h) + 12px);
 }
+
+.sb-stat-card {
+    width: 100%;
+    min-height: 230px;
+    border-radius: 10px;
+    background: #b8d779;
+    padding: 40px 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    box-shadow: 0 8px 24px rgba(18, 30, 70, 0.12);
+}
+
+@media (min-width: 1024px) {
+    .sb-stat-card {
+        width: 310px;
+    }
+}
