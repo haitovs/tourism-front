@@ -57,18 +57,6 @@
                 <!-- Divider (full card width) -->
                 <div class="mt-6 h-[2px] w-full border-t-2 border-[#20306C]"></div>
 
-                <!-- Intro / Bio (centered text block, comfy line-length) -->
-                {% if p and p.intro_html %}
-                <article
-                    class="mx-auto mt-6 w-full max-w-[72ch] text-center lg:text-left text-[#1A2550] font-['Roboto'] text-[20px] md:text-[22px] leading-8 md:leading-9 space-y-4">
-                    {{ p.intro_html | safe }}
-                </article>
-                {% elif p and p.bio %}
-                <p
-                    class="mx-auto mt-6 w-full max-w-[72ch] text-center lg:text-left text-[#1A2550] font-['Roboto'] text-[20px] md:text-[22px] leading-8 md:leading-9">
-                    {{ p.bio }}
-                </p>
-                {% endif %}
 
                 {% if p and p.body_html %}
                 <article class="prose prose-slate max-w-none mx-auto mt-6 lg:mx-0

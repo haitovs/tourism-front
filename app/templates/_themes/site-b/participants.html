@@ -30,8 +30,7 @@
         class="max-w-[var(--container)] mx-auto px-4 mt-10 flex flex-col md:flex-row items-center justify-between gap-4">
         <!-- Filter buttons -->
         <div class="flex flex-wrap gap-3">
-            <a href="/participants"
-                class="px-6 py-3 rounded-lg border-2 text-[18px] md:text-[20px] font-['Roboto'] font-semibold transition
+            <a href="/participants" class="px-6 py-3 rounded-lg border-2 text-[18px] md:text-[20px] font-['Roboto'] font-semibold transition
                 {% if not role %}
                     bg-[rgba(32,48,108,0.12)] border-[#20306C] text-[#20306C]
                 {% else %}
@@ -39,8 +38,7 @@
                 {% endif %}">
                 {{ t('siteb.participants.filters.all') }}
             </a>
-            <a href="/participants?role=expo"
-                class="px-6 py-3 rounded-lg border-2 text-[18px] md:text-[20px] font-['Roboto'] font-semibold transition
+            <a href="/participants?role=expo" class="px-6 py-3 rounded-lg border-2 text-[18px] md:text-[20px] font-['Roboto'] font-semibold transition
                 {% if role == 'expo' %}
                     bg-[rgba(32,48,108,0.12)] border-[#20306C] text-[#20306C]
                 {% else %}
@@ -48,8 +46,7 @@
                 {% endif %}">
                 {{ t('siteb.participants.filters.expo') }}
             </a>
-            <a href="/participants?role=forum"
-                class="px-6 py-3 rounded-lg border-2 text-[18px] md:text-[20px] font-['Roboto'] font-semibold transition
+            <a href="/participants?role=forum" class="px-6 py-3 rounded-lg border-2 text-[18px] md:text-[20px] font-['Roboto'] font-semibold transition
                 {% if role == 'forum' %}
                     bg-[rgba(32,48,108,0.12)] border-[#20306C] text-[#20306C]
                 {% else %}
@@ -64,8 +61,8 @@
             aria-label="{{ t('siteb.participants.search.aria') }}">
             {% if role %}<input type="hidden" name="role" value="{{ role }}" />{% endif %}
             <label for="participants-q" class="sr-only">{{ t('siteb.participants.search.label') }}</label>
-            <input id="participants-q" type="text" name="q" placeholder="{{ t('siteb.participants.search.placeholder') }}"
-                value="{{ q or '' }}"
+            <input id="participants-q" type="text" name="q"
+                placeholder="{{ t('siteb.participants.search.placeholder') }}" value="{{ q or '' }}"
                 class="w-full md:w-[350px] h-[64px] px-5 rounded-l-lg border-2 border-[#20306C] text-[18px] md:text-[20px]
                        font-['Roboto'] font-medium text-[#20306C] placeholder-[#6E78A8] focus:outline-none focus:ring-2 focus:ring-[#20306C]" />
             <button type="submit"
@@ -89,12 +86,12 @@
             <a href="/participants/{{ p.id }}"
                 aria-label="{{ t('siteb.participants.card.open_title_prefix') }} {{ p.name }}"
                 class="group block bg-white rounded-[15px] shadow hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#20306C] transition overflow-hidden">
-                <div class="h-[200px] w-full bg-slate-100">
+                <div class="h-[240px] w-full bg-slate-100">
                     {% if p.logo_url %}
-                    <img src="{{ p.logo_url }}" alt="{{ p.name }}" class="w-full h-full object-cover" />
+                    <img src="{{ p.logo_url }}" alt="{{ p.name }}" class="w-full h-full object-fill" />
                     {% else %}
                     <img src="/static/img/default_participant.png" alt="{{ p.name }}"
-                        class="w-full h-full object-cover" />
+                        class="w-full h-full object-fill" />
                     {% endif %}
                 </div>
                 <div class="p-5">

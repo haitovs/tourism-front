@@ -152,10 +152,30 @@
     "siteb.news.detail.daily_tag": "Daily Brief",
     "siteb.title_1_header": "Total exhibition space:",
     "siteb.title_1_content": "8,000 m²",
-    "siteb.title_2_header": "The origin of the exhibitors in 2024 exhibition:",
-    "siteb.title_2_content": "Azerbaijan, China, France, Germany, Japan, Kazakhstan, Kyrgyzstan, Russia, Sweden, Switzerland, Turkey, Turkmenistan, USA",
-    "siteb.title_3_header": "Registered professional visits:",
-    "siteb.title_3_content": "1722",
-    "siteb.title_4_header": "Expected number of exhibitors in 2024 edition:",
-    "siteb.title_4_content": "100"
+    "siteb.title_2_header": "Expected exhibitors in 2026:",
+    "siteb.title_2_content": "Azerbaijan, China, France, Germany, Japan, Kazakhstan, Kyrgyzstan, Russia, Sweden, Switzerland, Turkey, Turkmenistan, USA +16",
+    "siteb.title_3_header": "Registered professional visitors:",
+    "siteb.title_3_content": "6000 +",
+    "siteb.title_4_header": "Expected number of companies in 2026:",
+    "siteb.title_4_content": "100 +",
+    "about_expo.cta.exhibitor_title": "To be an Exhibitors",
+    "about_expo.cta.exhibitor_text1": "Secure your strategic position at the TurkmenTravel Expo and Forum to gain direct visibility among key government officials, international investors, and influential buyers. This is a distinguished opportunity to effectively showcase your services and expand your market reach.",
+    "about_expo.cta.exhibitor_text2": "The Expo serves as the ideal platform to establish valuable partnerships within the rapidly developing Central Asian tourism sector and position your brand at the forefront of industry transformation.",
+
+    "siteb.advantages.header": "Participating in the International Tourism Exhibition and Forum TurkmenTravel-2026 offers focused strategic advantages:",
+
+    "siteb.advantages.items.1.title": "Strategic Market Access:",
+    "siteb.advantages.items.1.desc": "Gain direct entry to the rapidly growing Turkmen and Central Asian tourism markets.",
+
+    "siteb.advantages.items.2.title": "High-Level Networking:",
+    "siteb.advantages.items.2.desc": "Connect with key decision-makers, government officials, and leading international investors.",
+
+    "siteb.advantages.items.3.title": "Innovation & Digitalization Focus:",
+    "siteb.advantages.items.3.desc": "Engage in critical discussions on technological advancements and the future of smart tourist services.",
+
+    "siteb.advantages.items.4.title": "Expert Knowledge Exchange:",
+    "siteb.advantages.items.4.desc": "Acquire valuable international best practices in hospitality, sustainable tourism, and cultural development.",
+
+    "siteb.advantages.items.5.title": "Maximum Brand Visibility:",
+    "siteb.advantages.items.5.desc": "Effectively showcase your products and services to a targeted professional audience of buyers and media."
 }
