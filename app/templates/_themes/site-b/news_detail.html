@@ -4,7 +4,8 @@
 <main>
     <!-- HERO -->
     <section class="sb-page-hero relative w-full h-[320px] md:h-[420px]">
-        <img src="{{ theme('img/hero-bg.png') }}" alt="" class="absolute inset-0 w-full h-full object-cover" />
+        <img src="{{ theme('img/hero-bg.png') }}" alt="{{ t('siteb.common.hero_alt') }}"
+            class="absolute inset-0 w-full h-full object-cover" />
         <div class="absolute inset-0" style="background: var(--site-primary-overlay);"></div>
 
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
@@ -49,7 +50,8 @@
                         {% if item.image_url %}
                         <img src="{{ item.image_url }}" alt="{{ item.title }}" class="w-full h-full object-cover" />
                         {% else %}
-                        <img src="/static/img/news_placeholder.jpg" alt=""
+                        <img src="/static/img/news_placeholder.jpg"
+                            alt="{{ t('siteb.news.image_placeholder_alt') }}"
                             class="w-full h-full object-cover opacity-80" />
                         {% endif %}
                     </div>

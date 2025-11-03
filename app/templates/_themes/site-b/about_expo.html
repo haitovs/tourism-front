@@ -26,7 +26,8 @@
 </script>
 <main>
     <section class="sb-page-hero relative w-full h-[320px] md:h-[380px]">
-        <img src="{{ theme('img/hero-bg.png') }}" alt="" class="absolute inset-0 w-full h-full object-cover" />
+        <img src="{{ theme('img/hero-bg.png') }}" alt="{{ t('siteb.common.hero_alt') }}"
+            class="absolute inset-0 w-full h-full object-cover" />
         <div class="absolute inset-0" style="background: var(--site-primary-overlay);"></div>
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
             <h1
@@ -171,7 +172,8 @@
                     <div class="relative rounded-[14px] overflow-hidden border border-[#E2E8F0] shadow-sm
                     aspect-[4/3] sm:aspect-[16/10] lg:aspect-[5/6] bg-slate-100">
                         <img src="{{ theme('img/about-expo/advantages-right.png') }}"
-                            alt="TurkmenTravel advantages visual" class="absolute inset-0 w-full h-full object-cover"
+                            alt="{{ t('about_expo.advantages.image_alt') }}"
+                            class="absolute inset-0 w-full h-full object-cover"
                             loading="lazy">
                         <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/10 to-transparent">
                         </div>
@@ -416,13 +418,13 @@
                 <button type="button" @click="prev()" class="hidden lg:flex absolute left-[-28px] top-1/2 -translate-y-1/2 h-12 w-8 items-center justify-center
                      rounded-md border border-[#20306C] text-[#20306C] bg-white
                      transition-all duration-200 ease-out hover:bg-black/5 hover:shadow-sm active:scale-95"
-                    aria-label="Previous">
+                    aria-label="{{ t('siteb.gallery.prev_label') }}">
                     ‹
                 </button>
                 <button type="button" @click="next()" class="hidden lg:flex absolute right-[-28px] top-1/2 -translate-y-1/2 h-12 w-8 items-center justify-center
                      rounded-md border border-[#20306C] text-[#20306C] bg-white
                      transition-all duration-200 ease-out hover:bg-black/5 hover:shadow-sm active:scale-95"
-                    aria-label="Next">
+                    aria-label="{{ t('siteb.gallery.next_label') }}">
                     ›
                 </button>
             </div>

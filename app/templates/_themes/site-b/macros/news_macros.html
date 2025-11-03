@@ -8,7 +8,8 @@
             <img src="{{ n.image_url }}" alt="{{ n.title }}" class="w-full h-full object-cover" loading="lazy"
                 decoding="async" sizes="(min-width:1024px) 33vw, (min-width:768px) 50vw, 100vw" />
             {% else %}
-            <img src="/static/img/news_placeholder.jpg" alt="" class="w-full h-full object-cover opacity-80"
+            <img src="/static/img/news_placeholder.jpg"
+                alt="{{ t('siteb.news.image_placeholder_alt') }}" class="w-full h-full object-cover opacity-80"
                 loading="lazy" decoding="async" sizes="(min-width:1024px) 33vw, (min-width:768px) 50vw, 100vw" />
             {% endif %}
         </div>
@@ -55,8 +56,8 @@
                 decoding="async"
                 sizes="(min-width:1536px) 720px, (min-width:1280px) 660px, (min-width:1024px) 600px, 100vw" />
             {% else %}
-            <img src="/static/img/news_placeholder.jpg" alt="" class="w-full h-full object-cover opacity-80"
-                loading="eager" decoding="async"
+            <img src="/static/img/news_placeholder.jpg" alt="{{ t('siteb.news.image_placeholder_alt') }}"
+                class="w-full h-full object-cover opacity-80" loading="eager" decoding="async"
                 sizes="(min-width:1536px) 720px, (min-width:1280px) 660px, (min-width:1024px) 600px, 100vw" />
             {% endif %}
         </div>

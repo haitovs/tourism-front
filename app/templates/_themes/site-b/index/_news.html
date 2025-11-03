@@ -36,7 +36,8 @@
                             <img src="{{ n.image_url }}" alt="{{ n.title }}"
                                 class="w-full h-full object-cover object-center" loading="lazy">
                             {% else %}
-                            <img src="/static/img/news_placeholder.jpg" alt=""
+                            <img src="/static/img/news_placeholder.jpg"
+                                alt="{{ t('siteb.news.image_placeholder_alt') }}"
                                 class="w-full h-full object-cover object-center opacity-80">
                             {% endif %}
                         </div>

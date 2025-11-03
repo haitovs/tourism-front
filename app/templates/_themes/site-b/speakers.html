@@ -7,7 +7,8 @@
 <main>
     <!-- HERO (Site-B look) -->
     <section class="sb-page-hero relative w-full h-[420px]">
-        <img src="{{ theme('img/hero-bg.png') }}" alt="" class="absolute inset-0 w-full h-full object-cover" />
+        <img src="{{ theme('img/hero-bg.png') }}" alt="{{ t('siteb.common.hero_alt') }}"
+            class="absolute inset-0 w-full h-full object-cover" />
         <div class="absolute inset-0" style="background: var(--site-primary-overlay);"></div>
 
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
@@ -94,7 +95,8 @@
                             <img src="{{ sp.photo_url }}" alt="{{ sp.fullname }}"
                                 class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
                             {% else %}
-                            <img src="/static/img/person_placeholder.png" alt="Speaker"
+                            <img src="/static/img/person_placeholder.png"
+                                alt="{{ t('siteb.speakers.placeholder_alt') }}"
                                 class="absolute inset-0 w-full h-full object-cover opacity-80" loading="lazy" />
                             {% endif %}
 

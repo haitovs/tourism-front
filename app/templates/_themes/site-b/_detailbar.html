@@ -3,6 +3,29 @@
 {% set _path = _req.url.path if _req else '/' %}
 {% set _params = _req.query_params if _req else {} %}
 {% set current = (lang or 'en') %}
+{% set _coming_soon_paths = [
+    '/meeting-request',
+    '/brochure',
+    '/visa',
+    '/hotel',
+    '/flight',
+    '/registration',
+    '/register'
+] %}
+
+{% macro sb_link(href, label, classes='', role=None) %}
+    {% set disabled = href in _coming_soon_paths %}
+    {% set class_list = classes.split() if classes else [] %}
+    {% if disabled %}
+        {% set class_list = class_list + ['sb-link-disabled'] %}
+        <span class="{{ ' '.join(class_list) }}" {% if role %}role="{{ role }}"{% endif %} aria-disabled="true" tabindex="-1" title="{{ t('siteb.nav.coming_soon_hint') }}">
+            <span class="sb-link-label">{{ label }}</span>
+            <span class="sb-link-coming">{{ t('siteb.nav.coming_soon_badge') }}</span>
+        </span>
+    {% else %}
+        <a href="{{ href }}" class="{{ ' '.join(class_list) }}" {% if role %}role="{{ role }}"{% endif %}>{{ label }}</a>
+    {% endif %}
+{% endmacro %}
 
 <style>
     [x-cloak] {
@@ -14,13 +37,13 @@
     <div class="sb-bar-inner">
 
         <!-- Left: Logo -->
-        <a href="/" class="sb-logo" aria-label="Home">
-            <img src="{{ theme('img/detailbar/logo.svg') }}" alt="" class="sb-logo-img"
+        <a href="/" class="sb-logo" aria-label="{{ t('siteb.detailbar.aria.home') }}">
+            <img src="{{ theme('img/detailbar/logo.svg') }}" alt="{{ t('siteb.detailbar.logo_alt') }}" class="sb-logo-img"
                 onerror="this.style.display='none'">
         </a>
 
         <!-- Center: Inline Nav (scrollable with arrows) -->
-        <nav class="sb-navWrap" aria-label="Primary" x-data="{
+        <nav class="sb-navWrap" aria-label="{{ t('siteb.detailbar.aria.primary_nav') }}" x-data="{
            scroller: null,
            canL: false, canR: false,
            step: 220,
@@ -43,7 +66,7 @@
             <!-- Left arrow -->
             <button class="sb-nav-arrow sb-nav-arrow--left" type="button" x-show="canL"
                 @click="scroller && scroller.scrollBy({left: -step, behavior: 'smooth'})" x-cloak
-                aria-label="Scroll navigation left">
+                aria-label="{{ t('siteb.detailbar.aria.scroll_left') }}">
                 <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                     <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
@@ -51,7 +74,7 @@
             </button>
 
             <ul class="sb-nav" x-ref="scroller">
-                <li><a href="/">{{ t('nav.home') }}</a></li>
+                <li>{{ sb_link('/', t('nav.home'), 'sb-nav__link', 'menuitem') }}</li>
 
                 <!-- About Event -->
                 <li class="sb-has-dd" x-data="{ m:false }" @pointerenter="m=true" @pointerleave="m=false"
@@ -67,18 +90,17 @@
                     <div id="dd-about" class="sb-dd" x-cloak x-show="m" x-transition @click.outside="m=false"
                         @keydown.escape.window="m=false" role="menu"
                         style="top:100%;left:0;z-index:999999;pointer-events:auto;">
-                        <a href="/about-the-forum" class="sb-dd-item" role="menuitem">{{ t('nav.about_forum') }}</a>
+                        {{ sb_link('/about-the-forum', t('nav.about_forum'), 'sb-dd-item', 'menuitem') }}
                         <hr class="sb-dd-sep" />
-                        <a href="/agenda" class="sb-dd-item" role="menuitem">{{ t('nav.agenda') }}</a>
-                        <a href="/speakers" class="sb-dd-item" role="menuitem">{{ t('nav.speakers') }}</a>
-                        <a href="/meeting-request" class="sb-dd-item" role="menuitem">{{ t('nav.meeting_request') }}</a>
+                        {{ sb_link('/agenda', t('nav.agenda'), 'sb-dd-item', 'menuitem') }}
+                        {{ sb_link('/speakers', t('nav.speakers'), 'sb-dd-item', 'menuitem') }}
+                        {{ sb_link('/meeting-request', t('nav.meeting_request'), 'sb-dd-item', 'menuitem') }}
                         <hr class="sb-dd-sep" />
-                        <a href="/about-the-expo" class="sb-dd-item" role="menuitem">{{ t('nav.about_expo') }}</a>
+                        {{ sb_link('/about-the-expo', t('nav.about_expo'), 'sb-dd-item', 'menuitem') }}
                         <hr class="sb-dd-sep" />
-                        <a href="/official-support" class="sb-dd-item" role="menuitem">{{ t('nav.official_support')
-                            }}</a>
+                        {{ sb_link('/official-support', t('nav.official_support'), 'sb-dd-item', 'menuitem') }}
                         <hr class="sb-dd-sep" />
-                        <a href="/brochure" class="sb-dd-item" role="menuitem">{{ t('nav.brochure') }}</a>
+                        {{ sb_link('/brochure', t('nav.brochure'), 'sb-dd-item', 'menuitem') }}
                     </div>
                 </li>
 
@@ -96,15 +118,15 @@
                     <div id="dd-participants" class="sb-dd" x-cloak x-show="m" x-transition @click.outside="m=false"
                         @keydown.escape.window="m=false" role="menu"
                         style="top:100%;left:0;z-index:999999;pointer-events:auto;">
-                        <a href="/participants" class="sb-dd-item" role="menuitem">{{ t('nav.all') }}</a>
+                        {{ sb_link('/participants', t('nav.all'), 'sb-dd-item', 'menuitem') }}
                         <hr class="sb-dd-sep" />
-                        <a href="/participants?role=expo" class="sb-dd-item" role="menuitem">{{ t('nav.expo') }}</a>
+                        {{ sb_link('/participants?role=expo', t('nav.expo'), 'sb-dd-item', 'menuitem') }}
                         <hr class="sb-dd-sep" />
-                        <a href="/participants?role=forum" class="sb-dd-item" role="menuitem">{{ t('nav.forum') }}</a>
+                        {{ sb_link('/participants?role=forum', t('nav.forum'), 'sb-dd-item', 'menuitem') }}
                     </div>
                 </li>
 
-                <li><a href="/news">{{ t('nav.news') }}</a></li>
+                <li>{{ sb_link('/news', t('nav.news'), 'sb-nav__link', 'menuitem') }}</li>
 
                 <!-- Travel Guide -->
                 <li class="sb-has-dd" x-data="{ m:false }" @pointerenter="m=true" @pointerleave="m=false"
@@ -120,23 +142,23 @@
                     <div id="dd-travel" class="sb-dd" x-cloak x-show="m" x-transition @click.outside="m=false"
                         @keydown.escape.window="m=false" role="menu"
                         style="top:100%;left:0;z-index:999999;pointer-events:auto;">
-                        <a href="/visa" class="sb-dd-item" role="menuitem">{{ t('nav.apply_visa') }}</a>
+                        {{ sb_link('/visa', t('nav.apply_visa'), 'sb-dd-item', 'menuitem') }}
                         <hr class="sb-dd-sep" />
-                        <a href="/hotel" class="sb-dd-item" role="menuitem">{{ t('nav.book_hotel') }}</a>
+                        {{ sb_link('/hotel', t('nav.book_hotel'), 'sb-dd-item', 'menuitem') }}
                         <hr class="sb-dd-sep" />
-                        <a href="/flight" class="sb-dd-item" role="menuitem">{{ t('nav.book_flight') }}</a>
+                        {{ sb_link('/flight', t('nav.book_flight'), 'sb-dd-item', 'menuitem') }}
                         <hr class="sb-dd-sep" />
-                        <a href="/faq" class="sb-dd-item" role="menuitem">{{ t('nav.faq') }}</a>
+                        {{ sb_link('/faq', t('nav.faq'), 'sb-dd-item', 'menuitem') }}
                     </div>
                 </li>
 
-                <li><a href="/registration">{{ t('nav.registration') }}</a></li>
+                <li>{{ sb_link('/registration', t('nav.registration'), 'sb-nav__link', 'menuitem') }}</li>
             </ul>
 
             <!-- Right arrow -->
             <button class="sb-nav-arrow sb-nav-arrow--right" type="button" x-show="canR"
                 @click="scroller && scroller.scrollBy({left: step, behavior: 'smooth'})" x-cloak
-                aria-label="Scroll navigation right">
+                aria-label="{{ t('siteb.detailbar.aria.scroll_right') }}">
                 <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                     <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
@@ -146,10 +168,19 @@
 
         <!-- Right: user + language (kept compact so nav gets space) -->
         <div class="sb-right">
-            <a href="/register" aria-label="Register" class="sb-user">
+            {% if '/register' in _coming_soon_paths %}
+            <span class="sb-user sb-link-disabled" aria-disabled="true" title="{{ t('siteb.nav.coming_soon_hint') }}">
                 <img class="sb-user-img" src="{{ theme('img/detailbar/user.svg') }}"
+                    alt="{{ t('siteb.detailbar.user_icon_alt') }}"
+                    onerror="this.src='{{ url_for('static', path='/img/detailbar/ic-user.svg') }}'">
+            </span>
+            {% else %}
+            <a href="/register" aria-label="{{ t('siteb.detailbar.aria.register') }}" class="sb-user">
+                <img class="sb-user-img" src="{{ theme('img/detailbar/user.svg') }}"
+                    alt="{{ t('siteb.detailbar.user_icon_alt') }}"
                     onerror="this.src='{{ url_for('static', path='/img/detailbar/ic-user.svg') }}'">
             </a>
+            {% endif %}
 
             <div class="sb-lang" x-data="siteBLangMenu()" @keydown.escape.window="close()" @click.outside="close()">
                 <button x-ref="btn" type="button" class="sb-lang-btn" :aria-expanded="open.toString()"

@@ -6,7 +6,8 @@
 <main>
     <!-- HERO (Site-B variant) -->
     <section class="sb-page-hero relative w-full h-[380px] md:h-[420px]">
-        <img src="{{ theme('img/hero-bg.png') }}" alt="" class="absolute inset-0 w-full h-full object-cover" />
+        <img src="{{ theme('img/hero-bg.png') }}" alt="{{ t('siteb.common.hero_alt') }}"
+            class="absolute inset-0 w-full h-full object-cover" />
         <div class="absolute inset-0" style="background: var(--site-primary-overlay);"></div>
 
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
@@ -43,7 +44,8 @@
                             <img src="{{ speaker.photo_url }}" alt="{{ speaker.fullname }}"
                                 class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
                             {% else %}
-                            <img src="/static/img/person_placeholder.png" alt="Speaker portrait"
+                            <img src="/static/img/person_placeholder.png"
+                                alt="{{ t('siteb.speakers.placeholder_alt') }}"
                                 class="absolute inset-0 w-full h-full object-cover opacity-85" loading="lazy" />
                             {% endif %}
                         </div>
@@ -65,7 +67,8 @@
                     {% if speaker.company_photo_url or speaker.position or speaker.company %}
                     <div class="mt-5 flex flex-wrap items-center gap-4">
                         {% if speaker.company_photo_url %}
-                        <img src="{{ speaker.company_photo_url }}" alt="Company logo"
+                        <img src="{{ speaker.company_photo_url }}"
+                            alt="{{ t('siteb.speaker.company_logo_alt') }}"
                             class="h-[38px] sm:h-[44px] w-auto object-contain shrink-0" loading="lazy" />
                         {% endif %}
                         {% if speaker.position or speaker.company %}
