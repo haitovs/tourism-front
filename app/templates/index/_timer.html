@@ -18,7 +18,7 @@
     <div x-data="window.timerWidget({
       apiBase: '{{ settings.BACKEND_BASE_URL }}',
       bgUrl: '{{ url_for('static', path='/img/timer/timer_bg.png') }}',
-      logoUrl: '{{ url_for('static', path='/img/timer/logo.svg') }}'
+      logoUrl: '{{ url_for('static', path='/img/timer/logo.png') }}'
     })" x-init="$nextTick(() => init())">
 
         <!-- ===== BIG TIMER (>=1024px) ===== -->
@@ -220,5 +220,3 @@
 
     </div>
 </section>
-
-

@@ -4,27 +4,28 @@
 {% set _params = _req.query_params if _req else {} %}
 {% set current = (lang or 'en') %}
 {% set _coming_soon_paths = [
-    '/meeting-request',
-    '/brochure',
-    '/visa',
-    '/hotel',
-    '/flight',
-    '/registration',
-    '/register'
+'/meeting-request',
+'/brochure',
+'/visa',
+'/hotel',
+'/flight',
+'/registration',
+'/register'
 ] %}
 
 {% macro sb_link(href, label, classes='', role=None) %}
-    {% set disabled = href in _coming_soon_paths %}
-    {% set class_list = classes.split() if classes else [] %}
-    {% if disabled %}
-        {% set class_list = class_list + ['sb-link-disabled'] %}
-        <span class="{{ ' '.join(class_list) }}" {% if role %}role="{{ role }}"{% endif %} aria-disabled="true" tabindex="-1" title="{{ t('siteb.nav.coming_soon_hint') }}">
-            <span class="sb-link-label">{{ label }}</span>
-            <span class="sb-link-coming">{{ t('siteb.nav.coming_soon_badge') }}</span>
-        </span>
-    {% else %}
-        <a href="{{ href }}" class="{{ ' '.join(class_list) }}" {% if role %}role="{{ role }}"{% endif %}>{{ label }}</a>
-    {% endif %}
+{% set disabled = href in _coming_soon_paths %}
+{% set class_list = classes.split() if classes else [] %}
+{% if disabled %}
+{% set class_list = class_list + ['sb-link-disabled'] %}
+<span class="{{ ' '.join(class_list) }}" {% if role %}role="{{ role }}" {% endif %} aria-disabled="true" tabindex="-1"
+    title="{{ t('siteb.nav.coming_soon_hint') }}">
+    <span class="sb-link-label">{{ label }}</span>
+    <span class="sb-link-coming">{{ t('siteb.nav.coming_soon_badge') }}</span>
+</span>
+{% else %}
+<a href="{{ href }}" class="{{ ' '.join(class_list) }}" {% if role %}role="{{ role }}" {% endif %}>{{ label }}</a>
+{% endif %}
 {% endmacro %}
 
 <style>
@@ -38,8 +39,8 @@
 
         <!-- Left: Logo -->
         <a href="/" class="sb-logo" aria-label="{{ t('siteb.detailbar.aria.home') }}">
-            <img src="{{ theme('img/detailbar/logo.svg') }}" alt="{{ t('siteb.detailbar.logo_alt') }}" class="sb-logo-img"
-                onerror="this.style.display='none'">
+            <img src="{{ theme('img/detailbar/logo-extended.png') }}" alt="{{ t('siteb.detailbar.logo_alt') }}"
+                class="sb-logo-img" onerror="this.style.display='none'">
         </a>
 
         <!-- Center: Inline Nav (scrollable with arrows) -->
