@@ -1,4 +1,4 @@
-            </section>\n        </div>\n\n{# app/templates/agenda/_episode_block.html #}
+</section>\n </div>\n\n{# app/templates/agenda/_episode_block.html #}
 {% import "_themes/site-b/agenda/_time_badge.html" as tb %}
 {% import "_themes/site-b/agenda/_info_chip.html" as chip %}
 {% import "agenda/_speaker_card.html" as card %}
@@ -86,10 +86,12 @@
                 </h3>
 
                 {% if mod %}
-                {% set mdesc = mod.description or mod.description_html or mod.description_norm or mod.bio or mod.bio_html or '' %}
+                {% set mdesc = mod.description or mod.description_html or mod.description_norm or mod.bio or
+                mod.bio_html or '' %}
                 <div class="flex flex-col gap-4">
                     <div class="flex items-center gap-4">
-                        <div class="w-[96px] h-[96px] rounded-[14px] overflow-hidden bg-[#F5F5F7] flex items-center justify-center border border-[#E5E7EB]">
+                        <div
+                            class="w-[96px] h-[96px] rounded-[14px] overflow-hidden bg-[#F5F5F7] flex items-center justify-center border border-[#E5E7EB]">
                             <img src="{{ mod.photo_url or '/static/img/img_placeholder.png' }}" alt="{{ mod.fullname }}"
                                 class="w-full h-full object-cover" loading="lazy" />
                         </div>
@@ -122,7 +124,8 @@
                     </h4>
                     <div class="font-['Roboto'] text-[15px] leading-[1.6] text-[#1E1E1E]">
                         {% if short %}<p>{{ short }}</p>{% endif %}
-                        {% if topic %}<p class="{% if short %}mt-2{% endif %} whitespace-pre-line">{{ topic }}</p>{% endif %}
+                        {% if topic %}<p class="{% if short %}mt-2{% endif %} whitespace-pre-line">{{ topic }}</p>{%
+                        endif %}
                     </div>
                 </div>
                 {% endif %}
@@ -136,11 +139,12 @@
                         {% for sp in _speakers %}
                         <li class="flex items-center gap-3">
                             <div class="w-[48px] h-[48px] rounded-full overflow-hidden bg-[#F3F3F6] shrink-0">
-                                <img src="{{ sp.photo_url or '/static/img/img_placeholder.png' }}" alt="{{ sp.fullname }}"
-                                    class="w-full h-full object-cover" loading="lazy" />
+                                <img src="{{ sp.photo_url or '/static/img/img_placeholder.png' }}"
+                                    alt="{{ sp.fullname }}" class="w-full h-full object-cover" loading="lazy" />
                             </div>
                             <div class="min-w-0">
-                                <div class="font-['Roboto'] font-bold text-[14px] leading-[16px] text-[#1E1E1E] truncate">
+                                <div
+                                    class="font-['Roboto'] font-bold text-[14px] leading-[16px] text-[#1E1E1E] truncate">
                                     {{ sp.fullname }}
                                 </div>
                                 <div class="font-['Roboto'] text-[12px] leading-[16px] text-[#6C6C6F] truncate">
@@ -269,36 +273,52 @@
 
             <div class="py-10 grid grid-cols-1 gap-8">
                 <div class="flex flex-col gap-6">
-
                     {# Moderator #}
                     {% if mod %}
-                    {% set mdesc = mod.description or mod.description_html or mod.description_norm or mod.bio or mod.bio_html or '' %}
-                    <div class="w-full max-w-[980px] mx-auto flex flex-col gap-6">
-                        <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 items-stretch">
+                    {# Unwrap different shapes: EpisodeModerator vs Moderator #}
+                    {% set _m = (mod.moderator if mod.moderator is defined and mod.moderator else mod) %}
+                    {% set mname = _m.fullname or _m.name %}
+                    {% set mphoto = _m.photo_url or _m.photo or '/static/img/img_placeholder.png' %}
+                    {% set mpos = _m.position or '' %}
+                    {% set mcompany = _m.company or '' %}
+                    {# Try every likely description field coming from different serializers #}
+                    {% set mdesc = _m.description or _m.description_html or _m.description_norm or _m.bio or _m.bio_html
+                    or '' %}
+
+                    <div class="w-full">
+                        <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 items-stretch w-full">
+                            <!-- Left: title + description -->
                             <div class="flex-1 min-w-0">
                                 <h4 class="font-['Montserrat'] font-semibold text-[24px] leading-[30px] text-black">
                                     {{ t('agenda.moderator') }}
                                 </h4>
+
                                 {% if mdesc %}
-                                <div class="mt-3 font-['Roboto'] text-[16px] leading-6 text-[#1E1E1E] whitespace-pre-line">
+                                <div
+                                    class="mt-3 font-['Roboto'] text-[16px] leading-6 text-[#1E1E1E] whitespace-pre-line">
                                     {{ mdesc|safe }}
                                 </div>
-                                {% elif mod.position or mod.company %}
+                                {% elif mpos or mcompany %}
                                 <div class="mt-3 font-['Roboto'] text-[16px] leading-6 text-[#1E1E1E]">
-                                    {{ mod.position }}{% if mod.company %}, {{ mod.company }}{% endif %}
+                                    {{ mpos }}{% if mcompany %}, {{ mcompany }}{% endif %}
                                 </div>
                                 {% endif %}
                             </div>
-                            <div class="lg:w-[220px] flex flex-col items-center justify-center text-center gap-3">
-                                <div class="w-[140px] h-[140px] rounded-[18px] overflow-hidden bg-[#F5F5F7] border border-[#E5E7EB] shadow-[0_12px_28px_rgba(12,26,71,0.15)]">
-                                    <img src="{{ mod.photo_url or '/static/img/img_placeholder.png' }}" alt="{{ mod.fullname }}"
-                                        class="w-full h-full object-cover" loading="lazy">
+
+                            <!-- Right: photo + name -->
+                            <div
+                                class="lg:w-[240px] shrink-0 flex flex-col items-center justify-center text-center gap-3">
+                                <div
+                                    class="w-[140px] h-[140px] rounded-[18px] overflow-hidden bg-[#F5F5F7] border border-[#E5E7EB] shadow-[0_12px_28px_rgba(12,26,71,0.15)]">
+                                    <img src="{{ mphoto }}" alt="{{ mname or '' }}" class="w-full h-full object-cover"
+                                        loading="lazy">
                                 </div>
                                 <div class="font-['Roboto'] text-[#1E1E1E] flex flex-col gap-1">
-                                    <span class="font-bold text-[18px] leading-[22px]">{{ mod.fullname }}</span>
-                                    {% if mod.position or mod.company %}
+                                    {% if mname %}<span class="font-bold text-[18px] leading-[22px]">{{ mname
+                                        }}</span>{% endif %}
+                                    {% if mpos or mcompany %}
                                     <span class="text-[14px] leading-[18px] text-[#6C6C6F]">
-                                        {{ mod.position }}{% if mod.company %}, {{ mod.company }}{% endif %}
+                                        {{ mpos }}{% if mcompany %}, {{ mcompany }}{% endif %}
                                     </span>
                                     {% endif %}
                                 </div>
@@ -361,13 +381,3 @@
     </div>
 </article>
 {%- endmacro %}
-
-
-
-
-
-
-
-
-
-
