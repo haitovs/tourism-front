@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from fastapi import Request
 
 from app.core.http import abs_media, api_get
+from app.core.settings import settings
 from app.models.episode_model import Episode
 from app.services.agenda import list_days, list_episodes_for_day
 
@@ -67,6 +68,102 @@ def _norm(s: Optional[str]) -> str:
     return (s or "").strip().lower()
 
 
+def _first_nonempty_str(*values: Any) -> str:
+    for val in values:
+        if isinstance(val, str):
+            txt = val.strip()
+            if txt:
+                return txt
+    return ""
+
+
+def _lang_candidates(*hints: Any) -> List[str]:
+    langs: List[str] = []
+    for hint in hints:
+        if not isinstance(hint, str):
+            continue
+        base = hint.strip()
+        if not base:
+            continue
+        base = base.split("-", 1)[0].lower()
+        if base and base not in langs:
+            langs.append(base)
+    default_lang = (settings.DEFAULT_LANG or "").split("-", 1)[0].lower()
+    if default_lang and default_lang not in langs:
+        langs.append(default_lang)
+    if "en" not in langs:
+        langs.append("en")
+    return langs
+
+
+def _extract_localized_text(value: Any, languages: List[str]) -> str:
+    if isinstance(value, str):
+        return value.strip()
+    if isinstance(value, dict):
+        for key in languages:
+            if key in value:
+                candidate = _extract_localized_text(value[key], languages)
+                if candidate:
+                    return candidate
+        for key in ("value", "text", "content", "description", "body", "message"):
+            if key in value:
+                candidate = _extract_localized_text(value[key], languages)
+                if candidate:
+                    return candidate
+        for sub_val in value.values():
+            candidate = _extract_localized_text(sub_val, languages)
+            if candidate:
+                return candidate
+        return ""
+    if isinstance(value, (list, tuple, set)):
+        for item in value:
+            candidate = _extract_localized_text(item, languages)
+            if candidate:
+                return candidate
+    return ""
+
+
+def _coalesce_description_fields(data: Dict[str, Any]) -> Tuple[str, str]:
+    lang_hint = data.get("lang") or data.get("language") or data.get("locale") or data.get("preferred_language")
+    languages = _lang_candidates(lang_hint)
+
+    plain = _first_nonempty_str(
+        data.get("description"),
+        data.get("bio"),
+        data.get("description_plain"),
+        data.get("bio_plain"),
+    )
+    if not plain:
+        plain = _extract_localized_text(
+            data.get("description_i18n")
+            or data.get("description_translations")
+            or data.get("description_localized")
+            or data.get("bio_i18n")
+            or data.get("description_localizations")
+            or data.get("descriptionLocales"),
+            languages,
+        )
+
+    html = _first_nonempty_str(
+        data.get("description_html"),
+        data.get("bio_html"),
+        data.get("description_richtext"),
+        data.get("bio_richtext"),
+    )
+    if not html:
+        html = _extract_localized_text(
+            data.get("description_html_i18n")
+            or data.get("bio_html_i18n")
+            or data.get("description_html_translations"),
+            languages,
+        )
+
+    if not html:
+        html = plain
+
+    return plain.strip(), html.strip()
+
+
 def _fullname_for_person(obj) -> str:
     fn = getattr(obj, "full_name", None) or getattr(obj, "fullname", None)
     if fn:
@@ -83,12 +180,16 @@ def _flatten_person_like(x: dict) -> dict:
     merged = {**x, **inner} if isinstance(inner, dict) else x
     fullname = merged.get("fullname") or f"{(merged.get('name') or '').strip()} {(merged.get('surname') or '').strip()}".strip()
     photo_url = _resolve_media(merged.get("photo_url") or merged.get("photo"))
+    desc_plain, desc_html = _coalesce_description_fields(merged)
+    desc_norm = _strip_md(desc_plain or desc_html)
     return {
         "id": _as_int(merged.get("id")),
         "fullname": fullname or "",
         "position": merged.get("position") or "",
         "company": merged.get("company") or "",
-        "description_norm": merged.get("description") or merged.get("description_norm", "") or "",
+        "description": desc_plain,
+        "description_html": desc_html,
+        "description_norm": desc_norm,
         "photo_url": photo_url,
     }
 
