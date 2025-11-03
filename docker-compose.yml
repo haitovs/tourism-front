@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tourism-front:latest
+    env_file:
+      - .env
+    environment:
+      ENV: prod
+      BACKEND_BASE_URL: http://backend:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  backend:
+    image: your-backend-image:latest
+    # Uncomment and adjust once the backend container is defined.
+    # build:
+    #   context: ../tourism-backend
+    env_file:
+      - .env.backend
+    expose:
+      - "8000"
+    restart: unless-stopped
+
+networks:
+  default:
+    name: tourism-net

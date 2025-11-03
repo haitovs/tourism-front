@@ -1,0 +1,17 @@
+.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.mypy_cache
+.pytest_cache
+htmlcov
+coverage.*
+node_modules
+build
+dist
+tailwindcss.exe
+tmp
+*.log

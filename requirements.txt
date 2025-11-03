@@ -3,3 +3,7 @@ uvicorn[standard]
 jinja2
 httpx
 sqlalchemy
+pydantic>=2.5
+pydantic-settings>=2.1
+psycopg2-binary>=2.9
+gunicorn>=21.2
