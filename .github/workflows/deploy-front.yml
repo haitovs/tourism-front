@@ -1,0 +1,41 @@
+name: Deploy tourism-front to server1
+
+on:
+    push:
+        branches: ["main"]
+    workflow_dispatch: {}
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy over SSH
+              uses: appleboy/ssh-action@v1.2.0
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  key: ${{ secrets.SSH_KEY }}
+                  port: ${{ secrets.SSH_PORT || 22 }}
+                  script_stop: true
+                  envs: SHA,BRANCH
+                  script: |
+                      set -Eeuo pipefail
+                      export SHA="${{ github.sha }}"
+                      export BRANCH="${{ github.ref_name }}"
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/server1_front_deploy -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new'
+
+                      APP_DIR="/root/apps/tourism-front"
+                      if docker compose version >/dev/null 2>&1; then DC="docker compose"; else DC="docker-compose"; fi
+
+                      cd "${APP_DIR}"
+                      git fetch --all --prune
+                      git checkout -f "${BRANCH}"
+                      git reset --hard "${SHA}"
+
+                      $DC build --pull
+                      $DC up -d --build
+
+                      for i in 1 2 3 4 5 6; do
+                        if curl -fsS http://127.0.0.1:8081/docs >/dev/null; then echo "OK"; break; fi
+                        echo "Front not ready, retry in 5s..."; sleep 5
+                      done

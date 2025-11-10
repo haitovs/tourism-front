@@ -5,13 +5,14 @@ services:
         image: tourism-front:latest
         env_file:
             - .env
-        environment:
-            ENV: prod
-            BACKEND_BASE_URL: https://api.akyoltm.shop
-            MEDIA_BASE_URL: https://api.akyoltm.shop
         ports:
             - "127.0.0.1:8081:8000"
         restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://127.0.0.1:8000/docs"]
+            interval: 10s
+            timeout: 5s
+            retries: 12
         networks:
             - tourism_tourism
 
