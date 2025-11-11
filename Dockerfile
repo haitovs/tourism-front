@@ -2,27 +2,27 @@
 ARG PYTHON_VERSION=3.11
 
 # ------------------------------
-# Stage 1: build Tailwind assets (standalone CLI, musl)
+# Stage 1: build Tailwind assets (standalone CLI on Alpine)
 # ------------------------------
 FROM alpine:3.20 AS assets
 WORKDIR /app
 
-# Tools to download the CLI
-RUN apk add --no-cache curl
+# curl to download the CLI + runtime libs the musl binary needs
+RUN apk add --no-cache curl libstdc++ libgcc
 
-# Copy only what Tailwind needs to scan/build
+# Copy only what Tailwind needs
 COPY app/static/css ./app/static/css
 COPY app/templates   ./app/templates
 COPY app/static/js   ./app/static/js
-COPY tailwind.config.js ./ 
+COPY tailwind.config.js ./  
 
-# ✅ Download the musl build for Alpine (not the glibc one)
+# Download the musl build of Tailwind and verify it runs
 RUN curl -fsSL -o /usr/local/bin/tailwindcss \
       https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64-musl \
-  && chmod +x /usr/local/bin/tailwindcss \
-  && /usr/local/bin/tailwindcss --help >/dev/null
+ && chmod +x /usr/local/bin/tailwindcss \
+ && /usr/local/bin/tailwindcss --help >/dev/null
 
-# Build CSS (use config if present)
+# Build CSS
 RUN if [ -f tailwind.config.js ]; then \
       /usr/local/bin/tailwindcss -c tailwind.config.js \
         -i app/static/css/tw.css -o app/static/css/tw.build.css --minify ; \
@@ -44,7 +44,6 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 
-# Runtime deps
 RUN apt-get update \
  && apt-get install -y --no-install-recommends libpq5 curl \
  && rm -rf /var/lib/apt/lists/*
@@ -53,13 +52,9 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip \
  && pip install --no-cache-dir -r requirements.txt
 
-# Copy project
 COPY . .
-
-# Overwrite with freshly built Tailwind CSS
 COPY --from=assets /app/app/static/css/tw.build.css app/static/css/tw.build.css
 
-# Non-root runtime user
 RUN useradd --create-home --uid 1000 appuser
 USER appuser
 
