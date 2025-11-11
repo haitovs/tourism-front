@@ -62,5 +62,26 @@ class SiteResolverMiddleware(BaseHTTPMiddleware):
         if host in site_map:
             slug, sid = site_map[host]
 
+        if settings.ALLOW_SITE_OVERRIDE and request.method == "GET":
+            qp = request.query_params
+            override_slug = qp.get("__site") or request.headers.get("x-site-slug")
+            override_id = qp.get("__site_id") or request.headers.get("x-site-id")
+            if override_slug:
+                override_slug = override_slug.strip()
+                if override_slug:
+                    slug = override_slug
+                    if not sid:
+                        for _host, (s_slug, s_id) in site_map.items():
+                            if s_slug == slug:
+                                sid = s_id
+                                break
+            if override_id:
+                try:
+                    sid_val = int(str(override_id).strip())
+                    if sid_val > 0:
+                        sid = sid_val
+                except Exception:
+                    pass
+
         request.state.site = SiteInfo(id=sid, slug=slug, host=host)
         return await call_next(request)

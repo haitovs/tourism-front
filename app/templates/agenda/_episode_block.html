@@ -17,7 +17,7 @@
 {% set ep_id = ep.id %}
 <article class="grid grid-cols-[72px_1fr] md:grid-cols-[160px_1fr] gap-4 md:gap-5" x-cloak>
     {{ tb.time_badge(ep.start_time, ep.end_time) }}
-    <div class="relative bg-white shadow-soft rounded-[16px] p-0 md:p-6">
+    <div class="relative bg-white shadow-soft rounded-[14px] border border-[#E5E7EB] overflow-hidden p-0 md:p-6">
         {# Sponsor tiny badge (mobile collapsed) #}
         {% if top_sponsor %}
         <div class="md:hidden absolute top-2 right-2 z-10">
@@ -38,6 +38,14 @@
 
         {# ===================== MOBILE COLLAPSED ===================== #}
         <div class="md:hidden" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
+            {% if ep.location %}
+            <div class="bg-[#007A3D] text-white px-4 py-2 rounded-t-[16px]">
+                <span class="font-['Roboto'] font-medium text-[13px] leading-[16px]">
+                    {{ ep.location }}
+                </span>
+            </div>
+            {% endif %}
+
             <div class="cursor-pointer select-none outline-none p-4" role="button" tabindex="0"
                 @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
                 @keydown.enter.prevent="{{ expanded_var_name }} = {{ ep_id|tojson }}"
@@ -54,15 +62,6 @@
                 {% endif %}
             </div>
 
-            {% if ep.location %}
-            <div class="md:hidden col-start-2 col-end-3" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
-                <div class="bg-[#007A3D] text-white px-4 py-2">
-                    <span class="font-['Roboto'] font-medium text-[13px] leading-[16px]">
-                        {{ ep.location }}
-                    </span>
-                </div>
-            </div>
-            {% endif %}
         </div>
 
         {# ===================== MOBILE EXPANDED ===================== #}

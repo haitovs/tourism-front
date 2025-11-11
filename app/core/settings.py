@@ -37,6 +37,7 @@ class Settings(BaseSettings):
 
     # Stage 3 host→site map: "host:slug:id,host2:slug2:id2"
     SITE_MAP_RAW: str = ""
+    ALLOW_SITE_OVERRIDE: bool = Field(default=False, alias="SITE_ALLOW_OVERRIDE")
 
     @property
     def SUPPORTED_LANGS(self) -> Tuple[str, ...]:

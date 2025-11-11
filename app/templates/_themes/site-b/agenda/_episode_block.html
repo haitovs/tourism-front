@@ -38,6 +38,14 @@
 
         {# ===================== MOBILE COLLAPSED ===================== #}
         <div class="md:hidden" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
+            {% if ep.location %}
+            <div class="bg-[#20306C] text-white px-4 py-2 rounded-t-[16px]">
+                <span class="font-['Roboto'] font-medium text-[13px] leading-[16px]">
+                    {{ ep.location }}
+                </span>
+            </div>
+            {% endif %}
+
             <div class="cursor-pointer select-none outline-none p-4" role="button" tabindex="0"
                 @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
                 @keydown.enter.prevent="{{ expanded_var_name }} = {{ ep_id|tojson }}"
@@ -54,15 +62,6 @@
                 {% endif %}
             </div>
 
-            {% if ep.location %}
-            <div class="md:hidden col-start-2 col-end-3" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
-                <div class="bg-[#20306C] text-white px-4 py-2">
-                    <span class="font-['Roboto'] font-medium text-[13px] leading-[16px]">
-                        {{ ep.location }}
-                    </span>
-                </div>
-            </div>
-            {% endif %}
         </div>
 
         {# ===================== MOBILE EXPANDED ===================== #}
