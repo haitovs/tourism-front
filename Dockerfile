@@ -2,7 +2,7 @@
 ARG PYTHON_VERSION=3.11
 
 # ------------------------------
-# Stage 1: build Tailwind assets (standalone CLI)
+# Stage 1: build Tailwind assets (standalone CLI, musl)
 # ------------------------------
 FROM alpine:3.20 AS assets
 WORKDIR /app
@@ -14,20 +14,20 @@ RUN apk add --no-cache curl
 COPY app/static/css ./app/static/css
 COPY app/templates   ./app/templates
 COPY app/static/js   ./app/static/js
-COPY tailwind.config.js ./  
+COPY tailwind.config.js ./ 
 
-# Download Tailwind v4 standalone binary for Linux x64 and make it executable.
-# If your server arch is ARM64, replace linux-x64 with linux-arm64.
+# ✅ Download the musl build for Alpine (not the glibc one)
 RUN curl -fsSL -o /usr/local/bin/tailwindcss \
-      https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64 \
-  && chmod +x /usr/local/bin/tailwindcss
+      https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64-musl \
+  && chmod +x /usr/local/bin/tailwindcss \
+  && /usr/local/bin/tailwindcss --help >/dev/null
 
 # Build CSS (use config if present)
 RUN if [ -f tailwind.config.js ]; then \
-      tailwindcss -c tailwind.config.js \
+      /usr/local/bin/tailwindcss -c tailwind.config.js \
         -i app/static/css/tw.css -o app/static/css/tw.build.css --minify ; \
     else \
-      tailwindcss \
+      /usr/local/bin/tailwindcss \
         -i app/static/css/tw.css -o app/static/css/tw.build.css --minify ; \
     fi
 
