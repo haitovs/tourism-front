@@ -8,22 +8,21 @@ FROM node:20-alpine AS assets
 WORKDIR /app
 ENV NODE_ENV=production BROWSERSLIST_IGNORE_OLD_DATA=1
 
-# Files Tailwind needs (tw.css uses @source; tailwind.config.js optional)
+# Copy the files Tailwind needs
 COPY app/static/css ./app/static/css
 COPY app/templates   ./app/templates
 COPY app/static/js   ./app/static/js
-COPY tailwind.config.js ./  
+COPY tailwind.config.js ./ 
 
-# Install Tailwind locally and run the CLI via node (avoids .bin/npx issues)
-RUN npm init -y >/dev/null 2>&1 || true
-RUN npm install --no-audit --no-fund tailwindcss@latest
+# Install Tailwind v4 CLI globally and call it directly
+RUN npm install -g --no-audit --no-fund tailwindcss@latest
 
-# Build CSS (uses config if present)
+# Build (use config if present)
 RUN if [ -f tailwind.config.js ]; then \
-      node ./node_modules/tailwindcss/lib/cli.js -c tailwind.config.js \
+      tailwindcss -c tailwind.config.js \
         -i app/static/css/tw.css -o app/static/css/tw.build.css --minify ; \
     else \
-      node ./node_modules/tailwindcss/lib/cli.js \
+      tailwindcss \
         -i app/static/css/tw.css -o app/static/css/tw.build.css --minify ; \
     fi
 
@@ -52,10 +51,10 @@ RUN pip install --no-cache-dir --upgrade pip \
 # Copy project
 COPY . .
 
-# Overwrite Tailwind build with freshly compiled asset
+# Overwrite with freshly built Tailwind CSS
 COPY --from=assets /app/app/static/css/tw.build.css app/static/css/tw.build.css
 
-# Non-root user (UID 1000 for consistency)
+# Non-root runtime user
 RUN useradd --create-home --uid 1000 appuser
 USER appuser
 
