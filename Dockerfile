@@ -2,22 +2,27 @@
 ARG PYTHON_VERSION=3.11
 
 # ------------------------------
-# Stage 1: build Tailwind assets (Tailwind v4)
+# Stage 1: build Tailwind assets (standalone CLI)
 # ------------------------------
-FROM node:20-alpine AS assets
+FROM alpine:3.20 AS assets
 WORKDIR /app
-ENV NODE_ENV=production BROWSERSLIST_IGNORE_OLD_DATA=1
 
-# Copy the files Tailwind needs
+# Tools to download the CLI
+RUN apk add --no-cache curl
+
+# Copy only what Tailwind needs to scan/build
 COPY app/static/css ./app/static/css
 COPY app/templates   ./app/templates
 COPY app/static/js   ./app/static/js
-COPY tailwind.config.js ./ 
+COPY tailwind.config.js ./  
 
-# Install Tailwind v4 CLI globally and call it directly
-RUN npm install -g --no-audit --no-fund tailwindcss@latest
+# Download Tailwind v4 standalone binary for Linux x64 and make it executable.
+# If your server arch is ARM64, replace linux-x64 with linux-arm64.
+RUN curl -fsSL -o /usr/local/bin/tailwindcss \
+      https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64 \
+  && chmod +x /usr/local/bin/tailwindcss
 
-# Build (use config if present)
+# Build CSS (use config if present)
 RUN if [ -f tailwind.config.js ]; then \
       tailwindcss -c tailwind.config.js \
         -i app/static/css/tw.css -o app/static/css/tw.build.css --minify ; \
