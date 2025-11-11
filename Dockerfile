@@ -10,26 +10,23 @@ ENV NODE_ENV=production \
     BROWSERSLIST_IGNORE_OLD_DATA=1
 
 # Copy what Tailwind needs
-# - tw.css (v4 syntax) drives the build
-# - templates/js are scanned (via @source in tw.css or via config)
-# - tailwind.config.js is optional; used if present (for safelist etc.)
 COPY app/static/css ./app/static/css
 COPY app/templates   ./app/templates
 COPY app/static/js   ./app/static/js
-COPY tailwind.config.js ./  
+COPY tailwind.config.js ./ 
 
-# Install Tailwind v4 CLI (no PostCSS needed)
-RUN npm install tailwindcss@latest
+# Ensure a local install and use the local binary (avoid npx ambiguity)
+RUN npm init -y >/dev/null 2>&1 || true
+RUN npm install --no-audit --no-fund tailwindcss@latest
 
-# Build CSS
-# Use your tailwind.config.js if it exists, else build without a config
+# Build CSS (use config if present)
 RUN if [ -f tailwind.config.js ]; then \
-      npx tailwindcss -c tailwind.config.js \
+      ./node_modules/.bin/tailwindcss -c tailwind.config.js \
         -i app/static/css/tw.css \
         -o app/static/css/tw.build.css \
         --minify ; \
     else \
-      npx tailwindcss \
+      ./node_modules/.bin/tailwindcss \
         -i app/static/css/tw.css \
         -o app/static/css/tw.build.css \
         --minify ; \

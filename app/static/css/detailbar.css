@@ -1,6 +1,9 @@
 /* === DETAILBAR (site header) === */
 
 /* Height for the top info row inside the header */
+:root {
+    --detailbar-mobile-offset: clamp(36px, 11vw, 96px);
+}
 .detailbar .row {
     height: 70px; /* matches figma top bar; adjust if needed */
 }
@@ -63,4 +66,199 @@
 }
 #site-header.header--scrolled {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* === Mobile drawer === */
+.detailbar-mobile-toggle {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 0 14px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.08);
+    color: #f4f4f2;
+    font: 600 0.875rem/1 Roboto, system-ui, sans-serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.detailbar-mobile-toggle__label {
+    display: block;
+}
+.detailbar-mobile-toggle__icon {
+    width: 22px;
+    height: 22px;
+}
+.detailbar-mobile-toggle:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+.detailbar-mobile-toggle.is-active {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+.detailbar-mobile-layer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 99999;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    overflow: hidden;
+}
+.detailbar-mobile-layer.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+.detailbar-mobile-scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 18, 10, 0.65);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+.detailbar-mobile-layer.is-active .detailbar-mobile-scrim {
+    opacity: 1;
+}
+.detailbar-mobile-drawer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    min-height: 100vh;
+    background: var(--c-surface, #f5faf2);
+    color: var(--c-primary, #0b703c);
+    box-shadow: -8px 0 30px rgba(0, 0, 0, 0.25);
+    padding: clamp(28px, 9vw, 72px) clamp(18px, 7vw, 56px) clamp(32px, 10vw, 60px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    border-radius: 0;
+    transform: translateX(100%);
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.detailbar-mobile-layer.is-active .detailbar-mobile-drawer {
+    transform: translateX(0);
+    position: fixed;
+}
+.detailbar-mobile-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+.detailbar-mobile-title {
+    font: 700 1.05rem/1.2 Montserrat, system-ui, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: inherit;
+}
+.detailbar-mobile-close {
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    border: 1px solid rgba(6, 44, 22, 0.2);
+    background: transparent;
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+.detailbar-mobile-close:hover {
+    background: rgba(6, 44, 22, 0.08);
+}
+.detailbar-mobile-close svg {
+    width: 20px;
+    height: 20px;
+}
+.detailbar-mobile-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+.detailbar-mobile-link,
+.detailbar-mobile-group-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    text-decoration: none;
+    font: 600 0.9rem/1.25 Roboto, system-ui, sans-serif;
+    color: inherit;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid rgba(6, 44, 22, 0.12);
+}
+.detailbar-mobile-link:last-child {
+    border-bottom: none;
+}
+.detailbar-mobile-link.is-active {
+    color: var(--c-text, #032814);
+}
+.detailbar-mobile-group {
+    width: 100%;
+}
+.detailbar-mobile-group-btn {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+}
+.detailbar-mobile-group-btn svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s ease;
+}
+.detailbar-mobile-group-btn.is-open svg {
+    transform: rotate(180deg);
+}
+.detailbar-mobile-sub {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.4rem 0 0.6rem 0.4rem;
+}
+.detailbar-mobile-sub-link {
+    color: rgba(3, 40, 20, 0.85);
+    font: 500 0.85rem/1.25 Roboto, system-ui, sans-serif;
+    text-decoration: none;
+    padding: 0.2rem 0;
+}
+.detailbar-mobile-sub-link:hover {
+    color: var(--c-primary, #0b703c);
+}
+
+@media (min-width: 640px) {
+    .detailbar-mobile-drawer {
+        border-radius: 20px 20px 0 0;
+        padding-top: clamp(36px, 10vw, 80px);
+    }
+}
+
+@media (max-width: 1024px) {
+    .detailbar-pill-desktop {
+        display: none;
+    }
+    .pill-rail {
+        display: none !important;
+    }
+    .detailbar-mobile-toggle {
+        display: inline-flex;
+    }
+}
+.detailbar--drawer-open .detailbar-pill-desktop {
+    display: none !important;
+}
+@media (min-width: 1025px) {
+    .detailbar-mobile-layer {
+        display: none !important;
+    }
 }

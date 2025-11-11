@@ -12,8 +12,10 @@ from starlette.templating import Jinja2Templates
 
 from app.core.settings import settings
 
-_LOCALES_DIR = Path(__file__).parent.parent / "locales"
-_TEMPLATES_DIR = Path(__file__).parent.parent / "templates"
+_BASE_DIR = Path(__file__).parent.parent
+_LOCALES_DIR = _BASE_DIR / "locales"
+_TEMPLATES_DIR = _BASE_DIR / "templates"
+_STATIC_DIR = _BASE_DIR / "static"
 _THEME_TEMPLATES_DIR = _TEMPLATES_DIR / "_themes"
 
 
@@ -60,6 +62,18 @@ def themed_name(req: Request | None, path: str) -> str:
     return resolved or path.lstrip("/")
 
 
+@lru_cache(maxsize=256)
+def _resolve_theme_asset(slug: str | None, rel_path: str) -> str | None:
+    if not slug:
+        return None
+    sub = settings.THEME_STATIC_SUBDIR.strip("/")
+    rel = rel_path.lstrip("/")
+    candidate = _STATIC_DIR / sub / slug / rel
+    if candidate.exists():
+        return f"/static/{sub}/{slug}/{rel}"
+    return None
+
+
 @pass_context
 def site_slug(ctx) -> str:
     req = ctx.get("request")
@@ -70,11 +84,11 @@ def site_slug(ctx) -> str:
 @pass_context
 def theme(ctx, path: str) -> str:
     slug = site_slug(ctx)
-    sub = settings.THEME_STATIC_SUBDIR.strip("/")
-    p = path.lstrip("/")
-    if slug:
-        return f"/static/{sub}/{slug}/{p}"
-    return f"/static/{p}"
+    rel = path.lstrip("/")
+    themed_asset = _resolve_theme_asset(slug, rel)
+    if themed_asset:
+        return themed_asset
+    return f"/static/{rel}"
 
 
 @pass_context

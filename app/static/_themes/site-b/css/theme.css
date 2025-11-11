@@ -105,10 +105,10 @@
 /* To Top button style */
 #to-top.sb-top {
     position: fixed;
-    right: clamp(16px, 3vw, 24px);
-    bottom: clamp(16px, 3vw, 24px);
-    width: 50px;
-    height: 50px;
+    right: clamp(12px, 4vw, 28px);
+    bottom: clamp(12px, 4vw, 28px);
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     background: var(--site-primary);
     display: block;
@@ -116,12 +116,46 @@
     z-index: 50;
     cursor: pointer;
 }
+#to-top.sb-top svg {
+    width: 30px;
+    height: 30px;
+}
 #to-top.sb-top[data-show="true"] {
     display: grid;
 }
 #to-top.sb-top:focus-visible {
     outline: 2px solid #f0f0f0;
     outline-offset: 3px;
+}
+@media (max-width: 768px) {
+    #to-top.sb-top {
+        width: 48px;
+        height: 48px;
+    }
+    #to-top.sb-top svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+@media (max-width: 520px) {
+    #to-top.sb-top {
+        width: 40px;
+        height: 40px;
+    }
+    #to-top.sb-top svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+@media (max-width: 380px) {
+    #to-top.sb-top {
+        width: 34px;
+        height: 34px;
+    }
+    #to-top.sb-top svg {
+        width: 18px;
+        height: 18px;
+    }
 }
 
 /* Site-B: consistent vertical rhythm for main sections */

@@ -1,0 +1,124 @@
+<!-- Global mobile navigation overlay -->
+<div class="detailbar-mobile-layer" role="dialog" aria-modal="true" aria-labelledby="detailbar-mobile-title"
+    x-cloak :class="{ 'is-active': mobileOpen }" :aria-hidden="(!mobileOpen).toString()"
+    @keydown.escape.window="mobileOpen = false">
+    <div class="detailbar-mobile-scrim" aria-hidden="true" @click="mobileOpen = false"></div>
+    <nav id="detailbar-mobile-nav" class="detailbar-mobile-drawer" aria-label="Mobile navigation"
+        :aria-hidden="(!mobileOpen).toString()" @click.stop>
+        <div class="detailbar-mobile-head">
+            <span id="detailbar-mobile-title" class="detailbar-mobile-title">Menu</span>
+            <button type="button" class="detailbar-mobile-close" aria-label="Close navigation"
+                @click="mobileOpen = false">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M6 6l12 12M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="detailbar-mobile-menu">
+            <a href="/" @click="mobileOpen = false"
+                class="detailbar-mobile-link {{ 'is-active' if p == '/' else '' }}">{{ t('nav.home') }}</a>
+
+            {% set about_menu_id = 'detailbar-mobile-about' %}
+            <div class="detailbar-mobile-group" x-data="{ open:false }">
+                <button type="button" class="detailbar-mobile-group-btn"
+                    :class="{ 'is-open': open }" @click="open = !open" :aria-expanded="open.toString()"
+                    aria-controls="{{ about_menu_id }}">
+                    <span>{{ t('nav.about_event') }}</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <div id="{{ about_menu_id }}" class="detailbar-mobile-sub" x-show="open" x-collapse>
+                    <a href="/about-the-forum" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
+                        {{ t('nav.about_forum') }}
+                    </a>
+                    <a href="/agenda" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
+                        {{ t('nav.agenda') }}
+                    </a>
+                    <a href="/speakers" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
+                        {{ t('nav.speakers') }}
+                    </a>
+                    <a href="/meeting-request" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
+                        {{ t('nav.meeting_request') }}
+                    </a>
+                    <a href="/about-the-expo" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
+                        {{ t('nav.about_expo') }}
+                    </a>
+                    <a href="/official-support" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
+                        {{ t('nav.official_support') }}
+                    </a>
+                    <a href="/brochure" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
+                        {{ t('nav.brochure') }}
+                    </a>
+                </div>
+            </div>
+
+            {% set participants_menu_id = 'detailbar-mobile-participants' %}
+            <div class="detailbar-mobile-group" x-data="{ open:false }">
+                <button type="button" class="detailbar-mobile-group-btn"
+                    :class="{ 'is-open': open }" @click="open = !open" :aria-expanded="open.toString()"
+                    aria-controls="{{ participants_menu_id }}">
+                    <span>{{ t('nav.participants') }}</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <div id="{{ participants_menu_id }}" class="detailbar-mobile-sub" x-show="open" x-collapse>
+                    <a href="/participants{% if q %}?q={{ q|urlencode }}{% endif %}" @click="mobileOpen = false"
+                        class="detailbar-mobile-sub-link">
+                        {{ t('nav.all') }}
+                    </a>
+                    <a href="/participants?role=expo{% if q %}&q={{ q|urlencode }}{% endif %}"
+                        @click="mobileOpen = false" class="detailbar-mobile-sub-link">
+                        {{ t('nav.expo') }}
+                    </a>
+                    <a href="/participants?role=forum{% if q %}&q={{ q|urlencode }}{% endif %}"
+                        @click="mobileOpen = false" class="detailbar-mobile-sub-link">
+                        {{ t('nav.forum') }}
+                    </a>
+                </div>
+            </div>
+
+            <a href="/news" @click="mobileOpen = false"
+                class="detailbar-mobile-link {{ 'is-active' if p.startswith('/news') else '' }}">
+                {{ t('nav.news') }}
+            </a>
+
+            {% set travel_menu_id = 'detailbar-mobile-travel' %}
+            <div class="detailbar-mobile-group" x-data="{ open:false }">
+                <button type="button" class="detailbar-mobile-group-btn"
+                    :class="{ 'is-open': open }" @click="open = !open" :aria-expanded="open.toString()"
+                    aria-controls="{{ travel_menu_id }}">
+                    <span>{{ t('nav.travel_guide') }}</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <div id="{{ travel_menu_id }}" class="detailbar-mobile-sub" x-show="open" x-collapse>
+                    <a href="/visa" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
+                        {{ t('nav.apply_visa') }}
+                    </a>
+                    <a href="/hotel" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
+                        {{ t('nav.book_hotel') }}
+                    </a>
+                    <a href="/flight" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
+                        {{ t('nav.book_flight') }}
+                    </a>
+                    <a href="/faq" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
+                        {{ t('nav.faq') }}
+                    </a>
+                </div>
+            </div>
+
+            <a href="/registration" @click="mobileOpen = false"
+                class="detailbar-mobile-link {{ 'is-active' if p.startswith('/registration') else '' }}">
+                {{ t('nav.registration') }}
+            </a>
+        </div>
+    </nav>
+</div>

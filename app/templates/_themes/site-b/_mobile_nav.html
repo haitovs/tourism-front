@@ -1,0 +1,100 @@
+<!-- Site-B mobile navigation overlay -->
+<div class="sb-mobile-layer" role="dialog" aria-modal="true" aria-labelledby="sb-mobile-title" x-cloak
+    :class="{ 'is-active': mobileOpen }" :aria-hidden="(!mobileOpen).toString()" @keydown.escape.window="mobileOpen = false">
+    <div class="sb-mobile-scrim" aria-hidden="true" @click="mobileOpen = false"></div>
+    <nav id="sb-mobile-nav" class="sb-mobile-drawer" aria-label="{{ t('siteb.detailbar.aria.primary_nav') }}"
+        :aria-hidden="(!mobileOpen).toString()" @click.stop>
+        <div class="sb-mobile-head">
+            <span id="sb-mobile-title" class="sb-mobile-title">Menu</span>
+            <button type="button" class="sb-mobile-close" aria-label="Close navigation"
+                @click="mobileOpen = false">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M6 6l12 12M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="sb-mobile-menu">
+            {{ sb_link('/', t('nav.home'), 'sb-mobile-link' + (' is-active' if p == '/' else ''), 'menuitem',
+            '@click=\"mobileOpen=false\"') }}
+
+            {% set sb_about_id = 'sb-mobile-about' %}
+            <div class="sb-mobile-group" x-data="{ open:false }">
+                <button type="button" class="sb-mobile-group-btn" :class="{ 'is-open': open }"
+                    @click="open = !open" :aria-expanded="open.toString()" aria-controls="{{ sb_about_id }}">
+                    <span>{{ t('nav.about_event') }}</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <div id="{{ sb_about_id }}" class="sb-mobile-sub" x-show="open" x-collapse>
+                    {{ sb_link('/about-the-forum', t('nav.about_forum'), 'sb-mobile-sub-link', None,
+                    '@click=\"mobileOpen=false\"') }}
+                    {{ sb_link('/agenda', t('nav.agenda'), 'sb-mobile-sub-link', None,
+                    '@click=\"mobileOpen=false\"') }}
+                    {{ sb_link('/speakers', t('nav.speakers'), 'sb-mobile-sub-link', None,
+                    '@click=\"mobileOpen=false\"') }}
+                    {{ sb_link('/meeting-request', t('nav.meeting_request'), 'sb-mobile-sub-link', None,
+                    '@click=\"mobileOpen=false\"') }}
+                    {{ sb_link('/about-the-expo', t('nav.about_expo'), 'sb-mobile-sub-link', None,
+                    '@click=\"mobileOpen=false\"') }}
+                    {{ sb_link('/official-support', t('nav.official_support'), 'sb-mobile-sub-link', None,
+                    '@click=\"mobileOpen=false\"') }}
+                    {{ sb_link('/brochure', t('nav.brochure'), 'sb-mobile-sub-link', None,
+                    '@click=\"mobileOpen=false\"') }}
+                </div>
+            </div>
+
+            {% set sb_participants_id = 'sb-mobile-participants' %}
+            <div class="sb-mobile-group" x-data="{ open:false }">
+                <button type="button" class="sb-mobile-group-btn" :class="{ 'is-open': open }"
+                    @click="open = !open" :aria-expanded="open.toString()" aria-controls="{{ sb_participants_id }}">
+                    <span>{{ t('nav.participants') }}</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <div id="{{ sb_participants_id }}" class="sb-mobile-sub" x-show="open" x-collapse>
+                    {{ sb_link('/participants', t('nav.all'), 'sb-mobile-sub-link', None,
+                    '@click=\"mobileOpen=false\"') }}
+                    {{ sb_link('/participants?role=expo', t('nav.expo'), 'sb-mobile-sub-link', None,
+                    '@click=\"mobileOpen=false\"') }}
+                    {{ sb_link('/participants?role=forum', t('nav.forum'), 'sb-mobile-sub-link', None,
+                    '@click=\"mobileOpen=false\"') }}
+                </div>
+            </div>
+
+            {{ sb_link('/news', t('nav.news'), 'sb-mobile-link' + (' is-active' if p.startswith('/news') else ''),
+            'menuitem', '@click=\"mobileOpen=false\"') }}
+
+            {% set sb_travel_id = 'sb-mobile-travel' %}
+            <div class="sb-mobile-group" x-data="{ open:false }">
+                <button type="button" class="sb-mobile-group-btn" :class="{ 'is-open': open }"
+                    @click="open = !open" :aria-expanded="open.toString()" aria-controls="{{ sb_travel_id }}">
+                    <span>{{ t('nav.travel_guide') }}</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <div id="{{ sb_travel_id }}" class="sb-mobile-sub" x-show="open" x-collapse>
+                    {{ sb_link('/visa', t('nav.apply_visa'), 'sb-mobile-sub-link', None,
+                    '@click=\"mobileOpen=false\"') }}
+                    {{ sb_link('/hotel', t('nav.book_hotel'), 'sb-mobile-sub-link', None,
+                    '@click=\"mobileOpen=false\"') }}
+                    {{ sb_link('/flight', t('nav.book_flight'), 'sb-mobile-sub-link', None,
+                    '@click=\"mobileOpen=false\"') }}
+                    {{ sb_link('/faq', t('nav.faq'), 'sb-mobile-sub-link', None,
+                    '@click=\"mobileOpen=false\"') }}
+                </div>
+            </div>
+
+            {{ sb_link('/registration', t('nav.registration'),
+            'sb-mobile-link' + (' is-active' if p.startswith('/registration') else ''), 'menuitem',
+            '@click=\"mobileOpen=false\"') }}
+        </div>
+    </nav>
+</div>

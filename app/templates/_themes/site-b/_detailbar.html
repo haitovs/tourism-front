@@ -12,8 +12,9 @@
 '/registration',
 '/register'
 ] %}
+{% set p = _path %}
 
-{% macro sb_link(href, label, classes='', role=None) %}
+{% macro sb_link(href, label, classes='', role=None, extra_attrs='') %}
 {% set disabled = href in _coming_soon_paths %}
 {% set class_list = classes.split() if classes else [] %}
 {% if disabled %}
@@ -24,7 +25,8 @@
     <span class="sb-link-coming">{{ t('siteb.nav.coming_soon_badge') }}</span>
 </span>
 {% else %}
-<a href="{{ href }}" class="{{ ' '.join(class_list) }}" {% if role %}role="{{ role }}" {% endif %}>{{ label }}</a>
+<a href="{{ href }}" class="{{ ' '.join(class_list) }}" {% if role %}role="{{ role }}" {% endif %}
+    {{ extra_attrs|safe }}>{{ label }}</a>
 {% endif %}
 {% endmacro %}
 
@@ -34,7 +36,16 @@
     }
 </style>
 
-<header id="site-header" class="sb-detailbar shadow-soft">
+<header id="site-header" class="sb-detailbar shadow-soft" x-data="{
+        mobileOpen:false,
+        init() {
+            const closeOnWide = () => {
+                if (window.innerWidth >= 1024 && this.mobileOpen) this.mobileOpen = false;
+            };
+            window.addEventListener('resize', closeOnWide);
+        }
+    }" :class="{ 'sb-detailbar--drawer-open': mobileOpen }"
+    x-effect="document.body.style.overflow = mobileOpen ? 'hidden' : ''">
     <div class="sb-bar-inner">
 
         <!-- Left: Logo -->
@@ -206,9 +217,20 @@
                     {% endfor %}
                 </div>
             </div>
+
+            <button type="button" class="sb-mobile-toggle" :class="{ 'is-active': mobileOpen }"
+                aria-controls="sb-mobile-nav" aria-label="Toggle navigation"
+                :aria-expanded="mobileOpen.toString()" @click="mobileOpen = !mobileOpen">
+                <span class="sb-mobile-toggle__label">Menu</span>
+                <svg class="sb-mobile-toggle__icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
         </div>
 
     </div>
+    {% include themed('_mobile_nav.html') %}
 </header>
 
 <script>

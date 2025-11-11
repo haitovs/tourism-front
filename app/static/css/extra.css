@@ -28,6 +28,11 @@
     --site-divider: rgba(0, 122, 61, 0.25);
 }
 
+html,
+body {
+    overflow-x: hidden;
+}
+
 /* soft shadow utility */
 .shadow-soft {
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
@@ -199,10 +204,10 @@
 /* === Scroll-to-top floating button === */
 #to-top {
     position: fixed;
-    right: 24px;
-    bottom: 24px;
-    width: 70px;
-    height: 70px;
+    right: clamp(12px, 4vw, 28px);
+    bottom: clamp(12px, 4vw, 28px);
+    width: 64px;
+    height: 64px;
     border-radius: 9999px;
     background: #ec233c;
     color: var(--c-bg);
@@ -229,19 +234,37 @@
     outline-offset: 3px;
 }
 #to-top svg {
-    width: 45px;
-    height: 45px;
+    width: 34px;
+    height: 34px;
 }
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     #to-top {
-        width: 56px;
-        height: 56px;
-        right: 16px;
-        bottom: 16px;
+        width: 54px;
+        height: 54px;
     }
     #to-top svg {
+        width: 28px;
+        height: 28px;
+    }
+}
+@media (max-width: 520px) {
+    #to-top {
+        width: 46px;
+        height: 46px;
+    }
+    #to-top svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+@media (max-width: 380px) {
+    #to-top {
         width: 36px;
         height: 36px;
+    }
+    #to-top svg {
+        width: 20px;
+        height: 20px;
     }
 }
 @media (prefers-reduced-motion: reduce) {

@@ -2,8 +2,18 @@
 {% set _req = request if request is defined else None %}
 {% set _path = _path if _path is defined else (_req.url.path if _req else '/') %}
 {% set _params = _params if _params is defined else (_req.query_params if _req else {}) %}
+{% set q = _params.get('q', '') if _params is not none else '' %}
 
-<header id="site-header" class="detailbar relative z-detail" x-data="{ langOpen:false, mobileOpen:false }">
+<header id="site-header" class="detailbar relative z-detail" x-data="{
+        mobileOpen:false,
+        init() {
+            const closeOnWide = () => {
+                if (window.innerWidth >= 1024 && this.mobileOpen) this.mobileOpen = false;
+            };
+            window.addEventListener('resize', closeOnWide);
+        }
+    }" :class="{ 'detailbar--drawer-open': mobileOpen }"
+    x-effect="document.body.style.overflow = mobileOpen ? 'hidden' : ''">
     <div class="max-w-[var(--container)] mx-auto px-4 row flex items-center justify-between gap-2 sm:gap-4">
         <!-- left: logo -->
         <div class="flex items-center">
@@ -91,12 +101,22 @@
                 <img src="/static/img/detailbar/ic-user.svg"
                     class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-md hover:bg-white/10" alt="User" />
             </a>
+
+            <button type="button" class="detailbar-mobile-toggle" :class="{ 'is-active': mobileOpen }"
+                aria-controls="detailbar-mobile-nav" aria-label="Toggle navigation"
+                :aria-expanded="mobileOpen.toString()" @click="mobileOpen = !mobileOpen">
+                <span class="detailbar-mobile-toggle__label">Menu</span>
+                <svg class="detailbar-mobile-toggle__icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
         </div>
     </div>
 
     <!-- NavPill -->
-    {% set p = request.url.path %}
-    <div class="pill-rail">
+    {% set p = _path %}
+    <div class="pill-rail detailbar-pill-desktop">
         <nav class="navpill navpill--mask px-4 md:px-6">
             <ul class="flex flex-nowrap items-center gap-3 md:gap-6 overflow-x-auto no-scrollbar
                font-['Roboto'] font-bold
@@ -199,4 +219,6 @@
             </ul>
         </nav>
     </div>
+
+    {% include '_mobile_nav.html' %}
 </header>
