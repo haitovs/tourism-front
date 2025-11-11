@@ -6,30 +6,25 @@ ARG PYTHON_VERSION=3.11
 # ------------------------------
 FROM node:20-alpine AS assets
 WORKDIR /app
-ENV NODE_ENV=production \
-    BROWSERSLIST_IGNORE_OLD_DATA=1
+ENV NODE_ENV=production BROWSERSLIST_IGNORE_OLD_DATA=1
 
-# Copy what Tailwind needs
+# Files Tailwind needs (tw.css uses @source; tailwind.config.js optional)
 COPY app/static/css ./app/static/css
 COPY app/templates   ./app/templates
 COPY app/static/js   ./app/static/js
-COPY tailwind.config.js ./ 
+COPY tailwind.config.js ./  
 
-# Ensure a local install and use the local binary (avoid npx ambiguity)
+# Install Tailwind locally and run the CLI via node (avoids .bin/npx issues)
 RUN npm init -y >/dev/null 2>&1 || true
 RUN npm install --no-audit --no-fund tailwindcss@latest
 
-# Build CSS (use config if present)
+# Build CSS (uses config if present)
 RUN if [ -f tailwind.config.js ]; then \
-      ./node_modules/.bin/tailwindcss -c tailwind.config.js \
-        -i app/static/css/tw.css \
-        -o app/static/css/tw.build.css \
-        --minify ; \
+      node ./node_modules/tailwindcss/lib/cli.js -c tailwind.config.js \
+        -i app/static/css/tw.css -o app/static/css/tw.build.css --minify ; \
     else \
-      ./node_modules/.bin/tailwindcss \
-        -i app/static/css/tw.css \
-        -o app/static/css/tw.build.css \
-        --minify ; \
+      node ./node_modules/tailwindcss/lib/cli.js \
+        -i app/static/css/tw.css -o app/static/css/tw.build.css --minify ; \
     fi
 
 # ------------------------------
