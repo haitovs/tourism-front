@@ -10,8 +10,11 @@ from fastapi import Request
 
 from app.core.http import api_get
 from app.core.settings import settings
+from app.utils.timed_cache import TimedCache
 
 _bullet_like = re.compile(r"(\S)\s-\s+")
+_LIST_CACHE = TimedCache(ttl_seconds=20.0)
+_DETAIL_CACHE = TimedCache(ttl_seconds=30.0)
 
 
 def normalize_markdown(md_text: str) -> str:
@@ -129,6 +132,11 @@ async def list_home_sectors(
     import httpx
     log = logging.getLogger("services.expo_sectors")
 
+    cache_key = f"sectors:{_site_cache_key(req)}:{limit}:{latest_first}:{site_id}"
+    cached = _LIST_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
     items = None
     for attempt in range(2):  # 1 try + 1 retry
         try:
@@ -155,13 +163,14 @@ async def list_home_sectors(
             pass
 
     items = items[:limit]
-
-    return [{
+    projected = [{
         "id": it.get("id"),
         "header": it.get("header") or "",
         "description": it.get("description") or "",
         "logo_url": _resolve_logo_url(it.get("logo")),
     } for it in items]
+    _LIST_CACHE.set(cache_key, projected)
+    return projected
 
 
 async def get_sector(req: Request, sector_id: int, site_id: Optional[int] = None) -> Optional[dict]:
@@ -170,6 +179,11 @@ async def get_sector(req: Request, sector_id: int, site_id: Optional[int] = None
 
     import httpx
     log = logging.getLogger("services.expo_sectors")
+
+    cache_key = f"sector:{_site_cache_key(req)}:{sector_id}:{site_id}"
+    cached = _DETAIL_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
 
     it = None
     for attempt in range(2):
@@ -202,7 +216,7 @@ async def get_sector(req: Request, sector_id: int, site_id: Optional[int] = None
     images_hero = all_images[:3]
     images_rest = all_images[3:]
 
-    return {
+    result = {
         "id": it.get("id"),
         "header": header,
         "subtitle": None,
@@ -217,3 +231,13 @@ async def get_sector(req: Request, sector_id: int, site_id: Optional[int] = None
         "points_left": None,
         "points_right": None,
     }
+    _DETAIL_CACHE.set(cache_key, result)
+    return result
+def _site_cache_key(req: Request | None) -> str:
+    if req is None:
+        return "0"
+    site = getattr(getattr(req, "state", None), "site", None)
+    sid = getattr(site, "id", None) or getattr(settings, "FRONT_SITE_ID", 0)
+    slug = getattr(site, "slug", None) or getattr(settings, "FRONT_SITE_SLUG", "")
+    lang = getattr(getattr(req, "state", None), "lang", settings.DEFAULT_LANG)
+    return f"{sid}:{slug}:{lang}"

@@ -35,6 +35,19 @@ def _parse_site_map(raw: str) -> dict[str, Tuple[str, int]]:
     return out
 
 
+_SITE_MAP_CACHE: tuple[str, dict[str, Tuple[str, int]]] = ("", {})
+
+
+def _current_site_map() -> dict[str, Tuple[str, int]]:
+    raw = settings.SITE_MAP_RAW or ""
+    cached_raw, cached_map = _SITE_MAP_CACHE
+    if raw == cached_raw and cached_map:
+        return cached_map
+    parsed = _parse_site_map(raw)
+    globals()["_SITE_MAP_CACHE"] = (raw, parsed)
+    return parsed
+
+
 def _request_host(request: Request) -> str:
     fwd = request.headers.get("x-forwarded-host") or request.headers.get("forwarded")
     if fwd and "host=" in fwd.lower():
@@ -56,7 +69,7 @@ class SiteResolverMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next):
         host = _request_host(request)
-        site_map = _parse_site_map(settings.SITE_MAP_RAW)
+        site_map = _current_site_map()
 
         slug, sid = None, None
         if host in site_map:

@@ -106,6 +106,11 @@ async def home(req: Request):
     deadline_dt = timer_srv.get_deadline_from_settings(settings)
     timer_ctx = timer_srv.build_timer_context(deadline_dt)
 
+    sponsors_bundle_task = create_task(
+        sponsor_srv.get_homepage_bundle(lang=lang, site_id=site_id, max_top_items=5)
+    )
+    stats_task = create_task(stats_srv.get_statistics(site_id=site_id))
+
     # async fetches — use site-aware limits
     sectors_task = create_task(sectors_srv.list_home_sectors(req, limit=limits["sectors_fetch"], latest_first=True))
     news_task = create_task(news_srv.get_latest_news(req, limit=limits["news"]))
@@ -147,13 +152,27 @@ async def home(req: Request):
     participants_forum = [p for p in participants_all if (p.get("role") in {"forum", "both"})][:limits["participants_forum"]]
     participants_both = [p for p in participants_all if p.get("role") == "both"][:limits["participants_both"]]
 
-    sponsors_top = sponsor_srv.get_top_sponsors(lang=lang, site_id=site_id)
-    sponsors_top_flat = sponsor_srv.get_top_sponsors_flat(lang=lang, site_id=site_id, max_items=5)
-    sponsors_top_view = sponsor_srv.build_top_sponsors_view(lang=lang, site_id=site_id, max_items=5)
-    gold = sponsor_srv.list_all_sponsors_by_tier(tier="gold", lang=lang, site_id=site_id)
-    silver = sponsor_srv.list_all_sponsors_by_tier(tier="silver", lang=lang, site_id=site_id)
-    bronze = sponsor_srv.list_all_sponsors_by_tier(tier="bronze", lang=lang, site_id=site_id)
-    stats = stats_srv.get_statistics(site_id=site_id)
+    def _empty_top():
+        return {t: [] for t in ("premier", "general", "diamond", "platinum")}
+
+    try:
+        sponsors_bundle = await sponsors_bundle_task
+    except Exception as exc:
+        log.warning("home(): sponsors bundle failed: %r", exc)
+        sponsors_bundle = {
+            "sponsors_top": _empty_top(),
+            "sponsors_top_flat": {"items": [], "count": 0},
+            "sponsors_top_view": {"items": [], "count": 0, "layout": "empty", "max": 5},
+            "gold": {"items": [], "tier": "gold", "count": 0, "layout": "empty", "rows": [], "marquee_rows": []},
+            "silver": {"items": [], "tier": "silver", "count": 0, "layout": "empty", "rows": [], "marquee_rows": []},
+            "bronze": {"items": [], "tier": "bronze", "count": 0, "layout": "empty", "rows": [], "marquee_rows": []},
+        }
+
+    try:
+        stats = await stats_task
+    except Exception as exc:
+        log.warning("home(): statistics failed: %r", exc)
+        stats = {"episodes": 0, "delegates": 0, "speakers": 0, "companies": 0}
 
     ctx = {
         "request": req,
@@ -161,12 +180,12 @@ async def home(req: Request):
         "settings": settings,
 
         # sponsors/statistics
-        "sponsors_top": sponsors_top,
-        "sponsors_top_flat": sponsors_top_flat,
-        "sponsors_top_view": sponsors_top_view,
-        "gold": gold,
-        "silver": silver,
-        "bronze": bronze,
+        "sponsors_top": sponsors_bundle.get("sponsors_top", _empty_top()),
+        "sponsors_top_flat": sponsors_bundle.get("sponsors_top_flat", {"items": [], "count": 0}),
+        "sponsors_top_view": sponsors_bundle.get("sponsors_top_view", {"items": [], "count": 0, "layout": "empty"}),
+        "gold": sponsors_bundle.get("gold", {"items": [], "tier": "gold", "count": 0, "layout": "empty"}),
+        "silver": sponsors_bundle.get("silver", {"items": [], "tier": "silver", "count": 0, "layout": "empty"}),
+        "bronze": sponsors_bundle.get("bronze", {"items": [], "tier": "bronze", "count": 0, "layout": "empty"}),
         "stats": stats,
 
         # async results (flat + {items:[…]} for theme compatibility)

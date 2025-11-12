@@ -10,8 +10,11 @@ from fastapi import Request
 
 from app.core.http import abs_media, api_get
 from app.core.settings import settings
+from app.utils.timed_cache import TimedCache
 
 _bullet_like = re.compile(r"(\S)\s-\s+")
+_LIST_CACHE = TimedCache(ttl_seconds=20.0)
+_DETAIL_CACHE = TimedCache(ttl_seconds=30.0)
 
 
 def normalize_markdown(md_text: str) -> str:
@@ -115,6 +118,14 @@ def _unwrap_object(payload: Any) -> dict | None:
     return None
 
 
+def _site_cache_key(req: Request) -> str:
+    site = getattr(getattr(req, "state", None), "site", None)
+    sid = getattr(site, "id", None) or getattr(settings, "FRONT_SITE_ID", 0)
+    slug = getattr(site, "slug", None) or getattr(settings, "FRONT_SITE_SLUG", "")
+    lang = getattr(getattr(req, "state", None), "lang", settings.DEFAULT_LANG)
+    return f"{sid}:{slug}:{lang}"
+
+
 async def list_participants(
     req: Request,
     *,
@@ -130,6 +141,12 @@ async def list_participants(
     import httpx
 
     log = logging.getLogger("services.participants")
+
+    role_norm = (role or "").strip().lower()
+    cache_key = f"list:{_site_cache_key(req)}:{limit}:{offset}:{latest_first}:{role_norm}:{q or ''}"
+    cached = _LIST_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
 
     rows_raw = None
     for attempt in range(2):
@@ -150,7 +167,6 @@ async def list_participants(
 
     rows = _unwrap_collection(rows_raw or [])
 
-    role_norm = (role or "").strip().lower()
     if role_norm in {"expo", "forum", "both"}:
 
         def _role_match(rv: Optional[str]) -> bool:
@@ -187,7 +203,7 @@ async def list_participants(
             "logo_url": _resolve_logo_url(logo),
             "images": [],
         })
-    print(f"[participants] list -> {len(out)} items")
+    _LIST_CACHE.set(cache_key, out)
     return out
 
 
@@ -202,6 +218,11 @@ async def get_participant(
     import httpx
 
     log = logging.getLogger("services.participants")
+
+    cache_key = f"detail:{_site_cache_key(req)}:{participant_id}"
+    cached = _DETAIL_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
 
     raw = None
     for attempt in range(2):
@@ -238,7 +259,7 @@ async def get_participant(
     images_rest = all_images[3:]
 
     logo = r.get("logo") or r.get("logo_url") or r.get("photo")
-    return {
+    result = {
         "id": r.get("id"),
         "name": r.get("name") or "",
         "role": r.get("role"),
@@ -251,3 +272,5 @@ async def get_participant(
         "created_at": r.get("created_at"),
         "updated_at": r.get("updated_at"),
     }
+    _DETAIL_CACHE.set(cache_key, result)
+    return result

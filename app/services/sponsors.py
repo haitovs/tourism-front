@@ -1,7 +1,9 @@
 # app/services/sponsors.py
 from __future__ import annotations
 
+import asyncio
 from contextlib import contextmanager
+from functools import partial
 from typing import Generator, Literal, Optional
 from urllib.parse import urljoin
 
@@ -12,6 +14,7 @@ from sqlalchemy.orm import Session
 from app.core.db import get_db
 from app.core.settings import settings
 from app.models.sponsor_model import Sponsor, SponsorTier
+from app.utils.timed_cache import TimedCache
 
 TopTier = Literal["premier", "general", "diamond", "platinum"]
 ListTier = Literal["gold", "silver", "bronze"]
@@ -36,6 +39,8 @@ _TIER_CLASSES: dict[str, str] = {
     "diamond": "",
     "platinum": "",
 }
+
+_PROJECTED_CACHE = TimedCache(ttl_seconds=60.0)
 
 
 def tier_label(tier: str) -> str:
@@ -98,48 +103,61 @@ def _project(sp: Sponsor) -> dict:
     }
 
 
-def get_top_sponsors(
+async def _run_in_thread(fn, *args, **kwargs):
+    loop = asyncio.get_running_loop()
+    return await loop.run_in_executor(None, partial(fn, *args, **kwargs))
+
+
+def _load_projected_sync(site_id: Optional[int]) -> list[dict]:
+    with _db_session() as db:
+        stmt = select(Sponsor)
+        if site_id is not None:
+            stmt = stmt.where(Sponsor.site_id == site_id)
+        stmt = stmt.order_by(asc(Sponsor.id))
+        try:
+            rows = db.execute(stmt).scalars().all()
+        except DataError:
+            rows = []
+    return [_project(sp) for sp in rows]
+
+
+async def _load_projected_sponsors(site_id: Optional[int]) -> list[dict]:
+    cache_key = f"projected:{site_id or 'all'}"
+    cached = _PROJECTED_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+    rows = await _run_in_thread(_load_projected_sync, site_id)
+    _PROJECTED_CACHE.set(cache_key, rows)
+    return rows
+
+
+async def get_top_sponsors(
     *,
     lang: str = "en",
     site_id: Optional[int] = None,
     per_tier_limit: Optional[int] = None,
 ) -> dict[TopTier, list[dict]]:
-    import logging
-    log = logging.getLogger("services.sponsors")
     tiers: list[TopTier] = ["premier", "general", "diamond", "platinum"]
     out: dict[TopTier, list[dict]] = {t: [] for t in tiers}
-    try:
-        with _db_session() as db:
-            for t in tiers:
-                try:
-                    enum_val = SponsorTier(t)
-                except ValueError:
-                    continue
-                stmt = select(Sponsor).where(Sponsor.tier == enum_val)
-                if site_id is not None:
-                    stmt = stmt.where(Sponsor.site_id == site_id)
-                stmt = stmt.order_by(asc(Sponsor.id))
-                if per_tier_limit and per_tier_limit > 0:
-                    stmt = stmt.limit(per_tier_limit)
-                try:
-                    rows = db.execute(stmt).scalars().all()
-                except DataError:
-                    rows = []
-                out[t] = [_project(sp) for sp in rows] if rows else []
-    except Exception as e:
-        log.exception("get_top_sponsors unexpected: %r", e)
-        # out remains initialized with empty lists
+    rows = await _load_projected_sponsors(site_id)
+
+    per_limit = max(1, per_tier_limit) if per_tier_limit else None
+    for t in tiers:
+        tier_items = [sp for sp in rows if sp.get("tier") == t]
+        if per_limit:
+            tier_items = tier_items[:per_limit]
+        out[t] = tier_items
     return out
 
 
-def get_top_sponsors_flat(
+async def get_top_sponsors_flat(
     *,
     lang: str = "en",
     site_id: Optional[int] = None,
     max_items: int = 5,
 ) -> dict:
     order: list[TopTier] = ["premier", "general", "diamond", "platinum"]
-    grouped = get_top_sponsors(lang=lang, site_id=site_id)
+    grouped = await get_top_sponsors(lang=lang, site_id=site_id)
     flat: list[dict] = []
     for t in order:
         for sp in grouped.get(t, []):
@@ -149,7 +167,7 @@ def get_top_sponsors_flat(
     return {"items": flat[:max_items], "count": len(flat[:max_items])}
 
 
-def build_top_sponsors_view(
+async def build_top_sponsors_view(
     *,
     lang: str = "en",
     site_id: Optional[int] = None,
@@ -158,7 +176,7 @@ def build_top_sponsors_view(
     """
     Decides whether to show grid or marquee for top sponsors and returns only the required data.
     """
-    flat = get_top_sponsors_flat(lang=lang, site_id=site_id, max_items=max_items)
+    flat = await get_top_sponsors_flat(lang=lang, site_id=site_id, max_items=max_items)
     items = flat.get("items", [])
     count = len(items)
 
@@ -184,58 +202,28 @@ def build_top_sponsors_view(
     }
 
 
-def list_all_sponsors_by_tier(
+async def list_all_sponsors_by_tier(
     *,
     tier: ListTier,
     lang: str = "en",
     site_id: Optional[int] = None,
 ) -> dict:
-    import logging
-    log = logging.getLogger("services.sponsors")
-
-    try:
-        enum_val = SponsorTier(tier)
-    except ValueError:
-        return {
-            "items": [],
-            "tier": tier,
-            "count": 0,
-            "tier_label": tier_label(tier),
-            "tier_class": tier_css_class(tier),
-            "layout": "empty",
-            "rows": [],
-            "marquee_rows": [],
-        }
-
-    try:
-        with _db_session() as db:
-            stmt = select(Sponsor).where(Sponsor.tier == enum_val)
-            if site_id is not None:
-                stmt = stmt.where(Sponsor.site_id == site_id)
-            stmt = stmt.order_by(asc(Sponsor.id))
-            try:
-                items = db.execute(stmt).scalars().all()
-            except DataError:
-                items = []
-    except Exception as e:
-        log.exception("list_all_sponsors_by_tier unexpected: %r", e)
-        items = []
-
-    projected = [_project(sp) for sp in items]
+    rows = await _load_projected_sponsors(site_id)
+    projected = [sp for sp in rows if sp.get("tier") == tier]
     count = len(projected)
 
     if count == 0:
         layout = "empty"
-        rows: list[list[dict]] = []
+        rows_layout: list[list[dict]] = []
         marquee_rows: list[list[dict]] = []
     elif count <= 10:
         layout = "rows"
-        rows = [projected[:5], projected[5:10]]
+        rows_layout = [projected[:5], projected[5:10]]
         marquee_rows = []
     else:
         layout = "marquee"
         marquee_rows = [projected[0::2], projected[1::2]]
-        rows = []
+        rows_layout = []
 
     return {
         "items": projected,
@@ -244,7 +232,7 @@ def list_all_sponsors_by_tier(
         "tier_label": tier_label(tier),
         "tier_class": tier_css_class(tier),
         "layout": layout,
-        "rows": rows,
+        "rows": rows_layout,
         "marquee_rows": marquee_rows,
         "card_base_class": "bg-white rounded-2xl shadow p-4 h-[225px] flex flex-col items-center justify-start",
         "card_interactive_suffix": " border border-transparent transition-all duration-300 group-hover:shadow-lg group-hover:border-[var(--c-primary)]",
@@ -252,4 +240,26 @@ def list_all_sponsors_by_tier(
         "placeholder_src": "/static/img/img_placeholder.png",
         "img_w": 150,
         "img_h": 150,
+    }
+
+
+async def get_homepage_bundle(
+    *,
+    lang: str = "en",
+    site_id: Optional[int] = None,
+    max_top_items: int = 5,
+) -> dict:
+    sponsors_top = await get_top_sponsors(lang=lang, site_id=site_id)
+    sponsors_top_flat = await get_top_sponsors_flat(lang=lang, site_id=site_id, max_items=max_top_items)
+    sponsors_top_view = await build_top_sponsors_view(lang=lang, site_id=site_id, max_items=max_top_items)
+    gold = await list_all_sponsors_by_tier(tier="gold", lang=lang, site_id=site_id)
+    silver = await list_all_sponsors_by_tier(tier="silver", lang=lang, site_id=site_id)
+    bronze = await list_all_sponsors_by_tier(tier="bronze", lang=lang, site_id=site_id)
+    return {
+        "sponsors_top": sponsors_top,
+        "sponsors_top_flat": sponsors_top_flat,
+        "sponsors_top_view": sponsors_top_view,
+        "gold": gold,
+        "silver": silver,
+        "bronze": bronze,
     }

@@ -187,7 +187,10 @@ async def api_get(
 
         finally:
             dt = (time.perf_counter() - t0) * 1000
-            log.info("[HTTP] GET %s in %.1f ms", url, dt)
+            if dt >= 750:
+                log.warning("[HTTP] GET %s slow: %.1f ms", url, dt)
+            else:
+                log.debug("[HTTP] GET %s in %.1f ms", url, dt)
 
 
 async def api_post(req: Request, path: str, data: Optional[Dict[str, Any]] = None, files=None) -> Any:
