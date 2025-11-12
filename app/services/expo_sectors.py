@@ -173,17 +173,6 @@ async def list_home_sectors(
     return projected
 
 
-def _split_extended_sections(md_text: str) -> tuple[str, str]:
-    if not md_text:
-        return "", ""
-    marker = "\n---\n"
-    norm = md_text.strip()
-    if marker in norm:
-        first, rest = norm.split(marker, 1)
-        return first.strip(), rest.strip()
-    return norm, ""
-
-
 async def get_sector(req: Request, sector_id: int, site_id: Optional[int] = None) -> Optional[dict]:
     import asyncio
     import logging
@@ -221,10 +210,7 @@ async def get_sector(req: Request, sector_id: int, site_id: Optional[int] = None
     extended_md = (it.get("extended_description") or "").strip()
 
     intro_html = _first_paragraph_html(description)
-    mid_md, outro_md = _split_extended_sections(extended_md)
-    mid_html = md_to_html(mid_md) if mid_md else ""
-    outro_html = md_to_html(outro_md) if outro_md else ""
-    body_html = mid_html or outro_html
+    body_html = md_to_html(extended_md) if extended_md else ""
 
     all_images = _resolve_image_list((it.get("images") or []))
     images_hero = all_images[:3]
@@ -240,8 +226,8 @@ async def get_sector(req: Request, sector_id: int, site_id: Optional[int] = None
         "tagline": None,
         "intro_html": intro_html,
         "body_html": body_html,
-        "mid_html": mid_html,
-        "outro_html": outro_html,
+        "mid_html": None,
+        "outro_html": None,
         "images_hero": images_hero,
         "images_rest": images_rest,
         "points_left": it.get("points_left") or None,
