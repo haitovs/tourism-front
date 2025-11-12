@@ -17,11 +17,14 @@ jobs:
                   key: ${{ secrets.SSH_KEY }}
                   port: ${{ secrets.SSH_PORT || 22 }}
                   script_stop: true
-                  envs: SHA,BRANCH
+                  command_timeout: 30m
                   script: |
-                      set -Eeuo pipefail
-                      export SHA="${{ github.sha }}"
-                      export BRANCH="${{ github.ref_name }}"
+                      set -eu
+
+                      SHA="${{ github.sha }}"
+                      BRANCH="${{ github.ref_name }}"
+
+                      # Use the deploy key that exists on the server for Git fetches
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/server1_front_deploy -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new'
 
                       APP_DIR="/root/apps/tourism-front"
@@ -32,10 +35,19 @@ jobs:
                       git checkout -f "${BRANCH}"
                       git reset --hard "${SHA}"
 
-                      $DC build --pull --no-cache
-                      $DC up -d --build
+                      # Build and start containers
+                      $DC build --pull
+                      $DC up -d
 
+                      # Health probe
                       for i in 1 2 3 4 5 6; do
-                        if curl -fsS http://127.0.0.1:8081/docs >/dev/null; then echo "OK"; break; fi
-                        echo "Front not ready, retry in 5s..."; sleep 5
+                        if curl -fsS http://127.0.0.1:8081/docs >/dev/null; then
+                          echo "OK"
+                          exit 0
+                        fi
+                        echo "Front not ready, retry in 5s..."
+                        sleep 5
                       done
+
+                      echo "Health check failed"
+                      exit 1

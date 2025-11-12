@@ -1,6 +1,4 @@
 /* ---- Tailwind v4 input file ---- */
-@config "./tailwind.config.js";
-
 @import "tailwindcss";
 /* Tell Tailwind where to scan for class names (v4 style) */
 @source "./app/templates/**/*.html";
