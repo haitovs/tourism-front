@@ -58,6 +58,12 @@ async def _set_assets_version():
 app.add_middleware(SiteResolverMiddleware)
 app.add_middleware(LanguageMiddleware)
 
+
+@app.get("/healthz")
+def healthz():
+    return {"ok": True}
+
+
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 app.include_router(site_router)
