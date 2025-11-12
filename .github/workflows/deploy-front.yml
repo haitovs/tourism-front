@@ -19,12 +19,9 @@ jobs:
                   script_stop: true
                   command_timeout: 30m
                   script: |
-                      set -eu
-
-                      SHA="${{ github.sha }}"
-                      BRANCH="${{ github.ref_name }}"
-
-                      # Use the deploy key that exists on the server for Git fetches
+                      set -Eeuo pipefail
+                      export SHA="${{ github.sha }}"
+                      export BRANCH="${{ github.ref_name }}"
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/server1_front_deploy -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new'
 
                       APP_DIR="/root/apps/tourism-front"
@@ -35,19 +32,17 @@ jobs:
                       git checkout -f "${BRANCH}"
                       git reset --hard "${SHA}"
 
-                      # Build and start containers
                       $DC build --pull
                       $DC up -d
 
-                      # Health probe
-                      for i in 1 2 3 4 5 6; do
-                        if curl -fsS http://127.0.0.1:8081/docs >/dev/null; then
-                          echo "OK"
-                          exit 0
+                      # Wait for the frontend container to be healthy (uses your compose healthcheck)
+                      CID=$($DC ps -q frontend)
+                      deadline=$((SECONDS + 180))
+                      while [ "$(docker inspect -f '{{.State.Health.Status}}' "$CID")" != "healthy" ]; do
+                        if [ $SECONDS -ge $deadline ]; then
+                          echo "Timed out waiting for healthcheck"; docker logs "$CID" --tail=200; exit 1
                         fi
-                        echo "Front not ready, retry in 5s..."
-                        sleep 5
+                        echo "Waiting for health..."; sleep 3
                       done
 
-                      echo "Health check failed"
-                      exit 1
+                      echo "OK"
