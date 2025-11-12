@@ -10,22 +10,20 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 
-# Small runtime deps
 RUN apt-get update \
  && apt-get install -y --no-install-recommends libpq5 curl \
  && rm -rf /var/lib/apt/lists/*
 
-# Python deps
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip \
  && pip install --no-cache-dir -r requirements.txt
 
-# Project (includes your prebuilt app/static/css/tw.build.css)
+# copy code (make sure app/static/css/tw.build.css is in repo)
 COPY . .
 
-# Run as non-root
+# run as non-root
 RUN useradd --create-home --uid 1000 appuser
 USER appuser
 
 EXPOSE 8000
-CMD ["gunicorn","app.main:app","--workers","4","--worker-class","uvicorn.workers.UvicornWorker","--bind","0.0.0.0:8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
