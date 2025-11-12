@@ -1,5 +1,7 @@
 # app/main.py
+import time
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 import httpx
 from fastapi import FastAPI
@@ -38,10 +40,21 @@ async def lifespan(app):
         await app.state.http.aclose()
 
 
-# IMPORTANT: pass lifespan here
 app = FastAPI(title=settings.APP_NAME, lifespan=lifespan)
 
-app.add_middleware(SiteResolverMiddleware)  # ADD THIS (before requests use site)
+
+@app.on_event("startup")
+async def _set_assets_version():
+    try:
+        tw = Path(__file__).parent / "static" / "css" / "tw.build.css"
+        mtime = int(tw.stat().st_mtime) if tw.exists() else int(time.time())
+        app.state.assets_v = str(mtime)
+    except Exception:
+        # fallback so base.html still has a version
+        app.state.assets_v = str(int(time.time()))
+
+
+app.add_middleware(SiteResolverMiddleware)
 app.add_middleware(LanguageMiddleware)
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")

@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     STATS_BG_IMAGE: str = "/static/img/stats_bg.png"
 
     # Stage 2 fallbacks (still used if host not mapped)
-    FRONT_SITE_ID: int = 10
+    FRONT_SITE_ID: int = 1
     FRONT_SITE_SLUG: str = ""
     THEME_STATIC_SUBDIR: str = "_themes"
 

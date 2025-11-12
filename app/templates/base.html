@@ -23,7 +23,9 @@
     <link rel="icon" type="image/x-icon" href="{{ theme('img/favicon.ico') }}" />
 
     <!-- Tailwind FIRST (Preflight + utilities) -->
-    <link rel="stylesheet" href="{{ url_for('static', path='css/tw.build.css') }}" />
+    <link rel="stylesheet"
+        href="{{ url_for('static', path='css/tw.build.css') }}?v={{ request.app.state.assets_v if request and request.app and hasattr(request.app, 'state') and hasattr(request.app.state, 'assets_v') else '1' }}">
+
 
     <!-- Base CSS (your component/layout styles) -->
     <link rel="stylesheet" href="{{ url_for('static', path='css/extra.css') }}" />
@@ -71,6 +73,7 @@
     <script defer src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.15.1/dist/cdn.min.js"></script>
 
     <!-- Splide JS -->
     <script defer src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
