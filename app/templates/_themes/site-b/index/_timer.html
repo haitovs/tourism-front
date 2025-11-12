@@ -10,12 +10,14 @@
         </div>
     </header>
 
+    {% set _site = request.state.site if request and request.state and hasattr(request.state, 'site') and request.state.site else None %}
     <!-- Alpine state (init guarded so it won't throw if widget isn't present yet) -->
     <div x-data='window.timerWidget({
         apiBase: "{{ settings.BACKEND_BASE_URL }}",
         bgUrl: "{{ theme("img/timer/timer-bg.png") }}",
         logoUrl: "{{ theme("img/timer/logo.svg") }}",
-        site: "turkmen-tourism"             
+        site: {{ (site_slug() or None)|tojson }},
+        siteId: {{ (_site.id if _site and _site.id else None)|tojson }}
         })' x-init='$nextTick(()=> (typeof init==="function") && init())'>
 
         <!-- ===== DESKTOP (>=1024px) — Figma 1310×450 ===== -->

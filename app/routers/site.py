@@ -109,7 +109,7 @@ async def home(req: Request):
     sponsors_bundle_task = create_task(
         sponsor_srv.get_homepage_bundle(lang=lang, site_id=site_id, max_top_items=5)
     )
-    stats_task = create_task(stats_srv.get_statistics(site_id=site_id))
+    stats_task = create_task(stats_srv.get_statistics(req, site_id=site_id))
 
     # async fetches — use site-aware limits
     sectors_task = create_task(sectors_srv.list_home_sectors(req, limit=limits["sectors_fetch"], latest_first=True))

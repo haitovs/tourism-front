@@ -14,11 +14,14 @@
         </h2>
     </header>
 
+    {% set _site = request.state.site if request and request.state and hasattr(request.state, 'site') and request.state.site else None %}
     <!-- One Alpine instance drives BOTH -->
     <div x-data="window.timerWidget({
       apiBase: '{{ settings.BACKEND_BASE_URL }}',
       bgUrl: '{{ url_for('static', path='/img/timer/timer_bg.png') }}',
-      logoUrl: '{{ url_for('static', path='/img/timer/logo.png') }}'
+      logoUrl: '{{ url_for('static', path='/img/timer/logo.png') }}',
+      site: {{ (site_slug() or None)|tojson }},
+      siteId: {{ (_site.id if _site and _site.id else None)|tojson }}
     })" x-init="$nextTick(() => init())">
 
         <!-- ===== BIG TIMER (>=1024px) ===== -->

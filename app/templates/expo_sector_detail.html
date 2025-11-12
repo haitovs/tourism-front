@@ -70,8 +70,8 @@
         </div>
         {% endif %}
 
-        {% if sec and sec.mid_html %}
-        <div class="mt-8 text-black text-[25px] leading-[40px] font-['Roboto'] [&_p]:mb-4">{{ sec.mid_html | safe }}
+        {% if sec and (sec.mid_html or sec.body_html) %}
+        <div class="mt-8 text-black text-[25px] leading-[40px] font-['Roboto'] [&_p]:mb-4">{{ (sec.mid_html or sec.body_html) | safe }}
         </div>
         {% endif %}
 

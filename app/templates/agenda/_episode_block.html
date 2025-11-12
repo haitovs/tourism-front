@@ -36,55 +36,44 @@
         </div>
         {% endif %}
 
-        {# ===================== MOBILE COLLAPSED ===================== #}
-        <div class="md:hidden" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
+        {# ===================== MOBILE TOGGLE ===================== #}
+        <div class="md:hidden border border-[#E5E7EB] rounded-[16px] bg-white overflow-hidden">
             {% if ep.location %}
-            <div class="bg-[#007A3D] text-white px-4 py-2 rounded-t-[16px]">
+            <div class="bg-[#007A3D] text-white px-4 py-2">
                 <span class="font-['Roboto'] font-medium text-[13px] leading-[16px]">
                     {{ ep.location }}
                 </span>
             </div>
             {% endif %}
 
-            <div class="cursor-pointer select-none outline-none p-4" role="button" tabindex="0"
-                @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
-                @keydown.enter.prevent="{{ expanded_var_name }} = {{ ep_id|tojson }}"
-                @keydown.space.prevent="{{ expanded_var_name }} = {{ ep_id|tojson }}"
+            <button type="button"
+                class="w-full flex items-start gap-3 justify-between px-4 py-4 text-left cursor-pointer select-none outline-none"
+                @click="{{ expanded_var_name }} = ({{ expanded_var_name }} === {{ ep_id|tojson }}) ? null : {{ ep_id|tojson }}"
+                @keydown.enter.prevent="{{ expanded_var_name }} = ({{ expanded_var_name }} === {{ ep_id|tojson }}) ? null : {{ ep_id|tojson }}"
+                @keydown.space.prevent="{{ expanded_var_name }} = ({{ expanded_var_name }} === {{ ep_id|tojson }}) ? null : {{ ep_id|tojson }}"
                 :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'"
                 :aria-controls="'ep-panel-' + {{ ep_id|tojson }}">
-                <h3 class="font-['Montserrat'] font-semibold text-[18px] leading-[22px] text-black">
-                    {{ ep.title }}
-                </h3>
-                {% if short %}
-                <p class="mt-2 font-['Roboto'] text-[14px] leading-[18px] text-[#1E1E1E]">
-                    {{ short }}
-                </p>
-                {% endif %}
-            </div>
-
-        </div>
-
-        {# ===================== MOBILE EXPANDED ===================== #}
-        <div class="md:hidden" x-show="{{ expanded_var_name }} === {{ ep_id|tojson }}" x-collapse>
-            <section class="p-5 flex flex-col gap-6 cursor-pointer select-none" role="button" tabindex="0"
-                @click="{{ expanded_var_name }} = null" @keydown.enter.prevent="{{ expanded_var_name }} = null"
-                @keydown.space.prevent="{{ expanded_var_name }} = null"
-                :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'"
-                :id="'ep-panel-' + {{ ep_id|tojson }}">
-
-                {% if ep.location %}
-                <div class="-mx-5 -mt-5 px-5 py-3 rounded-t-[20px] bg-[#007A3D] text-white">
-                    <span class="font-['Roboto'] font-semibold text-[15px] leading-[18px]">
-                        {{ ep.location }}
-                    </span>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-['Montserrat'] font-semibold text-[18px] leading-[22px] text-black">
+                        {{ ep.title }}
+                    </h3>
+                    {% if short %}
+                    <p class="mt-2 font-['Roboto'] text-[14px] leading-[18px] text-[#1E1E1E]">
+                        {{ short }}
+                    </p>
+                    {% endif %}
                 </div>
-                {% endif %}
+                <svg viewBox="0 0 20 20" class="w-5 h-5 text-[#1E1E1E] mt-1 shrink-0 transition-transform duration-200"
+                    :class="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'rotate-180' : ''" aria-hidden="true">
+                    <path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
 
-                <h3 class="mt-3 font-['Montserrat'] font-semibold text-[20px] leading-[24px] text-black">
-                    {{ ep.title }}
-                </h3>
+            <div class="border-t border-[#E5E7EB]" x-show="{{ expanded_var_name }} === {{ ep_id|tojson }}" x-collapse
+                :id="'ep-panel-' + {{ ep_id|tojson }}">
+                <section class="px-5 pb-5 pt-4 flex flex-col gap-6">
 
-                {# Moderator #}
                 {% if mod %}
                 <div class="w-full max-w-[640px] mx-auto">
                     <div class="grid grid-cols-[96px_1fr] gap-4 items-center">
@@ -126,19 +115,16 @@
                 </div>
                 {% endif %}
 
-                {# Topic #}
                 <div class="w-full max-w-[640px] mx-auto">
                     <h4 class="font-['Montserrat'] font-semibold text-[18px] leading-[22px] text-black text-center">
                         {{ t('agenda.topic') }}
                     </h4>
                     <div class="mt-2 font-['Roboto'] text-[14px] leading-6 text-[#1E1E1E]">
                         {% if short %}<p>{{ short }}</p>{% endif %}
-                        {% if topic %}<p class="{% if short %}mt-2{% endif %} whitespace-pre-line">{{ topic }}</p>{%
-                        endif %}
+                        {% if topic %}<p class="{% if short %}mt-2{% endif %} whitespace-pre-line">{{ topic }}</p>{% endif %}
                     </div>
                 </div>
 
-                {# Speakers list #}
                 {% if _speakers %}
                 <div class="pt-2">
                     <h4 class="font-['Montserrat'] font-semibold text-[16px] leading-[20px] text-black">
@@ -166,11 +152,10 @@
                     </ul>
                 </div>
                 {% endif %}
-            </section>
+                </section>
+            </div>
         </div>
-
-
-        {# ===================== DESKTOP COLLAPSED ===================== #}
+{# ===================== DESKTOP COLLAPSED ===================== #}
         <div class="hidden md:block" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
             <header class="relative flex flex-col gap-4 xl:gap-6">
                 <div class="flex flex-wrap items-center gap-3">
@@ -380,3 +365,4 @@
     </div>
 </article>
 {%- endmacro %}
+

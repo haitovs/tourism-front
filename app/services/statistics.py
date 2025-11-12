@@ -1,84 +1,67 @@
 # app/services/statistics.py
 from __future__ import annotations
 
-import asyncio
-from contextlib import contextmanager
-from functools import partial
-from typing import Generator, Optional
+from typing import Optional
 
-from sqlalchemy import select
-from sqlalchemy.orm import Session
+from fastapi import Request
 
-from app.core.db import get_db
-from app.models.statistics_model import Statistics
+from app.core.http import api_get
 from app.utils.timed_cache import TimedCache
 
 _STATS_CACHE = TimedCache(ttl_seconds=30.0)
 
 
-@contextmanager
-def _db_session() -> Generator[Session, None, None]:
-    gen = get_db()
-    db = next(gen)
-    try:
-        yield db
-    finally:
+def _project(payload: dict | None) -> dict:
+    def _to_int(value):
         try:
-            gen.close()
+            return int(value or 0)
         except Exception:
-            pass
+            return 0
 
-
-async def _run_in_thread(fn, *args, **kwargs):
-    loop = asyncio.get_running_loop()
-    return await loop.run_in_executor(None, partial(fn, *args, **kwargs))
-
-
-def _fetch_stats_sync(site_id: Optional[int]) -> dict:
-    defaults = {
-        "episodes": 0,
-        "delegates": 0,
-        "speakers": 0,
-        "companies": 0,
+    payload = payload or {}
+    return {
+        "episodes": _to_int(payload.get("episodes") or payload.get("sessions")),
+        "delegates": _to_int(payload.get("delegates")),
+        "speakers": _to_int(payload.get("speakers")),
+        "companies": _to_int(payload.get("companies") or payload.get("participants")),
     }
-    with _db_session() as db:
-        stmt = select(Statistics)
-        if site_id is not None:
-            stmt = stmt.where(Statistics.site_id == site_id)
-        row = db.execute(stmt).scalars().first()
-        if not row:
-            return defaults
-
-        def _to_int(val):
-            try:
-                return int(val or 0)
-            except Exception:
-                return 0
-
-        return {
-            "episodes": _to_int(getattr(row, "episodes", 0)),
-            "delegates": _to_int(getattr(row, "delegates", 0)),
-            "speakers": _to_int(getattr(row, "speakers", 0)),
-            "companies": _to_int(getattr(row, "companies", 0)),
-        }
 
 
-async def get_statistics(site_id: Optional[int] = None) -> dict:
-    cache_key = f"{site_id or 'all'}"
+def _extract_row(data) -> dict:
+    if isinstance(data, dict):
+        for key in ("data", "item", "statistics"):
+            if isinstance(data.get(key), dict):
+                return data[key]
+        if isinstance(data.get("items"), list) and data["items"]:
+            return data["items"][0]
+        return data
+    if isinstance(data, list) and data:
+        return data[0]
+    return {}
+
+
+async def get_statistics(req: Request, site_id: Optional[int] = None) -> dict:
+    cache_key = f"{site_id or 'auto'}:{site_slug(req)}"
     cached = _STATS_CACHE.get(cache_key)
     if cached is not None:
         return cached
 
+    params = {}
+    if site_id is not None:
+        params["site_id"] = site_id
+
     try:
-        data = await _run_in_thread(_fetch_stats_sync, site_id)
+        resp = await api_get(req, "/statistics/", params=params or None, soft=True)
+        row = _extract_row(resp)
+        projected = _project(row)
     except Exception:
-        # fall back quickly if the DB is unhappy
-        data = {
-            "episodes": 0,
-            "delegates": 0,
-            "speakers": 0,
-            "companies": 0,
-        }
-    else:
-        _STATS_CACHE.set(cache_key, data)
-    return data
+        projected = _project({})
+
+    _STATS_CACHE.set(cache_key, projected)
+    return projected
+
+
+def site_slug(req: Request) -> str:
+    site = getattr(getattr(req, "state", None), "site", None)
+    slug = getattr(site, "slug", None)
+    return slug or ""

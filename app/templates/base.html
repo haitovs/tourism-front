@@ -4,6 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    {% set _resolved_site = request.state.site if request and request.state and hasattr(request.state, 'site') and request.state.site else None %}
+    <meta name="site-slug" content="{{ site_slug() or '' }}">
+    {% if _resolved_site and _resolved_site.id %}
+    <meta name="site-id" content="{{ _resolved_site.id }}">
+    {% endif %}
     <title>{{ settings.APP_NAME }}</title>
 
     <style>
