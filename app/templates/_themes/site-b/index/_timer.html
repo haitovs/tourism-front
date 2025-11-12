@@ -10,15 +10,21 @@
         </div>
     </header>
 
-    {% set _site = request.state.site if request and request.state and hasattr(request.state, 'site') and request.state.site else None %}
+
+    {# Safe _site resolution #}
+    {% set _state = (request.state if (request is defined and request and request.state is defined) else none) %}
+    {% set _site = (_state.site if (_state is not none and _state.site is defined and _site) else none) %}
+    {# NOTE: The previous line had a common typo; correct version: #}
+    {% set _site = (_state.site if (_state is not none and _state.site is defined and _state.site) else none) %}
+
     <!-- Alpine state (init guarded so it won't throw if widget isn't present yet) -->
     <div x-data='window.timerWidget({
         apiBase: "{{ settings.BACKEND_BASE_URL }}",
         bgUrl: "{{ theme("img/timer/timer-bg.png") }}",
         logoUrl: "{{ theme("img/timer/logo.svg") }}",
-        site: {{ (site_slug() or None)|tojson }},
-        siteId: {{ (_site.id if _site and _site.id else None)|tojson }}
-        })' x-init='$nextTick(()=> (typeof init==="function") && init())'>
+        site: {{ (site_slug() if site_slug is defined else none)|tojson }},
+        siteId: {{ (_site.id if (_site is not none and _site.id is defined and _site.id) else none)|tojson }}
+      })' x-init='$nextTick(()=> (typeof init==="function") && init())'>
 
         <!-- ===== DESKTOP (>=1024px) — Figma 1310×450 ===== -->
         <div class=" hidden lg:flex w-full justify-center">

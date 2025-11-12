@@ -14,14 +14,17 @@
         </h2>
     </header>
 
-    {% set _site = request.state.site if request and request.state and hasattr(request.state, 'site') and request.state.site else None %}
+    {# Safe _site resolution #}
+    {% set _state = (request.state if (request is defined and request and request.state is defined) else none) %}
+    {% set _site = (_state.site if (_state is not none and _state.site is defined and _state.site) else none) %}
+
     <!-- One Alpine instance drives BOTH -->
     <div x-data="window.timerWidget({
       apiBase: '{{ settings.BACKEND_BASE_URL }}',
-      bgUrl: '{{ url_for('static', path='/img/timer/timer_bg.png') }}',
-      logoUrl: '{{ url_for('static', path='/img/timer/logo.png') }}',
-      site: {{ (site_slug() or None)|tojson }},
-      siteId: {{ (_site.id if _site and _site.id else None)|tojson }}
+      bgUrl: '{{ url_for('static', path='img/timer/timer_bg.png') }}',
+      logoUrl: '{{ url_for('static', path='img/timer/logo.png') }}',
+      site: {{ (site_slug() if site_slug is defined else none)|tojson }},
+      siteId: {{ (_site.id if (_site is not none and _site.id is defined and _site.id) else none)|tojson }}
     })" x-init="$nextTick(() => init())">
 
         <!-- ===== BIG TIMER (>=1024px) ===== -->
@@ -34,7 +37,7 @@
                         aria-hidden="true" />
                 </div>
 
-                <!-- Overlay (below content by z-index) -->
+                <!-- Overlay -->
                 <div class="timer-overlay"></div>
 
                 <!-- Optional darker left panel -->
@@ -54,7 +57,7 @@
                         </div>
                     </div>
 
-                    <!-- Center red bar -->
+                    <!-- Center bar -->
                     <div
                         class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[840px] h-[190px] xl:w-[922px] xl:h-[215px]">
                         <div class="w-full h-full bg-[#007A3D] rounded-[40px] flex items-center justify-center px-8">
@@ -109,7 +112,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
+
+                </div><!-- /timer-content -->
             </div><!-- /timer-wrap -->
         </div>
 

@@ -4,10 +4,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    {% set _resolved_site = request.state.site if request and request.state and hasattr(request.state, 'site') and
-    request.state.site else None %}
-    <meta name="site-slug" content="{{ site_slug() or '' }}">
-    {% if _resolved_site and _resolved_site.id %}
+
+    {# Safely pull request.state.site without Python builtins #}
+    {% set _state = (request.state if (request is defined and request and request.state is defined) else none) %}
+    {% set _resolved_site = (_state.site if (_state is not none and _state.site is defined and _state.site) else none)
+    %}
+
+    <meta name="site-slug"
+        content="{{ (site_slug() if site_slug is defined else (_resolved_site.slug if (_resolved_site is defined and _resolved_site and _resolved_site.slug is defined) else '')) }}">
+    {% if _resolved_site and _resolved_site.id is defined and _resolved_site.id %}
     <meta name="site-id" content="{{ _resolved_site.id }}">
     {% endif %}
     <title>{{ settings.APP_NAME }}</title>
@@ -18,7 +23,7 @@
         }
     </style>
 
-    <!-- Fonts (consider self-hosting to avoid css2 timeouts) -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet"
@@ -31,9 +36,7 @@
     <!-- Tailwind FIRST (Preflight + utilities) -->
     <link rel="stylesheet" href="{{ url_for('static', path='css/tw.build.css') }}?v={{ settings.ASSETS_V or '1' }}">
 
-
-
-    <!-- Base CSS (your component/layout styles) -->
+    <!-- Base CSS -->
     <link rel="stylesheet" href="{{ url_for('static', path='css/extra.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', path='css/detailbar.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', path='css/navpill.css') }}" />
@@ -41,7 +44,7 @@
     <link rel="stylesheet" href="{{ url_for('static', path='css/timer.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', path='css/sponsors.css') }}" />
 
-    <!-- Per-site overrides AFTER base (so they win) -->
+    <!-- Per-site overrides AFTER base -->
     <link rel="stylesheet" href="{{ theme('css/theme.css') }}" />
     <link rel="stylesheet" href="{{ theme('css/sponsor.css') }}" />
     <link rel="stylesheet" href="{{ theme('css/detailbar.css') }}" />
@@ -53,7 +56,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" />
 </head>
 
-<body class="flex min-h-screen flex-col bg-[var(--c-bg)] text-[var(--c-text)]" data-site="{{ site_slug() or 'main' }}">
+<body class="flex min-h-screen flex-col bg-[var(--c-bg)] text-[var(--c-text)]"
+    data-site="{{ (site_slug() if site_slug is defined else (_resolved_site.slug if (_resolved_site is defined and _resolved_site and _resolved_site.slug is defined) else 'main')) }}">
     {% include themed('_detailbar.html') %}
     <main class="flex-1">{% block content %}{% endblock %}</main>
     {% include themed('_footer.html') %}
@@ -74,7 +78,7 @@
     <script src="{{ url_for('static', path='js/countup.js') }}" defer></script>
     <script src="{{ url_for('static', path='js/participantLoader.js') }}" defer></script>
 
-    <!-- HTMX / Alpine (all deferred) -->
+    <!-- HTMX / Alpine -->
     <script defer src="https://unpkg.com/htmx.org@2.0.3"></script>
     <script defer src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
