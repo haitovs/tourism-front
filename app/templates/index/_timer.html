@@ -44,8 +44,8 @@
                     <div class="absolute left-0 top-0 h-full w-[480px] xl:w-[564px]">
                         <div class="pl-[24px] pr-[20px] pt-[16px] flex items-center gap-3 w-full">
                             <img :src="logoUrl" alt="logo" class="w-[72px] xl:w-[80px] h-auto shrink-0" />
-                            <div x-data="{ defaultEvent: {{ t('home.timer.default_event')|tojson }} }"
-                                x-text="eventName || defaultEvent"
+                            <div x-data='{ defaultEvent: {{ t("home.timer.default_event")|tojson }} }'
+                                x-text='eventName || defaultEvent'
                                 class="timer-title font-['Montserrat'] font-medium text-[20px] xl:text-[22px] leading-[26px] xl:leading-[28px] text-white pr-1"
                                 style="max-width: calc(100% - 72px - 12px - 24px - 20px)"></div>
                         </div>
