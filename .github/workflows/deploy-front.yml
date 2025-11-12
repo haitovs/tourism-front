@@ -32,7 +32,7 @@ jobs:
                       git checkout -f "${BRANCH}"
                       git reset --hard "${SHA}"
 
-                      $DC build --pull
+                      $DC build --pull --no-cache
                       $DC up -d --build
 
                       for i in 1 2 3 4 5 6; do
