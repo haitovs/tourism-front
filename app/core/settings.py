@@ -13,6 +13,8 @@ class Settings(BaseSettings):
         populate_by_name=True,
     )
 
+    ASSETS_V: str = "1"
+
     ENV: str = "dev"
     APP_NAME: str = "Expo Site"
     DATABASE_URL: str = "postgresql+psycopg2://forum_admin:admin@localhost:5432/forum_app"

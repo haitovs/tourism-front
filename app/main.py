@@ -48,10 +48,11 @@ async def _set_assets_version():
     try:
         tw = Path(__file__).parent / "static" / "css" / "tw.build.css"
         mtime = int(tw.stat().st_mtime) if tw.exists() else int(time.time())
-        app.state.assets_v = str(mtime)
+        settings.ASSETS_V = str(mtime)
+        app.state.assets_v = settings.ASSETS_V
     except Exception:
-        # fallback so base.html still has a version
-        app.state.assets_v = str(int(time.time()))
+        settings.ASSETS_V = str(int(time.time()))
+        app.state.assets_v = settings.ASSETS_V
 
 
 app.add_middleware(SiteResolverMiddleware)

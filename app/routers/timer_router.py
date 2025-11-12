@@ -39,10 +39,10 @@ async def get_active_timer(
                 site = default_slug
 
     params = {}
-    if site_id is not None:
-        params["site_id"] = site_id
-    elif site:
+    if site:
         params["site"] = site
+    elif site_id is not None:
+        params["site_id"] = site_id
 
     headers = {}
     # also forward as a header, in case backend reads X-Site-Slug
