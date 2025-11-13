@@ -4,7 +4,15 @@
     const header = document.getElementById("site-header"); // single source of truth
     if (!header) return;
 
-    let lastY = window.scrollY || window.pageYOffset;
+    const scrollRoot = document.scrollingElement || document.documentElement || document.body;
+    const getScrollY = () => {
+        if (typeof window.scrollY === "number") return window.scrollY;
+        if (typeof window.pageYOffset === "number") return window.pageYOffset;
+        if (scrollRoot && typeof scrollRoot.scrollTop === "number") return scrollRoot.scrollTop;
+        return document.body ? document.body.scrollTop : 0;
+    };
+
+    let lastY = getScrollY();
     let ticking = false;
 
     const HIDE_DELTA = 6; // how much down-movement before hide
@@ -13,7 +21,7 @@
 
     function update() {
         ticking = false;
-        const y = window.scrollY || window.pageYOffset;
+        const y = Math.max(0, getScrollY());
         const delta = y - lastY;
 
         // Fully at top: reset styles and show header
@@ -56,5 +64,6 @@
     // Init now and on changes
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", () => requestAnimationFrame(update), { passive: true });
+    document.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", () => requestAnimationFrame(update));
 })();
