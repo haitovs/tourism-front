@@ -14,27 +14,19 @@
         </h2>
     </header>
 
-    {# Safe _site resolution #}
+    {# Safe request.state.site -> _site, no hasattr #}
     {% set _state = (request.state if (request is defined and request and request.state is defined) else none) %}
     {% set _site = (_state.site if (_state is not none and _state.site is defined and _state.site) else none) %}
 
-    <!-- Alpine component (robust init + JSON-encoded values) -->
-    <div x-data="(() => {
-      const make = window.timerWidget || ((cfg) => ({
-        /* minimal fallback so UI doesn't error before widget loads */
-        isDesktop: window.innerWidth >= 1024,
-        dd: '00', hh: '00', mm: '00', ss: '00',
-        bgUrl: cfg.bgUrl, logoUrl: cfg.logoUrl, eventName: '',
-        init() {}
-      }));
-      return make({
-        apiBase: {{ settings.BACKEND_BASE_URL | tojson }},
-        bgUrl: {{ url_for('static', path='img/timer/timer_bg.png') | tojson }},
-        logoUrl: {{ url_for('static', path='img/timer/logo.png') | tojson }},
+    <!-- One Alpine instance drives BOTH -->
+    <div x-data='window.timerWidget({
+        apiBase: "{{ settings.BACKEND_BASE_URL }}",
+        bgUrl: "{{ url_for("static", path="img/timer/timer_bg.png") }}",
+        logoUrl: "{{ url_for("static", path="img/timer/logo.png") }}",
         site: {{ (site_slug() if site_slug is defined else none) | tojson }},
         siteId: {{ (_site.id if (_site is not none and _site.id is defined and _site.id) else none) | tojson }}
-      });
-    })()" x-init="$nextTick(() => { if (typeof init === 'function') init(); })">
+      })' x-init='$nextTick(() => { if (typeof init === "function") init(); })'>
+
 
         <!-- ===== BIG TIMER (>=1024px) ===== -->
         <div class="timer-big flex w-full justify-center" x-show="isDesktop" x-cloak
