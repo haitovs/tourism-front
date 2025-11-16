@@ -1,13 +1,14 @@
 {% set _coming_soon_paths = ['/register', '/registration'] %}
 {% macro footer_link(path, label) -%}
-    {%- if path in _coming_soon_paths -%}
-        <span class="sb-footer__link sb-footer__link--disabled" aria-disabled="true" title="{{ t('siteb.nav.coming_soon_hint') }}">
-            {{ label }}
-            <span class="sb-footer__badge-text">{{ t('siteb.nav.coming_soon_badge') }}</span>
-        </span>
-    {%- else -%}
-        <a class="sb-footer__link" href="{{ path }}">{{ label }}</a>
-    {%- endif -%}
+{%- if path in _coming_soon_paths -%}
+<span class="sb-footer__link sb-footer__link--disabled" aria-disabled="true"
+    title="{{ t('siteb.nav.coming_soon_hint') }}">
+    {{ label }}
+    <span class="sb-footer__badge-text">{{ t('siteb.nav.coming_soon_badge') }}</span>
+</span>
+{%- else -%}
+<a class="sb-footer__link" href="{{ path }}">{{ label }}</a>
+{%- endif -%}
 {%- endmacro %}
 
 <footer class="sb-footer">
@@ -24,24 +25,18 @@
                 </p>
                 <div class="sb-footer__social">
                     <a href="https://www.facebook.com/yourpage" target="_blank" rel="noopener"
-                        aria-label="{{ t('siteb.footer.social.facebook') }}"
-                        class="sb-footer__social-link">
-                        <img src="{{ theme('img/footer/facebook.svg') }}"
-                            alt="{{ t('siteb.footer.social.facebook') }}"
+                        aria-label="{{ t('siteb.footer.social.facebook') }}" class="sb-footer__social-link">
+                        <img src="{{ theme('img/footer/facebook.svg') }}" alt="{{ t('siteb.footer.social.facebook') }}"
                             class="sb-footer__social-icon" />
                     </a>
                     <a href="https://www.instagram.com/yourpage" target="_blank" rel="noopener"
-                        aria-label="{{ t('siteb.footer.social.instagram') }}"
-                        class="sb-footer__social-link">
+                        aria-label="{{ t('siteb.footer.social.instagram') }}" class="sb-footer__social-link">
                         <img src="{{ theme('img/footer/instagram.svg') }}"
-                            alt="{{ t('siteb.footer.social.instagram') }}"
-                            class="sb-footer__social-icon" />
+                            alt="{{ t('siteb.footer.social.instagram') }}" class="sb-footer__social-icon" />
                     </a>
                     <a href="https://www.linkedin.com/yourpage" target="_blank" rel="noopener"
-                        aria-label="{{ t('siteb.footer.social.linkedin') }}"
-                        class="sb-footer__social-link">
-                        <img src="{{ theme('img/footer/linkedin.svg') }}"
-                            alt="{{ t('siteb.footer.social.linkedin') }}"
+                        aria-label="{{ t('siteb.footer.social.linkedin') }}" class="sb-footer__social-link">
+                        <img src="{{ theme('img/footer/linkedin.svg') }}" alt="{{ t('siteb.footer.social.linkedin') }}"
                             class="sb-footer__social-icon" />
                     </a>
                 </div>
@@ -50,7 +45,7 @@
             <nav class="sb-footer__section sb-footer__links">
                 <h3 class="sb-footer__title">{{ t('siteb.footer.nav_title') }}</h3>
                 <ul class="sb-footer__list">
-                    <li>{{ footer_link('/about-the-event', t('siteb.footer.about_event')) }}</li>
+                    <li>{{ footer_link('/about-the-forum', t('siteb.footer.about_forum')) }}</li>
                     <li>{{ footer_link('/about-the-expo', t('siteb.footer.about_expo')) }}</li>
                     <li>{{ footer_link('/agenda', t('siteb.footer.agenda')) }}</li>
                     <li>{{ footer_link('/news', t('siteb.footer.news')) }}</li>
