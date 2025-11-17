@@ -1,0 +1,98 @@
+/* Local font-face declarations for self-hosted fonts.
+   Place the corresponding .woff2/.woff files in /static/fonts. */
+
+/* Montserrat */
+@font-face {
+    font-family: "Montserrat";
+    src: url("/static/fonts/Montserrat-Regular.woff2") format("woff2"),
+        url("/static/fonts/Montserrat-Regular.woff") format("woff"),
+        url("/static/fonts/Montserrat-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("/static/fonts/Montserrat-Medium.woff2") format("woff2"),
+        url("/static/fonts/Montserrat-Medium.woff") format("woff"),
+        url("/static/fonts/Montserrat-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("/static/fonts/Montserrat-SemiBold.woff2") format("woff2"),
+        url("/static/fonts/Montserrat-SemiBold.woff") format("woff"),
+        url("/static/fonts/Montserrat-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("/static/fonts/Montserrat-Bold.woff2") format("woff2"),
+        url("/static/fonts/Montserrat-Bold.woff") format("woff"),
+        url("/static/fonts/Montserrat-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Roboto */
+@font-face {
+    font-family: "Roboto";
+    src: url("/static/fonts/Roboto-Regular.woff2") format("woff2"),
+        url("/static/fonts/Roboto-Regular.woff") format("woff"),
+        url("/static/fonts/Roboto-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Roboto";
+    src: url("/static/fonts/Roboto-Medium.woff2") format("woff2"),
+        url("/static/fonts/Roboto-Medium.woff") format("woff"),
+        url("/static/fonts/Roboto-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Roboto";
+    src: url("/static/fonts/Roboto-Bold.woff2") format("woff2"),
+        url("/static/fonts/Roboto-Bold.woff") format("woff"),
+        url("/static/fonts/Roboto-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Lato (used by site-b theme) */
+@font-face {
+    font-family: "Lato";
+    src: url("/static/fonts/Lato-Regular.woff2") format("woff2"),
+        url("/static/fonts/Lato-Regular.woff") format("woff"),
+        url("/static/fonts/Lato-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Lato";
+    src: url("/static/fonts/Lato-Bold.woff2") format("woff2"),
+        url("/static/fonts/Lato-Bold.woff") format("woff"),
+        url("/static/fonts/Lato-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Lato";
+    src: url("/static/fonts/Lato-Black.woff2") format("woff2"),
+        url("/static/fonts/Lato-Black.woff") format("woff"),
+        url("/static/fonts/Lato-Black.ttf") format("truetype");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}

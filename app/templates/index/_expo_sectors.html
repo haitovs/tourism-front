@@ -1,5 +1,7 @@
 {# app/templates/index/_expo_sectors.html #}
 {% if sectors %}
+{% set _max = limits.sectors_display if limits is defined and limits and (limits.sectors_display is not none) else 6 %}
+{% set _items = sectors[:_max] if _max is not none else sectors %}
 <section id="expo-sectors" class="max-w-[var(--container)] mx-auto px-4 py-20 space-y-12">
     <header class="text-center">
         <div class="flex items-center justify-center gap-4">
@@ -16,7 +18,7 @@
     </header>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {% for s in sectors %}
+        {% for s in _items %}
         <div class="bg-white rounded-[15px] shadow-md overflow-hidden flex flex-col border-gray-300 border">
             <div class="h-[220px] w-full">
                 <img src="{{ s.logo_url }}" alt="{{ s.header }}" class="w-full h-full object-cover" />

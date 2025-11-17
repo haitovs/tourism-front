@@ -51,7 +51,8 @@ def _resolve_home_limits(req: Request) -> dict:
 
     # Defaults for the “default” site
     limits = {
-        "sectors_fetch": 3,
+        # fetch 6 so mobile sees a full two rows like site-b
+        "sectors_fetch": 6,
         "sectors_display": 6,
         "speakers": 3,
         "news": 5,
