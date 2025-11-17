@@ -14,7 +14,7 @@
 
 /* 02. Header Shell ------------------------------------------------------- */
 .sb-detailbar {
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     right: 0;
@@ -32,18 +32,21 @@
 }
 
 #site-header.detailbar--hidden,
-#site-header.header--hidden {
+#site-header.header--hidden,
+.sb-detailbar.detailbar--hidden {
     transform: translateY(-100%);
 }
 
 #site-header.detailbar--at-top,
-#site-header.header--at-top {
+#site-header.header--at-top,
+.sb-detailbar.detailbar--at-top {
     transform: translateY(0);
     box-shadow: none;
 }
 
 #site-header.detailbar--scrolled,
-#site-header.header--scrolled {
+#site-header.header--scrolled,
+.sb-detailbar.detailbar--scrolled {
     background: rgba(17, 17, 17, 0.92);
     color: #f0f0f0;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
