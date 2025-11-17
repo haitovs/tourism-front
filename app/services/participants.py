@@ -14,6 +14,7 @@ from app.utils.timed_cache import TimedCache
 
 _bullet_like = re.compile(r"(\S)\s-\s+")
 _LIST_CACHE = TimedCache(ttl_seconds=20.0)
+_ALL_CACHE = TimedCache(ttl_seconds=20.0)
 _DETAIL_CACHE = TimedCache(ttl_seconds=30.0)
 
 
@@ -126,6 +127,40 @@ def _site_cache_key(req: Request) -> str:
     return f"{sid}:{slug}:{lang}"
 
 
+async def _get_all_participants(req: Request):
+    import asyncio
+    import logging
+
+    import httpx
+    log = logging.getLogger("services.participants")
+
+    cache_key = f"all:{_site_cache_key(req)}"
+    cached = _ALL_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    rows_raw = None
+    for attempt in range(2):
+        try:
+            rows_raw = await api_get(req, "/participants/")
+            break
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+            log.warning("participants: timeout (attempt %d/2): %s", attempt + 1, e)
+            if attempt == 0:
+                await asyncio.sleep(0.5)
+                continue
+        except httpx.HTTPError as e:
+            log.error("participants: HTTP error: %r", e)
+            break
+        except Exception as e:
+            log.exception("participants: unexpected error: %r", e)
+            break
+
+    rows = _unwrap_collection(rows_raw or [])
+    _ALL_CACHE.set(cache_key, rows)
+    return rows
+
+
 async def list_participants(
     req: Request,
     *,
@@ -148,24 +183,7 @@ async def list_participants(
     if cached is not None:
         return cached
 
-    rows_raw = None
-    for attempt in range(2):
-        try:
-            rows_raw = await api_get(req, "/participants/")
-            break
-        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
-            log.warning("participants: timeout (attempt %d/2): %s", attempt + 1, e)
-            if attempt == 0:
-                await asyncio.sleep(0.5)
-                continue
-        except httpx.HTTPError as e:
-            log.error("participants: HTTP error: %r", e)
-            break
-        except Exception as e:
-            log.exception("participants: unexpected error: %r", e)
-            break
-
-    rows = _unwrap_collection(rows_raw or [])
+    rows = await _get_all_participants(req)
 
     if role_norm in {"expo", "forum", "both"}:
 

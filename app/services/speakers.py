@@ -179,12 +179,6 @@ async def list_speakers_page(
     per_page: int = 9,
     latest_first: bool = True,
 ) -> tuple[list[dict], int, int]:
-    import asyncio
-    import logging
-
-    import httpx
-    log = logging.getLogger("services.speakers")
-
     page = max(1, int(page))
     per_page = max(1, int(per_page))
 
@@ -193,25 +187,8 @@ async def list_speakers_page(
     if cached is not None:
         return cached
 
-    items = None
-    for attempt in range(2):
-        try:
-            items = await api_get(req, "/speakers/")
-            break
-        except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
-            log.warning("list_speakers_page timeout (attempt %d/2): %s", attempt + 1, e)
-            if attempt == 0:
-                await asyncio.sleep(0.35)
-                continue
-        except httpx.HTTPError as e:
-            log.error("list_speakers_page HTTP error: %r", e)
-            break
-        except Exception as e:
-            log.exception("list_speakers_page unexpected: %r", e)
-            break
-
-    items = items or []
-    items.sort(key=lambda x: x.get("id") or 0, reverse=latest_first)
+    # Reuse the cached full list to avoid hitting the backend per page
+    items = await list_speakers(req, limit=None, latest_first=latest_first)
 
     total_items = len(items)
     total_pages = max(1, (total_items + per_page - 1) // per_page)

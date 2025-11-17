@@ -8,6 +8,10 @@ from fastapi import Request
 
 from app.core.http import api_get
 from app.core.settings import settings
+from app.utils.timed_cache import TimedCache
+
+
+_LIST_CACHE = TimedCache(ttl_seconds=30.0)
 
 
 def _resolve_media(path: str | None) -> str:
@@ -58,6 +62,13 @@ async def get_latest_news(
     import httpx
     log = logging.getLogger("services.news")
 
+    site = getattr(getattr(req, "state", None), "site", None)
+    site_key = f"{getattr(site, 'id', 0)}:{getattr(site, 'slug', '')}:{getattr(getattr(req, 'state', None), 'lang', '')}"
+    cache_key = f"list:{site_key}:{limit}:{include_unpublished}"
+    cached = _LIST_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
     items = None
     for attempt in range(2):
         try:
@@ -85,8 +96,9 @@ async def get_latest_news(
 
     items.sort(key=_sort_key, reverse=True)
     items = items[:max(1, int(limit))]
-
-    return [_row_to_card(it) for it in items]
+    projected = [_row_to_card(it) for it in items]
+    _LIST_CACHE.set(cache_key, projected)
+    return projected
 
 
 async def get_news(
