@@ -1,6 +1,7 @@
 # app/routers/privacy_router.py
-from fastapi import APIRouter, HTTPException, Request
-from starlette import status
+import logging
+
+from fastapi import APIRouter, Request
 from starlette.responses import HTMLResponse
 
 from app.routers.site import _resolve_site_id
@@ -14,11 +15,13 @@ router = APIRouter()
 
 @router.get("/privacy", response_class=HTMLResponse)
 async def privacy_policy_page(req: Request):
+    log = logging.getLogger("routers.privacy")
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
     site_id = _resolve_site_id(req)
     doc = legal_srv.get_latest_privacy(site_id=site_id)
     if not doc:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Privacy Policy not found")
+        log.warning("privacy policy missing for site_id=%s; rendering empty state", site_id)
+        doc = {"sections": [], "content_html": ""}
 
     ctx = {
         "request": req,
