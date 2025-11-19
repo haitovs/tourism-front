@@ -14,8 +14,8 @@ services:
             timeout: 5s
             retries: 12
         networks:
-            - tourism_tourism
+            - tourism
 
 networks:
-    tourism_tourism:
-        external: true
+    tourism:
+        driver: bridge

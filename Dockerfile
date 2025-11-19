@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     ENV=prod \
     APP_NAME="Expo Site" \
-    BACKEND_BASE_URL="https://api.akyoltm.shop"
+    BACKEND_BASE_URL="http://backend:8000"
 
 WORKDIR /app
 
