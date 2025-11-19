@@ -3,9 +3,12 @@
     position: relative;
     overflow: hidden;
     border-radius: 20px;
-    /* background: #111;
-    background: transparent; */
 }
+
+.timer‐wrap .timer‐number {
+    font‐size: clamp(30px, 5vw, 110px);
+}
+
 .timer-bg {
     position: absolute;
     inset: 0;
@@ -33,12 +36,22 @@
 .timer-title {
     display: -webkit-box;
     -webkit-line-clamp: 2; /* exactly what you asked for */
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     white-space: normal;
     word-break: break-word;
 }
 
+.timer‐content .flex‐items {
+    display: flex;
+    /* assume row direction for numbers: days / hours / minutes / seconds */
+    flex‐direction: row;
+}
+
+.timer‐content .flex‐items > div {
+    flex: 1 1 0; /* flex‐grow:1; flex‐shrink:1; flex‐basis:0; */
+}
 /* Timer pill color: brand green on small, red on large */
 .timer-pill {
     background: var(--c-primary, #007a3d);

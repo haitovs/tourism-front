@@ -3,7 +3,7 @@
     <header class="text-center">
         <div class="flex items-center justify-center gap-4">
             <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
-            <span class="font-['Montserrat'] text-[30px] leading-[75px] text-[var(--c-primary)]">
+            <span class="font-['Montserrat'] text-[40px] leading-[75px] text-[var(--c-primary)]">
                 {{ t('home.timer.title_mini') }}
             </span>
             <span class="hidden sm:block h-px w-[60px] bg-[var(--c-primary)]"></span>
@@ -119,64 +119,65 @@
         </div>
         <!-- ===== SMALL (<1024px) redesigned ===== -->
         <div class="timer-small block w-full" x-show="!isDesktop" x-cloak x-transition.opacity.duration.200ms>
-            <div class="timer-wrap relative mx-auto w-full max-w-[360px] h-[140px] rounded-[10px] overflow-hidden">
-                <!-- Background -->
-                <div class="timer-bg">
-                    <img src="{{ url_for('static', path='img/timer/timer_bg.png') }}" x-bind:src="bgUrl" alt=""
-                        aria-hidden="true" />
-                </div>
-                <div class="absolute inset-0 bg-black/35 rounded-[10px]"></div>
+            <div class="relative mx-auto w-full max-w-[360px] h-[140px] rounded-[10px] overflow-hidden">
 
-                <!-- Content -->
-                <div class="absolute inset-0 text-[#F0F0F0] px-4 py-3 flex items-center justify-between gap-3 select-none">
-                    <!-- Left: remaining + counters (dd:hh:mm) -->
-                    <div class="flex-1">
-                        <div class="font-['Montserrat'] font-medium text-[15px] leading-[1.1]">
-                            {{ t('home.timer.remaining') }}
+                <div class="absolute inset-0 z-0">
+                    <img src="{{ url_for('static', path='img/timer/timer_bg.png') }}" x-bind:src="bgUrl" alt=""
+                        aria-hidden="true" class="w-full h-full object-cover block" />
+                </div>
+
+                <div class="absolute inset-0 bg-black/35 z-0"></div>
+
+                <div class="absolute top-2 left-4 z-10 select-none text-[#F0F0F0]">
+                    <div class="font-['Montserrat'] font-medium text-[15px] leading-[1.1]">
+                        {{ t('home.timer.remaining') }}
+                    </div>
+                </div>
+
+                <div
+                    class="absolute inset-0 z-10 text-[#F0F0F0] px-4 pt-6 pb-2 flex items-center justify-between select-none">
+
+                    <div class="flex justify-center items-center gap-2">
+                        <div class="text-center">
+                            <div class="font-['Montserrat'] text-[40px] " x-text="dd">00</div>
+                            <div class="font-['Lato','Roboto'] text-[15px] leading-[14px] opacity-80">
+                                {{ t('home.timer.days')|upper }}
+                            </div>
                         </div>
-                        <div class="mt-2 flex items-end gap-3">
-                            <!-- DAYS -->
-                            <div class="text-center min-w-[52px]">
-                                <div class="font-['Montserrat'] text-[30px] leading-[25px]" x-text="dd">00</div>
-                                <div class="font-['Lato','Roboto'] text-[10px] leading-[14px]">
-                                    {{ t('home.timer.days')|upper }}
-                                </div>
+
+                        <span class="font-['Roboto'] font-semibold text-[25px] leading-[20px] pb-3">:</span>
+
+                        <div class="text-center">
+                            <div class="font-['Montserrat'] text-[40px] " x-text="hh">00</div>
+                            <div class="font-['Lato','Roboto'] text-[15px] leading-[14px] opacity-80">
+                                {{ t('home.timer.hours')|upper }}
                             </div>
-                            <div class="font-['Roboto'] font-semibold text-[25px] leading-[25px]">:</div>
-                            <!-- HOURS -->
-                            <div class="text-center min-w-[52px]">
-                                <div class="font-['Montserrat'] text-[30px] leading-[25px]" x-text="hh">00</div>
-                                <div class="font-['Lato','Roboto'] text-[10px] leading-[14px]">
-                                    {{ t('home.timer.hours')|upper }}
-                                </div>
-                            </div>
-                            <div class="font-['Roboto'] font-semibold text-[25px] leading-[25px]">:</div>
-                            <!-- MINUTES -->
-                            <div class="text-center min-w-[52px]">
-                                <div class="font-['Montserrat'] text-[30px] leading-[25px]" x-text="mm">00</div>
-                                <div class="font-['Lato','Roboto'] text-[10px] leading-[14px]">
-                                    {{ t('home.timer.minutes')|upper }}
-                                </div>
+                        </div>
+
+                        <span class="font-['Roboto'] font-semibold text-[25px] leading-[20px] pb-3">:</span>
+
+                        <div class="text-center">
+                            <div class="font-['Montserrat'] text-[40px] " x-text="mm">00</div>
+                            <div class="font-['Lato','Roboto'] text-[15px] leading-[14px] opacity-80">
+                                {{ t('home.timer.minutes')|upper }}
                             </div>
                         </div>
                     </div>
 
-                    <!-- Divider -->
-                    <div class="h-[100px] w-px bg-white/65"></div>
-
-                    <!-- Right: deadline -->
-                    <div class="w-[90px] text-center flex flex-col items-center justify-center gap-1">
-                        <div class="font-['Montserrat'] font-medium text-[15px] leading-[15px]">
+                    <div class="text-center flex flex-col items-center justify-center">
+                        <div class="font-['Montserrat'] font-medium text-[12px] leading-[1.2] opacity-90">
                             {{ t('home.timer.deadline') }}
                         </div>
-                        <div class="font-['Montserrat'] text-[30px] leading-[25px]" x-text="deadlineDay || {{ timer.deadline_day|default(0) }}">
+                        <div class="font-['Montserrat'] text-[40px] "
+                            x-text="deadlineDay || {{ timer.deadline_day|default(0) }}">
                             {{ timer.deadline_day }}
                         </div>
-                        <div class="font-['Lato','Roboto'] text-[10px] leading-[14px] uppercase"
+                        <div class="font-['Lato','Roboto'] text-[15px] leading-[14px] uppercase tracking-wider"
                             x-text="deadlineMonthUpper || {{ timer.deadline_month_upper|tojson }}">
                             {{ timer.deadline_month_upper }}
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

@@ -128,102 +128,44 @@
 
         <!-- ===== MOBILE/TABLET (<1024px) with seconds ===== -->
         <div class="lg:hidden block w-full">
-            <div class="relative mx-auto
-                  w-[380px]  h-[180px]
-                  sm:w-[460px] sm:h-[200px]
-                  md:w-[620px] md:h-[240px]
-                  rounded-[16px] overflow-hidden">
-                <!-- BG -->
+            <div class="relative  inline-block w-full h-[140px] rounded-[5px] overflow-hidden">
                 <img src="{{ theme('img/timer/timer-bg.png') }}" x-bind:src="bgUrl" alt="" aria-hidden="true"
                     onerror="this.src='/static/img/img_placeholder.png'; this.style.objectFit='contain';"
                     class="absolute inset-0 w-full h-full object-cover" />
                 <!-- Slightly stronger overlay for readability -->
                 <div class="absolute inset-0 bg-[rgba(32,48,108,0.50)]"></div>
-
-                <!-- Content -->
-                <div class="relative z-10 h-full px-4 sm:px-5 md:px-7 flex items-center justify-between text-white">
-                    <!-- Left counters -->
-                    <div class="flex-1">
-                        <div class="font-['Lato'] font-bold text-[14px] sm:text-[15px] md:text-[16px]">
-                            {{ t('home.timer.remaining') }}
-                        </div>
-
-                        <div class="mt-2 sm:mt-2.5 md:mt-3 flex items-center gap-3 sm:gap-3.5 md:gap-4 tabular-nums">
-                            <!-- DAYS -->
-                            <div class="text-center min-w-[66px] sm:min-w-[74px] md:min-w-[86px]">
-                                <div class="font-['Poppins'] tabular-nums leading-none text-[28px] sm:text-[32px] md:text-[38px]"
-                                    x-text="dd">00</div>
-                                <div
-                                    class="font-['Lato'] tracking-wide text-[10px] sm:text-[11px] md:text-[12px] uppercase">
-                                    {{ t('home.timer.days') }}
-                                </div>
-                            </div>
-
-                            <div
-                                class="flex flex-col items-center justify-center gap-[12px] sm:gap-[13px] md:gap-[14px] w-[18px] sm:w-[20px] md:w-[22px] shrink-0">
-                                <span class="block w-2 h-2 rounded-full bg-white"></span>
-                                <span class="block w-2 h-2 rounded-full bg-white"></span>
-                            </div>
-
-                            <!-- HOURS -->
-                            <div class="text-center min-w-[66px] sm:min-w-[74px] md:min-w-[86px]">
-                                <div class="font-['Poppins'] tabular-nums leading-none text-[28px] sm:text-[32px] md:text-[38px]"
-                                    x-text="hh">00</div>
-                                <div
-                                    class="font-['Lato'] tracking-wide text-[10px] sm:text-[11px] md:text-[12px] uppercase">
-                                    {{ t('home.timer.hours') }}
-                                </div>
-                            </div>
-
-                            <div
-                                class="flex flex-col items-center justify-center gap-[12px] sm:gap-[13px] md:gap-[14px] w-[18px] sm:w-[20px] md:w-[22px] shrink-0">
-                                <span class="block w-2 h-2 rounded-full bg-white"></span>
-                                <span class="block w-2 h-2 rounded-full bg-white"></span>
-                            </div>
-
-                            <!-- MINUTES -->
-                            <div class="text-center min-w-[66px] sm:min-w-[74px] md:min-w-[86px]">
-                                <div class="font-['Poppins'] tabular-nums leading-none text-[28px] sm:text-[32px] md:text-[38px]"
-                                    x-text="mm">00</div>
-                                <div
-                                    class="font-['Lato'] tracking-wide text-[10px] sm:text-[11px] md:text-[12px] uppercase">
-                                    {{ t('home.timer.minutes') }}
-                                </div>
-                            </div>
-
-                            <div
-                                class="flex flex-col items-center justify-center gap-[12px] sm:gap-[13px] md:gap-[14px] w-[18px] sm:w-[20px] md:w-[22px] shrink-0">
-                                <span class="block w-2 h-2 rounded-full bg-white"></span>
-                                <span class="block w-2 h-2 rounded-full bg-white"></span>
-                            </div>
-
-                            <!-- SECONDS -->
-                            <div class="text-center min-w-[66px] sm:min-w-[74px] md:min-w-[86px]">
-                                <div class="font-['Poppins'] tabular-nums leading-none text-[28px] sm:text-[32px] md:text-[38px]"
-                                    x-text="ss">00</div>
-                                <div
-                                    class="font-['Lato'] tracking-wide text-[10px] sm:text-[11px] md:text-[12px] uppercase">
-                                    {{ t('home.timer.seconds') }}
-                                </div>
-                            </div>
+                <div class="font-['Lato'] font-bold text-[15px] leading-[15px]">
+                    {{ t('home.timer.remaining') }}
+                </div>
+                <div class="relative flex flex-column h-full px-4 py-3 text-white items-center ">
+                    <div class="text-center flex flex-col justify-center">
+                        <div class="font-['Poppins'] text-[30px] leading-[25px]" x-text="dd">00</div>
+                        <div class="font-['Lato'] text-[10px] leading-[14px] uppercase">
+                            {{ t('home.timer.days') }}
                         </div>
                     </div>
-
-                    <!-- Right deadline -->
-                    <div class="flex items-center gap-3 sm:gap-3.5 md:gap-4 pl-3 sm:pl-3.5 md:pl-4">
-                        <div class="h-[84px] sm:h-[96px] md:h-[108px] w-px bg-white/80"></div>
-                        <div class="text-center">
-                            <div class="font-['Lato'] font-bold text-[14px] sm:text-[15px] md:text-[16px]">
-                                {{ t('home.timer.deadline') }}
-                            </div>
-                            <div
-                                class="mt-1.5 sm:mt-2 md:mt-2.5 font-['Poppins'] leading-none text-[28px] sm:text-[32px] md:text-[36px]">
-                                {{ timer.deadline_day }}
-                            </div>
-                            <div
-                                class="font-['Lato'] tracking-wide uppercase text-[10px] sm:text-[11px] md:text-[12px]">
-                                {{ timer.deadline_month_upper }}
-                            </div>
+                    <div class="text-center flex flex-col justify-center">
+                        <div class="font-['Poppins'] text-[30px] leading-[25px]" x-text="hh">00</div>
+                        <div class="font-['Lato'] text-[10px] leading-[14px] uppercase">
+                            {{ t('home.timer.hours') }}
+                        </div>
+                    </div>
+                    <div class="text-center flex flex-col justify-center">
+                        <div class="font-['Poppins'] text-[30px] leading-[25px]" x-text="mm">00</div>
+                        <div class="font-['Lato'] text-[10px] leading-[14px] uppercase">
+                            {{ t('home.timer.minutes') }}
+                        </div>
+                    </div>
+                    <div class="text-center flex flex-col justify-center border-l border-white/80 pl-3 h-full">
+                        <div class="font-['Lato'] font-bold text-[15px] leading-[15px]">
+                            {{ t('home.timer.deadline') }}
+                        </div>
+                        <div class="font-['Poppins'] text-[30px] leading-[25px]"
+                            x-text="deadlineDay || {{ timer.deadline_day|default(0) }}">
+                            {{ timer.deadline_day }}
+                        </div>
+                        <div class="font-['Lato'] text-[10px] leading-[14px] uppercase">
+                            {{ timer.deadline_month_upper }}
                         </div>
                     </div>
                 </div>
