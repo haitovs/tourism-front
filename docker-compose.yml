@@ -18,4 +18,4 @@ services:
 
 networks:
     tourism:
-        driver: bridge
+        external: true
