@@ -19,3 +19,4 @@ build/
 
 # Do not commit the Tailwind binary
 tailwindcss.exe
+test/

@@ -17,5 +17,5 @@ services:
             - tourism
 
 networks:
-    tourism:
+    tourism_tourism:
         external: true
