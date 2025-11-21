@@ -14,8 +14,11 @@ services:
             timeout: 5s
             retries: 12
         networks:
-            - tourism
+            tourism:
+                aliases:
+                    - frontend
 
 networks:
-    tourism_tourism:
+    tourism:
         external: true
+        name: tourism

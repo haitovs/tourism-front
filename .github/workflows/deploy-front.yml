@@ -32,11 +32,19 @@ jobs:
                       git checkout -f "${BRANCH}"
                       git reset --hard "${SHA}"
 
+                      # Ensure shared network exists (frontend expects external network "tourism")
+                      docker network inspect tourism >/dev/null 2>&1 || docker network create tourism
+
                       $DC build --pull
                       $DC up -d
 
                       # Wait for the frontend container to be healthy (uses your compose healthcheck)
                       CID=$($DC ps -q frontend)
+                      if [ -z "$CID" ]; then
+                        echo "frontend container not found after compose up"
+                        $DC ps
+                        exit 1
+                      fi
                       deadline=$((SECONDS + 180))
                       while [ "$(docker inspect -f '{{.State.Health.Status}}' "$CID")" != "healthy" ]; do
                         if [ $SECONDS -ge $deadline ]; then

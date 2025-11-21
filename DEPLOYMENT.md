@@ -12,7 +12,7 @@ This document collects the steps needed to ship the Site-B frontend to productio
 - Optional: Node.js (only required if you rebuild Tailwind assets outside Docker).
 - Docker 24+ and Docker Compose v2 if you plan to containerise.
 
-The repo ships with `tailwindcss.exe` for local Windows builds; the Dockerfile uses the official Node image instead.
+The repo ships with `tailwindcss.exe` for local Windows builds; Docker builds assume `app/static/css/tw.build.css` is already bundled (run the Tailwind CLI before building if you change styles).
 
 ---
 
@@ -104,20 +104,17 @@ Wrap this command with your preferred process manager (systemd, supervisor, etc.
 docker build -t tourism-front:latest .
 ```
 
-The multi-stage Dockerfile:
-
-1. Uses an Alpine Node image to compile Tailwind assets (`tw.build.css`).
-2. Copies the project into a slim Python 3.11 image, installs requirements, and runs Gunicorn.
+The Dockerfile is a slim Python 3 image that installs dependencies and runs Uvicorn with four workers. Ensure `app/static/css/tw.build.css` exists before building (use the provided Tailwind CLI locally if you edit styles).
 
 ### 7.2 Compose stack
 
-`docker-compose.yml` contains a frontend service and a placeholder backend service. Replace `your-backend-image:latest` with the actual backend image (or build context). Run:
+`docker-compose.yml` defines only the frontend service and expects a backend container named `backend` on the external Docker network `tourism` (created by the backend stack). Bring the stack up with:
 
 ```
 docker compose up --build
 ```
 
-Expose the frontend through your reverse proxy (e.g. map `port 80 -> frontend:8000`). Provide the `.env` file (or dedicated `env_file`) with production variables. The compose file names the shared network `tourism-net` so both services can reach each other by container name (`http://backend:8000`).
+Expose the frontend through your reverse proxy (e.g. map `port 80 -> frontend:8000`). Provide the `.env` file (or dedicated `env_file`) with production variables. If you run the frontend standalone, create the shared network once with `docker network create tourism` so both services can reach each other at `http://backend:8000`.
 
 ### 7.3 Useful overrides
 
