@@ -89,7 +89,7 @@
 .sb-right {
     display: inline-flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
 }
 
 .sb-user {
@@ -365,6 +365,7 @@
     }
     .sb-right {
         margin-right: 24px;
+        gap: 12px;
     }
     :root {
         --sb-nav-gap: 18px;
@@ -391,10 +392,11 @@
         display: none;
     }
     .sb-bar-inner {
-        padding: 0 clamp(14px, 3vw, 28px);
+        padding: 0 clamp(12px, 3vw, 24px);
     }
     .sb-right {
-        gap: 12px;
+        gap: 10px;
+        flex: 0 0 auto;
     }
     .sb-user-img {
         width: 32px;
@@ -631,9 +633,9 @@
     gap: 12px;
     color: inherit;
     text-decoration: none;
-    font: 600 0.88rem/1.25 "Montserrat", system-ui, sans-serif;
+    font: 700 1rem/1.35 "Montserrat", system-ui, sans-serif;
     letter-spacing: 0.05em;
-    padding: 0.65rem 0;
+    padding: 0.9rem 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 .sb-mobile-link:last-child {
@@ -660,14 +662,14 @@
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
-    padding: 0.35rem 0 0.65rem 0.4rem;
+    padding: 0.6rem 0 0.9rem 0.5rem;
 }
 .sb-mobile-sub-link {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
     color: rgba(255, 255, 255, 0.82);
-    font: 500 0.84rem/1.3 "Roboto", system-ui, sans-serif;
+    font: 600 0.95rem/1.4 "Roboto", system-ui, sans-serif;
     text-decoration: none;
 }
 .sb-mobile-sub-link:hover {

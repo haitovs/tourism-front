@@ -113,8 +113,10 @@
         let last = performance.now();
         let offset = 0;
         let isDragging = false;
+        let dragStarted = false;
         let dragStartX = 0;
         let dragStartOffset = 0;
+        const DRAG_THRESHOLD = 4;
 
         // subpixel-friendly transform (align to device pixel)
         const toPxAligned = (x) => {
@@ -147,8 +149,14 @@
 
         const dragSurface = viewport || root;
         const endDrag = (ev) => {
+            if (!dragStarted && isDragging) {
+                // a tap without movement: let it be a click
+                isDragging = false;
+                return;
+            }
             if (!isDragging) return;
             isDragging = false;
+            dragStarted = false;
             dragStartX = 0;
             dragStartOffset = offset;
             if (dragSurface.hasPointerCapture?.(ev.pointerId)) {
@@ -159,17 +167,22 @@
         };
         dragSurface.addEventListener("pointerdown", (ev) => {
             isDragging = true;
+            dragStarted = false;
             dragStartX = ev.clientX;
             dragStartOffset = offset;
             last = performance.now();
-            dragSurface.setPointerCapture?.(ev.pointerId);
-            root.classList.add("marquee--dragging");
         });
         dragSurface.addEventListener(
             "pointermove",
             (ev) => {
                 if (!isDragging) return;
                 const dx = ev.clientX - dragStartX;
+                if (!dragStarted && Math.abs(dx) > DRAG_THRESHOLD) {
+                    dragStarted = true;
+                    dragSurface.setPointerCapture?.(ev.pointerId);
+                    root.classList.add("marquee--dragging");
+                }
+                if (!dragStarted) return;
                 offset = dragStartOffset - dx;
                 render();
                 ev.preventDefault();

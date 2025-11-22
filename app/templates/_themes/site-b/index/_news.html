@@ -24,8 +24,9 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-[50px] justify-items-center">
                 {% for n in cards %}
                 <article class="w-[min(100%,380px)] bg-white rounded-[10px] overflow-hidden
-            shadow-[0_4px_10px_rgba(0,0,0,.15)] border-2 border-transparent hover:border-[#20306C]">
-
+           shadow-[0_4px_10px_rgba(0,0,0,.15)]
+           transition-all duration-200
+           hover:-translate-y-1 hover:shadow-[0_10px_25px_rgba(0,0,0,.25)]">
                     <!-- Make the entire card clickable -->
                     <a href="/news/{{ n.id }}"
                         class="block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#20306C]"
@@ -43,13 +44,13 @@
                         </div>
 
                         <div class="px-5 py-5">
-                            <h3 class="font-['Lato'] font-bold text-[20px] leading-[25px] text-[#1E1E1E]
-                                       line-clamp-2 hover:underline">
+                            <h3 class="font-['Lato'] font-bold text-[20px] leading-[25px] text-[#1E1E1E] line-clamp-2">
                                 {{ n.title }}
                             </h3>
                         </div>
                     </a>
                 </article>
+
                 {% endfor %}
             </div>
             {% else %}
