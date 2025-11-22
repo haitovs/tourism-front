@@ -2,7 +2,7 @@
 {% set all = (data and data.get('items')) or [] %}
 {% set count = all|length %}
 
-<section id="organizers" class="mx-auto w-[min(1450px,92vw)] py-16">
+<section id="organizers" class="w-full max-w-[var(--container)] mx-auto py-16">
     <!-- Heading + 20px green bar (rounded on the right) -->
     <header class="mb-8">
         <h2 class="font-['Roboto'] font-semibold text-[clamp(24px,3.5vw,40px)] leading-[1] text-[#1E1E1E]">
@@ -12,17 +12,16 @@
     </header>
 
     {% macro organizer_card(p) -%}
-    <article class="w-[280px] h-[180px] bg-[#F4F4F2] rounded-[5px]
-           shadow-[0_4px_4px_rgba(0,0,0,0.25)]
+    <article class="w-[280px] h-[180px] bg-white rounded-[5px]
            border-2 border-transparent hover:border-[#20306C]
-           flex items-center justify-center select-none">
+           flex items-center justify-center select-none overflow-hidden">
         {% if p.logo_url %}
         <img src="{{ p.logo_url }}" alt="{{ p.name }}" title="{{ p.name }}"
-            class="object-contain max-w-[213.14px] max-h-[154.51px]" loading="lazy"
+            class="object-contain w-full h-full" loading="lazy"
             onerror="this.src='/static/img/img_placeholder.png'; this.style.opacity='0.7'; this.style.objectFit='contain';" />
         {% else %}
         <img src="/static/img/img_placeholder.png" alt="{{ p.name }}" title="{{ p.name }}"
-            class="object-contain opacity-70 max-w-[213.14px] max-h-[154.51px]" loading="lazy" />
+            class="object-contain opacity-70 w-full h-full" loading="lazy" />
         {% endif %}
     </article>
     {%- endmacro %}
@@ -31,7 +30,7 @@
     <div class="text-center text-slate-500">{{ t('index.organizers.none') }}</div>
     {% else %}
     <!-- Single-row marquee. Viewport clips horizontal overflow to avoid white space to the right -->
-    <div class="relative overflow-x-clip">
+    <div class="relative overflow-x-clip w-full">
         <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap:1.25rem">
             <div class="marquee__viewport overflow-x-hidden !overflow-y-visible">
                 <ul class="marquee__track">

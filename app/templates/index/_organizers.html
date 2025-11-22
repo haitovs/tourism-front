@@ -2,8 +2,8 @@
 {% set all = (data and data.get('items')) or [] %}
 {% set count = all|length %}
 
-<section id="organizers" class="mx-auto w-[min(1440px,92vw)] py-14">
-    <div class="mx-auto w-[min(1210px,90vw)]">
+<section id="organizers" class="mx-auto w-full max-w-[var(--container)] py-14">
+    <div class="w-full">
         <header class="text-center mb-8">
             <div class="flex items-center justify-center gap-4">
                 <span class="hidden sm:block h-px w-[60px] bg-[#007A3D]"></span>
@@ -23,15 +23,15 @@
         <article class="box-border border-2 border-gray-300 hover:border-[var(--c-primary)]
              transition-colors focus-visible:outline-none focus-visible:ring-2
              focus-visible:ring-[var(--c-primary)] focus-visible:ring-offset-2
-             bg-[#F4F4F2] rounded-[5px] 
+             bg-white rounded-[5px] 
              w-[clamp(160px,28vw,280px)] h-[clamp(100px,18vw,180px)]
-             flex items-center justify-center ">
+             flex items-center justify-center overflow-hidden">
             {% if p.logo_url %}
-            <img src="{{ p.logo_url }}" alt="{{ p.name }}" title="{{ p.name }}" class="object-contain select-none pointer-events-none
-                    max-w-[clamp(120px,19vw,213.14px)] max-h-[clamp(90px,13vw,154.51px)]" loading="lazy" />
+            <img src="{{ p.logo_url }}" alt="{{ p.name }}" title="{{ p.name }}"
+                class="object-contain select-none pointer-events-none w-full h-full" loading="lazy" />
             {% else %}
-            <img src="/static/img/img_placeholder.png" alt="{{ p.name }}" title="{{ p.name }}" class="object-contain opacity-70 select-none pointer-events-none
-                    max-w-[clamp(120px,19vw,213.14px)] max-h-[clamp(90px,13vw,154.51px)]" loading="lazy" />
+            <img src="/static/img/img_placeholder.png" alt="{{ p.name }}" title="{{ p.name }}"
+                class="object-contain opacity-70 select-none pointer-events-none w-full h-full" loading="lazy" />
             {% endif %}
         </article>
         {%- endmacro %}
@@ -39,9 +39,9 @@
         {% if count == 0 %}
         <div class="text-center text-slate-500">{{ t('index.organizers.none') }}</div>
 
-        {% elif count < 8 %} <div class="w-full flex justify-center">
+        {% elif count < 8 %} <div class="w-full">
             <ul
-                class="flex flex-wrap justify-center gap-x-[clamp(12px,2.5vw,30px)] gap-y-[clamp(12px,2.5vw,30px)] max-w-[1210px]">
+                class="flex flex-wrap justify-center gap-x-[clamp(12px,2.5vw,30px)] gap-y-[clamp(12px,2.5vw,30px)] w-full">
                 {% for p in all %}
                 <li class="flex justify-center">
                     {% set href = p.website|default('') %}

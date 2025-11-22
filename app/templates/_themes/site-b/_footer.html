@@ -17,8 +17,9 @@
     <div class="sb-footer__inner">
         <div class="sb-footer__sections">
             <div class="sb-footer__section sb-footer__brand">
-                <div class="sb-footer__logo">
-                    <span>{{ t('siteb.footer.logo_text') }}</span>
+                <div class="flex items-center justify-start sm:justify-center pb-4">
+                    <img src="{{ theme('img/footer/logo-white.png') }}" alt="{{ t('siteb.footer.logo_text') }}"
+                        class="h-[64px] sm:h-[72px] w-auto object-contain" loading="lazy" />
                 </div>
                 <p class="sb-footer__tagline">
                     {{ t('siteb.footer.tagline') }}
@@ -68,7 +69,7 @@
                     <li class="sb-footer__contact-item">
                         <img src="{{ theme('img/footer/mail.svg') }}" alt="{{ t('siteb.footer.contact.mail_alt') }}"
                             class="sb-footer__contact-icon" />
-                        <a href="mailto:info@ciet-turkmenistan.com">info@ciet-turkmenistan.com</a>
+                        <a href="mailto:info.travel-turkmenistan.com">info.travel-turkmenistan.com</a>
                     </li>
                     <li class="sb-footer__contact-item">
                         <img src="{{ theme('img/footer/phone.svg') }}" alt="{{ t('siteb.footer.contact.phone_alt') }}"

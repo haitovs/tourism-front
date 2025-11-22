@@ -1,120 +1,33 @@
 {% extends "base.html" %}
-{% from "_themes/site-b/_hero_macros.html" import hero_buttons %}
 
 {% block content %}
-<main>
-    <!-- HERO -->
-    <section class="sb-page-hero relative w-full h-[360px] sm:h-[420px]">
-        <img src="{{ theme('img/hero-bg.png') }}" alt="{{ t('siteb.common.hero_alt') }}"
-            class="absolute inset-0 w-full h-full object-cover" />
-        <div class="absolute inset-0" style="background: var(--site-primary-overlay);"></div>
-
-        <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
-            <h1 class="font-['Montserrat'] font-bold text-white text-[clamp(34px,5vw,58px)] leading-tight">
-                {{ t('siteb.official.hero.title') }}
-            </h1>
-            <p class="mt-3 font-['Roboto'] text-white/90 text-[clamp(16px,2.4vw,22px)] max-w-[760px]">
-                {{ t('siteb.official.hero.subtitle') }}
-            </p>
+<main class="w-screen min-h-screen">
+    <section class="w-screen min-h-screen flex items-stretch justify-center p-0">
+        {% if doc_is_image and doc_image_url %}
+        <div class="flex items-center justify-center w-full h-full">
+            <img src="{{ doc_image_url }}" alt="{{ doc_filename or 'Document image' }}"
+                class="max-h-[90vh] max-w-[95vw] object-contain" loading="lazy" />
         </div>
-
-        {{ hero_buttons(
-            home_href = '/',
-            section_label = t('siteb.official.section_label'),
-            section_href = '/official-support',
-            is_detail = False
-        ) }}
-    </section>
-
-    <!-- BODY -->
-    <section class="relative py-12 sm:py-14 lg:py-16">
-        <div class="absolute inset-0 -z-[1] bg-[#07112E]">
-            <div class="absolute inset-0 opacity-[0.88]"
-                style="background: radial-gradient(130% 130% at 20% 20%, rgba(184,215,121,0.38) 0%, rgba(8,17,46,0.92) 58%, rgba(3,8,25,1) 100%);">
-            </div>
+        {% elif doc_is_pdf and doc_embed_url %}
+        {% set _src = doc_embed_url ~ '#toolbar=0&navpanes=0&scrollbar=0' %}
+        <iframe title="Official support document" src="{{ _src }}" class="w-screen h-screen border-0 block"
+            allowfullscreen loading="lazy"></iframe>
+        {% elif viewer_url %}
+        <iframe title="Official support document" src="{{ viewer_url }}" class="w-screen h-screen border-0 block"
+            allowfullscreen loading="lazy"></iframe>
+        {% elif viewer_url_alt %}
+        <iframe title="Official support document" src="{{ viewer_url_alt }}" class="w-screen h-screen border-0 block"
+            allowfullscreen loading="lazy"></iframe>
+        {% elif doc_html %}
+        <div class="w-screen min-h-screen p-0 overflow-auto font-['Roboto'] text-[18px] leading-[28px] text-black prose max-w-none legal-content"
+            aria-label="Official support document body">
+            {{ doc_html|safe }}
         </div>
-
-        <div class="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-            <article
-                class="bg-white/95 backdrop-blur-sm rounded-[26px] shadow-[0_24px_60px_rgba(7,17,46,0.35)] px-6 py-8 sm:px-9 sm:py-10 lg:px-12 lg:py-12">
-                <header class="text-center">
-                    <h2 class="font-['Montserrat'] text-[#0E1B40] text-[clamp(30px,4.6vw,48px)] leading-tight">
-                        {{ t('siteb.official.intro.title') }}
-                    </h2>
-                    <p class="mt-4 font-['Roboto'] text-[#213269] text-[18px] leading-[1.7] max-w-[860px] mx-auto">
-                        {{ t('siteb.official.intro.body') }}
-                    </p>
-                </header>
-
-                {% set official_cards = [
-                    {'title': t('siteb.official.cards.1.title'), 'body': t('siteb.official.cards.1.body')},
-                    {'title': t('siteb.official.cards.2.title'), 'body': t('siteb.official.cards.2.body')},
-                    {'title': t('siteb.official.cards.3.title'), 'body': t('siteb.official.cards.3.body')}
-                ] %}
-
-                <div class="mt-10 grid gap-6 md:gap-7 lg:gap-8 md:grid-cols-3">
-                    {% for card in official_cards %}
-                    <div
-                        class="relative overflow-hidden rounded-[18px] bg-[#F7FAFF] border border-[#E2E9FF] px-5 py-6 md:px-6 md:py-7 shadow-[0_12px_30px_rgba(8,19,54,0.12)]">
-                        <div class="absolute -top-10 -right-10 w-[140px] h-[140px] rounded-full bg-gradient-to-br from-[#B8D779]/60 to-[#779F4E]/40 blur-[60px] pointer-events-none">
-                        </div>
-                        <h3 class="relative font-['Montserrat'] text-[#0E1B40] text-[clamp(20px,3.4vw,26px)] leading-tight">
-                            {{ card.title }}
-                        </h3>
-                        <p class="relative mt-3 font-['Roboto'] text-[#213269] text-[16px] leading-[1.65]">
-                            {{ card.body }}
-                        </p>
-                    </div>
-                    {% endfor %}
-                </div>
-
-                <section class="mt-12">
-                    <h3 class="font-['Montserrat'] text-[#0E1B40] text-[clamp(24px,4vw,32px)] leading-tight text-center">
-                        {{ t('siteb.official.commitments.title') }}
-                    </h3>
-                    <div
-                        class="mt-6 grid gap-4 md:gap-5 md:grid-cols-2 font-['Roboto'] text-[#213269] text-[16px] leading-[1.65]">
-                        <div class="flex items-start gap-3">
-                            <span class="mt-[6px] block h-2.5 w-2.5 rounded-full bg-[#B8D779]"></span>
-                            <span>{{ t('siteb.official.commitments.items.1') }}</span>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <span class="mt-[6px] block h-2.5 w-2.5 rounded-full bg-[#B8D779]"></span>
-                            <span>{{ t('siteb.official.commitments.items.2') }}</span>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <span class="mt-[6px] block h-2.5 w-2.5 rounded-full bg-[#B8D779]"></span>
-                            <span>{{ t('siteb.official.commitments.items.3') }}</span>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <span class="mt-[6px] block h-2.5 w-2.5 rounded-full bg-[#B8D779]"></span>
-                            <span>{{ t('siteb.official.commitments.items.4') }}</span>
-                        </div>
-                    </div>
-                </section>
-
-                <section
-                    class="mt-12 rounded-[18px] border border-[#E2E9FF] bg-[#F7FAFF] px-6 py-6 sm:px-7 sm:py-7 lg:px-8 lg:py-8 text-center">
-                    <h3 class="font-['Montserrat'] text-[#0E1B40] text-[clamp(22px,3.6vw,28px)] leading-tight">
-                        {{ t('siteb.official.contact.title') }}
-                    </h3>
-                    <p class="mt-3 font-['Roboto'] text-[#213269] text-[16px] leading-[1.6] max-w-[720px] mx-auto">
-                        {{ t('siteb.official.contact.body') }}
-                    </p>
-                    <div class="mt-5 flex flex-col sm:flex-row items-center justify-center gap-4 text-[16px]">
-                        <a href="mailto:{{ t('siteb.official.contact.email') }}"
-                            class="font-['Roboto'] font-medium text-[#20306C] hover:underline">
-                            {{ t('siteb.official.contact.email') }}
-                        </a>
-                        <span class="hidden sm:block h-4 w-px bg-[#C8D3FF]"></span>
-                        <a href="tel:{{ t('siteb.official.contact.phone') | replace(' ', '') }}"
-                            class="font-['Roboto'] font-medium text-[#20306C] hover:underline">
-                            {{ t('siteb.official.contact.phone') }}
-                        </a>
-                    </div>
-                </section>
-            </article>
+        {% else %}
+        <div class="w-screen min-h-screen flex items-center justify-center p-8 text-center font-['Roboto'] text-[18px] leading-[28px] text-black">
+            {{ t('official.missing_doc') if t else 'Document unavailable.' }}
         </div>
+        {% endif %}
     </section>
 </main>
 {% endblock %}
