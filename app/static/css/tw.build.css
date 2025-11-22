@@ -313,6 +313,9 @@
   .left-4 {
     left: calc(var(--spacing) * 4);
   }
+  .left-5 {
+    left: calc(var(--spacing) * 5);
+  }
   .left-\[-28px\] {
     left: -28px;
   }
@@ -769,11 +772,11 @@
   .h-\[180px\] {
     height: 180px;
   }
-  .h-\[190px\] {
-    height: 190px;
-  }
   .h-\[200px\] {
     height: 200px;
+  }
+  .h-\[210px\] {
+    height: 210px;
   }
   .h-\[220px\] {
     height: 220px;
@@ -898,8 +901,8 @@
   .min-h-\[260px\] {
     min-height: 260px;
   }
-  .min-h-\[450px\] {
-    min-height: 450px;
+  .min-h-\[420px\] {
+    min-height: 420px;
   }
   .min-h-\[580px\] {
     min-height: 580px;
@@ -997,6 +1000,9 @@
   .w-\[90px\] {
     width: 90px;
   }
+  .w-\[92\%\] {
+    width: 92%;
+  }
   .w-\[96px\] {
     width: 96px;
   }
@@ -1035,12 +1041,6 @@
   }
   .w-\[480px\] {
     width: 480px;
-  }
-  .w-\[840px\] {
-    width: 840px;
-  }
-  .w-\[1100px\] {
-    width: 1100px;
   }
   .w-\[clamp\(18px\,2\.6vw\,25px\)\] {
     width: clamp(18px, 2.6vw, 25px);
@@ -1144,9 +1144,6 @@
   .max-w-\[320px\] {
     max-width: 320px;
   }
-  .max-w-\[360px\] {
-    max-width: 360px;
-  }
   .max-w-\[380px\] {
     max-width: 380px;
   }
@@ -1158,6 +1155,9 @@
   }
   .max-w-\[480px\] {
     max-width: 480px;
+  }
+  .max-w-\[520px\] {
+    max-width: 520px;
   }
   .max-w-\[583px\] {
     max-width: 583px;
@@ -1197,6 +1197,9 @@
   }
   .max-w-\[980px\] {
     max-width: 980px;
+  }
+  .max-w-\[1120px\] {
+    max-width: 1120px;
   }
   .max-w-\[1169px\] {
     max-width: 1169px;
@@ -2474,9 +2477,6 @@
   .text-\[clamp\(20px\,4vw\,50px\)\] {
     font-size: clamp(20px, 4vw, 50px);
   }
-  .text-\[clamp\(20px\,5\.8vw\,26px\)\] {
-    font-size: clamp(20px, 5.8vw, 26px);
-  }
   .text-\[clamp\(22px\,3\.6vw\,28px\)\] {
     font-size: clamp(22px, 3.6vw, 28px);
   }
@@ -2572,6 +2572,9 @@
   }
   .text-\[clamp\(34px\,5vw\,60px\)\] {
     font-size: clamp(34px, 5vw, 60px);
+  }
+  .text-\[clamp\(34px\,11vw\,52px\)\] {
+    font-size: clamp(34px, 11vw, 52px);
   }
   .text-\[clamp\(40px\,5\.2vw\,64px\)\] {
     font-size: clamp(40px, 5.2vw, 64px);
@@ -3866,6 +3869,11 @@
       height: 120px;
     }
   }
+  .sm\:h-\[230px\] {
+    @media (width >= 40rem) {
+      height: 230px;
+    }
+  }
   .sm\:h-\[280px\] {
     @media (width >= 40rem) {
       height: 280px;
@@ -3984,6 +3992,11 @@
   .sm\:max-w-\[360px\] {
     @media (width >= 40rem) {
       max-width: 360px;
+    }
+  }
+  .sm\:max-w-\[600px\] {
+    @media (width >= 40rem) {
+      max-width: 600px;
     }
   }
   .sm\:max-w-none {
@@ -4968,6 +4981,16 @@
       height: 100%;
     }
   }
+  .lg\:min-h-\[430px\] {
+    @media (width >= 64rem) {
+      min-height: 430px;
+    }
+  }
+  .lg\:min-h-\[460px\] {
+    @media (width >= 64rem) {
+      min-height: 460px;
+    }
+  }
   .lg\:w-\[24px\] {
     @media (width >= 64rem) {
       width: 24px;
@@ -5227,11 +5250,6 @@
       padding-block: calc(var(--spacing) * 12);
     }
   }
-  .lg\:py-14 {
-    @media (width >= 64rem) {
-      padding-block: calc(var(--spacing) * 14);
-    }
-  }
   .lg\:py-16 {
     @media (width >= 64rem) {
       padding-block: calc(var(--spacing) * 16);
@@ -5382,9 +5400,9 @@
       height: 130px;
     }
   }
-  .xl\:h-\[215px\] {
+  .xl\:h-\[230px\] {
     @media (width >= 80rem) {
-      height: 215px;
+      height: 230px;
     }
   }
   .xl\:h-\[320px\] {
@@ -5395,11 +5413,6 @@
   .xl\:h-\[420px\] {
     @media (width >= 80rem) {
       height: 420px;
-    }
-  }
-  .xl\:h-\[460px\] {
-    @media (width >= 80rem) {
-      height: 460px;
     }
   }
   .xl\:w-\[80px\] {
@@ -5417,16 +5430,6 @@
       width: 564px;
     }
   }
-  .xl\:w-\[922px\] {
-    @media (width >= 80rem) {
-      width: 922px;
-    }
-  }
-  .xl\:w-\[1450px\] {
-    @media (width >= 80rem) {
-      width: 1450px;
-    }
-  }
   .xl\:w-\[min\(28vw\,380px\)\] {
     @media (width >= 80rem) {
       width: min(28vw, 380px);
@@ -5440,6 +5443,11 @@
   .xl\:max-w-\[660px\] {
     @media (width >= 80rem) {
       max-width: 660px;
+    }
+  }
+  .xl\:max-w-\[1400px\] {
+    @media (width >= 80rem) {
+      max-width: 1400px;
     }
   }
   .xl\:grid-cols-3 {

@@ -1,4 +1,4 @@
-<section class="max-w-[var(--container)] mx-auto px-4 py-8 lg:py-14 space-y-6 lg:space-y-10 w-full" id="timer">
+<section class="max-w-[var(--container)] mx-auto px-4 py-8 lg:py-12 space-y-6 lg:space-y-10 w-full" id="timer">
     <!-- HEADER -->
     <header class="text-center">
         <div class="flex items-center justify-center gap-4">
@@ -25,9 +25,9 @@
         siteId: {{ (_site.id if (_site is not none and _site.id is defined and _site.id) else none) | tojson }}
       })' x-init='$nextTick(()=> { if (typeof init==="function") init(); })'>
 
-        <div class="flex w-full justify-center">\
+        <div class="flex w-full justify-center">
             <div
-                class="relative w-full max-w-[1310px] min-h-[450px] h-auto rounded-[10px] overflow-hidden flex flex-col justify-center group isolate">
+                class="relative w-full max-w-[1310px] min-h-[420px] lg:min-h-[430px] h-auto rounded-[10px] overflow-hidden flex flex-col justify-center group isolate">
 
                 <!-- BG Image -->
                 <img src="{{ theme('img/timer/timer-bg.png') }}" x-bind:src="bgUrl" alt="" aria-hidden="true"

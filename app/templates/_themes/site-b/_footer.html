@@ -86,9 +86,11 @@
                 {{ t('siteb.footer.rights_prefix') }} 2025 |
                 {{ footer_link('/terms', t('siteb.footer.terms')) }} |
                 {{ footer_link('/privacy', t('siteb.footer.privacy')) }} |
-                {{ t('siteb.footer.powered_by') }}
-                <img src="{{ theme('img/footer/rotating-logo.gif') }}" alt="{{ t('siteb.footer.badge_alt') }}"
-                    class="sb-footer__badge rotating-icon" />
+                <a class="sb-footer__link" href="https://hebent.tech" target="_blank" rel="noopener">
+                    {{ t('siteb.footer.powered_by') }}
+                    <img src="{{ theme('img/footer/rotating-logo.gif') }}" alt="{{ t('siteb.footer.badge_alt') }}"
+                        class="sb-footer__badge rotating-icon" />
+                </a>
 
             </span>
         </div>

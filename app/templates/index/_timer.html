@@ -31,7 +31,7 @@
         <!-- ===== BIG TIMER (>=1024px) ===== -->
         <div class="timer-big flex w-full justify-center" x-show="isDesktop" x-cloak
             x-transition.opacity.duration.200ms>
-            <div class="timer-wrap w-[1100px] xl:w-[1450px] h-[380px] xl:h-[460px]">
+            <div class="timer-wrap w-full max-w-[1310px] xl:max-w-[1400px] min-h-[420px] lg:min-h-[460px]">
                 <!-- Background -->
                 <div class="timer-bg">
                     <img src="{{ url_for('static', path='img/timer/timer_bg.png') }}" x-bind:src="bgUrl" alt=""
@@ -60,7 +60,7 @@
 
                     <!-- Center bar -->
                     <div
-                        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[840px] h-[190px] xl:w-[922px] xl:h-[215px]">
+                        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[92%] max-w-[1120px] h-[210px] xl:h-[230px]">
                         <div class="w-full h-full bg-[#007A3D] rounded-[40px] flex items-center justify-center px-8">
                             <div class="flex items-center gap-[32px] xl:gap-[42px] text-white select-none">
                                 <!-- DAYS -->
@@ -114,12 +114,13 @@
                         </div>
                     </div>
 
-                </div><!-- /timer-content -->
-            </div><!-- /timer-wrap -->
+                </div>
+            </div>
         </div>
         <!-- ===== SMALL (<1024px) redesigned ===== -->
         <div class="timer-small block w-full" x-show="!isDesktop" x-cloak x-transition.opacity.duration.200ms>
-            <div class="relative mx-auto w-full max-w-[360px] h-[140px] rounded-[10px] overflow-hidden">
+            <div
+                class="relative mx-auto w-full max-w-[520px] sm:max-w-[600px] h-[200px] sm:h-[230px] rounded-[14px] overflow-hidden">
 
                 <div class="absolute inset-0 z-0">
                     <img src="{{ url_for('static', path='img/timer/timer_bg.png') }}" x-bind:src="bgUrl" alt=""
@@ -128,51 +129,54 @@
 
                 <div class="absolute inset-0 bg-black/35 z-0"></div>
 
-                <div class="absolute top-2 left-4 z-10 select-none text-[#F0F0F0]">
-                    <div class="font-['Montserrat'] font-medium text-[15px] leading-[1.1]">
+                <div class="absolute top-3 left-5 z-10 select-none text-[#F0F0F0]">
+                    <div class="font-['Montserrat'] font-medium text-[14px] sm:text-[16px] leading-[1.1]">
                         {{ t('home.timer.remaining') }}
                     </div>
                 </div>
 
                 <div
-                    class="absolute inset-0 z-10 text-[#F0F0F0] px-4 pt-6 pb-2 flex items-center justify-between select-none">
+                    class="absolute inset-0 z-10 text-[#F0F0F0] px-5 pt-6 pb-3 flex items-center justify-between select-none">
 
                     <div class="flex justify-center items-center gap-2">
                         <div class="text-center">
-                            <div class="font-['Montserrat'] text-[40px] " x-text="dd">00</div>
-                            <div class="font-['Lato','Roboto'] text-[15px] leading-[14px] opacity-80">
+                            <div class="font-['Montserrat'] text-[clamp(34px,11vw,52px)]" x-text="dd">00</div>
+                            <div class="font-['Lato','Roboto'] text-[14px] sm:text-[16px] leading-[14px] opacity-80">
                                 {{ t('home.timer.days')|upper }}
                             </div>
                         </div>
 
-                        <span class="font-['Roboto'] font-semibold text-[25px] leading-[20px] pb-3">:</span>
+                        <span
+                            class="font-['Roboto'] font-semibold text-[26px] sm:text-[28px] leading-[22px] pb-3">:</span>
 
                         <div class="text-center">
-                            <div class="font-['Montserrat'] text-[40px] " x-text="hh">00</div>
-                            <div class="font-['Lato','Roboto'] text-[15px] leading-[14px] opacity-80">
+                            <div class="font-['Montserrat'] text-[clamp(34px,11vw,52px)]" x-text="hh">00</div>
+                            <div class="font-['Lato','Roboto'] text-[14px] sm:text-[16px] leading-[14px] opacity-80">
                                 {{ t('home.timer.hours')|upper }}
                             </div>
                         </div>
 
-                        <span class="font-['Roboto'] font-semibold text-[25px] leading-[20px] pb-3">:</span>
+                        <span
+                            class="font-['Roboto'] font-semibold text-[26px] sm:text-[28px] leading-[22px] pb-3">:</span>
 
                         <div class="text-center">
-                            <div class="font-['Montserrat'] text-[40px] " x-text="mm">00</div>
-                            <div class="font-['Lato','Roboto'] text-[15px] leading-[14px] opacity-80">
+                            <div class="font-['Montserrat'] text-[clamp(34px,11vw,52px)]" x-text="mm">00</div>
+                            <div class="font-['Lato','Roboto'] text-[14px] sm:text-[16px] leading-[14px] opacity-80">
                                 {{ t('home.timer.minutes')|upper }}
                             </div>
                         </div>
                     </div>
 
                     <div class="text-center flex flex-col items-center justify-center">
-                        <div class="font-['Montserrat'] font-medium text-[12px] leading-[1.2] opacity-90">
+                        <div
+                            class="font-['Montserrat'] font-medium text-[12px] sm:text-[13px] leading-[1.2] opacity-90">
                             {{ t('home.timer.deadline') }}
                         </div>
-                        <div class="font-['Montserrat'] text-[40px] "
+                        <div class="font-['Montserrat'] text-[clamp(34px,11vw,52px)]"
                             x-text="deadlineDay || {{ timer.deadline_day|default(0) }}">
                             {{ timer.deadline_day }}
                         </div>
-                        <div class="font-['Lato','Roboto'] text-[15px] leading-[14px] uppercase tracking-wider"
+                        <div class="font-['Lato','Roboto'] text-[14px] sm:text-[16px] leading-[14px] uppercase tracking-wider"
                             x-text="deadlineMonthUpper || {{ timer.deadline_month_upper|tojson }}">
                             {{ timer.deadline_month_upper }}
                         </div>

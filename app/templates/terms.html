@@ -31,12 +31,12 @@
             {% for sec in (terms.sections or []) %}
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-start">
                 <div class="md:col-span-4">
-                    <div class="font-['Montserrat'] text-[#000] text-[clamp(20px,5.8vw,26px)] md:text-[30px] leading-[1.35]">
+                    <div class="font-['Montserrat'] legal-heading">
                         {{ sec.title }}
                     </div>
                 </div>
                 <div class="md:col-span-8">
-                    <div class="font-['Roboto'] text-[#000] text-[clamp(15px,4vw,18px)] md:text-[20px] leading-[1.65] prose max-w-none">
+                    <div class="font-['Roboto'] legal-content prose max-w-none">
                         {{ sec.body_html | safe }}
                     </div>
                 </div>
@@ -47,7 +47,7 @@
             {% endfor %}
 
             {% if (terms.sections or []) | length == 0 and terms.content_html %}
-            <article class="prose max-w-none font-['Roboto'] text-[clamp(15px,4vw,18px)] md:text-[20px] leading-[1.65] text-[#000]">
+            <article class="prose max-w-none font-['Roboto'] legal-content">
                 {{ terms.content_html | safe }}
             </article>
             {% endif %}
