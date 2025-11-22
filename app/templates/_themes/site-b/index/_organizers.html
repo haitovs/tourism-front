@@ -2,7 +2,7 @@
 {% set all = (data and data.get('items')) or [] %}
 {% set count = all|length %}
 
-<section id="organizers" class="w-full max-w-[var(--container)] mx-auto py-16">
+<section id="organizers" class=" w-[min(1450px,92vw)] mx-auto py-16">
     <!-- Heading + 20px green bar (rounded on the right) -->
     <header class="mb-8">
         <h2 class="font-['Roboto'] font-semibold text-[clamp(24px,3.5vw,40px)] leading-[1] text-[#1E1E1E]">
@@ -16,8 +16,8 @@
            border-2 border-transparent hover:border-[#20306C]
            flex items-center justify-center select-none overflow-hidden">
         {% if p.logo_url %}
-        <img src="{{ p.logo_url }}" alt="{{ p.name }}" title="{{ p.name }}"
-            class="object-contain w-full h-full" loading="lazy"
+        <img src="{{ p.logo_url }}" alt="{{ p.name }}" title="{{ p.name }}" class="object-contain w-full h-full"
+            loading="lazy"
             onerror="this.src='/static/img/img_placeholder.png'; this.style.opacity='0.7'; this.style.objectFit='contain';" />
         {% else %}
         <img src="/static/img/img_placeholder.png" alt="{{ p.name }}" title="{{ p.name }}"

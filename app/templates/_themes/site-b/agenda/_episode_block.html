@@ -343,17 +343,20 @@
                     <section x-data="{ track: null }">
                         <h4 class="font-['Montserrat'] font-semibold text-[24px] leading-[30px] text-black">{{
                             t('agenda.speakers') }}</h4>
-                        <div class="mt-6">
-                            <ul x-ref="track" x-init="track = $refs.track"
-                                class="no-scrollbar snap-x snap-mandatory overflow-x-auto flex gap-6 pr-2"
-                                style="scroll-behavior: smooth" aria-label="{{ t('agenda.speakers_carousel') }}">
-                                {% for sp in _speakers %}
-                                {% set sp_href = sp.url or ('/speakers/' ~ (sp.slug or sp.id)) %}
-                                <li class="snap-start shrink-0">
-                                    {{ card.speaker_card(sp, href=sp_href) }}
-                                </li>
-                                {% endfor %}
-                            </ul>
+                        <div class="mt-6" data-marquee-group>
+                            <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false"
+                                style="--gap: 1rem">
+                                <div class="marquee__viewport">
+                                    <ul class="marquee__track">
+                                        {% for sp in _speakers %}
+                                        {% set sp_href = sp.url or ('/speakers/' ~ (sp.slug or sp.id)) %}
+                                        <li class="marquee__item">
+                                            {{ card.speaker_card(sp, href=sp_href) }}
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </section>
                     {% endif %}
