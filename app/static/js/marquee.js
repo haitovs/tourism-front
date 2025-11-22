@@ -17,6 +17,22 @@
         return toPx(document.body, raw);
     }
 
+    // Pulls speed from CSS custom property first (per theme static CSS), then data-speed, then fallback.
+    function resolveSpeed(root) {
+        const cssVal = getComputedStyle(root).getPropertyValue("--speed").trim();
+        const cssSpeed = cssVal ? Number(cssVal) : NaN;
+        const dataSpeed = root.dataset.speed ? Number(root.dataset.speed) : NaN;
+        if (Number.isFinite(cssSpeed) && cssSpeed > 0) return cssSpeed;
+        if (Number.isFinite(dataSpeed) && dataSpeed > 0) return dataSpeed;
+        return 60;
+    }
+
+    function normalizeOffset(val, cycle) {
+        if (!cycle) return 0;
+        const mod = val % cycle;
+        return mod < 0 ? mod + cycle : mod;
+    }
+
     function buildUnit(viewport, baseNodes, gap) {
         const meas = document.createElement("ul");
         meas.style.cssText =
@@ -54,7 +70,7 @@
         if (!viewport || !track) return;
 
         const min = Number(root.dataset.min || 0);
-        const speed = Number(root.dataset.speed || 60);
+        const speed = resolveSpeed(root);
         const respectRM = (root.dataset.respectRm || "false").toLowerCase() === "true";
         const reduce = respectRM && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -90,10 +106,15 @@
         track.style.willChange = "transform";
         track.style.userSelect = "none";
         track.style.pointerEvents = "auto";
+        track.style.animation = "none"; // JS drives the transform; disable CSS animation when JS is active.
+        viewport.style.touchAction = "pan-y";
 
         // animation
         let last = performance.now();
         let offset = 0;
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartOffset = 0;
 
         // subpixel-friendly transform (align to device pixel)
         const toPxAligned = (x) => {
@@ -101,29 +122,68 @@
             return Math.round(x * dpr) / dpr;
         };
 
+        const render = () => {
+            if (!cycle) {
+                track.style.transform = "translate3d(0,0,0)";
+                return;
+            }
+            const m = normalizeOffset(offset, cycle);
+            const tx = -toPxAligned(m);
+            track.style.transform = `translate3d(${tx}px,0,0)`;
+        };
+
         function loop(now) {
             const dt = (now - last) / 1000;
             last = now;
 
-            if (!reduce) {
+            if (!reduce && !isDragging) {
                 offset += speed * dt;
-                if (cycle > 0) {
-                    // use cycle (unitWidth + inter-unit gap) for a perfect seamless loop
-                    const m = offset % cycle;
-                    const tx = -toPxAligned(m);
-                    track.style.transform = `translate3d(${tx}px,0,0)`;
-                }
-            } else {
-                track.style.transform = "translate3d(0,0,0)";
             }
+            render();
             requestAnimationFrame(loop);
         }
+        render();
         requestAnimationFrame(loop);
+
+        const dragSurface = viewport || root;
+        const endDrag = (ev) => {
+            if (!isDragging) return;
+            isDragging = false;
+            dragStartX = 0;
+            dragStartOffset = offset;
+            if (dragSurface.hasPointerCapture?.(ev.pointerId)) {
+                dragSurface.releasePointerCapture(ev.pointerId);
+            }
+            last = performance.now();
+            root.classList.remove("marquee--dragging");
+        };
+        dragSurface.addEventListener("pointerdown", (ev) => {
+            isDragging = true;
+            dragStartX = ev.clientX;
+            dragStartOffset = offset;
+            last = performance.now();
+            dragSurface.setPointerCapture?.(ev.pointerId);
+            root.classList.add("marquee--dragging");
+        });
+        dragSurface.addEventListener(
+            "pointermove",
+            (ev) => {
+                if (!isDragging) return;
+                const dx = ev.clientX - dragStartX;
+                offset = dragStartOffset - dx;
+                render();
+                ev.preventDefault();
+            },
+            { passive: false },
+        );
+        dragSurface.addEventListener("pointerup", endDrag);
+        dragSurface.addEventListener("pointercancel", endDrag);
+        dragSurface.addEventListener("pointerleave", endDrag);
 
         // Rebuild on resize or when container/gap changes
         const ro = new ResizeObserver(() => {
             // remember current progress within cycle
-            const cur = cycle > 0 ? offset % cycle : 0;
+            const cur = normalizeOffset(offset, cycle);
 
             // recompute gap (could change with CSS)
             g = gapPx(root);
@@ -144,9 +204,8 @@
 
             // keep same visual progress
             offset = cur;
-            const tx = -toPxAligned(offset % cycle);
             track.style.gap = getComputedStyle(root).getPropertyValue("--gap").trim() || "16px";
-            track.style.transform = `translate3d(${tx}px,0,0)`;
+            render();
         });
         ro.observe(viewport);
     }

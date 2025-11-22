@@ -1,8 +1,8 @@
 /* === Site B · Sponsors header stack === */
 .marquee {
     --gap: 1rem;
-    --speed: 10;
-    --duration: 180s;
+    --speed: 60; /* keep in sync with base extra.css */
+    --duration: 30s;
 }
 
 .sb-sponsors {

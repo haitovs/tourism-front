@@ -157,6 +157,8 @@ body {
     width: 100%;
     isolation: isolate;
     padding-bottom: 2px;
+    touch-action: pan-y;
+    cursor: grab;
 }
 
 .marquee__track {
@@ -174,6 +176,10 @@ body {
 .marquee__item {
     flex: 0 0 auto;
     will-change: transform;
+}
+
+.marquee--dragging .marquee__viewport {
+    cursor: grabbing;
 }
 
 @keyframes marquee-slide {

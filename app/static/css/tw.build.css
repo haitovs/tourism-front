@@ -253,9 +253,6 @@
   .top-3 {
     top: calc(var(--spacing) * 3);
   }
-  .top-4 {
-    top: calc(var(--spacing) * 4);
-  }
   .top-\[12\%\] {
     top: 12%;
   }
@@ -427,14 +424,8 @@
   .-mx-2 {
     margin-inline: calc(var(--spacing) * -2);
   }
-  .mx-8 {
-    margin-inline: calc(var(--spacing) * 8);
-  }
   .mx-auto {
     margin-inline: auto;
-  }
-  .my-2 {
-    margin-block: calc(var(--spacing) * 2);
   }
   .my-3 {
     margin-block: calc(var(--spacing) * 3);
@@ -640,9 +631,6 @@
   .h-12 {
     height: calc(var(--spacing) * 12);
   }
-  .h-\[1px\] {
-    height: 1px;
-  }
   .h-\[2px\] {
     height: 2px;
   }
@@ -816,9 +804,6 @@
   }
   .h-\[320px\] {
     height: 320px;
-  }
-  .h-\[330px\] {
-    height: 330px;
   }
   .h-\[360px\] {
     height: 360px;
@@ -1943,12 +1928,6 @@
       background-color: color-mix(in oklab, var(--color-white) 15%, transparent);
     }
   }
-  .bg-white\/30 {
-    background-color: color-mix(in srgb, #fff 30%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-white) 30%, transparent);
-    }
-  }
   .bg-white\/60 {
     background-color: color-mix(in srgb, #fff 60%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -2260,9 +2239,6 @@
   }
   .text-\[3vw\] {
     font-size: 3vw;
-  }
-  .text-\[4vw\] {
-    font-size: 4vw;
   }
   .text-\[8vw\] {
     font-size: 8vw;
@@ -3780,11 +3756,6 @@
       scale: var(--tw-scale-x) var(--tw-scale-y);
     }
   }
-  .sm\:static {
-    @media (width >= 40rem) {
-      position: static;
-    }
-  }
   .sm\:inset-x-4 {
     @media (width >= 40rem) {
       inset-inline: calc(var(--spacing) * 4);
@@ -3818,11 +3789,6 @@
   .sm\:mt-8 {
     @media (width >= 40rem) {
       margin-top: calc(var(--spacing) * 8);
-    }
-  }
-  .sm\:mb-2 {
-    @media (width >= 40rem) {
-      margin-bottom: calc(var(--spacing) * 2);
     }
   }
   .sm\:block {
@@ -4010,11 +3976,6 @@
       width: auto;
     }
   }
-  .sm\:w-full {
-    @media (width >= 40rem) {
-      width: 100%;
-    }
-  }
   .sm\:max-w-\[180px\] {
     @media (width >= 40rem) {
       max-width: 180px;
@@ -4053,11 +4014,6 @@
   .sm\:justify-end {
     @media (width >= 40rem) {
       justify-content: flex-end;
-    }
-  }
-  .sm\:gap-2 {
-    @media (width >= 40rem) {
-      gap: calc(var(--spacing) * 2);
     }
   }
   .sm\:gap-2\.5 {
@@ -4212,11 +4168,6 @@
       padding-block: calc(var(--spacing) * 14);
     }
   }
-  .sm\:text-center {
-    @media (width >= 40rem) {
-      text-align: center;
-    }
-  }
   .sm\:text-left {
     @media (width >= 40rem) {
       text-align: left;
@@ -4267,11 +4218,6 @@
       font-size: 22px;
     }
   }
-  .sm\:text-\[24px\] {
-    @media (width >= 40rem) {
-      font-size: 24px;
-    }
-  }
   .sm\:text-\[25px\] {
     @media (width >= 40rem) {
       font-size: 25px;
@@ -4308,12 +4254,6 @@
     @media (width >= 40rem) {
       --tw-leading: 1.14;
       line-height: 1.14;
-    }
-  }
-  .sm\:leading-relaxed {
-    @media (width >= 40rem) {
-      --tw-leading: var(--leading-relaxed);
-      line-height: var(--leading-relaxed);
     }
   }
   .sm\:leading-tight {
@@ -4883,11 +4823,6 @@
       line-height: 75px;
     }
   }
-  .lg\:relative {
-    @media (width >= 64rem) {
-      position: relative;
-    }
-  }
   .lg\:static {
     @media (width >= 64rem) {
       position: static;
@@ -5143,11 +5078,6 @@
       flex-direction: row;
     }
   }
-  .lg\:items-end {
-    @media (width >= 64rem) {
-      align-items: flex-end;
-    }
-  }
   .lg\:items-start {
     @media (width >= 64rem) {
       align-items: flex-start;
@@ -5317,11 +5247,6 @@
       text-align: left;
     }
   }
-  .lg\:text-right {
-    @media (width >= 64rem) {
-      text-align: right;
-    }
-  }
   .lg\:text-\[14px\] {
     @media (width >= 64rem) {
       font-size: 14px;
@@ -5330,11 +5255,6 @@
   .lg\:text-\[16px\] {
     @media (width >= 64rem) {
       font-size: 16px;
-    }
-  }
-  .lg\:text-\[18px\] {
-    @media (width >= 64rem) {
-      font-size: 18px;
     }
   }
   .lg\:text-\[20px\] {
@@ -5447,19 +5367,9 @@
       color: var(--c-primary);
     }
   }
-  .xl\:block {
-    @media (width >= 80rem) {
-      display: block;
-    }
-  }
   .xl\:flex {
     @media (width >= 80rem) {
       display: flex;
-    }
-  }
-  .xl\:hidden {
-    @media (width >= 80rem) {
-      display: none;
     }
   }
   .xl\:aspect-\[7\/3\] {
