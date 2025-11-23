@@ -26,14 +26,25 @@ from app.routers.terms_router import router as terms_router
 from app.routers.timer_router import router as timer_router
 
 
+def _set_assets_version(app: FastAPI) -> None:
+    try:
+        tw = Path(__file__).parent / "static" / "css" / "tw.build.css"
+        mtime = int(tw.stat().st_mtime) if tw.exists() else int(time.time())
+    except Exception:
+        mtime = int(time.time())
+    settings.ASSETS_V = str(mtime)
+    app.state.assets_v = settings.ASSETS_V
+
+
 @asynccontextmanager
-async def lifespan(app):
+async def lifespan(app: FastAPI):
     app.state.http = httpx.AsyncClient(
         timeout=httpx.Timeout(10.0, connect=2.0),
         limits=httpx.Limits(max_connections=100, max_keepalive_connections=20),
         http2=True,
         follow_redirects=True,
     )
+    _set_assets_version(app)
     try:
         yield
     finally:
@@ -41,19 +52,6 @@ async def lifespan(app):
 
 
 app = FastAPI(title=settings.APP_NAME, lifespan=lifespan)
-
-
-@app.on_event("startup")
-async def _set_assets_version():
-    try:
-        tw = Path(__file__).parent / "static" / "css" / "tw.build.css"
-        mtime = int(tw.stat().st_mtime) if tw.exists() else int(time.time())
-        settings.ASSETS_V = str(mtime)
-        app.state.assets_v = settings.ASSETS_V
-    except Exception:
-        settings.ASSETS_V = str(int(time.time()))
-        app.state.assets_v = settings.ASSETS_V
-
 
 app.add_middleware(SiteResolverMiddleware)
 app.add_middleware(LanguageMiddleware)
