@@ -77,15 +77,26 @@
             },
 
             wsUrlFromBase() {
-                try {
-                    const u = new URL(this.apiBase || window.location.origin);
-                    u.protocol = u.protocol === "https:" ? "wss:" : "ws:";
+                const loc = window.location;
+                const pageIsSecure = loc.protocol === "https:";
+                const makeUrl = (base) => {
+                    const u = new URL(base, loc.origin);
+                    const host = (u.hostname || "").toLowerCase();
+                    const isInternal = ["localhost", "127.0.0.1", "0.0.0.0", "backend"].includes(host);
+                    if (isInternal) {
+                        u.hostname = loc.hostname;
+                        u.port = loc.port;
+                    }
+                    const secure = pageIsSecure || u.protocol === "https:";
+                    u.protocol = secure ? "wss:" : "ws:";
                     u.pathname = "/ws/timer";
                     u.search = "";
                     return u.toString();
+                };
+                try {
+                    return makeUrl(this.apiBase || loc.origin);
                 } catch {
-                    const loc = window.location;
-                    return (loc.protocol === "https:" ? "wss://" : "ws://") + loc.host + "/ws/timer";
+                    return (pageIsSecure ? "wss://" : "ws://") + loc.host + "/ws/timer";
                 }
             },
 
