@@ -42,6 +42,18 @@ body {
     }
 }
 
+.agenda-day-scroller {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: grab;
+}
+.agenda-day-scroller::-webkit-scrollbar {
+    display: none;
+}
+.agenda-day-scroller:active {
+    cursor: grabbing;
+}
+
 /* soft shadow utility */
 .shadow-soft {
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);

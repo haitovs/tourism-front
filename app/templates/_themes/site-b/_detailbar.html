@@ -50,8 +50,8 @@
 
         <!-- Left: Logo -->
         <a href="/" class="sb-logo" aria-label="{{ t('siteb.detailbar.aria.home') }}">
-            <img src="{{ theme('img/detailbar/logo-extended.png') }}" alt="{{ t('siteb.detailbar.logo_alt') }}"
-                class="sb-logo-img" onerror="this.style.display='none'">
+            <img src="{{ url_for('static', path='img/logo.png') }}" alt="{{ t('siteb.detailbar.logo_alt') }}"
+                class="sb-logo-img" onerror="this.src='{{ url_for('static', path='img/logo.png') }}'">
         </a>
 
         <!-- Center: Inline Nav (scrollable with arrows) -->

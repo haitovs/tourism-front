@@ -7,9 +7,10 @@
 :root {
     --header-h: 90px;
     --sb-max-width: 1650px;
-    --sb-nav-gap: 22px;
-    --sb-nav-font-size: 18px;
+    --sb-nav-gap: 18px;
+    --sb-nav-font-size: 17px;
     --detailbar-mobile-offset: clamp(36px, 11vw, 96px);
+    --sb-dd-min-width: 220px;
 }
 
 /* 02. Header Shell ------------------------------------------------------- */
@@ -117,6 +118,7 @@
     position: relative;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
+    overflow: visible;
 }
 
 .sb-navWrap::-webkit-scrollbar {
@@ -135,7 +137,14 @@
     font-size: var(--sb-nav-font-size);
     line-height: 1.2;
     white-space: nowrap;
-    scroll-snap-type: x proximity;
+    scroll-snap-type: none;
+    overflow: visible;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.sb-nav-arrow {
+    display: none !important;
 }
 
 .sb-nav > li {
@@ -157,6 +166,9 @@
     border: 0;
     cursor: pointer;
     transition: background 0.15s ease, opacity 0.15s ease, transform 0.15s ease;
+    white-space: normal;
+    text-wrap: balance;
+    line-height: 1.25;
 }
 
 .sb-nav > li > a:hover,
@@ -248,8 +260,9 @@
     border: 1px solid rgba(255, 255, 255, 0.22);
     border-radius: 10px;
     padding: 10px;
-    min-width: 220px;
+    min-width: var(--sb-dd-min-width);
     box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
+    z-index: 9999999;
 }
 
 .sb-dd-item {
@@ -367,14 +380,15 @@
 
 @media (max-width: 1260px) {
     .sb-logo {
-        margin-left: 24px;
+        margin-left: 18px;
     }
     .sb-right {
-        margin-right: 24px;
-        gap: 12px;
+        margin-right: 18px;
+        gap: 10px;
     }
     :root {
-        --sb-nav-gap: 18px;
+        --sb-nav-gap: 14px;
+        --sb-nav-font-size: 16px;
     }
 }
 
@@ -390,7 +404,7 @@
     }
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1180px) {
     :root {
         --sb-nav-gap: 12px;
         --sb-nav-font-size: 15px;
@@ -403,6 +417,24 @@
     .sb-right {
         gap: 8px;
     }
+    .sb-logo-img {
+        height: 36px;
+    }
+}
+
+@media (max-width: 1080px) {
+    :root {
+        --sb-nav-gap: 10px;
+        --sb-nav-font-size: 14.5px;
+    }
+    .sb-nav > li > a,
+    .sb-nav-btn,
+    .sb-nav__link {
+        padding: 6px 8px;
+    }
+    .sb-right {
+        gap: 8px;
+    }
 }
 
 @media (max-width: 1024px) {
@@ -410,7 +442,11 @@
         --header-h: 72px;
     }
     .sb-logo {
-        display: none;
+        display: inline-flex;
+        margin-left: 12px;
+    }
+    .sb-logo-img {
+        height: 32px;
     }
     .sb-bar-inner {
         padding: 0 clamp(12px, 3vw, 24px);

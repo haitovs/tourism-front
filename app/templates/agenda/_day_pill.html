@@ -4,8 +4,8 @@
 {% set daynum = day.date.strftime('%d')|int %}
 
 <button type="button" @click="$dispatch('pickday', { id: {{ day.id }} })" :aria-pressed="selectedDayId === {{ day.id }}"
-    :class="(selectedDayId === {{ day.id }}) ? 'bg-[#007A3D] text-white shadow' : 'bg-white text-[#007A3D]'" class="shrink-0 snap-start rounded-[10px] border-2 border-[#007A3D]
-               px-3 py-2 md:px-6 md:py-0
+    :class="(selectedDayId === {{ day.id }}) ? 'bg-[#007A3D] text-white shadow' : 'bg-white text-[#007A3D]'" class="shrink-0 rounded-[10px] border-2 border-[#007A3D]
+               px-3 py-2 md:px-5 md:py-0
                h-auto md:h-[61px]
                focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#00B374] focus-visible:ring-offset-white
                transition-colors select-none">
