@@ -4,7 +4,7 @@
 {% set _params = _params if _params is defined else (_req.query_params if _req else {}) %}
 {% set q = _params.get('q', '') if _params is not none else '' %}
 
-<header id="site-header" class="detailbar relative z-detail" x-data="{
+<header id="site-header" class="detailbar detailbar--with-pill relative z-detail" x-data="{
         mobileOpen:false,
         init() {
             const closeOnWide = () => {
