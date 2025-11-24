@@ -1,10 +1,11 @@
 // app/static/js/headerHide.js
-// Hide header when scrolling down; show as soon as the user scrolls up (by ~1px).
+// Sticky detailbar that hides on downward scroll and reappears on upward scroll.
 (function () {
-    const header = document.getElementById("site-header"); // single source of truth
+    const header = document.getElementById("site-header");
     if (!header) return;
 
     const scrollRoot = document.scrollingElement || document.documentElement || document.body;
+    const spacer = document.getElementById("detailbar-spacer");
     const getScrollY = () => {
         if (typeof window.scrollY === "number") return window.scrollY;
         if (typeof window.pageYOffset === "number") return window.pageYOffset;
@@ -12,58 +13,86 @@
         return document.body ? document.body.scrollTop : 0;
     };
 
+    const TOP_LOCK = 4;    // force header visible near top
+    const HIDE_DELTA = 12; // minimum downward movement before hide
+    const SHOW_DELTA = 2;  // minimum upward movement before show
+
+    let state = "visible"; // "visible" | "hidden"
     let lastY = getScrollY();
     let ticking = false;
 
-    const HIDE_DELTA = 6; // how much down-movement before hide
-    const SHOW_DELTA = 1; // how much up-movement before show
-    const TOP_LOCK = 0; // y<=TOP_LOCK => force visible & reset state
+    const syncSpacer = () => {
+        if (!spacer) return;
+        const rect = header.getBoundingClientRect();
+        spacer.style.height = `${rect.height}px`;
+    };
+
+    const scheduleSpacerSync = () => {
+        if (spacer) requestAnimationFrame(syncSpacer);
+    };
+
+    const applyVisible = (atTop = false) => {
+        header.classList.remove("detailbar--hidden");
+        header.classList.toggle("detailbar--at-top", atTop);
+        if (!atTop) {
+            header.classList.add("detailbar--scrolled");
+        } else {
+            header.classList.remove("detailbar--scrolled");
+        }
+        state = "visible";
+        lastY = getScrollY();
+        scheduleSpacerSync();
+    };
+
+    const applyHidden = () => {
+        header.classList.add("detailbar--hidden");
+        header.classList.remove("detailbar--at-top");
+        header.classList.add("detailbar--scrolled");
+        state = "hidden";
+        scheduleSpacerSync();
+    };
 
     function update() {
         ticking = false;
         const y = Math.max(0, getScrollY());
+
+        if (y <= TOP_LOCK) {
+            applyVisible(true);
+            lastY = y;
+            return;
+        }
+
         const delta = y - lastY;
 
-        // Fully at top: reset styles and show header
-        if (y <= TOP_LOCK) {
-            header.classList.remove("detailbar--hidden", "detailbar--scrolled");
-            header.classList.add("detailbar--at-top");
-            lastY = 0;
-            return;
+        if (state === "visible") {
+            if (delta > HIDE_DELTA) {
+                applyHidden();
+            } else {
+                header.classList.remove("detailbar--at-top");
+                header.classList.add("detailbar--scrolled");
+            }
+        } else if (delta < -SHOW_DELTA) {
+            applyVisible(false);
         }
 
-        // Mark scrolled state (shadow/blur) once away from top
-        header.classList.add("detailbar--scrolled");
-        header.classList.remove("detailbar--at-top");
-
-        // Downward movement beyond threshold => hide
-        if (delta > HIDE_DELTA) {
-            header.classList.add("detailbar--hidden");
-            lastY = y;
-            return;
-        }
-
-        // Any tiny upward movement => show
-        if (delta < -SHOW_DELTA) {
-            header.classList.remove("detailbar--hidden");
-            lastY = y;
-            return;
-        }
-
-        // keep tracking to react quickly to next small change
         lastY = y;
     }
 
     function onScroll() {
         if (!ticking) {
-            requestAnimationFrame(update);
             ticking = true;
+            requestAnimationFrame(update);
         }
     }
 
-    // Init now and on changes
+    const onResize = () => {
+        scheduleSpacerSync();
+        requestAnimationFrame(update);
+    };
+
     update();
+    scheduleSpacerSync();
+    window.addEventListener("load", scheduleSpacerSync);
     window.addEventListener("scroll", onScroll, { passive: true });
-    document.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", () => requestAnimationFrame(update));
+    window.addEventListener("resize", onResize);
 })();

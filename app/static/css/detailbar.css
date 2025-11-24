@@ -10,8 +10,11 @@
 
 /* Sticky header base */
 .detailbar {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
     z-index: var(--z-detail, 70);
     background: var(--c-primary, #007a3d);
     color: #f4f4f2;
@@ -49,13 +52,19 @@
 
 /* Optional legacy ids for compatibility if used elsewhere */
 #site-header {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 9999;
     background: rgba(0, 122, 61, 0.9);
     backdrop-filter: saturate(120%) blur(6px);
     transition: transform 200ms ease, box-shadow 200ms ease;
     will-change: transform;
+}
+
+#detailbar-spacer {
+    height: 0;
 }
 
 #site-header.header--hidden {

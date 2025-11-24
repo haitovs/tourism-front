@@ -41,7 +41,7 @@ _SITE_MAP_CACHE: tuple[str, dict[str, Tuple[str, int]]] = ("", {})
 def _current_site_map() -> dict[str, Tuple[str, int]]:
     raw = settings.SITE_MAP_RAW or ""
     cached_raw, cached_map = _SITE_MAP_CACHE
-    if raw == cached_raw and cached_map:
+    if raw == cached_raw:
         return cached_map
     parsed = _parse_site_map(raw)
     globals()["_SITE_MAP_CACHE"] = (raw, parsed)

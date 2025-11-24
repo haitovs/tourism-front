@@ -41,8 +41,13 @@ class Settings(BaseSettings):
     SITE_MAP_RAW: str = ""
     ALLOW_SITE_OVERRIDE: bool = Field(default=False, alias="SITE_ALLOW_OVERRIDE")
 
+    _supported_langs_cache: Tuple[str, ...] | None = None
+
     @property
     def SUPPORTED_LANGS(self) -> Tuple[str, ...]:
+        if self._supported_langs_cache:
+            return self._supported_langs_cache
+
         items = [x.strip().lower() for x in self.SUPPORTED_LANGS_RAW.split(",") if x.strip()]
         seen, out = set(), []
         for x in items:
@@ -52,7 +57,8 @@ class Settings(BaseSettings):
                 out.append(k)
         if self.DEFAULT_LANG not in out:
             out.insert(0, self.DEFAULT_LANG)
-        return tuple(out)
+        self._supported_langs_cache = tuple(out)
+        return self._supported_langs_cache
 
 
 settings = Settings()

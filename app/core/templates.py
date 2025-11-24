@@ -43,6 +43,7 @@ def _load_theme_locale(slug: str | None, lang: str) -> Dict[str, str]:
         return {}
 
 
+@lru_cache(maxsize=512)
 def _resolve_themed_path(slug: str | None, path: str) -> str | None:
     p = path.lstrip("/")
     if not slug:

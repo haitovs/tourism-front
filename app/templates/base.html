@@ -55,6 +55,7 @@
 <body class="flex min-h-screen flex-col bg-[var(--c-bg)] text-[var(--c-text)]"
     data-site="{{ (site_slug() if site_slug is defined else (_resolved_site.slug if (_resolved_site is defined and _resolved_site and _resolved_site.slug is defined) else 'main')) }}">
     {% include themed('_detailbar.html') %}
+    <div id="detailbar-spacer" aria-hidden="true"></div>
     <main class="flex-1">{% block content %}{% endblock %}</main>
     {% include themed('_footer.html') %}
 
@@ -67,12 +68,12 @@
     </button>
 
     <!-- Your JS (defer = non-blocking) -->
-    <script src="{{ url_for('static', path='js/marquee.js') }}" defer></script>
-    <script src="{{ url_for('static', path='js/headerHide.js') }}" defer></script>
-    <script src="{{ url_for('static', path='js/scrollTop.js') }}" defer></script>
-    <script src="{{ url_for('static', path='js/timerWidget.js') }}" defer></script>
-    <script src="{{ url_for('static', path='js/countup.js') }}" defer></script>
-    <script src="{{ url_for('static', path='js/participantLoader.js') }}" defer></script>
+    <script src="{{ url_for('static', path='js/marquee.js') }}?v={{ settings.ASSETS_V or '1' }}" defer></script>
+    <script src="{{ url_for('static', path='js/headerHide.js') }}?v={{ settings.ASSETS_V or '1' }}" defer></script>
+    <script src="{{ url_for('static', path='js/scrollTop.js') }}?v={{ settings.ASSETS_V or '1' }}" defer></script>
+    <script src="{{ url_for('static', path='js/timerWidget.js') }}?v={{ settings.ASSETS_V or '1' }}" defer></script>
+    <script src="{{ url_for('static', path='js/countup.js') }}?v={{ settings.ASSETS_V or '1' }}" defer></script>
+    <script src="{{ url_for('static', path='js/participantLoader.js') }}?v={{ settings.ASSETS_V or '1' }}" defer></script>
 
     <!-- HTMX / Alpine -->
     <script defer src="https://unpkg.com/htmx.org@2.0.3"></script>
