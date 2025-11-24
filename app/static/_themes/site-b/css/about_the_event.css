@@ -53,9 +53,6 @@
     max-width: 46ch;
     color: #f0f0f0;
 }
-.sb-about__block:last-of-type .sb-about__p {
-    font-weight: 400;
-}
 
 .sb-about__cta {
     display: inline-flex;
