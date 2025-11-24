@@ -33,6 +33,15 @@ body {
     overflow-x: hidden;
 }
 
+.official-support {
+    padding-top: calc(var(--detailbar-mobile-offset, 80px) / 1);
+}
+@media (min-width: 1025px) {
+    .official-support {
+        padding-top: calc(var(--bar-h, 112px) + 12px);
+    }
+}
+
 /* soft shadow utility */
 .shadow-soft {
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);

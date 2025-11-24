@@ -2,7 +2,7 @@
 {% set _req = request if request is defined else None %}
 {% set _path = _req.url.path if _req else '/' %}
 {% set _params = _req.query_params if _req else {} %}
-{% set current = (lang or 'en') %}
+{% set current = lang_ctx() %}
 {% set _coming_soon_paths = [
 '/meeting-request',
 '/brochure',
@@ -197,7 +197,7 @@
             <div class="sb-lang" x-data="siteBLangMenu()" @keydown.escape.window="close()" @click.outside="close()">
                 <button x-ref="btn" type="button" class="sb-lang-btn" :aria-expanded="open.toString()"
                     aria-haspopup="menu" aria-controls="lang-menu" @click="toggle()">
-                    <span class="sb-lang-code">{{ current|upper }}</span>
+                    <span class="sb-lang-code">{{ lang_ctx()|upper }}</span>
                     <svg class="sb-lang-caret" viewBox="0 0 10 7" aria-hidden="true">
                         <path d="M1 1l4 5 4-5" fill="none" stroke="#F0F0F0" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" />
@@ -206,7 +206,7 @@
 
                 <div id="lang-menu" class="sb-lang-menu" x-cloak x-show="open" x-transition
                     :style="{ minWidth: (btnW || 0) + 'px' }" role="menu">
-                    {% for code in ['en','ru','tk'] %}
+                    {% for code in settings.SUPPORTED_LANGS %}
                     {% if code == current %}
                     <span class="sb-lang-item is-current" aria-current="true">{{ code|upper }}</span>
                     {% else %}

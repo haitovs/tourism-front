@@ -82,7 +82,19 @@ def _resolve_doc_path(req: Request, exts: Iterable[str] = (".png", ".jpg", ".jpe
     - fallback to first available file in docs/* if slug missing
     """
     lang = getattr(req.state, "lang", "en") or "en"
-    slug = getattr(getattr(req.state, "site", None), "slug", None) or "turkmenchina"
+    slug_raw = getattr(getattr(req.state, "site", None), "slug", None) or "turkmenchina"
+
+    slug_map = {
+        # main site aliases
+        "turkmenchina": "main",
+        "default": "main",
+        "main": "main",
+        # site-b aliases
+        "site-b": "siteb",
+        "siteb": "siteb",
+        "turkmentravel": "siteb",
+    }
+    slug = slug_map.get(slug_raw.lower(), slug_raw.lower())
 
     base = Path(__file__).parent.parent / "static" / "docs"
     preferred_langs = ["ru", "en"] if lang.startswith("ru") else ["en", "ru"]

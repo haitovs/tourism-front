@@ -70,22 +70,23 @@
                 <div id="lang-menu" x-show="open" x-cloak x-transition.origin.top.right
                     class="absolute right-0 top-full mt-1 p-1 glass text-white text-center z-[2000] rounded-md shadow-lg"
                     :style="{ minWidth: (btnW || 0) + 'px' }" role="menu">
+
                     {% set current = (lang or 'en') %}
+                    {% set base_classes = "block px-3 py-1.5 rounded-md font-medium transition" %}
+                    {% set active_extra = "bg-white/15 cursor-default" %}
+                    {% set hover_focus = "hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2
+                    focus-visible:ring-white/60" %}
+
                     {% for code in ['en','ru','tk','zh'] %}
                     {% if code == current %}
-                    <span class="flex items-center justify-between gap-3 px-3 py-1.5 rounded-md font-medium
-                 cursor-default opacity-80" aria-current="true" role="menuitem" tabindex="-1">
+                    <!-- Selected language: looks like others, but slightly highlighted and not clickable -->
+                    <span class="{{ base_classes }} {{ active_extra }}" aria-current="true" role="menuitem"
+                        tabindex="-1">
                         {{ code|upper }}
-                        <!-- checkmark -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none"
-                            aria-hidden="true">
-                            <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
                     </span>
                     {% else %}
-                    <a class="block px-3 py-1.5 rounded-md font-medium transition
-                 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                    <!-- Regular languages -->
+                    <a class="{{ base_classes }} {{ hover_focus }}"
                         href="{{ _path }}?lang={{ code }}{% for k,v in _params.items() if k!='lang' %}&{{k}}={{ v|urlencode }}{% endfor %}"
                         role="menuitem" tabindex="0">
                         {{ code|upper }}
@@ -93,6 +94,7 @@
                     {% endif %}
                     {% endfor %}
                 </div>
+
             </div>
 
 
@@ -107,8 +109,8 @@
                 :aria-expanded="mobileOpen.toString()" @click="mobileOpen = !mobileOpen">
                 <span class="detailbar-mobile-toggle__label">Menu</span>
                 <svg class="detailbar-mobile-toggle__icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
                 </svg>
             </button>
         </div>

@@ -325,7 +325,10 @@
 }
 
 .sb-lang-item.is-current {
-    opacity: 0.75;
+    background: rgba(249, 193, 82, 0.18);
+    border: 1px solid rgba(249, 193, 82, 0.6);
+    color: #f9c152;
+    font-weight: 700;
     cursor: default;
 }
 
