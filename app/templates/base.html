@@ -15,7 +15,7 @@
     {% if _resolved_site and _resolved_site.id is defined and _resolved_site.id %}
     <meta name="site-id" content="{{ _resolved_site.id }}">
     {% endif %}
-    <title>{{ settings.APP_NAME }}</title>
+    <title>{{ t('brand.name') }}</title>
 
     <style>
         [x-cloak] {
@@ -73,7 +73,8 @@
     <script src="{{ url_for('static', path='js/scrollTop.js') }}?v={{ settings.ASSETS_V or '1' }}" defer></script>
     <script src="{{ url_for('static', path='js/timerWidget.js') }}?v={{ settings.ASSETS_V or '1' }}" defer></script>
     <script src="{{ url_for('static', path='js/countup.js') }}?v={{ settings.ASSETS_V or '1' }}" defer></script>
-    <script src="{{ url_for('static', path='js/participantLoader.js') }}?v={{ settings.ASSETS_V or '1' }}" defer></script>
+    <script src="{{ url_for('static', path='js/participantLoader.js') }}?v={{ settings.ASSETS_V or '1' }}"
+        defer></script>
     <script src="{{ url_for('static', path='js/agendaScroll.js') }}?v={{ settings.ASSETS_V or '1' }}" defer></script>
 
     <!-- HTMX / Alpine -->
