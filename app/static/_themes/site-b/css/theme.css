@@ -135,8 +135,23 @@
 .sb-hero-bg {
     position: relative;
     min-height: 600px;
-    background: #0f0f10 url("/static/_themes/site-b/img/hero/hero.png") center/cover no-repeat;
+    background: #0f0f10 url("/static/_themes/site-b/img/index/index-hero-bg.jpg") center/cover no-repeat;
     overflow: hidden;
+}
+
+.sb-hero-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    backdrop-filter: blur(8px);
+    background: rgba(73, 189, 250, 0.25);
+    z-index: 1;
+}
+
+.sb-hero-bg > * {
+    position: relative;
+    z-index: 2;
 }
 
 @media (max-width: 1024px) {
