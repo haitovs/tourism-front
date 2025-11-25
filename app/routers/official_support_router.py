@@ -97,7 +97,14 @@ def _resolve_doc_path(req: Request, exts: Iterable[str] = (".png", ".jpg", ".jpe
     slug = slug_map.get(slug_raw.lower(), slug_raw.lower())
 
     base = Path(__file__).parent.parent / "static" / "docs"
-    preferred_langs = ["ru", "en"] if lang.startswith("ru") else ["en", "ru"]
+    if slug == "main":
+        # main site: en/zh → english doc; ru/tm/tk → russian doc
+        if lang.startswith("ru") or lang.startswith("tk") or lang.lower() == "tm":
+            preferred_langs = ["ru", "en"]
+        else:
+            preferred_langs = ["en", "ru"]
+    else:
+        preferred_langs = ["ru", "en"] if lang.startswith("ru") else ["en", "ru"]
     exts = [e.lower() if e.startswith(".") else f".{e.lower()}" for e in exts]
 
     def pick_in_folder(folder: Path) -> Optional[Path]:
