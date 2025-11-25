@@ -178,30 +178,39 @@
     "siteb.title_3_content": "6000 +",
     "siteb.title_4_header": "Expected number of companies in 2026:",
     "siteb.title_4_content": "100 +",
+
+    "siteb.about_expo.hero.title": "TurkmenTravel Expo & Forum 2026",
+    "siteb.about_expo.hero.subtitle": "Your guide to the international turkmentravel 2026 exhibition:goals format opportunities for participants",
+    "siteb.about_expo.intro.ribbon": "About the Event",
+    "siteb.about_expo.intro.title": "Turkmen-China Expo Vision and Goals",
+    "siteb.about_expo.intro.lead": "The exhibition aims to become a key platform for strengthening the strategic partnership between Turkmenistan and the People’s Republic of China, showcasing their economic, technological, and cultural potential, and creating new opportunities for cooperation across various sectors. Present the achievements of both countries in industry, agriculture, transport, logistics, IT, and innovation.",
+    "siteb.about_expo.intro.bullets.0": "Strengthen business relations and stimulate new cooperation projects.",
+    "siteb.about_expo.intro.bullets.1": "Demonstrate export opportunities and investment potential.",
+    "siteb.about_expo.intro.bullets.2": "Promote integration in logistics, science, education, and culture.",
+    "siteb.about_expo.intro.bullets.3": "Support digital transformation and the adoption of advanced technologies.",
+    "siteb.about_expo.intro.cta": "Explore Expo Sectors",
+    "siteb.about_expo.why.title": "Why to participate?",
+    "siteb.about_expo.numbers.title": "By the Numbers",
+    "siteb.about_expo.map.ribbon": "Exhibit Map",
+    "siteb.about_expo.map.title": "Flexible options for every concept and occasion",
     "siteb.about_expo.cta.exhibitor_title": "To be an Exhibitors",
     "siteb.about_expo.cta.exhibitor_text1": "Secure your strategic position at the TurkmenTravel Expo and Forum to gain direct visibility among key government officials, international investors, and influential buyers. This is a distinguished opportunity to effectively showcase your services and expand your market reach.",
     "siteb.about_expo.cta.exhibitor_text2": "The Expo serves as the ideal platform to establish valuable partnerships within the rapidly developing Central Asian tourism sector and position your brand at the forefront of industry transformation.",
-
+    "siteb.about_expo.cta.participate_btn": "Participate",
     "siteb.about_expo.advantages.image_alt": "Illustration highlighting TurkmenTravel advantages",
     "siteb.gallery.prev_label": "View previous item",
     "siteb.gallery.next_label": "View next item",
     "siteb.advantages.header": "Participating in the International Tourism Exhibition and Forum TurkmenTravel-2026 offers focused strategic advantages:",
-
     "siteb.advantages.items.1.title": "Strategic Market Access:",
     "siteb.advantages.items.1.desc": "Gain direct entry to the rapidly growing Turkmen and Central Asian tourism markets.",
-
     "siteb.advantages.items.2.title": "High-Level Networking:",
     "siteb.advantages.items.2.desc": "Connect with key decision-makers, government officials, and leading international investors.",
-
     "siteb.advantages.items.3.title": "Innovation & Digitalization Focus:",
     "siteb.advantages.items.3.desc": "Engage in critical discussions on technological advancements and the future of smart tourist services.",
-
     "siteb.advantages.items.4.title": "Expert Knowledge Exchange:",
     "siteb.advantages.items.4.desc": "Acquire valuable international best practices in hospitality, sustainable tourism, and cultural development.",
-
     "siteb.advantages.items.5.title": "Maximum Brand Visibility:",
     "siteb.advantages.items.5.desc": "Effectively showcase your products and services to a targeted professional audience of buyers and media.",
-
     "siteb.about_forum.hero.title": "TurkmenTravel Forum 2026",
     "siteb.about_forum.hero.subtitle": "An international platform showcasing Turkmenistan`s tourism potential, innovative travel solutions, and new opportunities for global cooperation.",
     "siteb.about_forum.gallery.alt_prefix": "Forum photo",
