@@ -54,11 +54,15 @@
        close(){ this.open=false; },
        init(){ this.btnW = this.$refs.langBtn?.offsetWidth || 0; window.addEventListener('resize', ()=>{ this.btnW = this.$refs.langBtn?.offsetWidth || 0; }); }
      }" @keydown.escape.window="close()" @click.away="close()">
+                {% set langs = settings.SUPPORTED_LANGS %}
+                {% if 'zh' not in langs %}
+                {% set langs = langs + ('zh',) %}
+                {% endif %}
                 <button x-ref="langBtn" type="button" class="flex items-center gap-1 font-['Roboto'] font-medium px-2
            text-[12px] sm:text-[16px] md:text-[20px] lg:text-[24px] rounded-md
            hover:bg-white/10 transition-colors" aria-haspopup="menu" :aria-expanded="open.toString()"
                     aria-controls="lang-menu" @click="toggle()">
-                    {{ (lang or 'en')|upper }}
+                    {{ lang_ctx()|upper }}
                     <svg class="w-3 h-3 sm:w-4 sm:h-4 -rotate-90 transition-transform" :class="open ? 'rotate-0' : ''"
                         viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M6 9l6 6 6-6" stroke="#F4F4F2" stroke-width="2" stroke-linecap="round"
@@ -71,13 +75,13 @@
                     class="absolute right-0 top-full mt-1 p-1 glass text-white text-center z-[2000] rounded-md shadow-lg"
                     :style="{ minWidth: (btnW || 0) + 'px' }" role="menu">
 
-                    {% set current = (lang or 'en') %}
+                    {% set current = lang_ctx() %}
                     {% set base_classes = "block px-3 py-1.5 rounded-md font-medium transition" %}
                     {% set active_extra = "bg-white/15 cursor-default" %}
                     {% set hover_focus = "hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2
                     focus-visible:ring-white/60" %}
 
-                    {% for code in ['en','ru','tk','zh'] %}
+                    {% for code in langs %}
                     {% if code == current %}
                     <!-- Selected language: looks like others, but slightly highlighted and not clickable -->
                     <span class="{{ base_classes }} {{ active_extra }}" aria-current="true" role="menuitem"

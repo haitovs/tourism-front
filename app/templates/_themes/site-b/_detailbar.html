@@ -194,6 +194,7 @@
             </a>
             {% endif %}
 
+            {% set langs = settings.SUPPORTED_LANGS | reject("equalto", "zh") | list %}
             <div class="sb-lang" x-data="siteBLangMenu()" @keydown.escape.window="close()" @click.outside="close()">
                 <button x-ref="btn" type="button" class="sb-lang-btn" :aria-expanded="open.toString()"
                     aria-haspopup="menu" aria-controls="lang-menu" @click="toggle()">
@@ -206,7 +207,7 @@
 
                 <div id="lang-menu" class="sb-lang-menu" x-cloak x-show="open" x-transition
                     :style="{ minWidth: (btnW || 0) + 'px' }" role="menu">
-                    {% for code in settings.SUPPORTED_LANGS %}
+                    {% for code in langs %}
                     {% if code == current %}
                     <span class="sb-lang-item is-current" aria-current="true">{{ code|upper }}</span>
                     {% else %}
