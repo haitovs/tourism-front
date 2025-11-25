@@ -73,7 +73,7 @@ button:hover .nav-caret {
 /* Dropdown positioning (desktop default) */
 .menu-dd {
     position: absolute;
-    top: 2.75rem; /* ~44px below trigger */
+    top: 2.1rem; /* slightly tighter to reduce gaps */
     left: 0;
     z-index: var(--z-dd);
     overflow: visible;
