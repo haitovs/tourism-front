@@ -10,10 +10,10 @@
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
             <h1
                 class="font-['Montserrat'] font-bold text-white text-[clamp(30px,5vw,60px)] lg:text-[clamp(44px,3.6vw,72px)] leading-[1.15]">
-                {{ t('about_forum.hero.title') }}
+                {{ t('siteb.about_forum.hero.title') }}
             </h1>
             <p class="mt-2 font-['Roboto'] text-white/90 text-[clamp(16px,2.4vw,20px)]">
-                {{ t('about_forum.hero.subtitle') }}
+                {{ t('siteb.about_forum.hero.subtitle') }}
             </p>
         </div>
         {{ hero_buttons(
@@ -38,7 +38,6 @@
 
                     <p>{{ t('siteb.about_forum.body.p1') }}</p>
                     <p>{{ t('siteb.about_forum.body.p2') }}</p>
-                    <p>{{ t('siteb.about_forum.body.p3') }}</p>
 
                     <p>{{ t('siteb.about_forum.body.list_intro') }}</p>
 
@@ -47,6 +46,8 @@
                         <li>{{ t('siteb.about_forum.body.list_2') }}</li>
                         <li>{{ t('siteb.about_forum.body.list_3') }}</li>
                         <li>{{ t('siteb.about_forum.body.list_4') }}</li>
+                        <li>{{ t('siteb.about_forum.body.list_5') }}</li>
+                        <li>{{ t('siteb.about_forum.body.list_6') }}</li>
                     </ul>
 
                     <p>{{ t('siteb.about_forum.body.p4') }}</p>
@@ -62,10 +63,8 @@
                     {% set img_path = 'img/about-forum/forum%s.png' % idx %}
                     <figure
                         class="rounded-[16px] overflow-hidden bg-slate-100 shadow-[0_10px_22px_rgba(12,26,71,0.14)]">
-                        <img src="{{ theme(img_path) }}"
-                            alt="{{ t('siteb.about_forum.gallery.alt_prefix') }} {{ idx }}"
-                            class="w-full h-full object-cover"
-                            loading="lazy">
+                        <img src="{{ theme(img_path) }}" alt="{{ t('siteb.about_forum.gallery.alt_prefix') }} {{ idx }}"
+                            class="w-full h-full object-cover" loading="lazy">
                     </figure>
                     {% endfor %}
                 </div>
@@ -75,38 +74,38 @@
                     <figure
                         class="rounded-[18px] overflow-hidden bg-slate-100 shadow-[0_18px_36px_rgba(12,26,71,0.18)] row-span-2">
                         <img src="{{ theme('img/about-forum/forum1.png') }}"
-                            alt="{{ t('siteb.about_forum.gallery.alt_prefix') }} 1"
-                            class="w-full h-full object-cover" loading="lazy">
+                            alt="{{ t('siteb.about_forum.gallery.alt_prefix') }} 1" class="w-full h-full object-cover"
+                            loading="lazy">
                     </figure>
                     <figure
                         class="rounded-[18px] overflow-hidden bg-slate-100 shadow-[0_18px_36px_rgba(12,26,71,0.18)] col-span-2">
                         <img src="{{ theme('img/about-forum/forum2.png') }}"
-                            alt="{{ t('siteb.about_forum.gallery.alt_prefix') }} 2"
-                            class="w-full h-full object-cover" loading="lazy">
+                            alt="{{ t('siteb.about_forum.gallery.alt_prefix') }} 2" class="w-full h-full object-cover"
+                            loading="lazy">
                     </figure>
                     <figure
                         class="rounded-[18px] overflow-hidden bg-slate-100 shadow-[0_12px_28px_rgba(12,26,71,0.15)]">
                         <img src="{{ theme('img/about-forum/forum3.png') }}"
-                            alt="{{ t('siteb.about_forum.gallery.alt_prefix') }} 3"
-                            class="w-full h-full object-cover" loading="lazy">
+                            alt="{{ t('siteb.about_forum.gallery.alt_prefix') }} 3" class="w-full h-full object-cover"
+                            loading="lazy">
                     </figure>
                     <figure
                         class="rounded-[18px] overflow-hidden bg-slate-100 shadow-[0_18px_36px_rgba(12,26,71,0.18)] row-span-2">
                         <img src="{{ theme('img/about-forum/forum4.png') }}"
-                            alt="{{ t('siteb.about_forum.gallery.alt_prefix') }} 4"
-                            class="w-full h-full object-cover" loading="lazy">
+                            alt="{{ t('siteb.about_forum.gallery.alt_prefix') }} 4" class="w-full h-full object-cover"
+                            loading="lazy">
                     </figure>
                     <figure
                         class="rounded-[18px] overflow-hidden bg-slate-100 shadow-[0_12px_28px_rgba(12,26,71,0.15)]">
                         <img src="{{ theme('img/about-forum/forum5.png') }}"
-                            alt="{{ t('siteb.about_forum.gallery.alt_prefix') }} 5"
-                            class="w-full h-full object-cover" loading="lazy">
+                            alt="{{ t('siteb.about_forum.gallery.alt_prefix') }} 5" class="w-full h-full object-cover"
+                            loading="lazy">
                     </figure>
                     <figure
                         class="rounded-[18px] overflow-hidden bg-slate-100 shadow-[0_12px_28px_rgba(12,26,71,0.15)]">
                         <img src="{{ theme('img/about-forum/forum6.png') }}"
-                            alt="{{ t('siteb.about_forum.gallery.alt_prefix') }} 6"
-                            class="w-full h-full object-cover" loading="lazy">
+                            alt="{{ t('siteb.about_forum.gallery.alt_prefix') }} 6" class="w-full h-full object-cover"
+                            loading="lazy">
                     </figure>
                 </div>
             </div>
