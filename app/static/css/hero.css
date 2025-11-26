@@ -2,7 +2,7 @@
 .hero-bg {
     position: relative;
     background: var(--c-hero);
-    min-height: 600px;
+    min-height: 630px;
     overflow: hidden;
     background-image: url("/static/img/index-hero-bg.jpg");
     background-position: center center;
@@ -15,18 +15,8 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0);
+    background: rgba(0, 122, 61, 0.3);
     z-index: 0;
-}
-
-.hero-bg::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: url("/static/img/wave.png") bottom center / 100% auto no-repeat;
-    z-index: 1;
 }
 
 .hero-bg > * {
@@ -38,7 +28,6 @@
     content: "";
     position: absolute;
     inset: 0;
-    backdrop-filter: blur(8px);
     pointer-events: none;
 }
 

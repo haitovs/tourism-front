@@ -44,7 +44,7 @@
     "hero.refresh": "刷新",
 
     "agenda.title": "日程",
-    "agenda.tc_hero_subtitle_zh": "全面了解土库曼斯坦—中国商务论坛暨博览会的完整日程，涵盖各类会议、洽谈以及促进交流与合作的活动。",
+    "agenda.hero_subtitle": "全面了解土库曼斯坦—中国商务论坛暨博览会的完整日程，涵盖各类会议、洽谈以及促进交流与合作的活动。",
 
     "agenda.program": "议程",
     "agenda.none": "暂未发布日程。",
@@ -77,11 +77,12 @@
     "index.about.band": "关于活动",
     "index.about.title": "国际博览会与论坛",
     "index.about.forum.heading": "关于论坛",
-    "index.about.forum.body": "我们是一支国际化的专业团队，致力于组织高规格的全球性活动——包括论坛、展览和讲座——以推动创新、文化交流与国际合作。",
+    "index.about.forum.body": "本论坛汇聚土库曼斯坦和中国，通过会议、专题讨论和合作协议，就贸易、创新、可持续发展与合作等议题开展交流与对话。",
     "index.about.why.heading": "我们的使命",
-    "index.about.why.body": "我们的目标是为外国来宾提供顺畅便捷的注册体验，并汇聚来自世界各地的外交官、政府代表、专家与创新者，促进交流与合作，激发新的思想。",
-    "index.about.guests.heading": "欢迎哪些来宾？",
-    "index.about.guests.body": "本平台面向参加重大公共及专业活动的外国代表团、使馆代表、文化机构、媒体专业人士以及受邀的国际来宾开放。",
+    "index.about.why.body": "展示经济潜力和创新成果，推动在工业、农业、交通、数字领域以及文化和教育等方面的合作。",
+    "index.about.guests.heading": "我们欢迎谁？",
+    "index.about.guests.body": "欢迎寻求合作与知识交流的政府官员、商业领袖、投资者、研究人员及各类机构。",
+
     "index.about.cta": "查看详情",
     "index.about.video_alt": "活动预览",
     "index.about.video_play_aria": "播放视频",

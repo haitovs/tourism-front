@@ -354,7 +354,7 @@
 /* 08. Hero Integration --------------------------------------------------- */
 .sb-hero-bg {
     position: relative;
-    min-height: 600px;
+    min-height: 700px;
     background: #0f0f10 url("/static/_themes/site-b/img/hero/hero.png") center/cover no-repeat;
     overflow: hidden;
     margin-top: calc(-1 * var(--header-h));
