@@ -25,8 +25,8 @@
     <span class="sb-link-coming">{{ t('siteb.nav.coming_soon_badge') }}</span>
 </span>
 {% else %}
-<a href="{{ href }}" class="{{ ' '.join(class_list) }}" {% if role %}role="{{ role }}" {% endif %}
-    {{ extra_attrs|safe }}>{{ label }}</a>
+<a href="{{ href }}" class="{{ ' '.join(class_list) }}" {% if role %}role="{{ role }}" {% endif %} {{ extra_attrs|safe
+    }}>{{ label }}</a>
 {% endif %}
 {% endmacro %}
 
@@ -50,7 +50,7 @@
 
         <!-- Left: Logo -->
         <a href="/" class="sb-logo" aria-label="{{ t('siteb.detailbar.aria.home') }}">
-            <img src="{{ url_for('static', path='img/logo.png') }}" alt="{{ t('siteb.detailbar.logo_alt') }}"
+            <img src="{{ theme('img/logo.png') }}" alt="{{ t('siteb.detailbar.logo_alt') }}"
                 class="sb-logo-img" onerror="this.src='{{ url_for('static', path='img/logo.png') }}'">
         </a>
 
@@ -220,8 +220,8 @@
             </div>
 
             <button type="button" class="sb-mobile-toggle" :class="{ 'is-active': mobileOpen }"
-                aria-controls="sb-mobile-nav" aria-label="Toggle navigation"
-                :aria-expanded="mobileOpen.toString()" @click="mobileOpen = !mobileOpen">
+                aria-controls="sb-mobile-nav" aria-label="Toggle navigation" :aria-expanded="mobileOpen.toString()"
+                @click="mobileOpen = !mobileOpen">
                 <span class="sb-mobile-toggle__label">Menu</span>
                 <svg class="sb-mobile-toggle__icon" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"

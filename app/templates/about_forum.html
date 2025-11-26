@@ -1,20 +1,22 @@
 {% extends "base.html" %} {% from "_hero_macros.html" import hero_buttons %} {% block content %}
 <main>
     <!-- HERO -->
-    <section class="relative w-full h-[320px] md:h-[380px]">
+    <section class="relative w-full h-[510px]">
         <img src="/static/img/about-forum/abouttheforum-hero.png" alt=""
             class="absolute inset-0 w-full h-full object-cover" />
-        <div class="absolute inset-0 bg-black/40"></div>
-        <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
+        <div class="absolute inset-0 bg-black/60"></div>
+        <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center 
+            px-4 sm:px-6 md:px-10 lg:px-70">
             <h1 class="font-['Montserrat'] font-bold text-white
-               text-[clamp(30px,5vw,60px)] lg:text-[clamp(44px,3.6vw,72px)]
-               leading-[1.15]">
+       text-[clamp(30px,5vw,60px)] lg:text-[clamp(44px,3.6vw,72px)]
+       leading-[1.15]">
                 {{ t('about_forum.hero.title') }}
             </h1>
             <p class="mt-2 font-['Roboto'] text-white/90 text-[clamp(16px,2.4vw,20px)]">
                 {{ t('about_forum.hero.subtitle') }}
             </p>
         </div>
+
         {{ hero_buttons(
         home_href = '/',
         section_label = t('nav.about_forum'),
