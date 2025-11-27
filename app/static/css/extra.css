@@ -272,6 +272,7 @@ body {
     outline-offset: 3px;
 }
 #to-top .to-top__icon {
+    display: block;
     width: 70%;
     height: 70%;
     background: url("/static/img/upward-arrow.svg") center/contain no-repeat;
