@@ -18,7 +18,7 @@ async def privacy_policy_page(req: Request):
     log = logging.getLogger("routers.privacy")
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
     site_id = _resolve_site_id(req)
-    doc = legal_srv.get_latest_privacy(site_id=site_id)
+    doc = await legal_srv.get_latest_privacy(req, site_id=site_id)
     if not doc:
         log.warning("privacy policy missing for site_id=%s; rendering empty state", site_id)
         doc = {"sections": [], "content_html": ""}

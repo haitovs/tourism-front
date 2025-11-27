@@ -18,7 +18,7 @@ async def terms_of_use_page(req: Request):
     log = logging.getLogger("routers.terms")
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
     site_id = _resolve_site_id(req)
-    doc = legal_srv.get_latest_terms(site_id=site_id)
+    doc = await legal_srv.get_latest_terms(req, site_id=site_id)
     if not doc:
         log.warning("terms of use missing for site_id=%s; rendering empty state", site_id)
         doc = {"sections": [], "content_html": ""}
