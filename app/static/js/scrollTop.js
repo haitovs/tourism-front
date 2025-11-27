@@ -4,11 +4,11 @@
     if (!btn) return;
 
     const SHOW_AFTER = 300; // px scrolled before showing the button
-    const svg = btn.querySelector("svg");
-    if (svg) {
-        svg.style.transition = "opacity 140ms ease-out, transform 140ms ease-out";
-        svg.style.opacity = "0";
-        svg.style.transform = "translateY(6px)";
+    const icon = btn.querySelector(".to-top__icon");
+    if (icon) {
+        icon.style.transition = "opacity 140ms ease-out, transform 140ms ease-out";
+        icon.style.opacity = "0";
+        icon.style.transform = "translateY(6px)";
     }
 
     let ticking = false;
@@ -18,15 +18,15 @@
         const y = window.scrollY || window.pageYOffset;
         if (y > SHOW_AFTER) {
             btn.classList.add("to-top--show");
-            if (svg) {
-                svg.style.opacity = "1";
-                svg.style.transform = "translateY(0)";
+            if (icon) {
+                icon.style.opacity = "1";
+                icon.style.transform = "translateY(0)";
             }
         } else {
             btn.classList.remove("to-top--show");
-            if (svg) {
-                svg.style.opacity = "0";
-                svg.style.transform = "translateY(6px)";
+            if (icon) {
+                icon.style.opacity = "0";
+                icon.style.transform = "translateY(6px)";
             }
         }
     }

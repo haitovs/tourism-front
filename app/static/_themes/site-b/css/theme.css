@@ -162,56 +162,57 @@
 /* To Top button style */
 #to-top.sb-top {
     position: fixed;
-    right: clamp(12px, 4vw, 28px);
-    bottom: clamp(12px, 4vw, 28px);
-    width: 56px;
-    height: 56px;
+    right: clamp(12px, 4vw, 22px);
+    bottom: clamp(12px, 4vw, 22px);
+    width: 62px;
+    height: 62px;
     border-radius: 50%;
-    background: var(--site-primary);
-    display: block;
-    place-items: center;
-    z-index: 50;
-    cursor: pointer;
+    background: rgba(12, 24, 42, 0.94);
+    color: #f0f0f0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.32), 0 4px 12px rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(73, 189, 250, 0.35);
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease, box-shadow 160ms ease;
+    z-index: 95;
 }
-#to-top.sb-top svg {
-    width: 30px;
-    height: 30px;
+#to-top.sb-top.to-top--show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
 }
-#to-top.sb-top[data-show="true"] {
-    display: grid;
+#to-top.sb-top:hover {
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.34), 0 6px 14px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px) scale(1.02);
 }
 #to-top.sb-top:focus-visible {
-    outline: 2px solid #f0f0f0;
+    outline: 2px solid rgba(73, 189, 250, 0.9);
     outline-offset: 3px;
 }
-@media (max-width: 768px) {
+#to-top.sb-top .to-top__icon {
+    width: 70%;
+    height: 70%;
+    background: url("/static/img/upward-arrow.svg") center/contain no-repeat;
+    filter: invert(1);
+}
+#to-top.sb-top:focus-visible {
+    outline: 2px solid rgba(73, 189, 250, 0.9);
+    outline-offset: 3px;
+}
+@media (max-width: 1024px) {
     #to-top.sb-top {
-        width: 48px;
-        height: 48px;
-    }
-    #to-top.sb-top svg {
-        width: 24px;
-        height: 24px;
+        width: 52px;
+        height: 52px;
     }
 }
-@media (max-width: 520px) {
+@media (max-width: 640px) {
     #to-top.sb-top {
-        width: 40px;
-        height: 40px;
-    }
-    #to-top.sb-top svg {
-        width: 20px;
-        height: 20px;
-    }
-}
-@media (max-width: 380px) {
-    #to-top.sb-top {
-        width: 34px;
-        height: 34px;
-    }
-    #to-top.sb-top svg {
-        width: 18px;
-        height: 18px;
+        width: 42px;
+        height: 42px;
     }
 }
 
