@@ -63,11 +63,6 @@
                     <img src="{{ u }}" alt="" class="w-full h-full object-cover" />
                 </div>
                 {% endfor %}
-                {% if hero_imgs|length < 3 %}
-                {% for _ in range(3 - hero_imgs|length) %}
-                <div class="mx-auto w-[min(100%,350px)] aspect-square rounded-[14px] bg-slate-100/70"></div>
-                {% endfor %}
-                {% endif %}
             </div>
             {% endif %}
 
@@ -112,34 +107,30 @@
             </div>
             {% endif %}
 
+            {# ---------- REST GALLERY - Responsive Masonry with Lightbox ---------- #}
             {% set rest = sec.images_rest or [] %}
             {% if rest|length > 0 %}
             <div class="mt-10">
-                <div class="hidden lg:grid gap-4"
-                    style="grid-template-columns: 390px 1fr 1fr; grid-template-rows: 261px 1fr">
-                    <div class="row-span-2 rounded-[20px] overflow-hidden bg-slate-100 h-[571px]">
-                        <img src="{{ rest[0] }}" alt="" class="w-full h-full object-cover" />
-                    </div>
-                    <div class="rounded-[20px] overflow-hidden bg-slate-100 h-[261px]">
-                        <img src="{{ rest[1] if rest|length>1 else rest[0] }}" alt="" class="w-full h-full object-cover" />
-                    </div>
-                    <div class="rounded-[20px] overflow-hidden bg-slate-100 h-[261px]">
-                        <img src="{{ rest[2] if rest|length>2 else rest[0] }}" alt="" class="w-full h-full object-cover" />
-                    </div>
-                    <div class="col-span-2 rounded-[20px] overflow-hidden bg-slate-100 h-[280px]">
-                        <img src="{{ rest[3] if rest|length>3 else (rest[2] if rest|length>2 else rest[0]) }}" alt=""
-                            class="w-full h-full object-cover" />
-                    </div>
-                </div>
-
-                <div class="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="gallery-grid">
                     {% for u in rest %}
-                    <div class="w-full rounded-[20px] overflow-hidden bg-slate-100 aspect-[4/3]">
-                        <img src="{{ u }}" alt="" class="w-full h-full object-cover" />
-                    </div>
+                    <a href="{{ u }}" class="glightbox block rounded-[20px] overflow-hidden bg-slate-100 
+                        {% if loop.index == 1 and rest|length >= 4 %}sm:col-span-2 sm:row-span-2{% endif %}
+                        aspect-[4/3] hover:opacity-90 transition-opacity" data-gallery="sector-gallery">
+                        <img src="{{ u }}" alt="Gallery image {{ loop.index }}" class="w-full h-full object-cover"
+                            loading="lazy" />
+                    </a>
                     {% endfor %}
                 </div>
             </div>
+
+            <!-- GLightbox CDN -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.2.0/dist/css/glightbox.min.css" />
+            <script src="https://cdn.jsdelivr.net/npm/glightbox@3.2.0/dist/js/glightbox.min.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true });
+                });
+            </script>
             {% endif %}
         </div>
         {% endif %}

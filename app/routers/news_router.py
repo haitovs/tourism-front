@@ -21,7 +21,7 @@ def _filter_news(items: list[dict], q: str | None) -> list[dict]:
     ql = q.strip().lower()
     if not ql:
         return items
-    return [n for n in items if ql in str(n.get("title", "")).lower()]
+    return [n for n in items if ql in str(n.get("title", "")).lower() or ql in str(n.get("summary", "")).lower()]
 
 
 @router.get("/news", response_class=HTMLResponse)

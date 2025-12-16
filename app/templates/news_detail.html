@@ -36,7 +36,7 @@
         </div>
         {% else %}
         <div class="bg-white rounded-[10px] p-6 md:p-8 lg:p-10 shadow-sm">
-            {# header strip like “DAILY” + thin green divider #}
+            {# header strip like "DAILY" + thin green divider #}
             <div class="flex items-center justify-between">
                 <span class="font-['Roboto'] text-[30px] leading-[35px] text-[rgba(0,122,61,0.75)]">
                     {{ t('news.detail.daily_tag') }}
@@ -44,12 +44,11 @@
                 <div class="flex-1 ml-4 border-t-[3px] border-[#A6D0BB]"></div>
             </div>
 
-            {# responsive two-column layout #}
-            <div class="mt-8 grid grid-cols-1 lg:grid-cols-[minmax(0,534px)_1fr] gap-10">
-                {# LEFT COLUMN #}
-                <div>
-                    {# image #}
-                    <div class="w-full h-[248px] rounded-[15px] overflow-hidden">
+            {# Content area with floating image #}
+            <article class="mt-8">
+                {# Image floats left #}
+                <div class="mb-6" style="float: left; margin-right: 2rem; width: 500px;">
+                    <div class="aspect-[16/10] rounded-[15px] overflow-hidden">
                         {% if item.image_url %}
                         <img src="{{ item.image_url }}" alt="{{ item.title }}" class="w-full h-full object-cover" />
                         {% else %}
@@ -57,18 +56,23 @@
                             class="w-full h-full object-cover opacity-80" />
                         {% endif %}
                     </div>
+                </div>
 
-                    {# category + date #}
+                {# Title, category/date flow next to image #}
+                <div>
+                    {# Title - using larger summary-style font #}
+                    <h2
+                        class="font-['Roboto'] font-medium text-[24px] md:text-[28px] lg:text-[32px] leading-[1.4] text-black/80">
+                        {{ item.title }}
+                    </h2>
 
-                    <div class="mt-6 flex items-center justify-between gap-4">
-                        <!-- LEFT: category -->
+                    {# Category + Date #}
+                    <div class="mt-4 flex items-center flex-wrap gap-4">
                         <span class="inline-flex h-[36px] px-4 rounded-[10px] bg-[#007A3D] items-center">
                             <span class="font-['Roboto'] font-bold text-[16px] leading-[20px] text-white">
                                 {{ item.category or t('news.common.category_default') }}
                             </span>
                         </span>
-
-                        <!-- RIGHT: date -->
                         <span class="flex items-center gap-2 shrink-0">
                             <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
                                 <circle cx="12" cy="12" r="9" fill="none" stroke="#007A3D" stroke-width="2" />
@@ -81,39 +85,25 @@
                             </time>
                         </span>
                     </div>
+                </div>
 
-                    {# title #}
-                    <h2 class="mt-6 font-['Montserrat'] font-semibold text-[35px] leading-[43px] text-[#13152E]">
-                        {{ item.title }}
-                    </h2>
-
-                    {# summary / short lead #}
-                    {% if item.summary %}
-                    <p class="mt-6 font-['Roboto'] text-[25px] leading-[32px] text-black/70">{{ item.summary }}</p>
-                    {% endif %}
-                    {% if item.lead %}
-                    <p class="mt-5 font-['Roboto'] text-[25px] leading-[32px] text-black/70">{{ item.lead }}</p>
+                {# Body content - flows after floated image #}
+                <div class="mt-6 font-['Roboto'] text-[18px] md:text-[20px] leading-[1.7] text-black/70">
+                    {% if item.body %}
+                    <div
+                        class="prose max-w-none prose-headings:font-['Montserrat'] prose-headings:text-[#1E1E1E] prose-h2:text-[28px] prose-h3:text-[24px] prose-p:leading-[1.7] prose-li:leading-[1.7] space-y-5">
+                        {{ item.body | safe }}
+                    </div>
+                    {% elif item.lead %}
+                    <p>{{ item.lead }}</p>
+                    {% else %}
+                    <p>{{ t('common.details_coming_soon') }}</p>
                     {% endif %}
                 </div>
 
-                {# RIGHT COLUMN — main content #}
-                <article class="prose max-w-none">
-                    <div class="font-['Roboto'] text-[20px] md:text-[22px] leading-[32px] text-black/70 space-y-6">
-                        {% if item.body %}
-                        <div
-                            class="prose-headings:font-['Montserrat'] prose-headings:text-[#1E1E1E] prose-h2:text-[28px] prose-h3:text-[24px] prose-p:leading-[32px] prose-li:leading-[32px]">
-                            {{ item.body | safe }}
-                        </div>
-                        {% else %}
-                        {% if item.summary %}
-                        <p>{{ item.summary }}</p>
-                        {% else %}
-                        <p>{{ t('common.details_coming_soon') }}</p>
-                        {% endif %}
-                        {% endif %}
-                    </div>
-                </article>
-            </div>
+                {# Clear float #}
+                <div class="clear-both"></div>
+            </article>
         </div>
         {% endif %}
     </section>

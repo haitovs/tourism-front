@@ -2,15 +2,10 @@
 {% block content %}
 {% set sec = sector or expo_sector %}
 <main>
-    {# ---------- HERO ---------- #}
-    {% set hero_src = (sec.hero_url or sec.logo_url) if sec else None %}
+    <!-- HERO - uses same image as expo sectors list page -->
     <section class="relative w-full h-[320px] md:h-[380px]">
-        {% if hero_src %}
-        <img src="{{ hero_src }}" alt="" class="absolute inset-0 w-full h-full object-cover" />
+        <img src="/static/img/expo_sectors_hero.png" alt="" class="absolute inset-0 w-full h-full object-cover" />
         <div class="absolute inset-0 bg-black/40"></div>
-        {% else %}
-        <div class="absolute inset-0 bg-gradient-to-br from-[#0B703C] to-[#0e8450]"></div>
-        {% endif %}
 
         <div class="relative z-[1] h-full flex flex-col items-center justify-center text-center px-4">
             <h1 class="font-['Montserrat'] font-bold text-white text-[clamp(28px,5vw,56px)] leading-tight">
@@ -53,7 +48,7 @@
             <p class="mt-6 text-black text-[25px] leading-[40px] font-['Roboto']">{{ sec.description }}</p>
             {% endif %}
 
-            {# ---------- TOP 3 IMAGES (LESS ROUNDED) ---------- #}
+            {# ---------- TOP 3 IMAGES ---------- #}
             {% set hero_imgs = sec.images_hero or [] %}
             {% if hero_imgs|length > 0 %}
             <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -62,83 +57,74 @@
                     <img src="{{ u }}" alt="" class="w-full h-full object-cover" />
                 </div>
                 {% endfor %}
-                {% if hero_imgs|length < 3 %} {% for _ in range(3 - hero_imgs|length) %} <div
-                    class="mx-auto w-[min(100%,350px)] aspect-square rounded-[16px] bg-slate-100/70">
-            </div>
-            {% endfor %}
-            {% endif %}
-        </div>
-        {% endif %}
-
-        {% if sec and (sec.mid_html or sec.body_html) %}
-        <div class="mt-8 text-black text-[25px] leading-[40px] font-['Roboto'] [&_p]:mb-4">{{ (sec.mid_html or sec.body_html) | safe }}
-        </div>
-        {% endif %}
-
-        {% if sec and (sec.points_left or sec.points_right) %}
-        <div class="mt-6 grid gap-8 md:grid-cols-2">
-            {% if sec.points_left %}
-            <div>
-                <h3 class="font-['Roboto'] font-medium text-[25px] leading-[40px] text-black">
-                    {{ t('sectors.detail.key_professions') }}
-                </h3>
-                <ul class="mt-1 list-disc pl-6 text-black text-[25px] leading-[40px] font-['Roboto'] space-y-1">
-                    {% for item in sec.points_left %}<li>{{ item }}</li>{% endfor %}
-                </ul>
             </div>
             {% endif %}
-            {% if sec.points_right %}
-            <div>
-                <h3 class="font-['Roboto'] font-medium text-[25px] leading-[40px] text-black">
-                    {{ t('sectors.detail.types') }}
-                </h3>
-                <ul class="mt-1 list-disc pl-6 text-black text-[25px] leading-[40px] font-['Roboto'] space-y-1">
-                    {% for item in sec.points_right %}<li>{{ item }}</li>{% endfor %}
-                </ul>
+
+            {% if sec and (sec.mid_html or sec.body_html) %}
+            <div class="mt-8 text-black text-[25px] leading-[40px] font-['Roboto'] [&_p]:mb-4">
+                {{ (sec.mid_html or sec.body_html) | safe }}
             </div>
             {% endif %}
-        </div>
-        {% endif %}
 
-        {% if sec and (sec.outro_html or sec.outro) %}
-        {% if sec.outro_html %}
-        <div class="mt-8 text-black text-[25px] leading-[40px] font-['Roboto'] [&_p]:mb-4">{{ sec.outro_html | safe }}
-        </div>
-        {% else %}
-        <p class="mt-8 text-black text-[25px] leading-[40px] font-['Roboto']">{{ sec.outro }}</p>
-        {% endif %}
-        {% endif %}
+            {% if sec and (sec.points_left or sec.points_right) %}
+            <div class="mt-6 grid gap-8 md:grid-cols-2">
+                {% if sec.points_left %}
+                <div>
+                    <h3 class="font-['Roboto'] font-medium text-[25px] leading-[40px] text-black">
+                        {{ t('sectors.detail.key_professions') }}
+                    </h3>
+                    <ul class="mt-1 list-disc pl-6 text-black text-[25px] leading-[40px] font-['Roboto'] space-y-1">
+                        {% for item in sec.points_left %}<li>{{ item }}</li>{% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                {% if sec.points_right %}
+                <div>
+                    <h3 class="font-['Roboto'] font-medium text-[25px] leading-[40px] text-black">
+                        {{ t('sectors.detail.types') }}
+                    </h3>
+                    <ul class="mt-1 list-disc pl-6 text-black text-[25px] leading-[40px] font-['Roboto'] space-y-1">
+                        {% for item in sec.points_right %}<li>{{ item }}</li>{% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
 
-        {# ---------- REST GALLERY (SLIGHTLY MORE ROUNDED THAN TOP, BUT LESS THAN ORIGINAL) ---------- #}
-        {% set rest = sec.images_rest or [] %}
-        {% if rest|length > 0 %}
-        <div class="mt-10">
-            <div class="hidden lg:grid gap-4"
-                style="grid-template-columns: 390px 1fr 1fr; grid-template-rows: 261px 1fr">
-                <div class="row-span-2 rounded-[24px] overflow-hidden bg-slate-100 h-[571px]">
-                    <img src="{{ rest[0] }}" alt="" class="w-full h-full object-cover" />
-                </div>
-                <div class="rounded-[24px] overflow-hidden bg-slate-100 h-[261px]">
-                    <img src="{{ rest[1] if rest|length>1 else rest[0] }}" alt="" class="w-full h-full object-cover" />
-                </div>
-                <div class="rounded-[24px] overflow-hidden bg-slate-100 h-[261px]">
-                    <img src="{{ rest[2] if rest|length>2 else rest[0] }}" alt="" class="w-full h-full object-cover" />
-                </div>
-                <div class="col-span-2 rounded-[24px] overflow-hidden bg-slate-100 h-[280px]">
-                    <img src="{{ rest[3] if rest|length>3 else (rest[2] if rest|length>2 else rest[0]) }}" alt=""
-                        class="w-full h-full object-cover" />
+            {% if sec and (sec.outro_html or sec.outro) %}
+            {% if sec.outro_html %}
+            <div class="mt-8 text-black text-[25px] leading-[40px] font-['Roboto'] [&_p]:mb-4">{{ sec.outro_html | safe
+                }}</div>
+            {% else %}
+            <p class="mt-8 text-black text-[25px] leading-[40px] font-['Roboto']">{{ sec.outro }}</p>
+            {% endif %}
+            {% endif %}
+
+            {# ---------- REST GALLERY - Responsive Masonry with Lightbox ---------- #}
+            {% set rest = sec.images_rest or [] %}
+            {% if rest|length > 0 %}
+            <div class="mt-10">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="gallery-grid">
+                    {% for u in rest %}
+                    <a href="{{ u }}" class="glightbox block rounded-[20px] overflow-hidden bg-slate-100 
+                        {% if loop.index == 1 and rest|length >= 4 %}sm:col-span-2 sm:row-span-2{% endif %}
+                        aspect-[4/3] hover:opacity-90 transition-opacity" data-gallery="sector-gallery">
+                        <img src="{{ u }}" alt="Gallery image {{ loop.index }}" class="w-full h-full object-cover"
+                            loading="lazy" />
+                    </a>
+                    {% endfor %}
                 </div>
             </div>
 
-            <div class="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {% for u in rest %}
-                <div class="w-full rounded-[24px] overflow-hidden bg-slate-100 aspect-[4/3]">
-                    <img src="{{ u }}" alt="" class="w-full h-full object-cover" />
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
+            <!-- GLightbox CDN -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.2.0/dist/css/glightbox.min.css" />
+            <script src="https://cdn.jsdelivr.net/npm/glightbox@3.2.0/dist/js/glightbox.min.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true });
+                });
+            </script>
+            {% endif %}
         </div>
     </section>
 </main>
