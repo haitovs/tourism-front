@@ -50,8 +50,8 @@
             <button type="button"
                 class="flex w-full items-center justify-between rounded-[10px] bg-[rgba(0,122,61,0.25)] px-4 sm:px-6 py-3 sm:py-4 text-left cursor-pointer"
                 @click="open = !open" :aria-expanded="open" aria-controls="faq-{{ faq.id }}">
-                <span class="pr-4 text-[clamp(16px,3.6vw,35px)] leading-[1.25] text-[#1E1E1E] font-['Roboto']">
-                    {{ faq.question }}
+                <span class="pr-4 text-[clamp(16px,3.6vw,35px)] leading-[1.25] text-[#1E1E1E] font-['Roboto']"
+                    x-html="highlight(`{{ faq.question|replace('`', '\\`') }}`)">
                 </span>
                 <svg class="w-[clamp(24px,4vw,41px)] h-[clamp(24px,4vw,41px)] shrink-0 transition-transform"
                     :class="open ? 'rotate-[-90deg]' : 'rotate-90'" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -110,11 +110,33 @@
                 return ids;
             },
             isVisible(id) { return this.filteredIds.has(id); },
+            // Escape HTML special chars
+            esc(s) {
+                return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            },
+            // Highlight matching search term in text
+            highlight(text) {
+                const term = this.q.trim();
+                if (!term) return this.esc(text);
+                const escaped = this.esc(text);
+                const termEsc = this.esc(term);
+                // Case-insensitive replace with highlight mark
+                const regex = new RegExp(`(${termEsc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                return escaped.replace(regex, '<mark class="faq-highlight">$1</mark>');
+            },
             md(raw) {
-                const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                const esc = this.esc;
                 let out = esc(raw || "");
+                // Highlight search term first (before other replacements)
+                const term = this.q.trim();
+                if (term) {
+                    const termEsc = esc(term);
+                    const regex = new RegExp(`(${termEsc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                    out = out.replace(regex, '<mark class="faq-highlight">$1</mark>');
+                }
+                // Then process markdown
                 out = out.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g,
-                    (m, t, u) => `<a href="${u}" target="_blank" rel="noopener" class="underline decoration-[#007A3D] text-[#007A3D]">${esc(t)}</a>`);
+                    (m, t, u) => `<a href="${u}" target="_blank" rel="noopener" class="underline decoration-[#007A3D] text-[#007A3D]">${t}</a>`);
                 out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
                 out = out.replace(/\*([^*]+)\*/g, "<em>$1</em>");
                 out = out.replace(/\n/g, "<br />");
@@ -123,3 +145,34 @@
         };
     }
 </script>
+
+<style>
+    /* FAQ search highlight styling */
+    .faq-highlight {
+        background: linear-gradient(120deg, #fef08a 0%, #fde047 100%);
+        padding: 0 3px;
+        border-radius: 3px;
+        color: #1E1E1E;
+    }
+
+    /* Animation for FAQ items appearing/filtering */
+    #faq article {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    #faq article[x-show] {
+        animation: faqFadeIn 0.35s ease-out;
+    }
+
+    @keyframes faqFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

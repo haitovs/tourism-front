@@ -96,3 +96,61 @@
     </section>
 </main>
 {% endblock %}
+
+{% if q %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchQuery = '{{ q|e }}'.trim();
+        if (!searchQuery) return;
+
+        const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`(${escapeRegex(searchQuery)})`, 'gi');
+
+        document.querySelectorAll('h3, h4, article p').forEach(el => {
+            if (el.closest('nav, footer, header')) return;
+            if (el.querySelector('mark')) return;
+
+            const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+            const textNodes = [];
+            while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+            textNodes.forEach(node => {
+                if (regex.test(node.textContent)) {
+                    const span = document.createElement('span');
+                    span.innerHTML = node.textContent.replace(regex, '<mark class="news-highlight">$1</mark>');
+                    node.parentNode.replaceChild(span, node);
+                }
+            });
+        });
+
+        document.querySelectorAll('article').forEach((card, i) => {
+            card.style.animationDelay = `${i * 0.05}s`;
+            card.classList.add('news-fade-in');
+        });
+    });
+</script>
+<style>
+    .news-highlight {
+        background: linear-gradient(120deg, #fef08a 0%, #fde047 100%);
+        padding: 0 3px;
+        border-radius: 3px;
+        color: #1E1E1E;
+    }
+
+    .news-fade-in {
+        animation: newsFadeIn 0.4s ease-out both;
+    }
+
+    @keyframes newsFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+{% endif %}
