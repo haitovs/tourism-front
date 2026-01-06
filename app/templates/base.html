@@ -51,8 +51,8 @@
     <!-- New Year Theme -->
     <link rel="stylesheet" href="{{ url_for('static', path='css/new_year.css') }}" />
 
-    <!-- Splide CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" />
+    <!-- Splide CSS (local) -->
+    <link rel="stylesheet" href="{{ url_for('static', path='css/splide.min.css') }}" />
 </head>
 
 <body class="flex min-h-screen flex-col bg-[var(--c-bg)] text-[var(--c-text)]"
@@ -79,16 +79,15 @@
     <!-- New Year Theme -->
     <script src="{{ url_for('static', path='js/new_year.js') }}" defer></script>
 
-    <!-- HTMX / Alpine -->
-    <script defer src="https://unpkg.com/htmx.org@2.0.3"></script>
-    <script defer src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
-    <script defer src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.15.1/dist/cdn.min.js"></script>
+    <!-- HTMX / Alpine (local to avoid CDN blocks) -->
+    <script defer src="{{ url_for('static', path='js/htmx.min.js') }}"></script>
+    <script defer src="{{ url_for('static', path='js/alpine-intersect.min.js') }}"></script>
+    <script defer src="{{ url_for('static', path='js/alpine-collapse.min.js') }}"></script>
+    <script defer src="{{ url_for('static', path='js/alpine.min.js') }}"></script>
 
-    <!-- Splide JS -->
-    <script defer src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-    <script defer
-        src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-grid@0.4.1/dist/js/splide-extension-grid.min.js"></script>
+    <!-- Splide JS (local) -->
+    <script defer src="{{ url_for('static', path='js/splide.min.js') }}"></script>
+    <script defer src="{{ url_for('static', path='js/splide-extension-grid.min.js') }}"></script>
 
     <script>
         // Splide bootstrap
