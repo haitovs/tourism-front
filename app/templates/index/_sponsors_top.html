@@ -29,7 +29,7 @@
                             draggable="false" />
                         <div
                             class="text-[clamp(10px,1.8vw,12px)] font-bold uppercase tracking-wide text-slate-500/60 text-center mt-1.5">
-                            {{ tier_label }}</div>
+                            {% if show_sponsor_tiers|default(true) %}{{ tier_label }}{% endif %}</div>
                     </article>
                 </a>
                 {% else %}
@@ -40,7 +40,7 @@
                         draggable="false" />
                     <div
                         class="text-[clamp(10px,1.8vw,12px)] font-bold uppercase tracking-wide text-slate-500/60 text-center mt-1.5">
-                        {{ tier_label }}</div>
+                        {% if show_sponsor_tiers|default(true) %}{{ tier_label }}{% endif %}</div>
                 </article>
                 {% endif %}
             </div>
@@ -70,7 +70,7 @@
                                     draggable="false" />
                                 <div
                                     class="text-[clamp(10px,1.8vw,12px)] font-bold uppercase tracking-wide text-slate-500/60 text-center mt-1.5">
-                                    {{ tier_label }}</div>
+                                    {% if show_sponsor_tiers|default(true) %}{{ tier_label }}{% endif %}</div>
                             </article>
                         </a>
                         {% else %}
@@ -82,7 +82,7 @@
                                 draggable="false" />
                             <div
                                 class="text-[clamp(10px,1.8vw,12px)] font-bold uppercase tracking-wide text-slate-500/60 text-center mt-1.5">
-                                {{ tier_label }}</div>
+                                {% if show_sponsor_tiers|default(true) %}{{ tier_label }}{% endif %}</div>
                         </article>
                         {% endif %}
                     </div>

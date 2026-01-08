@@ -107,6 +107,23 @@ async def home(req: Request):
     deadline_dt = timer_srv.get_deadline_from_settings(settings)
     timer_ctx = timer_srv.build_timer_context(deadline_dt)
 
+    # Extract show_sponsor_tiers setting from database (controls tier label visibility)
+    show_sponsor_tiers = True  # default
+    if site_id:
+        from app.core.db import get_db
+        from app.models.site_model import Site
+        db_gen = get_db()
+        db = next(db_gen)
+        try:
+            site_obj = db.query(Site).filter(Site.id == site_id).first()
+            if site_obj:
+                show_sponsor_tiers = getattr(site_obj, "show_sponsor_tiers", True)
+        finally:
+            try:
+                db_gen.close()
+            except Exception:
+                pass
+
     sponsors_bundle_task = create_task(
         sponsor_srv.get_homepage_bundle(lang=lang, site_id=site_id, max_top_items=5)
     )
@@ -187,6 +204,7 @@ async def home(req: Request):
         "gold": sponsors_bundle.get("gold", {"items": [], "tier": "gold", "count": 0, "layout": "empty"}),
         "silver": sponsors_bundle.get("silver", {"items": [], "tier": "silver", "count": 0, "layout": "empty"}),
         "bronze": sponsors_bundle.get("bronze", {"items": [], "tier": "bronze", "count": 0, "layout": "empty"}),
+        "show_sponsor_tiers": show_sponsor_tiers,
         "stats": stats,
 
         # async results (flat + {items:[…]} for theme compatibility)

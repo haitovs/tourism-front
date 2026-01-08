@@ -13,6 +13,7 @@ class Site(Base):
     name = Column(String(128), nullable=False)
     slug = Column(String(64), nullable=False, unique=True)
     is_active = Column(Boolean, nullable=False, server_default="true")
+    show_sponsor_tiers = Column(Boolean, nullable=False, server_default="true")
     default_locale = Column(String(16), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)

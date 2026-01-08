@@ -23,7 +23,7 @@
             class="select-none pointer-events-none object-contain mx-auto" style="width: {{ w }}px; height: {{ h }}px"
             loading="lazy" />
         <div class="mt-2 text-center font-['Roboto'] font-semibold text-[clamp(12px,2vw,21px)] {{ tier_class }}">
-            {{ tier_label }}
+            {% if show_sponsor_tiers|default(true) %}{{ tier_label }}{% endif %}
         </div>
     </article>
 </a>
@@ -33,7 +33,7 @@
         class="select-none pointer-events-none object-contain mx-auto" style="width: {{ w }}px; height: {{ h }}px"
         loading="lazy" />
     <div class="mt-2 text-center font-['Roboto'] font-semibold text-[clamp(12px,2vw,21px)] {{ tier_class }}">
-        {{ tier_label }}
+        {% if show_sponsor_tiers|default(true) %}{{ tier_label }}{% endif %}
     </div>
 </article>
 {% endif %}

@@ -263,3 +263,4 @@ async def get_homepage_bundle(
         "silver": silver,
         "bronze": bronze,
     }
+

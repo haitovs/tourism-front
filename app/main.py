@@ -38,12 +38,7 @@ def _set_assets_version(app: FastAPI) -> None:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    app.state.http = httpx.AsyncClient(
-        timeout=httpx.Timeout(10.0, connect=2.0),
-        limits=httpx.Limits(max_connections=100, max_keepalive_connections=20),
-        http2=True,
-        follow_redirects=True,
-    )
+    app.state.http = httpx.AsyncClient()
     _set_assets_version(app)
     try:
         yield

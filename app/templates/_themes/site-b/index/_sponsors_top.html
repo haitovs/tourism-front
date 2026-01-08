@@ -38,7 +38,7 @@
                 </article>
                 {% endif %}
 
-                {% if tier_label %}
+                {% if tier_label and show_sponsor_tiers|default(true) %}
                 <div class="sb-tier">{{ tier_label }}</div>
                 {% endif %}
             </div>
@@ -79,7 +79,7 @@
                         </article>
                         {% endif %}
 
-                        {% if tier_label %}
+                        {% if tier_label and show_sponsor_tiers|default(true) %}
                         <div class="sb-tier">{{ tier_label }}</div>
                         {% endif %}
                     </div>
