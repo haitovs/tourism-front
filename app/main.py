@@ -72,3 +72,4 @@ app.include_router(terms_router)
 app.include_router(privacy_router)
 app.include_router(agenda_router)
 app.include_router(timer_router)
+ 
