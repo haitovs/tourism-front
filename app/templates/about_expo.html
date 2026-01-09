@@ -36,7 +36,8 @@
                     </div>
                     <div class="hidden lg:block relative h-[clamp(420px,54vw,800px)]">
                         <div
-                            class="absolute top-[22%] left-0 w-[clamp(240px,26vw,380px)] h-[clamp(320px,36vw,500px)] bg-[rgba(0,122,61,0.4)] rounded-[10px]">
+                            class="absolute top-[22%] left-0 w-[clamp(240px,26vw,380px)] h-[clamp(320px,36vw,500px)] rounded-[10px] overflow-hidden">
+                            <img src="/static/img/about-expo/abouttheexpo3.png" alt="" class="w-full h-full object-cover" />
                         </div>
                         <div
                             class="absolute top-0 left-[clamp(70px,10vw,125px)] w-[clamp(240px,26vw,380px)] h-[clamp(320px,36vw,500px)] rounded-[10px] overflow-hidden">
@@ -188,10 +189,13 @@
                     text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
                         {{ t('about_expo.numbers.sectors_2026') }}
                     </div>
-                    <p class="font-['Roboto'] text-black/70 text-left leading-[1.6]
-                  text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]">
-                        {{ t('about_expo.numbers.sector_list') }}
-                    </p>
+                    <ol class="font-['Roboto'] text-black/70 text-left leading-[1.6]
+                  text-[clamp(12px,2.6vw,16px)] md:text-[18px] lg:text-[22px]
+                  list-decimal list-inside space-y-1">
+                        {% for sector in t('about_expo.numbers.sector_list').split(',') %}
+                            <li>{{ sector.strip() }}</li>
+                        {% endfor %}
+                    </ol>
                     <div class="col-span-2 mt-3 h-px bg-black/20"></div>
                 </div>
 
