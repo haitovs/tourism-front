@@ -109,121 +109,43 @@
         </div>
     </section>
     <section class="max-w-[var(--container)] mx-auto px-4 pb-8 md:pb-10">
-        <div class="bg-white rounded-[16px] md:rounded-[24px] p-6 md:p-10 shadow-sm mx-auto max-w-[1450px]">
-            <!-- Section Header -->
-            <div class="text-center max-w-3xl mx-auto mb-8 md:mb-12">
-                <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E]
-                           text-[clamp(24px,5vw,32px)] md:text-[42px] lg:text-[52px] leading-[1.18] mb-4">
-                    {{ t('about_expo.why.title') }}
-                </h2>
-                <p class="font-['Roboto'] text-[16px] md:text-[18px] text-black/60 leading-relaxed">
-                    Unlock opportunities, showcase innovation, and connect with key partners in Turkmenistan and China.
-                </p>
-            </div>
-
-            <!-- Benefits Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8">
-                <!-- Benefit 1: Partner Search -->
-                <div class="group p-6 md:p-8 rounded-xl border-2 border-gray-100 hover:border-[#007A3D]/30 
-                            bg-gradient-to-br from-white to-gray-50/50 hover:shadow-lg transition-all duration-300">
-                    <div class="flex items-start gap-5">
-                        <div class="shrink-0 w-14 h-14 md:w-16 md:h-16 flex items-center justify-center 
-                                    rounded-xl bg-gradient-to-br from-[#007A3D] to-[#005A2D] shadow-md
-                                    group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-8 h-8 md:w-9 md:h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                            </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <h3 class="font-['Montserrat'] font-semibold text-[#1E1E1E] 
-                                       text-[18px] md:text-[22px] mb-2">
-                                Partner Search
-                            </h3>
-                            <p class="font-['Roboto'] text-black/70 text-[15px] md:text-[17px] leading-relaxed">
-                                {{ t('about_expo.why.points.0') }}
-                            </p>
-                        </div>
-                    </div>
+        <div class="bg-white rounded-[16px] md:rounded-[24px] p-4 sm:p-5 md:p-8 shadow-sm mx-auto max-w-[1450px]">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
+                <div class="lg:col-span-7 py-4 sm:py-5 md:py-6">
+                    <h2 class="font-['Montserrat'] font-medium text-[#1E1E1E]
+                   text-[clamp(18px,5vw,22px)]
+                   md:text-[clamp(28px,3.6vw,48px)]
+                   lg:text-[clamp(34px,2.8vw,56px)]
+                   leading-[1.22]">
+                        {{ t('about_expo.why.title') }}
+                    </h2>
+                    <ul class="mt-4 md:mt-5 space-y-3 sm:space-y-4 list-none">
+                        <li class="flex items-start gap-3 font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px]
+           text-black/70 leading-[1.65]">
+                            <span class="shrink-0 mt-[0.4em]">•</span>
+                            <span>{{ t('about_expo.why.points.0') }}</span>
+                        </li>
+                        <li class="flex items-start gap-3 font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px]
+           text-black/70 leading-[1.65]">
+                            <span class="shrink-0 mt-[0.4em]">•</span>
+                            <span>{{ t('about_expo.why.points.1') }}</span>
+                        </li>
+                        <li class="flex items-start gap-3 font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px]
+           text-black/70 leading-[1.65]">
+                            <span class="shrink-0 mt-[0.4em]">•</span>
+                            <span>{{ t('about_expo.why.points.2') }}</span>
+                        </li>
+                        <li class="flex items-start gap-3 font-['Roboto'] text-[15px] sm:text-[16px] md:text-[18px] lg:text-[22px]
+           text-black/70 leading-[1.65]">
+                            <span class="shrink-0 mt-[0.4em]">•</span>
+                            <span>{{ t('about_expo.why.points.3') }}</span>
+                        </li>
+                    </ul>
                 </div>
 
-                <!-- Benefit 2: Market Access -->
-                <div class="group p-6 md:p-8 rounded-xl border-2 border-gray-100 hover:border-[#007A3D]/30 
-                            bg-gradient-to-br from-white to-gray-50/50 hover:shadow-lg transition-all duration-300">
-                    <div class="flex items-start gap-5">
-                        <div class="shrink-0 w-14 h-14 md:w-16 md:h-16 flex items-center justify-center 
-                                    rounded-xl bg-gradient-to-br from-[#007A3D] to-[#005A2D] shadow-md
-                                    group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-8 h-8 md:w-9 md:h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                      d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <h3 class="font-['Montserrat'] font-semibold text-[#1E1E1E] 
-                                       text-[18px] md:text-[22px] mb-2">
-                                Market Access
-                            </h3>
-                            <p class="font-['Roboto'] text-black/70 text-[15px] md:text-[17px] leading-relaxed">
-                                {{ t('about_expo.why.points.1') }}
-                            </p>
-                        </div>
-                    </div>
+                <div class="lg:col-span-5 hidden lg:block rounded-r-[16px] md:rounded-r-[24px] overflow-hidden">
+                    <img src="/static/img/about-expo/abouttheexpo0.png" alt="" class="w-full h-full object-cover" />
                 </div>
-
-                <!-- Benefit 3: Investment & Projects -->
-                <div class="group p-6 md:p-8 rounded-xl border-2 border-gray-100 hover:border-[#007A3D]/30 
-                            bg-gradient-to-br from-white to-gray-50/50 hover:shadow-lg transition-all duration-300">
-                    <div class="flex items-start gap-5">
-                        <div class="shrink-0 w-14 h-14 md:w-16 md:h-16 flex items-center justify-center 
-                                    rounded-xl bg-gradient-to-br from-[#007A3D] to-[#005A2D] shadow-md
-                                    group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-8 h-8 md:w-9 md:h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <h3 class="font-['Montserrat'] font-semibold text-[#1E1E1E] 
-                                       text-[18px] md:text-[22px] mb-2">
-                                Investment & Joint Projects
-                            </h3>
-                            <p class="font-['Roboto'] text-black/70 text-[15px] md:text-[17px] leading-relaxed">
-                                {{ t('about_expo.why.points.2') }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Benefit 4: Knowledge Exchange -->
-                <div class="group p-6 md:p-8 rounded-xl border-2 border-gray-100 hover:border-[#007A3D]/30 
-                            bg-gradient-to-br from-white to-gray-50/50 hover:shadow-lg transition-all duration-300">
-                    <div class="flex items-start gap-5">
-                        <div class="shrink-0 w-14 h-14 md:w-16 md:h-16 flex items-center justify-center 
-                                    rounded-xl bg-gradient-to-br from-[#007A3D] to-[#005A2D] shadow-md
-                                    group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-8 h-8 md:w-9 md:h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                            </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <h3 class="font-['Montserrat'] font-semibold text-[#1E1E1E] 
-                                       text-[18px] md:text-[22px] mb-2">
-                                Knowledge Exchange
-                            </h3>
-                            <p class="font-['Roboto'] text-black/70 text-[15px] md:text-[17px] leading-relaxed">
-                                {{ t('about_expo.why.points.3') }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Visual Showcase Image - Full Width Below Grid -->
-            <div class="mt-8 rounded-xl overflow-hidden shadow-lg">
-                <img src="/static/img/about-expo/abouttheexpo0.png" alt="Event showcase" 
-                     class="w-full h-auto object-cover" />
             </div>
         </div>
     </section>
@@ -237,103 +159,83 @@
                 {{ t('about_expo.numbers.title') }}
             </h2>
 
-            <div class="mx-auto max-w-[min(92vw,1190px)] mt-6 md:mt-8 
-                        grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <div class="mx-auto max-w-[min(92vw,1190px)] mt-4 md:mt-6 space-y-6">
                 <!-- Total space -->
-                <div class="flex items-start gap-5 p-5 md:p-6 rounded-xl bg-gradient-to-br from-white to-gray-50 
-                            border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-                    <div class="shrink-0 w-14 h-14 md:w-16 md:h-16 flex items-center justify-center 
-                                rounded-lg bg-gradient-to-br from-[#007A3D]/10 to-[#007A3D]/5">
-                        <svg class="w-8 h-8 md:w-9 md:h-9 text-[#007A3D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                <div class="flex items-start gap-4 md:gap-6">
+                    <div class="shrink-0 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center">
+                        <svg class="w-8 h-8 md:w-10 md:h-10 text-[#007A3D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                         </svg>
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <h3 class="font-['Roboto'] font-bold text-[#1E1E1E]
-                                   text-[16px] md:text-[18px] lg:text-[20px] mb-2">
+                    <div class="flex-1">
+                        <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
+                            text-[clamp(14px,2.8vw,18px)] md:text-[20px] lg:text-[24px]">
                             {{ t('about_expo.numbers.total_space') }}
-                        </h3>
-                        <p class="font-['Roboto'] text-[#007A3D] font-semibold
-                                  text-[20px] md:text-[24px] lg:text-[28px]">
+                        </div>
+                        <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
+                            text-[clamp(13px,2.4vw,16px)] md:text-[18px] lg:text-[20px] mt-1">
                             {{ t('about_expo.numbers.total_space_value') }}
-                        </p>
+                        </div>
                     </div>
                 </div>
+                <div class="h-px bg-black/20"></div>
+
+                <!-- Sectors -->
+                <div class="flex items-start gap-4 md:gap-6">
+                    <div class="shrink-0 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center">
+                        <svg class="w-8 h-8 md:w-10 md:h-10 text-[#007A3D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
+                            text-[clamp(14px,2.8vw,18px)] md:text-[20px] lg:text-[24px]">
+                            {{ t('about_expo.numbers.sectors_2026') }}
+                        </div>
+                        <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
+                            text-[clamp(13px,2.4vw,16px)] md:text-[18px] lg:text-[20px] mt-1">
+                            {% set sectors = t('about_expo.numbers.sector_list').split(',') %}
+                            {% for sector in sectors %}<span>{{ loop.index }}. {{ sector.strip() }}{% if not loop.last %}, {% endif %}</span>{% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="h-px bg-black/20"></div>
 
                 <!-- Expected attendance -->
-                <div class="flex items-start gap-5 p-5 md:p-6 rounded-xl bg-gradient-to-br from-white to-gray-50 
-                            border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-                    <div class="shrink-0 w-14 h-14 md:w-16 md:h-16 flex items-center justify-center 
-                                rounded-lg bg-gradient-to-br from-[#007A3D]/10 to-[#007A3D]/5">
-                        <svg class="w-8 h-8 md:w-9 md:h-9 text-[#007A3D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                <div class="flex items-start gap-4 md:gap-6">
+                    <div class="shrink-0 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center">
+                        <svg class="w-8 h-8 md:w-10 md:h-10 text-[#007A3D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <h3 class="font-['Roboto'] font-bold text-[#1E1E1E]
-                                   text-[16px] md:text-[18px] lg:text-[20px] mb-2">
+                    <div class="flex-1">
+                        <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
+                            text-[clamp(14px,2.8vw,18px)] md:text-[20px] lg:text-[24px]">
                             {{ t('about_expo.numbers.expected_attendance') }}
-                        </h3>
-                        <p class="font-['Roboto'] text-[#007A3D] font-semibold
-                                  text-[20px] md:text-[24px] lg:text-[28px]">
+                        </div>
+                        <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
+                            text-[clamp(13px,2.4vw,16px)] md:text-[18px] lg:text-[20px] mt-1">
                             {{ t('about_expo.numbers.expected_attendance_value') }}
-                        </p>
+                        </div>
                     </div>
                 </div>
+                <div class="h-px bg-black/20"></div>
 
                 <!-- Exhibiting companies -->
-                <div class="flex items-start gap-5 p-5 md:p-6 rounded-xl bg-gradient-to-br from-white to-gray-50 
-                            border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-                    <div class="shrink-0 w-14 h-14 md:w-16 md:h-16 flex items-center justify-center 
-                                rounded-lg bg-gradient-to-br from-[#007A3D]/10 to-[#007A3D]/5">
-                        <svg class="w-8 h-8 md:w-9 md:h-9 text-[#007A3D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                <div class="flex items-start gap-4 md:gap-6">
+                    <div class="shrink-0 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center">
+                        <svg class="w-8 h-8 md:w-10 md:h-10 text-[#007A3D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                         </svg>
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <h3 class="font-['Roboto'] font-bold text-[#1E1E1E]
-                                   text-[16px] md:text-[18px] lg:text-[20px] mb-2">
+                    <div class="flex-1">
+                        <div class="font-['Roboto'] font-semibold text-[#1E1E1E]
+                            text-[clamp(14px,2.8vw,18px)] md:text-[20px] lg:text-[24px]">
                             {{ t('about_expo.numbers.exhibiting_companies') }}
-                        </h3>
-                        <p class="font-['Roboto'] text-[#007A3D] font-semibold
-                                  text-[20px] md:text-[24px] lg:text-[28px]">
+                        </div>
+                        <div class="font-['Roboto'] text-black/70 text-left leading-[1.6]
+                            text-[clamp(13px,2.4vw,16px)] md:text-[18px] lg:text-[20px] mt-1">
                             {{ t('about_expo.numbers.exhibiting_companies_value') }}
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Sectors - Full Width -->
-                <div class="md:col-span-2 flex items-start gap-5 p-5 md:p-6 rounded-xl bg-gradient-to-br from-white to-gray-50 
-                            border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-                    <div class="shrink-0 w-14 h-14 md:w-16 md:h-16 flex items-center justify-center 
-                                rounded-lg bg-gradient-to-br from-[#007A3D]/10 to-[#007A3D]/5">
-                        <svg class="w-8 h-8 md:w-9 md:h-9 text-[#007A3D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <h3 class="font-['Roboto'] font-bold text-[#1E1E1E]
-                                   text-[16px] md:text-[18px] lg:text-[20px] mb-3">
-                            {{ t('about_expo.numbers.sectors_2026') }}
-                        </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
-                            {% for sector in t('about_expo.numbers.sector_list').split(',') %}
-                                <div class="flex items-start gap-2">
-                                    <span class="shrink-0 flex items-center justify-center w-6 h-6 
-                                                 rounded-full bg-[#007A3D]/10 text-[#007A3D] 
-                                                 font-['Roboto'] font-semibold text-[13px]">
-                                        {{ loop.index }}
-                                    </span>
-                                    <span class="font-['Roboto'] text-black/70 leading-relaxed
-                                                 text-[14px] md:text-[16px] lg:text-[17px]">
-                                        {{ sector.strip() }}
-                                    </span>
-                                </div>
-                            {% endfor %}
                         </div>
                     </div>
                 </div>
