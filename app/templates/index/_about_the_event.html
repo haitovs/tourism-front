@@ -79,11 +79,18 @@
         <aside class="relative">
             <div class="relative h-[260px] sm:h-[320px] lg:h-full min-h-[260px]
                   rounded-[20px] lg:rounded-r-[20px] lg:rounded-l-none overflow-hidden">
+                <video id="aboutVideo" src="/static/video/IMG_0203.MOV" 
+                    preload="metadata" muted playsinline
+                    class="w-full h-full object-cover select-none"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
                 <img src="/static/img/about_video.png" alt="{{ t('index.about.video_alt') }}"
+                    style="display:none;"
                     class="w-full h-full object-cover select-none pointer-events-none" draggable="false"
                     onerror="this.src='/static/img/img_placeholder.png'; this.style.objectFit='contain';" />
                 <div class="absolute inset-0 bg-black/20"></div>
-                <button type="button" class="absolute inset-0 m-auto grid place-items-center w-[90px] h-[90px] sm:w-[110px] sm:h-[110px]
+                <button type="button" 
+                    onclick="const v = document.getElementById('aboutVideo'); v.muted = false; v.play(); this.style.display='none';"
+                    class="absolute inset-0 m-auto grid place-items-center w-[90px] h-[90px] sm:w-[110px] sm:h-[110px]
                        rounded-full bg-white/15 backdrop-blur-[2px] hover:bg-white/25 transition"
                     aria-label="{{ t('index.about.video_play_aria') }}">
                     <img src="/static/img/about_video_play.svg" alt="{{ t('index.about.video_play_alt') }}"
