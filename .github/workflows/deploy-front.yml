@@ -22,7 +22,7 @@ jobs:
                       set -Eeuo pipefail
                       export SHA="${{ github.sha }}"
                       export BRANCH="${{ github.ref_name }}"
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/server1_front_deploy -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new'
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/deploy_tourism_frontend -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new'
 
                       APP_DIR="/root/apps/tourism-front"
                       if docker compose version >/dev/null 2>&1; then DC="docker compose"; else DC="docker-compose"; fi
