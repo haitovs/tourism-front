@@ -48,9 +48,6 @@
     <link rel="stylesheet" href="{{ theme('css/statistics.css') }}" />
     <link rel="stylesheet" href="{{ theme('css/footer.css') }}" />
 
-    <!-- New Year Theme -->
-    <link rel="stylesheet" href="{{ url_for('static', path='css/new_year.css') }}" />
-
     <!-- Splide CSS (local) -->
     <link rel="stylesheet" href="{{ url_for('static', path='css/splide.min.css') }}" />
 </head>
@@ -75,9 +72,6 @@
     <script src="{{ url_for('static', path='js/participantLoader.js') }}?v={{ settings.ASSETS_V or '1' }}"
         defer></script>
     <script src="{{ url_for('static', path='js/agendaScroll.js') }}?v={{ settings.ASSETS_V or '1' }}" defer></script>
-
-    <!-- New Year Theme -->
-    <script src="{{ url_for('static', path='js/new_year.js') }}" defer></script>
 
     <!-- HTMX / Alpine (local to avoid CDN blocks) -->
     <script defer src="{{ url_for('static', path='js/htmx.min.js') }}"></script>
