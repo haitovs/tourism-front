@@ -24,7 +24,7 @@ async def list_faqs(
     items = None
     for attempt in range(2):
         try:
-            items = await api_get(req, "/faq/", params=params or None)
+            items = await api_get(req, "/faq", params=params or None)
             break
         except (httpx.ReadTimeout, httpx.ConnectTimeout) as e:
             log.warning("list_faqs timeout (attempt %d/2): %s", attempt + 1, e)

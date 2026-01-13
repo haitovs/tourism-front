@@ -79,16 +79,10 @@
         <aside class="relative">
             <div class="relative h-[260px] sm:h-[320px] lg:h-full min-h-[260px]
                   rounded-[20px] lg:rounded-r-[20px] lg:rounded-l-none overflow-hidden">
-                <video id="aboutVideo" 
-                    src="/static/video/IMG_0203.MOV" 
-                    preload="metadata"
-                    poster="/static/img/about_video.png"
-                    muted
-                    playsinline
+                <video id="aboutVideo" src="/static/video/IMG_0203.MOV" preload="metadata" muted playsinline
                     class="w-full h-full object-cover select-none"></video>
                 <div class="absolute inset-0 bg-black/20" id="videoOverlay"></div>
-                <button type="button" 
-                    id="playButton"
+                <button type="button" id="playButton"
                     onclick="const v = document.getElementById('aboutVideo'); const btn = this; const overlay = document.getElementById('videoOverlay'); v.muted = false; v.controls = true; v.play(); btn.style.display='none'; overlay.style.display='none';"
                     class="absolute inset-0 m-auto grid place-items-center w-[90px] h-[90px] sm:w-[110px] sm:h-[110px]
                        rounded-full bg-white/15 backdrop-blur-[2px] hover:bg-white/25 transition"
