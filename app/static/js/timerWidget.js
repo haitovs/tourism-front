@@ -81,12 +81,7 @@
                 const pageIsSecure = loc.protocol === "https:";
                 const makeUrl = (base) => {
                     const u = new URL(base, loc.origin);
-                    const host = (u.hostname || "").toLowerCase();
-                    const isInternal = ["localhost", "127.0.0.1", "0.0.0.0", "backend"].includes(host);
-                    if (isInternal) {
-                        u.hostname = loc.hostname;
-                        u.port = loc.port;
-                    }
+                    // Don't replace the backend URL - use it as-is
                     const secure = pageIsSecure || u.protocol === "https:";
                     u.protocol = secure ? "wss:" : "ws:";
                     u.pathname = "/ws/timer";
