@@ -104,24 +104,25 @@
                     {% endif %}
                 </div>
                 <div class="p-2.5 sm:p-3">
-                    <div class="flex items-center gap-2.5 sm:gap-3">
+                    <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
                         {% if n.category %}
                         <span
-                            class="inline-flex items-center justify-center h-[clamp(24px,3vw,32px)] px-2.5 sm:px-3.5 rounded-[8px] bg-[#007A3D]">
-                            <span class="font-['Roboto'] font-bold text-[clamp(11px,1.5vw,14px)] text-white">
+                            class="inline-flex items-center justify-center h-[clamp(24px,3vw,32px)] px-2.5 sm:px-3.5 rounded-[8px] bg-[#007A3D] shrink-0">
+                            <span
+                                class="font-['Roboto'] font-bold text-[clamp(11px,1.5vw,14px)] text-white whitespace-nowrap">
                                 {{ n.category }}
                             </span>
                         </span>
                         {% endif %}
                         {% if n.date_human %}
-                        <span class="flex items-center gap-1.5">
+                        <span class="flex items-center gap-1.5 shrink-0">
                             <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
                                 <circle cx="12" cy="12" r="9" fill="none" stroke="#007A3D" stroke-width="2" />
                                 <path d="M12 7v5l3 2" fill="none" stroke="#007A3D" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                             <span
-                                class="font-['Montserrat'] font-semibold text-[clamp(11px,1.5vw,14px)] text-[#8CC3A8]">
+                                class="font-['Montserrat'] font-semibold text-[clamp(11px,1.5vw,14px)] text-[#8CC3A8] whitespace-nowrap">
                                 {{ n.date_human }}
                             </span>
                         </span>
