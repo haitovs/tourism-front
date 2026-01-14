@@ -1,4 +1,4 @@
-<footer class="bg-[#007A3D] text-[#F4F4F2] font-['Roboto']">
+<footer class="bg-[#007A3D] text-[#F4F4F2] font-['Roboto']" x-data="{ wechatOpen: false }">
     <!-- Top: 3 columns -->
     <div class="mx-auto w-full max-w-[1440px] px-6 sm:px-8 py-10 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
 
@@ -43,6 +43,33 @@
                 </li>
             </ul>
 
+            <!-- Contact China -->
+            <div class="mt-6">
+                <h4 class="font-bold text-[clamp(18px,2.6vw,28px)] leading-[1.2]">{{ t('footer.contact_china_title') }}
+                </h4>
+                <div class="h-px bg-white my-3"></div>
+                <ul class="space-y-2">
+                    <li class="text-[clamp(13px,2vw,18px)] leading-[1.4]">
+                        <span class="font-medium">{{ t('footer.china_contact_name') }}</span>
+                    </li>
+                    <li class="flex items-center gap-3 text-[clamp(13px,2vw,18px)] leading-[1.4]">
+                        <img src="/static/img/footer/phone.svg" alt="phone"
+                            class="h-[16px] w-[16px] sm:h-[18px] sm:w-[18px]" />
+                        <a href="tel:010-63259119" class="hover:underline">010-63259119</a>
+                    </li>
+                    <li class="flex items-center gap-3 text-[clamp(13px,2vw,18px)] leading-[1.4]">
+                        <img src="/static/img/footer/phone.svg" alt="mobile"
+                            class="h-[16px] w-[16px] sm:h-[18px] sm:w-[18px]" />
+                        <a href="tel:18811466294" class="hover:underline">18811466294</a>
+                    </li>
+                    <li class="flex items-center gap-3 text-[clamp(13px,2vw,18px)] leading-[1.4]">
+                        <img src="/static/img/footer/mail.svg" alt="email"
+                            class="h-[16px] w-[16px] sm:h-[18px] sm:w-[18px]" />
+                        <a href="mailto:smwang@codafair.org" class="hover:underline">smwang@codafair.org</a>
+                    </li>
+                </ul>
+            </div>
+
             <!-- Social -->
             <div class="mt-6 flex gap-5">
                 <a href="https://www.instagram.com/turkmen.china" class="icon-btn" target="_blank"
@@ -55,9 +82,10 @@
                 <a href="https://wa.me/message/W2IBZF57ENUUD1" class="icon-btn" target="_blank" aria-label="WhatsApp">
                     <img src="/static/img/footer/whatsapp.svg" alt="WhatsApp" />
                 </a>
-                <a href="#" class="icon-btn" target="_blank" aria-label="WeChat" title="WeChat ID: wxid_waywyn8nfd9k22">
+                <button @click="wechatOpen = true" class="icon-btn" type="button" aria-label="WeChat"
+                    title="WeChat ID: wxid_waywyn8nfd9k22">
                     <img src="/static/img/footer/wechat.svg" alt="WeChat" />
-                </a>
+                </button>
             </div>
         </div>
     </div>
@@ -85,6 +113,25 @@
                         class="rotating-icon h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] md:h-[24px] md:w-[24px] object-contain" />
                 </span>
             </a>
+        </div>
+    </div>
+
+    <!-- WeChat QR Code Modal -->
+    <div x-show="wechatOpen" x-cloak class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-4"
+        @click="wechatOpen = false" style="display: none;">
+        <div @click.stop class="relative bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+            <button @click="wechatOpen = false"
+                class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition"
+                aria-label="Close">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <div class="text-center">
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Scan WeChat QR Code</h3>
+                <img src="/static/img/footer/wechat.jpg" alt="WeChat QR Code" class="w-full rounded-lg shadow-md">
+                <p class="mt-4 text-sm text-gray-600">WeChat ID: wxid_waywyn8nfd9k22</p>
+            </div>
         </div>
     </div>
 </footer>

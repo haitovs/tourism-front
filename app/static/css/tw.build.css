@@ -13,12 +13,19 @@
     --color-slate-600: oklch(44.6% 0.043 257.281);
     --color-slate-700: oklch(37.2% 0.044 257.287);
     --color-slate-800: oklch(27.9% 0.041 260.031);
+    --color-gray-100: oklch(96.7% 0.003 264.542);
+    --color-gray-200: oklch(92.8% 0.006 264.531);
     --color-gray-300: oklch(87.2% 0.01 258.338);
+    --color-gray-600: oklch(44.6% 0.03 256.802);
+    --color-gray-900: oklch(21% 0.034 264.665);
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
+    --container-sm: 24rem;
     --text-sm: 0.875rem;
     --text-sm--line-height: calc(1.25 / 0.875);
+    --text-xl: 1.25rem;
+    --text-xl--line-height: calc(1.75 / 1.25);
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
@@ -253,6 +260,9 @@
   .top-3 {
     top: calc(var(--spacing) * 3);
   }
+  .top-4 {
+    top: calc(var(--spacing) * 4);
+  }
   .top-\[12\%\] {
     top: 12%;
   }
@@ -360,6 +370,9 @@
   }
   .z-\[2000\] {
     z-index: 2000;
+  }
+  .z-\[9999\] {
+    z-index: 9999;
   }
   .col-span-1 {
     grid-column: span 1 / span 1;
@@ -1237,6 +1250,9 @@
   .max-w-prose {
     max-width: 65ch;
   }
+  .max-w-sm {
+    max-width: var(--container-sm);
+  }
   .min-w-0 {
     min-width: calc(var(--spacing) * 0);
   }
@@ -1886,6 +1902,15 @@
       background-color: color-mix(in oklab, var(--color-black) 65%, transparent);
     }
   }
+  .bg-black\/70 {
+    background-color: color-mix(in srgb, #000 70%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-black) 70%, transparent);
+    }
+  }
+  .bg-gray-100 {
+    background-color: var(--color-gray-100);
+  }
   .bg-slate-100 {
     background-color: var(--color-slate-100);
   }
@@ -2190,6 +2215,10 @@
     font-size: var(--text-sm);
     line-height: var(--tw-leading, var(--text-sm--line-height));
   }
+  .text-xl {
+    font-size: var(--text-xl);
+    line-height: var(--tw-leading, var(--text-xl--line-height));
+  }
   .text-\[3vw\] {
     font-size: 3vw;
   }
@@ -2295,6 +2324,9 @@
   .text-\[clamp\(13px\,2vw\,16px\)\] {
     font-size: clamp(13px, 2vw, 16px);
   }
+  .text-\[clamp\(13px\,2vw\,18px\)\] {
+    font-size: clamp(13px, 2vw, 18px);
+  }
   .text-\[clamp\(13px\,3vw\,20px\)\] {
     font-size: clamp(13px, 3vw, 20px);
   }
@@ -2348,6 +2380,9 @@
   }
   .text-\[clamp\(16px\,2\.2vw\,20px\)\] {
     font-size: clamp(16px, 2.2vw, 20px);
+  }
+  .text-\[clamp\(16px\,2\.2vw\,22px\)\] {
+    font-size: clamp(16px, 2.2vw, 22px);
   }
   .text-\[clamp\(16px\,2\.2vw\,25px\)\] {
     font-size: clamp(16px, 2.2vw, 25px);
@@ -2909,6 +2944,12 @@
       color: color-mix(in oklab, var(--color-black) 90%, transparent);
     }
   }
+  .text-gray-600 {
+    color: var(--color-gray-600);
+  }
+  .text-gray-900 {
+    color: var(--color-gray-900);
+  }
   .text-slate-400 {
     color: var(--color-slate-400);
   }
@@ -3030,6 +3071,10 @@
   }
   .shadow {
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-2xl {
+    --tw-shadow: 0 25px 50px -12px var(--tw-shadow-color, rgb(0 0 0 / 0.25));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   .shadow-\[0_4px_4px_rgba\(0\,0\,0\,0\.25\)\] {
@@ -3473,6 +3518,13 @@
         @supports (color: color-mix(in lab, red, red)) {
           background-color: color-mix(in oklab, var(--color-black) 5%, transparent);
         }
+      }
+    }
+  }
+  .hover\:bg-gray-200 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-gray-200);
       }
     }
   }
