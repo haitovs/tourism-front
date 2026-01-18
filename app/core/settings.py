@@ -17,7 +17,8 @@ class Settings(BaseSettings):
 
     ENV: str = "dev"
     APP_NAME: str = "Expo Site"
-    DATABASE_URL: str = "postgresql+psycopg2://forum_admin:admin@localhost:5432/forum_app"
+    # Mac Default: postgres/spikes03 and tourism_db
+    DATABASE_URL: str = "postgresql+psycopg2://postgres:spikes03@localhost:5432/tourism_db"
 
     TRANSLATE_BASE_URL: str = "https://libretranslate.de"
     TRANSLATE_API_KEY: str | None = None
@@ -25,10 +26,10 @@ class Settings(BaseSettings):
     DEFAULT_LANG: str = "en"
     SUPPORTED_LANGS_RAW: str = Field(default="en,ru,tk,zh", alias="SUPPORTED_LANGS")
 
-    MEDIA_BASE_URL: str = "http://localhost:8000"
+    MEDIA_BASE_URL: str = "http://127.0.0.1:8001"
     MEDIA_PREFIX: str = "/uploads"
 
-    BACKEND_BASE_URL: str = "http://127.0.0.1:8000"
+    BACKEND_BASE_URL: str = "http://127.0.0.1:8001"
     BACKEND_HOST_HEADER: str | None = None
     STATS_BG_IMAGE: str = "/static/img/stats_bg.png"
 
