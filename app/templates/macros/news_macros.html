@@ -1,7 +1,7 @@
 {# Card components for News pages #}
 
 {% macro news_card(n) -%}
-<article class="bg-white rounded-[14px] w-full mx-auto shadow-sm">
+<article class="bg-white rounded-[14px] w-full mx-auto shadow-sm h-full">
     <div class="p-4 h-full flex flex-col">
         <!-- Responsive image: 16:9 -->
         <div class="w-full aspect-[16/9] rounded-[10px] overflow-hidden">
@@ -54,7 +54,7 @@
 {%- endmacro %}
 
 {% macro featured_card(n) -%}
-<article class="bg-white rounded-[14px] w-full mx-auto shadow-sm">
+<article class="bg-white rounded-[14px] w-full mx-auto shadow-sm h-full">
     <div class="p-4 md:p-5 lg:p-6 h-full flex flex-col">
         <div class="w-full aspect-[16/9] sm:aspect-[5/3] xl:aspect-[7/3] rounded-[10px] overflow-hidden">
             {% if n.image_url %}

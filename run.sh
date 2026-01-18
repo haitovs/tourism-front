@@ -1,0 +1,5 @@
+#!/bin/bash
+# Run Tourism Frontend on Mac
+cd ~/Desktop/Projects/tourism-front
+source venv/bin/activate
+uvicorn app.main:app --reload --port 8002
