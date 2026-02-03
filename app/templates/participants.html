@@ -66,12 +66,12 @@
             {% for p in participants %}
             <a href="/participants/{{ p.id }}" aria-label="{{ t('participants.card.open_title_prefix') }} {{ p.name }}"
                 class="group block bg-white rounded-[15px] shadow hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#007A3D] transition overflow-hidden">
-                <div class="h-[200px] w-full bg-slate-100">
+                <div class="h-[200px] w-full bg-slate-50">
                     {% if p.logo_url %}
-                    <img src="{{ p.logo_url }}" alt="{{ p.name }}" class="w-full h-full object-cover" />
+                    <img src="{{ p.logo_url }}" alt="{{ p.name }}" class="w-full h-full object-contain p-4" />
                     {% else %}
                     <img src="/static/img/default_participant.png" alt="{{ p.name }}"
-                        class="w-full h-full object-cover" />
+                        class="w-full h-full object-contain p-4" />
                     {% endif %}
                 </div>
                 <div class="p-5">
