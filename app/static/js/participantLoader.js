@@ -10,11 +10,19 @@
     }
 
     function cardHTML(p) {
+        // Detect theme by checking if we're on site-b based on body class or other indicator
+        const isSiteB = document.body.classList.contains('site-b') ||
+            document.querySelector('.sb-page-hero') !== null;
+
+        // Theme-specific colors
+        const primaryColor = isSiteB ? '#20306C' : '#007A3D';
+        const badgeBg = isSiteB ? '#DCE3FF' : '#D3F2E2';
+
         const role = (p.role || "").toString();
         const roleChip = role
-            ? `<span class="shrink-0 inline-flex items-center px-2.5 h-7 rounded-md bg-[#D3F2E2] text-[#007A3D] font-['Roboto'] text-sm font-medium">${escapeHtml(
-                  role.charAt(0).toUpperCase() + role.slice(1)
-              )}</span>`
+            ? `<span class="shrink-0 inline-flex items-center px-2.5 h-7 rounded-md bg-[${badgeBg}] text-[${primaryColor}] font-['Roboto'] text-sm font-medium">${escapeHtml(
+                role.charAt(0).toUpperCase() + role.slice(1)
+            )}</span>`
             : "";
         const logo = p.logo_url || "/static/img/default_participant.png";
         const safeName = escapeHtml(p.name || "");
@@ -23,13 +31,13 @@
         return `
       <a href="/participants/${id}"
          aria-label="${safeName}"
-         class="group block bg-white rounded-[15px] shadow hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#007A3D] transition overflow-hidden">
-        <div class="h-[200px] w-full bg-slate-100">
-          <img src="${logo}" alt="${safeName}" class="w-full h-full object-cover" />
+         class="group block bg-white rounded-[15px] shadow hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[${primaryColor}] transition overflow-hidden">
+        <div class="h-[200px] w-full bg-slate-50">
+          <img src="${logo}" alt="${safeName}" class="w-full h-full object-contain p-4" />
         </div>
         <div class="p-5">
           <div class="flex items-start justify-between gap-3">
-            <h3 class="font-['Roboto'] font-medium text-[22px] leading-7 text-[#1E1E1E] transition-colors group-hover:text-[#007A3D]">
+            <h3 class="font-['Roboto'] font-medium text-[22px] leading-7 text-[#1E1E1E] transition-colors group-hover:text-[${primaryColor}]">
               ${safeName}
             </h3>
             ${roleChip}
@@ -104,9 +112,9 @@
         const observer =
             "IntersectionObserver" in window
                 ? new IntersectionObserver(
-                      (entries) => entries.forEach((entry) => entry.isIntersecting && loadMore()),
-                      { rootMargin: "600px 0px 600px 0px" }
-                  )
+                    (entries) => entries.forEach((entry) => entry.isIntersecting && loadMore()),
+                    { rootMargin: "600px 0px 600px 0px" }
+                )
                 : null;
 
         if (observer && sentinel) observer.observe(sentinel);
