@@ -19,31 +19,35 @@
         </header>
 
         {% macro partner_card(p) -%}
-        <article class="box-border  border-2 border-gray-300 hover:border-[var(--c-primary)]
-             transition-colors focus-visible:outline-none focus-visible:ring-2
-             focus-visible:ring-[var(--c-primary)] focus-visible:ring-offset-2
-             rounded-[14px] p-3 flex flex-col items-center justify-start
-             w-[clamp(140px,18vw,190px)] h-[clamp(160px,22vw,225px)]">
-            <div class="flex items-center justify-center 
-                  w-[clamp(120px,16vw,170px)] h-[clamp(86px,12vw,123px)]">
+        <article class="w-[clamp(140px,18vw,190px)] flex flex-col gap-2 
+             focus-visible:outline-none focus-visible:ring-2
+             focus-visible:ring-[var(--c-primary)] focus-visible:ring-offset-2 rounded-[14px]">
+            <!-- Logo section -->
+            <div class="border-2 border-gray-300 hover:border-[var(--c-primary)] 
+                  transition-colors rounded-[14px] p-3 bg-white
+                  flex items-center justify-center 
+                  w-full h-[clamp(120px,16vw,150px)]">
                 {% if p.logo_url %}
-                <img src="{{ p.logo_url }}" alt="{{ p.name }}" title="{{ p.name }}" class="object-contain select-none pointer-events-none
-                      w-[clamp(120px,16vw,170px)] h-[clamp(86px,12vw,123px)]" loading="lazy" />
+                <img src="{{ p.logo_url }}" alt="{{ p.name }}" title="{{ p.name }}"
+                    class="object-contain select-none pointer-events-none max-w-full max-h-full" loading="lazy" />
                 {% else %}
-                <img src="/static/img/img_placeholder.png" alt="{{ p.name }}" title="{{ p.name }}" class="object-contain opacity-70 select-none pointer-events-none
-                      w-[clamp(120px,16vw,170px)] h-[clamp(86px,12vw,123px)]" loading="lazy" />
+                <img src="/static/img/img_placeholder.png" alt="{{ p.name }}" title="{{ p.name }}"
+                    class="object-contain opacity-70 select-none pointer-events-none max-w-full max-h-full"
+                    loading="lazy" />
                 {% endif %}
             </div>
 
-            {% if p.type %}
-            <div class="mt-2 text-center font-['Roboto'] leading-tight text-slate-700
-                    text-[clamp(12px,1.6vw,18px)]">
-                {{ p.type }}
+            <!-- Text section -->
+            <div class="border-2 border-gray-300 hover:border-[var(--c-primary)] 
+                  transition-colors rounded-[14px] py-3 px-2 bg-white
+                  text-center font-['Roboto'] leading-tight
+                  min-h-[clamp(40px,6vw,60px)] flex items-center justify-center">
+                {% if p.type %}
+                <span class="text-slate-700 text-[clamp(12px,1.6vw,18px)]">{{ p.type }}</span>
+                {% else %}
+                <span class="text-slate-400 text-[clamp(11px,1.4vw,16px)]">&nbsp;</span>
+                {% endif %}
             </div>
-            {% else %}
-            <div class="mt-2 text-center font-['Roboto'] leading-tight text-slate-400
-                    text-[clamp(11px,1.4vw,16px)]">&nbsp;</div>
-            {% endif %}
         </article>
         {%- endmacro %}
 
@@ -56,7 +60,10 @@
             <li class="flex justify-center">
                 {% set href = p.website|default('') %}
                 {% if href %}
-                <a href="{{ href }}" target="_blank" rel="noopener noreferrer" class="block focus-visible:outline-none"
+                {% set full_url = href if href.startswith('http://') or href.startswith('https://') else 'https://' ~
+                href %}
+                <a href="{{ full_url }}" target="_blank" rel="noopener noreferrer"
+                    class="block focus-visible:outline-none"
                     aria-label="{{ p.name }} {{ t('sponsors.common.opens_new_tab') }}">
                     {{ partner_card(p) }}
                 </a>
@@ -75,7 +82,9 @@
                         <li class="marquee__item">
                             {% set href = p.website|default('') %}
                             {% if href %}
-                            <a href="{{ href }}" target="_blank" rel="noopener noreferrer"
+                            {% set full_url = href if href.startswith('http://') or href.startswith('https://') else
+                            'https://' ~ href %}
+                            <a href="{{ full_url }}" target="_blank" rel="noopener noreferrer"
                                 class="block focus-visible:outline-none"
                                 aria-label="{{ p.name }} {{ t('sponsors.common.opens_new_tab') }}">
                                 {{ partner_card(p) }}
