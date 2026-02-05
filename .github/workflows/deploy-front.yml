@@ -1,4 +1,4 @@
-name: Deploy tourism-front to server1
+name: Deploy tourism-front to server2
 
 on:
     push:
@@ -24,7 +24,7 @@ jobs:
                       export BRANCH="${{ github.ref_name }}"
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/deploy_tourism_frontend -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new'
 
-                      APP_DIR="/root/apps/tourism-front"
+                      APP_DIR="$HOME/apps/tourism-front"
                       if docker compose version >/dev/null 2>&1; then DC="docker compose"; else DC="docker-compose"; fi
 
                       cd "${APP_DIR}"
