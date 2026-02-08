@@ -8,9 +8,7 @@
 '/brochure',
 '/visa',
 '/hotel',
-'/flight',
-'/registration',
-'/register'
+'/flight'
 ] %}
 {% set p = _path %}
 
@@ -50,8 +48,8 @@
 
         <!-- Left: Logo -->
         <a href="/" class="sb-logo" aria-label="{{ t('siteb.detailbar.aria.home') }}">
-            <img src="{{ theme('img/logo.png') }}" alt="{{ t('siteb.detailbar.logo_alt') }}"
-                class="sb-logo-img" onerror="this.src='{{ url_for('static', path='img/logo.png') }}'">
+            <img src="{{ theme('img/logo.png') }}" alt="{{ t('siteb.detailbar.logo_alt') }}" class="sb-logo-img"
+                onerror="this.src='{{ url_for('static', path='img/logo.png') }}'">
         </a>
 
         <!-- Center: Inline Nav (scrollable with arrows) -->
@@ -164,7 +162,8 @@
                     </div>
                 </li>
 
-                <li>{{ sb_link('/registration', t('nav.registration'), 'sb-nav__link', 'menuitem') }}</li>
+                <li><a href="https://app.oguzforum.com/signup" class="sb-nav__link" role="menuitem">{{
+                        t('nav.registration') }}</a></li>
             </ul>
 
             <!-- Right arrow -->
@@ -187,7 +186,8 @@
                     onerror="this.src='{{ url_for('static', path='/img/detailbar/ic-user.svg') }}'">
             </span>
             {% else %}
-            <a href="/register" aria-label="{{ t('siteb.detailbar.aria.register') }}" class="sb-user">
+            <a href="https://app.oguzforum.com/signup" aria-label="{{ t('siteb.detailbar.aria.register') }}"
+                class="sb-user">
                 <img class="sb-user-img" src="{{ theme('img/detailbar/user.svg') }}"
                     alt="{{ t('siteb.detailbar.user_icon_alt') }}"
                     onerror="this.src='{{ url_for('static', path='/img/detailbar/ic-user.svg') }}'">
