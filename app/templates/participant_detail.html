@@ -65,53 +65,53 @@
             </article>
             {% endif %}
 
-            <!-- Info bar: categories + contact + location in one compact row -->
-            {% if p.categories or p.email or p.mobile or p.website or p.country %}
-            <div class="mt-6 flex flex-wrap items-center gap-3 text-sm font-['Roboto']">
+            <!-- Info bar: categories + contact + location + social -->
+            {% if p.categories or p.email or p.mobile or p.website or p.country or p.social_links %}
+            <div style="margin-top:16px; display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-family:Roboto,sans-serif; font-size:14px;">
                 {% for cat in (p.categories or []) %}
-                <span class="px-3 py-1 rounded-full bg-[#F0F5F0] text-[#007A3D] font-medium">{{ cat }}</span>
+                <span style="padding:4px 12px; border-radius:20px; background:#F0F5F0; color:#007A3D; font-weight:500;">{{ cat }}</span>
                 {% endfor %}
                 {% if p.country %}
-                <span class="text-[#666]">{{ p.country }}{% if p.city %}, {{ p.city }}{% endif %}</span>
+                <span style="color:#666;">{{ p.country }}{% if p.city %}, {{ p.city }}{% endif %}</span>
                 {% endif %}
                 {% if p.email %}
-                <a href="mailto:{{ p.email }}" class="text-[#007A3D] hover:underline">{{ p.email }}</a>
+                <a href="mailto:{{ p.email }}" style="color:#007A3D;">{{ p.email }}</a>
                 {% endif %}
                 {% if p.mobile %}
-                <a href="tel:{{ p.mobile }}" class="text-[#007A3D] hover:underline">{{ p.mobile }}</a>
+                <a href="tel:{{ p.mobile }}" style="color:#007A3D;">{{ p.mobile }}</a>
                 {% endif %}
                 {% if p.website %}
-                <a href="{{ p.website }}" target="_blank" class="text-[#007A3D] hover:underline">{{ p.website }}</a>
+                <a href="{{ p.website }}" target="_blank" style="color:#007A3D;">{{ p.website }}</a>
                 {% endif %}
                 {% for platform, url in (p.social_links or {}).items() %}
                 {% if url %}
-                <a href="{{ url }}" target="_blank" class="px-3 py-1 rounded-full bg-[#007A3D] text-white text-xs font-medium hover:bg-[#006030]">{{ platform|capitalize }}</a>
+                <a href="{{ url }}" target="_blank" style="padding:4px 12px; border-radius:20px; background:#007A3D; color:white; font-size:12px; font-weight:500; text-decoration:none;">{{ platform|capitalize }}</a>
                 {% endif %}
                 {% endfor %}
             </div>
             {% endif %}
 
-            <!-- Team Members — compact horizontal list -->
+            <!-- Team Members — compact horizontal chips -->
             {% if p.team_members and p.team_members|length > 0 %}
-            <div class="mt-8">
-                <h3 class="font-['Montserrat'] font-semibold text-[#1E1E1E] text-base mb-4">Team Members</h3>
-                <div class="flex flex-wrap gap-3">
+            <div style="margin-top:24px;">
+                <h3 style="font-family:Montserrat,sans-serif; font-weight:600; font-size:16px; color:#1E1E1E; margin-bottom:12px;">Team Members</h3>
+                <div style="display:flex; flex-wrap:wrap; gap:10px;">
                     {% for tm in p.team_members %}
-                    <div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-[#F9FBF9] border border-[#E0EDE0]">
+                    <div style="display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:8px; background:#F9FBF9; border:1px solid #E0EDE0;">
                         {% if tm.profile_photo_url %}
                         <img src="{{ tm.profile_photo_url }}" alt="{{ tm.first_name }}"
-                             class="w-10 h-10 rounded-full object-cover border border-[#D0E0D0]" />
+                             style="width:40px; height:40px; border-radius:50%; object-fit:cover; flex-shrink:0; border:1px solid #D0E0D0;" />
                         {% else %}
-                        <div class="w-10 h-10 rounded-full bg-[#D0E0D0] flex items-center justify-center">
-                            <svg class="w-5 h-5 text-[#007A3D]" fill="currentColor" viewBox="0 0 24 24">
+                        <div style="width:40px; height:40px; border-radius:50%; background:#D0E0D0; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <svg style="width:20px; height:20px; color:#007A3D;" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                             </svg>
                         </div>
                         {% endif %}
                         <div>
-                            <p class="font-['Roboto'] font-medium text-[#1E1E1E] text-sm leading-tight">{{ tm.first_name }} {{ tm.last_name }}</p>
+                            <p style="font-family:Roboto,sans-serif; font-weight:500; font-size:14px; color:#1E1E1E; line-height:1.2; margin:0;">{{ tm.first_name }} {{ tm.last_name }}</p>
                             {% if tm.position %}
-                            <p class="font-['Roboto'] text-[#888] text-xs">{{ tm.position }}</p>
+                            <p style="font-family:Roboto,sans-serif; font-size:12px; color:#888; margin:2px 0 0;">{{ tm.position }}</p>
                             {% endif %}
                         </div>
                     </div>
@@ -123,11 +123,11 @@
             <!-- Gallery — 2x2 grid -->
             {% set rest = (p.images_hero or []) + (p.images_rest or []) %}
             {% if rest|length > 0 %}
-            <div class="mt-8">
-                <div class="grid grid-cols-2 gap-3 max-w-[600px]">
+            <div style="margin-top:24px;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; max-width:500px;">
                     {% for u in rest[:4] %}
-                    <div class="rounded-[10px] overflow-hidden bg-slate-100 aspect-square">
-                        <img src="{{ u }}" class="w-full h-full object-cover" alt="" />
+                    <div style="border-radius:10px; overflow:hidden; background:#f1f5f9; aspect-ratio:1;">
+                        <img src="{{ u }}" style="width:100%; height:100%; object-fit:cover;" alt="" />
                     </div>
                     {% endfor %}
                 </div>
