@@ -277,6 +277,18 @@ async def get_participant(
     images_rest = all_images[3:]
 
     logo = r.get("logo") or r.get("logo_url") or r.get("photo")
+
+    # Resolve team member photo URLs
+    team_members_raw = r.get("team_members") or []
+    team_members = []
+    for tm in team_members_raw:
+        if isinstance(tm, dict):
+            tm_copy = dict(tm)
+            photo = tm_copy.get("profile_photo_url") or ""
+            if photo:
+                tm_copy["profile_photo_url"] = _resolve_media(photo)
+            team_members.append(tm_copy)
+
     result = {
         "id": r.get("id"),
         "name": r.get("name") or "",
@@ -287,6 +299,14 @@ async def get_participant(
         "logo_url": _resolve_logo_url(logo),
         "images_hero": images_hero,
         "images_rest": images_rest,
+        "email": r.get("email") or "",
+        "mobile": r.get("mobile") or "",
+        "website": r.get("website") or "",
+        "country": r.get("country") or "",
+        "city": r.get("city") or "",
+        "categories": r.get("categories") or [],
+        "social_links": r.get("social_links") or {},
+        "team_members": team_members,
         "created_at": r.get("created_at"),
         "updated_at": r.get("updated_at"),
     }
