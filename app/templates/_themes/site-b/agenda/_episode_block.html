@@ -177,13 +177,13 @@
                         {% endif %}
                     </div>
 
-                    {# Right panel: sponsor + read more #}
+                    {# ── Right: sponsor + read more (stacked) ── #}
                     {% if top_sponsor %}
                     <div class="hidden xl:flex items-stretch gap-6 shrink-0">
                         <div class="w-px bg-[#20306C] rounded-full self-stretch"></div>
                         <div class="flex flex-col items-center text-center gap-4 min-w-[180px]">
                             <div class="flex flex-col items-center">
-                                {% set _logo = top_sponsor.logo_url or '/static/img/img_placeholder.png' %}
+                                {% set _logo = top_sponsor.logo_url or '/static/img/logo_placeholder.svg' %}
                                 {% if top_sponsor.url %}
                                 <a href="{{ top_sponsor.url }}" target="_blank" rel="noopener noreferrer" class="block">
                                     <img src="{{ _logo }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
@@ -196,6 +196,10 @@
                                     loading="lazy" />
                                 {% endif %}
                                 {% set tier_key = (top_sponsor.tier or 'gold')|lower %}
+                                <div class="mt-1 font-['Roboto'] font-semibold text-[13px]
+      {% if tier_key == 'gold' %}text-[#DDAC17]{% elif tier_key == 'silver' %}text-[#9CA3AF]{% elif tier_key == 'bronze' %}text-[#915D2D]{% elif tier_key == 'platinum' %}text-[#6B7280]{% elif tier_key == 'diamond' %}text-[#3B82F6]{% elif tier_key == 'premier' %}text-[#20306C]{% elif tier_key == 'general' %}text-[#1E1E1E]{% else %}text-[#1E1E1E]{% endif %}">
+                                    {{ t('sponsor.tier.' ~ tier_key) }}
+                                </div>
                             </div>
                             <button type="button" class="mt-auto h-[36px] px-5 rounded-[10px] bg-[#20306C] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]
                                hover:bg-[#1B2A59] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8FA5F7]"
@@ -224,7 +228,7 @@
 
         {# ===================== DESKTOP EXPANDED ===================== #}
         <div class="hidden md:block" x-show="{{ expanded_var_name }} === {{ ep_id|tojson }}" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-            <header class="relative flex flex-col gap-4 xl:gap-6">
+            <div class="flex flex-col gap-4 xl:gap-6">
                 <div class="flex flex-wrap items-center gap-3">
                     {{ chip.info_chip('calendar', d.date.strftime('%d %B %Y')) }}
                     {% if ep.location %}
@@ -232,29 +236,61 @@
                     {% endif %}
                 </div>
 
-                <div class="grid items-start gap-6 xl:gap-8 xl:grid-cols-[1fr_auto]">
-                    <div class="min-w-0">
-                        <h3
-                            class="font-['Montserrat'] font-semibold text-[28px] leading-[34px] md:text-[30px] md:leading-[37px] text-black">
+                <div class="flex gap-6 xl:gap-8">
+                    {# ── Left column: title, description, topic, speakers ── #}
+                    <div class="flex-1 min-w-0 flex flex-col gap-6">
+                        <h3 class="font-['Montserrat'] font-semibold text-[28px] leading-[34px] md:text-[30px] md:leading-[37px] text-black">
                             {{ ep.title }}
                         </h3>
 
-                        {# keep the short topic in expanded too #}
                         {% if short %}
-                        <p class="mt-3 md:mt-4 font-['Roboto'] text-[16px] leading-[20px] text-black max-w-[720px]">
+                        <p class="font-['Roboto'] text-[16px] leading-[20px] text-black max-w-[720px]">
                             {{ short }}
                         </p>
                         {% endif %}
+
+                        {% if topic %}
+                        <div>
+                            <h4 class="font-['Montserrat'] font-semibold text-[24px] leading-[30px] text-black">
+                                {{ t('agenda.topic') }}
+                            </h4>
+                            <div class="mt-3 font-['Roboto'] text-[16px] leading-6 text-black">
+                                <p class="whitespace-pre-line">{{ topic }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if _speakers %}
+                        <section x-data="{ track: null }">
+                            <h4 class="font-['Montserrat'] font-semibold text-[24px] leading-[30px] text-black">{{
+                                t('agenda.speakers') }}</h4>
+                            <div class="mt-6" data-marquee-group>
+                                <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false"
+                                    style="--gap: 1rem">
+                                    <div class="marquee__viewport">
+                                        <ul class="marquee__track">
+                                            {% for sp in _speakers %}
+                                            {% set sp_href = sp.url or ('/speakers/' ~ (sp.slug or sp.id)) %}
+                                            <li class="marquee__item">
+                                                {{ card.speaker_card(sp, href=sp_href) }}
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        {% endif %}
                     </div>
 
-                    <div class="flex items-end justify-end gap-4 xl:gap-6">
-                        {# sponsor stays in the same (old) place as collapsed #}
-                        {% if top_sponsor %}
-                        <!-- Sponsor + divider only at xl+ -->
-                        <div class="hidden xl:flex items-center gap-6">
-                            <div class="w-px h-[125px] bg-[#20306C] rounded-full"></div>
-                            <div class="shrink-0 flex flex-col items-center text-center">
-                                {% set _logo = top_sponsor.logo_url or '/static/img/img_placeholder.png' %}
+                    {# ── Right column: sponsor + moderator + hide ── #}
+                    {% if top_sponsor or mod %}
+                    <div class="hidden xl:flex items-start gap-6 shrink-0" style="flex:0 0 210px;max-width:210px;">
+                        <div class="w-px bg-[#20306C] rounded-full self-stretch"></div>
+                        <div class="flex flex-col items-center text-center gap-5" style="width:186px;max-width:186px;">
+                            {% if top_sponsor %}
+                            <div class="flex flex-col items-center">
+                                {% set _logo = top_sponsor.logo_url or '/static/img/logo_placeholder.svg' %}
                                 {% if top_sponsor.url %}
                                 <a href="{{ top_sponsor.url }}" target="_blank" rel="noopener noreferrer" class="block">
                                     <img src="{{ _logo }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
@@ -266,118 +302,47 @@
                                     class="w-[160px] h-[95px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
                                     loading="lazy" />
                                 {% endif %}
-
+                                {% set tier_key = (top_sponsor.tier or 'gold')|lower %}
+                                <div class="mt-1 font-['Roboto'] font-semibold text-[13px]
+      {% if tier_key == 'gold' %}text-[#DDAC17]{% elif tier_key == 'silver' %}text-[#9CA3AF]{% elif tier_key == 'bronze' %}text-[#915D2D]{% elif tier_key == 'platinum' %}text-[#6B7280]{% elif tier_key == 'diamond' %}text-[#3B82F6]{% elif tier_key == 'premier' %}text-[#20306C]{% elif tier_key == 'general' %}text-[#1E1E1E]{% else %}text-[#1E1E1E]{% endif %}">
+                                    {{ t('sponsor.tier.' ~ tier_key) }}
+                                </div>
                             </div>
+                            {% endif %}
+
+                            {# Moderator — speaker-card sized (162x200) #}
+                            {% if mod %}
+                            <div class="relative w-[162px] h-[200px] rounded-[20px] overflow-hidden bg-[#F5F5F7] shrink-0" style="box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+                                <img src="{{ mod.photo_url or '/static/img/person_placeholder.png' }}" alt="{{ mod.fullname }}"
+                                    class="w-full h-full object-cover" loading="lazy" />
+                                <div class="absolute inset-x-0 bottom-0 h-[82px] bg-[rgba(30,30,30,0.65)] rounded-b-[20px] p-2.5">
+                                    <div class="font-['Roboto'] text-white" style="text-shadow:0 1px 3px rgba(0,0,0,0.5);">
+                                        <div class="font-semibold text-[10px] uppercase tracking-wide opacity-90">
+                                            {{ t('agenda.moderator') }}
+                                        </div>
+                                        <div class="font-bold text-[14px] leading-[17px] truncate">
+                                            {{ mod.fullname }}
+                                        </div>
+                                        {% if mod.company %}
+                                        <div class="mt-0.5 text-[13px] leading-[16px] line-clamp-2 opacity-95">{{ mod.company }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
-                        {% endif %}
                     </div>
+                    {% endif %}
                 </div>
-            </header>
 
-            <div class="py-10 grid grid-cols-1 gap-8">
-                <div class="flex flex-col gap-6">
-                    {# Moderator #}
-                    {% if mod %}
-                    {# Unwrap different shapes: EpisodeModerator vs Moderator #}
-                    {% set _m = (mod.moderator if mod.moderator is defined and mod.moderator else mod) %}
-                    {% set mname = _m.fullname or _m.name %}
-                    {% set mphoto = _m.photo_url or _m.photo or '/static/img/img_placeholder.png' %}
-                    {% set mpos = _m.position or '' %}
-                    {% set mcompany = _m.company or '' %}
-                    {# Try every likely description field coming from different serializers #}
-                    {% set mdesc = _m.description or _m.description_html or _m.description_norm or _m.bio or _m.bio_html
-                    or '' %}
-
-                    <div class="w-full">
-                        <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 items-stretch w-full">
-                            <!-- Left: title + description -->
-                            <div class="flex-1 min-w-0">
-                                <h4 class="font-['Montserrat'] font-semibold text-[24px] leading-[30px] text-black">
-                                    {{ t('agenda.moderator') }}
-                                </h4>
-
-                                {% if mdesc %}
-                                <div
-                                    class="mt-3 font-['Roboto'] text-[16px] leading-6 text-[#1E1E1E] whitespace-pre-line">
-                                    {{ mdesc|safe }}
-                                </div>
-                                {% elif mpos or mcompany %}
-                                <div class="mt-3 font-['Roboto'] text-[16px] leading-6 text-[#1E1E1E]">
-                                    {{ mpos }}{% if mcompany %}, {{ mcompany }}{% endif %}
-                                </div>
-                                {% endif %}
-                            </div>
-
-                            <!-- Right: photo + name -->
-                            <div
-                                class="lg:w-[240px] shrink-0 flex flex-col items-center justify-center text-center gap-3">
-                                <div
-                                    class="w-[140px] h-[140px] rounded-[18px] overflow-hidden bg-[#F5F5F7] border border-[#E5E7EB] shadow-[0_12px_28px_rgba(12,26,71,0.15)]">
-                                    <img src="{{ mphoto }}" alt="{{ mname or '' }}" class="w-full h-full object-cover"
-                                        loading="lazy">
-                                </div>
-                                <div class="font-['Roboto'] text-[#1E1E1E] flex flex-col gap-1">
-                                    {% if mname %}<span class="font-bold text-[18px] leading-[22px]">{{ mname
-                                        }}</span>{% endif %}
-                                    {% if mpos or mcompany %}
-                                    <span class="text-[14px] leading-[18px] text-[#6C6C6F]">
-                                        {{ mpos }}{% if mcompany %}, {{ mcompany }}{% endif %}
-                                    </span>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-
-
-                    {# Topic (show short again + full topic) #}
-                    {% if topic or short %}
-                    <div>
-                        <h4 class="font-['Montserrat'] font-semibold text-[24px] leading-[30px] text-black">
-                            {{ t('agenda.topic') }}
-                        </h4>
-                        <div class="mt-3 font-['Roboto'] text-[16px] leading-6 text-black max-w-[980px]">
-                            {% if short %}<p>{{ short }}</p>{% endif %}
-                            {% if topic %}<p class="{% if short %}mt-2{% endif %} whitespace-pre-line">{{ topic }}</p>{%
-                            endif %}
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    {# Speakers list (unchanged) #}
-                    {% if _speakers %}
-                    <section x-data="{ track: null }">
-                        <h4 class="font-['Montserrat'] font-semibold text-[24px] leading-[30px] text-black">{{
-                            t('agenda.speakers') }}</h4>
-                        <div class="mt-6" data-marquee-group>
-                            <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false"
-                                style="--gap: 1rem">
-                                <div class="marquee__viewport">
-                                    <ul class="marquee__track">
-                                        {% for sp in _speakers %}
-                                        {% set sp_href = sp.url or ('/speakers/' ~ (sp.slug or sp.id)) %}
-                                        <li class="marquee__item">
-                                            {{ card.speaker_card(sp, href=sp_href) }}
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    {% endif %}
-
-                    {# keep only the Hide button down here #}
-                    <div class="mt-4 flex justify-end">
-                        <button type="button"
-                            class="h-[36px] px-5 rounded-[10px] bg-[#20306C] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]"
-                            @click="{{ expanded_var_name }} = null"
-                            x-show="{{ expanded_var_name }} === {{ ep_id|tojson }}"
-                            :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
-                            {{ t('common.hide') }}
-                        </button>
-                    </div>
+                {# Hide button — always bottom-right of entire episode #}
+                <div class="flex justify-end">
+                    <button type="button"
+                        class="h-[36px] px-5 rounded-[10px] bg-[#20306C] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px] hover:bg-[#1B2A59]"
+                        @click="{{ expanded_var_name }} = null"
+                        :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
+                        {{ t('common.hide') }}
+                    </button>
                 </div>
             </div>
         </div>
