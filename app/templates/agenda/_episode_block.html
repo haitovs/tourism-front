@@ -178,13 +178,11 @@
                         {% endif %}
                     </div>
 
-                    {# ── Right: sponsor + moderator + read more (stacked) ── #}
-                    {% if top_sponsor or mod %}
+                    {# ── Right: sponsor + read more (stacked) ── #}
+                    {% if top_sponsor %}
                     <div class="hidden xl:flex items-stretch gap-6 shrink-0">
                         <div class="w-px bg-[#007A3D] rounded-full self-stretch"></div>
-                        <div class="flex flex-col items-center text-center gap-5 min-w-[180px]">
-                            {# Sponsor #}
-                            {% if top_sponsor %}
+                        <div class="flex flex-col items-center text-center gap-4 min-w-[180px]">
                             <div class="flex flex-col items-center">
                                 {% set _logo = top_sponsor.logo_url or '/static/img/img_placeholder.png' %}
                                 {% if top_sponsor.url %}
@@ -204,30 +202,6 @@
                                     {{ t('sponsor.tier.' ~ tier_key) }}
                                 </div>
                             </div>
-                            {% endif %}
-
-                            {# Moderator #}
-                            {% if mod %}
-                            <div class="flex flex-col items-center gap-2">
-                                <div class="w-[72px] h-[72px] rounded-[12px] overflow-hidden bg-[#F5F5F7]">
-                                    <img src="{{ mod.photo_url or '/static/img/img_placeholder.png' }}" alt="{{ mod.fullname }}"
-                                        class="w-full h-full object-cover {% if not mod.photo_url %}opacity-70{% endif %}" loading="lazy" />
-                                </div>
-                                <div>
-                                    <div class="font-['Roboto'] font-semibold text-[11px] uppercase tracking-wide text-[#6C6C6F]">
-                                        {{ t('agenda.moderator') }}
-                                    </div>
-                                    <div class="font-['Roboto'] font-bold text-[13px] leading-[16px] text-[#1E1E1E]">
-                                        {{ mod.fullname }}
-                                    </div>
-                                    {% if mod.company %}
-                                    <div class="font-['Roboto'] text-[11px] text-[#6C6C6F]">{{ mod.company }}</div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            {% endif %}
-
-                            {# Read more #}
                             <button type="button" class="mt-auto h-[36px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]
                                hover:bg-[#056b36] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0ea36a]"
                                 @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
@@ -238,8 +212,8 @@
                     </div>
                     {% endif %}
 
-                    {# Fallback Read more when no sponsor/moderator side panel #}
-                    {% if not top_sponsor and not mod %}
+                    {# Read more button when no sponsor side panel #}
+                    {% if not top_sponsor %}
                     <div class="flex items-end shrink-0">
                         <button type="button" class="h-[36px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]
                            hover:bg-[#056b36] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0ea36a]"
