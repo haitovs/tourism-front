@@ -184,7 +184,7 @@
                         <div class="w-px bg-[#007A3D] rounded-full self-stretch"></div>
                         <div class="flex flex-col items-center text-center gap-4 min-w-[180px]">
                             <div class="flex flex-col items-center">
-                                {% set _logo = top_sponsor.logo_url or '/static/img/img_placeholder.png' %}
+                                {% set _logo = top_sponsor.logo_url or '/static/img/logo_placeholder.svg' %}
                                 {% if top_sponsor.url %}
                                 <a href="{{ top_sponsor.url }}" target="_blank" rel="noopener noreferrer" class="block">
                                     <img src="{{ _logo }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
@@ -283,22 +283,24 @@
                     </div>
 
                     {# ── Right column: sponsor + moderator ── #}
+                    {# ── Right column: sponsor + moderator + hide ── #}
                     {% if top_sponsor or mod %}
                     <div class="hidden xl:flex items-start gap-6 shrink-0">
                         <div class="w-px bg-[#007A3D] rounded-full self-stretch"></div>
-                        <div class="flex flex-col items-center text-center gap-6 min-w-[180px]">
+                        <div class="flex flex-col items-center text-center gap-5 w-[186px]">
+                            {# Sponsor logo + tier #}
                             {% if top_sponsor %}
                             <div class="flex flex-col items-center">
-                                {% set _logo = top_sponsor.logo_url or '/static/img/img_placeholder.png' %}
+                                {% set _logo = top_sponsor.logo_url or '/static/img/logo_placeholder.svg' %}
                                 {% if top_sponsor.url %}
                                 <a href="{{ top_sponsor.url }}" target="_blank" rel="noopener noreferrer" class="block">
                                     <img src="{{ _logo }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
-                                        class="w-[140px] h-[80px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
+                                        class="w-[160px] h-[95px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
                                         loading="lazy" />
                                 </a>
                                 {% else %}
                                 <img src="{{ _logo }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
-                                    class="w-[140px] h-[80px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
+                                    class="w-[160px] h-[95px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
                                     loading="lazy" />
                                 {% endif %}
                                 {% set tier_key = (top_sponsor.tier or 'gold')|lower %}
@@ -309,32 +311,28 @@
                             </div>
                             {% endif %}
 
+                            {# Moderator — speaker-card sized (162x200) #}
                             {% if mod %}
-                            <div class="flex flex-col items-center gap-2">
-                                <div class="w-[88px] h-[88px] rounded-[14px] overflow-hidden bg-[#F5F5F7] border border-[#E5E7EB]">
-                                    <img src="{{ mod.photo_url or '/static/img/person_placeholder.png' }}" alt="{{ mod.fullname }}"
-                                        class="w-full h-full object-cover" loading="lazy" />
-                                </div>
-                                <div>
-                                    <div class="font-['Roboto'] font-semibold text-[11px] uppercase tracking-wide text-[#6C6C6F]">
+                            <div class="relative w-[162px] h-[200px] rounded-[20px] overflow-hidden bg-[#F5F5F7] border border-[#E5E7EB] shrink-0">
+                                <img src="{{ mod.photo_url or '/static/img/person_placeholder.png' }}" alt="{{ mod.fullname }}"
+                                    class="w-full h-full object-cover" loading="lazy" />
+                                <div class="absolute bottom-0 left-0 right-0 h-[82px] bg-gradient-to-t from-[rgba(30,30,30,0.75)] to-transparent rounded-b-[20px] p-2.5 flex flex-col justify-end">
+                                    <div class="font-['Roboto'] font-semibold text-[10px] uppercase tracking-wide text-white/80">
                                         {{ t('agenda.moderator') }}
                                     </div>
-                                    <div class="font-['Roboto'] font-bold text-[14px] leading-[18px] text-[#1E1E1E]">
+                                    <div class="font-['Montserrat'] font-bold text-[13px] leading-[16px] text-white truncate">
                                         {{ mod.fullname }}
                                     </div>
-                                    {% if mod.position %}
-                                    <div class="font-['Roboto'] text-[12px] text-[#6C6C6F]">{{ mod.position }}</div>
-                                    {% endif %}
                                     {% if mod.company %}
-                                    <div class="font-['Roboto'] text-[12px] text-[#6C6C6F]">{{ mod.company }}</div>
+                                    <div class="font-['Roboto'] text-[11px] text-white/80 truncate">{{ mod.company }}</div>
                                     {% endif %}
                                 </div>
                             </div>
                             {% endif %}
 
-                            {# Hide button at bottom of right panel #}
+                            {# Hide button — always last #}
                             <button type="button"
-                                class="mt-auto h-[36px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px] hover:bg-[#056b36]"
+                                class="h-[36px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px] hover:bg-[#056b36]"
                                 @click="{{ expanded_var_name }} = null"
                                 :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
                                 {{ t('common.hide') }}
