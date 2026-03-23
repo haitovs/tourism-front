@@ -312,45 +312,38 @@
 
                             {# Moderator — speaker-card sized (162x200) #}
                             {% if mod %}
-                            <div class="relative w-[162px] h-[200px] rounded-[20px] overflow-hidden bg-[#F5F5F7] border border-[#E5E7EB] shrink-0">
+                            <div class="relative w-[162px] h-[200px] rounded-[20px] overflow-hidden bg-[#F5F5F7] shrink-0" style="box-shadow:0 2px 8px rgba(0,0,0,0.12);">
                                 <img src="{{ mod.photo_url or '/static/img/person_placeholder.png' }}" alt="{{ mod.fullname }}"
                                     class="w-full h-full object-cover" loading="lazy" />
-                                <div class="absolute bottom-0 left-0 right-0 h-[82px] bg-gradient-to-t from-[rgba(30,30,30,0.75)] to-transparent rounded-b-[20px] p-2.5 flex flex-col justify-end">
-                                    <div class="font-['Roboto'] font-semibold text-[10px] uppercase tracking-wide text-white/80">
-                                        {{ t('agenda.moderator') }}
+                                <div class="absolute inset-x-0 bottom-0 h-[82px] bg-[rgba(30,30,30,0.65)] rounded-b-[20px] p-2.5">
+                                    <div class="font-['Roboto'] text-white" style="text-shadow:0 1px 3px rgba(0,0,0,0.5);">
+                                        <div class="font-semibold text-[10px] uppercase tracking-wide opacity-90">
+                                            {{ t('agenda.moderator') }}
+                                        </div>
+                                        <div class="font-bold text-[14px] leading-[17px] truncate">
+                                            {{ mod.fullname }}
+                                        </div>
+                                        {% if mod.company %}
+                                        <div class="mt-0.5 text-[13px] leading-[16px] line-clamp-2 opacity-95">{{ mod.company }}</div>
+                                        {% endif %}
                                     </div>
-                                    <div class="font-['Montserrat'] font-bold text-[13px] leading-[16px] text-white truncate">
-                                        {{ mod.fullname }}
-                                    </div>
-                                    {% if mod.company %}
-                                    <div class="font-['Roboto'] text-[11px] text-white/80 truncate">{{ mod.company }}</div>
-                                    {% endif %}
                                 </div>
                             </div>
                             {% endif %}
-
-                            {# Hide button — always last #}
-                            <button type="button"
-                                class="h-[36px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px] hover:bg-[#056b36]"
-                                @click="{{ expanded_var_name }} = null"
-                                :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
-                                {{ t('common.hide') }}
-                            </button>
                         </div>
                     </div>
                     {% endif %}
 
-                    {# Hide button fallback when no right panel #}
-                    {% if not top_sponsor and not mod %}
-                    <div class="flex items-end shrink-0">
-                        <button type="button"
-                            class="h-[36px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px] hover:bg-[#056b36]"
-                            @click="{{ expanded_var_name }} = null"
-                            :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
-                            {{ t('common.hide') }}
-                        </button>
-                    </div>
-                    {% endif %}
+                </div>
+
+                {# Hide button — always bottom-right of entire episode #}
+                <div class="flex justify-end">
+                    <button type="button"
+                        class="h-[36px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px] hover:bg-[#056b36]"
+                        @click="{{ expanded_var_name }} = null"
+                        :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
+                        {{ t('common.hide') }}
+                    </button>
                 </div>
             </div>
         </div>
