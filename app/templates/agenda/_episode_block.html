@@ -331,19 +331,30 @@
                                 </div>
                             </div>
                             {% endif %}
+
+                            {# Hide button at bottom of right panel #}
+                            <button type="button"
+                                class="mt-auto h-[36px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px] hover:bg-[#056b36]"
+                                @click="{{ expanded_var_name }} = null"
+                                :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
+                                {{ t('common.hide') }}
+                            </button>
                         </div>
                     </div>
                     {% endif %}
-                </div>
 
-                {# Hide button #}
-                <div class="mt-4 flex justify-end">
-                    <button type="button"
-                        class="h-[36px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px] hover:bg-[#056b36]"
-                        @click="{{ expanded_var_name }} = null"
-                        :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
-                        {{ t('common.hide') }}
-                    </button>
+                    {# Hide button fallback when no right panel #}
+                    {% if not top_sponsor and not mod %}
+                    <div class="flex items-end shrink-0">
+                        <button type="button"
+                            class="h-[36px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px] hover:bg-[#056b36]"
+                            @click="{{ expanded_var_name }} = null"
+                            :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
+                            {{ t('common.hide') }}
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
                     </div>
                 </div>
             </div>
