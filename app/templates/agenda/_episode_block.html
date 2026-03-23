@@ -284,9 +284,9 @@
 
                     {# ── Right column: sponsor + moderator + hide ── #}
                     {% if top_sponsor or mod %}
-                    <div class="hidden xl:flex items-start gap-6 shrink-0">
+                    <div class="hidden xl:flex items-start gap-6 shrink-0" style="flex:0 0 210px;max-width:210px;">
                         <div class="w-px bg-[#007A3D] rounded-full self-stretch"></div>
-                        <div class="flex flex-col items-center text-center gap-5 w-[186px]">
+                        <div class="flex flex-col items-center text-center gap-5" style="width:186px;max-width:186px;">
                             {# Sponsor logo + tier #}
                             {% if top_sponsor %}
                             <div class="flex flex-col items-center">
