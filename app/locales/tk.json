@@ -69,9 +69,13 @@
     "agenda.speakers_carousel": "Çykyşçylar karuseli",
 
     "sponsor.unknown": "Sponsor",
+    "sponsor.tier.general": "Sponsor",
     "sponsor.tier.gold": "Altyn sponsor",
     "sponsor.tier.silver": "Kümüş sponsor",
     "sponsor.tier.bronze": "Bürünç sponsor",
+    "sponsor.tier.platinum": "Platina sponsor",
+    "sponsor.tier.diamond": "Almaz sponsor",
+    "sponsor.tier.premier": "Baş sponsor",
 
     "agenda.no_speakers": "Çykyşçylar entek ýok.",
 

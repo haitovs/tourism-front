@@ -70,9 +70,13 @@
     "agenda.speakers_carousel": "嘉宾轮播",
 
     "sponsor.unknown": "赞助商",
+    "sponsor.tier.general": "赞助商",
     "sponsor.tier.gold": "金牌赞助",
     "sponsor.tier.silver": "银牌赞助",
     "sponsor.tier.bronze": "铜牌赞助",
+    "sponsor.tier.platinum": "铂金赞助",
+    "sponsor.tier.diamond": "钻石赞助",
+    "sponsor.tier.premier": "首席赞助",
 
     "agenda.no_speakers": "暂未添加嘉宾。",
 

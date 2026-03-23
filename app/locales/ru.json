@@ -69,9 +69,13 @@
     "agenda.speakers_carousel": "Карусель спикеров",
 
     "sponsor.unknown": "Спонсор",
+    "sponsor.tier.general": "Спонсор",
     "sponsor.tier.gold": "Золотой спонсор",
     "sponsor.tier.silver": "Серебряный спонсор",
     "sponsor.tier.bronze": "Бронзовый спонсор",
+    "sponsor.tier.platinum": "Платиновый спонсор",
+    "sponsor.tier.diamond": "Бриллиантовый спонсор",
+    "sponsor.tier.premier": "Главный спонсор",
 
     "agenda.no_speakers": "Спикеры пока не добавлены.",
 

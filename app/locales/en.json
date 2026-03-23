@@ -69,9 +69,13 @@
     "agenda.speakers_carousel": "Speakers carousel",
 
     "sponsor.unknown": "Sponsor",
+    "sponsor.tier.general": "Sponsor",
     "sponsor.tier.gold": "Gold Sponsor",
     "sponsor.tier.silver": "Silver Sponsor",
     "sponsor.tier.bronze": "Bronze Sponsor",
+    "sponsor.tier.platinum": "Platinum Sponsor",
+    "sponsor.tier.diamond": "Diamond Sponsor",
+    "sponsor.tier.premier": "Premier Sponsor",
 
     "agenda.no_speakers": "No speakers yet.",
 
