@@ -156,8 +156,8 @@
             </div>
         </div>
 {# ===================== DESKTOP COLLAPSED ===================== #}
-        <div class="hidden md:block" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}" x-transition:enter="" x-transition:leave="">
-            <header class="relative flex flex-col gap-4 xl:gap-6">
+        <div class="hidden md:block" x-show="{{ expanded_var_name }} !== {{ ep_id|tojson }}">
+            <div class="flex flex-col gap-4 xl:gap-6">
                 <div class="flex flex-wrap items-center gap-3">
                     {{ chip.info_chip('calendar', d.date.strftime('%d %B %Y')) }}
                     {% if ep.location %}
@@ -165,13 +165,12 @@
                     {% endif %}
                 </div>
 
-                <div class="grid items-start gap-6 xl:gap-8 xl:grid-cols-[1fr_auto]">
-                    <div class="min-w-0">
-                        <h3
-                            class="font-['Montserrat'] font-semibold text-[28px] leading-[34px] md:text-[30px] md:leading-[37px] text-black">
+                <div class="flex gap-6 xl:gap-8">
+                    {# ── Left: title + description ── #}
+                    <div class="flex-1 min-w-0">
+                        <h3 class="font-['Montserrat'] font-semibold text-[28px] leading-[34px] md:text-[30px] md:leading-[37px] text-black">
                             {{ ep.title }}
                         </h3>
-
                         {% if short %}
                         <p class="mt-3 md:mt-4 font-['Roboto'] text-[16px] leading-[20px] text-black max-w-[720px]">
                             {{ short }}
@@ -179,44 +178,79 @@
                         {% endif %}
                     </div>
 
-                    <div class="flex flex-col items-end gap-4 xl:gap-4">
-                        {# Sponsor above the button #}
-                        {% if top_sponsor %}
-                        <div class="hidden xl:flex items-center gap-6">
-                            <div class="w-px h-[125px] bg-[#007A3D] rounded-full"></div>
-                            <div class="shrink-0 flex flex-col items-center text-center">
+                    {# ── Right: sponsor + moderator + read more (stacked) ── #}
+                    {% if top_sponsor or mod %}
+                    <div class="hidden xl:flex items-stretch gap-6 shrink-0">
+                        <div class="w-px bg-[#007A3D] rounded-full self-stretch"></div>
+                        <div class="flex flex-col items-center text-center gap-5 min-w-[180px]">
+                            {# Sponsor #}
+                            {% if top_sponsor %}
+                            <div class="flex flex-col items-center">
                                 {% set _logo = top_sponsor.logo_url or '/static/img/img_placeholder.png' %}
                                 {% if top_sponsor.url %}
                                 <a href="{{ top_sponsor.url }}" target="_blank" rel="noopener noreferrer" class="block">
                                     <img src="{{ _logo }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
-                                        class="w-[160px] h-[95px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
+                                        class="w-[140px] h-[80px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
                                         loading="lazy" />
                                 </a>
                                 {% else %}
                                 <img src="{{ _logo }}" alt="{{ top_sponsor.name or t('sponsor.unknown') }}"
-                                    class="w-[160px] h-[95px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
+                                    class="w-[140px] h-[80px] object-contain {% if not top_sponsor.logo_url %}opacity-70{% endif %}"
                                     loading="lazy" />
                                 {% endif %}
                                 {% set tier_key = (top_sponsor.tier or 'gold')|lower %}
-                                <div
-                                    class="mt-2 font-['Roboto'] font-semibold text-[15px]
+                                <div class="mt-1 font-['Roboto'] font-semibold text-[13px]
       {% if tier_key == 'gold' %}text-[#DDAC17]{% elif tier_key == 'silver' %}text-[#9CA3AF]{% elif tier_key == 'bronze' %}text-[#915D2D]{% elif tier_key == 'platinum' %}text-[#6B7280]{% elif tier_key == 'diamond' %}text-[#3B82F6]{% elif tier_key == 'premier' %}text-[#007A3D]{% elif tier_key == 'general' %}text-[#1E1E1E]{% else %}text-[#1E1E1E]{% endif %}">
                                     {{ t('sponsor.tier.' ~ tier_key) }}
                                 </div>
                             </div>
-                        </div>
-                        {% endif %}
+                            {% endif %}
 
-                        {# Read more button at bottom-right #}
+                            {# Moderator #}
+                            {% if mod %}
+                            <div class="flex flex-col items-center gap-2">
+                                <div class="w-[72px] h-[72px] rounded-[12px] overflow-hidden bg-[#F5F5F7]">
+                                    <img src="{{ mod.photo_url or '/static/img/img_placeholder.png' }}" alt="{{ mod.fullname }}"
+                                        class="w-full h-full object-cover {% if not mod.photo_url %}opacity-70{% endif %}" loading="lazy" />
+                                </div>
+                                <div>
+                                    <div class="font-['Roboto'] font-semibold text-[11px] uppercase tracking-wide text-[#6C6C6F]">
+                                        {{ t('agenda.moderator') }}
+                                    </div>
+                                    <div class="font-['Roboto'] font-bold text-[13px] leading-[16px] text-[#1E1E1E]">
+                                        {{ mod.fullname }}
+                                    </div>
+                                    {% if mod.company %}
+                                    <div class="font-['Roboto'] text-[11px] text-[#6C6C6F]">{{ mod.company }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            {# Read more #}
+                            <button type="button" class="mt-auto h-[36px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]
+                               hover:bg-[#056b36] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0ea36a]"
+                                @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
+                                :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
+                                {{ t('btn.read_more') }}
+                            </button>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {# Fallback Read more when no sponsor/moderator side panel #}
+                    {% if not top_sponsor and not mod %}
+                    <div class="flex items-end shrink-0">
                         <button type="button" class="h-[36px] px-5 rounded-[10px] bg-[#007A3D] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]
-                           hover:bg-[#056b36] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0ea36a] self-end"
+                           hover:bg-[#056b36] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0ea36a]"
                             @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
                             :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
                             {{ t('btn.read_more') }}
                         </button>
                     </div>
+                    {% endif %}
                 </div>
-            </header>
+            </div>
         </div>
         {# =================== END DESKTOP COLLAPSED =================== #}
 
