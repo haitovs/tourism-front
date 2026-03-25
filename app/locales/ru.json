@@ -267,5 +267,6 @@
     "terms.hero.subtitle": "Правила использования нашего сайта и сервисов.",
     "terms.empty.title": "Условия использования",
     "terms.empty.subtitle": "Условия использования пока недоступны.",
-    "participants.filters.gov": "Государственные"
+    "participants.filters.gov": "Государственные",
+    "participants.load_more": "Показать ещё"
 }
