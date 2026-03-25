@@ -185,7 +185,7 @@ async def list_participants(
 
     rows = await _get_all_participants(req)
 
-    if role_norm in {"expo", "forum", "both"}:
+    if role_norm in {"expo", "forum", "both", "gov"}:
 
         def _role_match(rv: Optional[str]) -> bool:
             if not rv:
@@ -197,6 +197,8 @@ async def list_participants(
                 return rv in {"expo", "both"}
             if role_norm == "forum":
                 return rv in {"forum", "both"}
+            if role_norm == "gov":
+                return rv == "gov"
             return False
 
         rows = [r for r in rows if _role_match(r.get("role"))]

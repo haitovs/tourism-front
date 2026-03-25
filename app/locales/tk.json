@@ -25,7 +25,6 @@
     "nav.faq": "Sorag-jogap",
     "btn.read_more": "Giňişleýin",
     "btn.view_all": "Hemmesini gör",
-
     "footer.contact": "Aragatnaşyk",
     "footer.follow_us": "Bizi yzarlaň",
     "footer.rights": "© Ähli hukuklar goralan.",
@@ -40,17 +39,14 @@
     "footer.rights_year": "2025 — ähli hukuklar goralan",
     "footer.powered_by": "Döreden",
     "footer.register": "Hasaba al",
-
     "hero.section": "Bölüm",
     "hero.go_home": "Baş sahypa geç",
     "hero.refresh": "Täzele",
-
     "agenda.title": "Gün tertibi",
     "agenda.hero_subtitle": "Türkmen-Hytaý iş forumynyň we sergisiniň doly maksatnamasyny gözden geçiriň: sessiýalar, duşuşyklar we hyzmatdaşlyk üçin hyzmatdaşlyk çäreleri.",
     "agenda.program": "Meýilnama",
     "agenda.none": "Meýilnama ýok.",
     "agenda.no_sessions": "Bu günde sessiýa ýok.",
-
     "weekday.monday": "Duşenbe",
     "weekday.tuesday": "Sişenbe",
     "weekday.wednesday": "Çarşenbe",
@@ -58,16 +54,13 @@
     "weekday.friday": "Anna",
     "weekday.saturday": "Şenbe",
     "weekday.sunday": "Ýekşenbe",
-
     "common.read_more": "Giňişleýin",
     "common.hide": "Gizle",
-
     "agenda.sponsors": "Sponsorlar",
     "agenda.moderator": "Moderator",
     "agenda.topic": "Mowzuk",
     "agenda.speakers": "Çykyşçylar",
     "agenda.speakers_carousel": "Çykyşçylar karuseli",
-
     "sponsor.unknown": "Sponsor",
     "sponsor.tier.general": "Sponsor",
     "sponsor.tier.gold": "Altyn sponsor",
@@ -76,9 +69,7 @@
     "sponsor.tier.platinum": "Platina sponsor",
     "sponsor.tier.diamond": "Almaz sponsor",
     "sponsor.tier.premier": "Baş sponsor",
-
     "agenda.no_speakers": "Çykyşçylar entek ýok.",
-
     "index.about.band": "Çäre hakda",
     "index.about.title": "Halkara sergi we forum",
     "index.about.forum.heading": "Forum barada",
@@ -91,12 +82,10 @@
     "index.about.video_alt": "Çäre syn",
     "index.about.video_play_aria": "Wideo aç",
     "index.about.video_play_alt": "Oýnat",
-
     "index.sectors.band": "Sergi bölümleri",
     "index.sectors.title": "Ösüş üçin esasy ugurlar",
     "index.sectors.more_info": "Has köp maglumat",
     "index.sectors.more_details": "Jikme-jik",
-
     "index.faq.band": "Sorag-jogap",
     "index.faq.title": "Sorag barmy? Jogap bar",
     "index.faq.search_placeholder": "Gözleg...",
@@ -104,50 +93,39 @@
     "index.faq.center.body": "Biz jogap bereris.",
     "index.faq.no_results.1": "Netije tapylmady:",
     "index.faq.no_results.2": "Beýlekini synap görüň.",
-
     "index.hero.title_line1": "Türkmen–Hytaý işewürlik",
     "index.hero.title_line2": "forumy we sergisi 2026",
     "index.hero.subtitle": "Türkmenistanyň we Hytaýyň wekilleri üçin döredilen, ikitaraplaýyn söwdany, maýa goýumlary we durnukly hyzmatdaşlyk gatnaşyklaryny ösdürmäge gönükdirilen işewür platforma.",
-
     "index.news.band": "Habarlar",
     "index.news.title": "Günlük habarlar",
     "index.news.read_more": "Giňişleýin",
     "index.news.more_details": "Jikme-jik",
     "index.news.none": "Habar ýok",
-
     "index.organizers.band": "Guramaçylar",
     "index.organizers.title": "Aşakdaky gurama tarapyndan:",
     "index.organizers.none": "Guramaçy ýok",
-
     "index.partners.band": "Hyzmatdaşlar",
     "index.partners.title": "Resmi hyzmatdaşlar",
     "index.partners.none": "Hyzmatdaş ýok",
-
     "index.speakers.band": "Çykyşçylar",
     "index.speakers.title": "Hormatly çykyşçylar",
     "index.speakers.more_details": "Jikme-jik",
     "index.speakers.none": "Entek ýok.",
     "index.speakers.person_alt": "Çykyşçy",
-
     "index.sponsors.ribbon": "Sponsorlar",
     "index.sponsors.title": "Sponsorlarymyza minnetdarlyk bildirýäris",
-
     "sponsors.carousel.empty": "Sponsor ýok",
     "sponsors.common.sponsor": "Sponsor",
     "sponsors.common.opens_new_tab": "(täze depderçede açylýar)",
-
     "sponsors.top.empty": "Ýokary derejeli sponsor ýok",
-
     "home.sponsors.title_mini": "Sponsorlar",
     "home.sponsors.title_main": "Sponsorlarymyza minnetdar",
-
     "home.stats.title_mini": "Statistika",
     "home.stats.title_main": "Forumuň esasy sanlary",
     "home.stats.sessions": "Sessiyalar",
     "home.stats.delegates": "Wekiller",
     "home.stats.speakers": "Çykyşçylar",
     "home.stats.companies": "Kompaniýalar",
-
     "home.timer.title_mini": "Sanaýyş",
     "home.timer.title_main": "Forum başyna sanaýyş",
     "home.timer.default_event": "Halkara Türkmenistan–Hytaý forum we sergi",
@@ -157,13 +135,11 @@
     "home.timer.seconds": "Sekunt",
     "home.timer.remaining": "Galany",
     "home.timer.deadline": "Soňky möhlet",
-
     "news.category_default": "Habarlar",
     "news.read_more": "Giňişleýin",
     "news.pager.previous": "Öňki",
     "news.pager.next": "Indiki",
     "news.pager.aria": "Sahypalaşma",
-
     "pager.aria": "Sahypalaşma",
     "pager.previous": "Öňki",
     "pager.next": "Indiki",
@@ -200,7 +176,6 @@
     "about_expo.cta.exhibitor_title": "Sergä gatnaşyjy boluň",
     "about_expo.cta.exhibitor_text": "Islendik görnüşi saýlaň — kiçi stendlerden başlap, ullakan pawilýonlara çenli. Resmi sergi bolsun, önümi demonstrasiýa etmek bolsun ýa-da döredijilikçe aktiwleşdirme bolsun, maksatlaryňyza laýyk çeýe formatlary we zerur goldawy üpjün edýäris.",
     "about_expo.cta.participate_btn": "Gatnaşmak",
-
     "about_forum.hero.title": "Türkmen–Hytaý işewürlik forumy we sergisi 2026",
     "about_forum.hero.subtitle": "Durnukly ösüş üçin strategik hyzmatdaşlygy berkitmek",
     "about_forum.intro.title": "Türkmenistanyň Halkara işewürlik forumy",
@@ -221,13 +196,11 @@
     "about_forum.numbers.expected_attendance_value": "54+",
     "about_forum.numbers.exhibiting_companies": "Sessiyalar",
     "about_forum.numbers.exhibiting_companies_value": "6",
-
     "sectors.detail.hero.section_fallback": "Bölüm",
     "sectors.detail.hero.section_label": "Sergi bölümleri",
     "sectors.detail.hero.detail_label": "Bölüm jikme-jigi",
     "sectors.detail.key_professions": "Esasy kärler",
     "sectors.detail.types": "Görnüşler",
-
     "sectors.list.hero.title": "Sergi bölümleri",
     "sectors.list.hero.subtitle": "Ösüşe we hyzmatdaşlyga itergi berýän ugurlar",
     "sectors.list.hero.section_label": "Sergi bölümleri",
@@ -235,13 +208,10 @@
     "sectors.list.card.coming_soon": "Jikme-jikler ýakynda.",
     "sectors.list.card.open_title": "Aç",
     "sectors.list.empty": "Bölümler entek ýok.",
-
     "faq.hero.title": "Sorag-jogap",
     "faq.hero.subtitle": "Çäre boýunça ýygy soraglara jogaplar.",
     "faq.hero.section_label": "Sorag-jogap",
-
     "news.common.section_label": "Habarlar",
-
     "news.common.category_default": "Habarlar",
     "news.detail.hero.title": "Habar jikme-jigi",
     "news.detail.hero.subtitle": "Täzelikler, bildirişler, myhmanlar barada habardar boluň.",
@@ -249,7 +219,6 @@
     "news.detail.not_found": "Habar tapylmady.",
     "news.detail.daily_tag": "GÜNLÜK",
     "common.details_coming_soon": "Jikme-jikler ýakynda.",
-
     "news.list.hero.title": "Habarlar",
     "news.list.hero.subtitle": "Täzelikler we bildirişlerden habardar boluň.",
     "news.list.search.aria": "Habar gözlegi",
@@ -257,7 +226,6 @@
     "news.list.search.placeholder": "Gözleg ...",
     "news.list.search.btn_aria": "Gözleg",
     "news.list.empty": "Habar tapylmady.",
-
     "official.section_label": "Resmi goldaw",
     "official.hero.title": "Resmi goldaw",
     "official.hero.subtitle": "Döwlet we işewür wekiller tarapyndan",
@@ -267,9 +235,7 @@
     "official.body.p3": "Gelejek şu günüň mümkinçiliklerini ulanmakda. Tehnologiýa, bilim we döredijilik — durnukly ösüşe ýol.",
     "official.sign.left.name": "Merdan Atayev",
     "official.sign.right.name": "Merdan Atayev",
-
     "participant.detail.breadcrumb": "Gatnaşyjy jikme-jigi",
-
     "participants.section_label": "Gatnaşyjylar",
     "participants.hero.title": "Gatnaşyjylar",
     "participants.hero.subtitle": "Forum we serginiň esasy gatnaşyjylary",
@@ -282,27 +248,24 @@
     "participants.card.more_info": "Giňişleýin",
     "participants.card.open_title_prefix": "Aç",
     "participants.none": "Gatnaşyjy entek ýok.",
-
     "privacy.section_label": "Gizlinlik syýasaty",
     "privacy.hero.title": "Gizlinlik syýasaty",
     "privacy.hero.subtitle": "Maglumat nädip ýygnalýar, ulanylýar, goralýar.",
     "privacy.empty.title": "Gizlinlik syýasaty",
     "privacy.empty.subtitle": "Entek çap edilmedi. Soňabaka barlaň.",
-
     "speaker.detail.breadcrumb": "Çykyşçy jikme-jigi",
     "speaker.card.label": "ÇYKYŞÇY",
     "speaker.bio.missing": "Bio ýakynda. Geçmişi, üstünlikleri we sessiýa temasy giriziler.",
-
     "speakers.section_label": "Ähli çykyşçylar",
     "speakers.hero.title": "Abadan çykyşçylar",
     "speakers.hero.subtitle": "Liderler, innowatorlar, bilermenler",
     "speakers.search.placeholder": "Gözleg ...",
     "speakers.search.aria": "Çykyşçy gözlegi",
     "speakers.none": "Entek ýok.",
-
     "terms.section_label": "Ulanyş düzgünleri",
     "terms.hero.title": "Ulanyş düzgünleri",
     "terms.hero.subtitle": "Saýty we hyzmatlary ulanmagyň düzgünleri.",
     "terms.empty.title": "Ulanyş düzgünleri",
-    "terms.empty.subtitle": "Entek elýeterli däl."
+    "terms.empty.subtitle": "Entek elýeterli däl.",
+    "participants.filters.gov": "Döwlet"
 }

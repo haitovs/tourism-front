@@ -25,7 +25,6 @@
     "nav.faq": "Частые вопросы",
     "btn.read_more": "Подробнее",
     "btn.view_all": "Показать все",
-
     "footer.contact": "Контакты",
     "footer.follow_us": "Мы в соцсетях",
     "footer.rights": "© Все права защищены.",
@@ -40,17 +39,14 @@
     "footer.rights_year": "Все права защищены 2025",
     "footer.powered_by": "Разработано",
     "footer.register": "Зарегистрироваться",
-
     "hero.section": "Раздел",
     "hero.go_home": "На главную",
     "hero.refresh": "Обновить",
-
     "agenda.title": "Повестка",
     "agenda.hero_subtitle": "Изучите полную программу Туркмено-Китайского бизнес-форума и выставки: сессии, встречи и мероприятия для нетворкинга и сотрудничества.",
     "agenda.program": "Программа",
     "agenda.none": "Повестки пока нет.",
     "agenda.no_sessions": "Для этого дня пока нет сессий.",
-
     "weekday.monday": "Понедельник",
     "weekday.tuesday": "Вторник",
     "weekday.wednesday": "Среда",
@@ -58,16 +54,13 @@
     "weekday.friday": "Пятница",
     "weekday.saturday": "Суббота",
     "weekday.sunday": "Воскресенье",
-
     "common.read_more": "Подробнее",
     "common.hide": "Скрыть",
-
     "agenda.sponsors": "Спонсоры",
     "agenda.moderator": "Модератор",
     "agenda.topic": "Тема",
     "agenda.speakers": "Спикеры",
     "agenda.speakers_carousel": "Карусель спикеров",
-
     "sponsor.unknown": "Спонсор",
     "sponsor.tier.general": "Спонсор",
     "sponsor.tier.gold": "Золотой спонсор",
@@ -76,9 +69,7 @@
     "sponsor.tier.platinum": "Платиновый спонсор",
     "sponsor.tier.diamond": "Бриллиантовый спонсор",
     "sponsor.tier.premier": "Главный спонсор",
-
     "agenda.no_speakers": "Спикеры пока не добавлены.",
-
     "index.about.band": "О событии",
     "index.about.title": "Международная выставка и форум",
     "index.about.forum.heading": "О форуме",
@@ -91,12 +82,10 @@
     "index.about.video_alt": "Превью события",
     "index.about.video_play_aria": "Воспроизвести видео",
     "index.about.video_play_alt": "Воспроизвести",
-
     "index.sectors.band": "Секторы Экспо",
     "index.sectors.title": "Стратегические экономические сектора для развития",
     "index.sectors.more_info": "Больше информации",
     "index.sectors.more_details": "Подробнее",
-
     "index.faq.band": "Частые вопросы",
     "index.faq.title": "Есть вопросы? У нас есть ответы",
     "index.faq.search_placeholder": "Поиск...",
@@ -104,50 +93,39 @@
     "index.faq.center.body": "Позвольте нам ответить на них.",
     "index.faq.no_results.1": "Нет результатов по",
     "index.faq.no_results.2": "Попробуйте другой запрос.",
-
     "index.hero.title_line1": "Туркмено-китайский бизнес форум",
     "index.hero.title_line2": "и выставка 2026 года",
     "index.hero.subtitle": "Деловая платформа для представителей Туркменистана и Китая, направленная на развитие двусторонней торговли, инвестиций и устойчивого партнёрства.",
-
     "index.news.band": "Новости",
     "index.news.title": "Ежедневные новости",
     "index.news.read_more": "Подробнее",
     "index.news.more_details": "Подробнее",
     "index.news.none": "Новостей пока нет",
-
     "index.organizers.band": "Организаторы",
     "index.organizers.title": "Представлено следующей организацией:",
     "index.organizers.none": "Организаторы пока не добавлены",
-
     "index.partners.band": "Партнёры",
     "index.partners.title": "Наши официальные партнёры",
     "index.partners.none": "Партнёры пока не добавлены",
-
     "index.speakers.band": "Спикеры",
     "index.speakers.title": "Наши уважаемые спикеры",
     "index.speakers.more_details": "Подробнее",
     "index.speakers.none": "Спикеры пока не добавлены.",
     "index.speakers.person_alt": "Спикер",
-
     "index.sponsors.ribbon": "Спонсоры",
     "index.sponsors.title": "С благодарностью нашим спонсорам",
-
     "sponsors.carousel.empty": "Спонсоры пока не добавлены",
     "sponsors.common.sponsor": "Спонсор",
     "sponsors.common.opens_new_tab": "(открывается в новой вкладке)",
-
     "sponsors.top.empty": "Топ-спонсоры пока не добавлены",
-
     "home.sponsors.title_mini": "Спонсоры",
     "home.sponsors.title_main": "С благодарностью нашим спонсорам",
-
     "home.stats.title_mini": "Статистика",
     "home.stats.title_main": "Ключевые показатели нашего форума",
     "home.stats.sessions": "Сессии",
     "home.stats.delegates": "Делегаты",
     "home.stats.speakers": "Спикеры",
     "home.stats.companies": "Компании",
-
     "home.timer.title_mini": "Таймер",
     "home.timer.title_main": "Обратный отсчёт до официального старта форума",
     "home.timer.default_event": "Международный Туркменистан–Китайский форум и выставка",
@@ -157,13 +135,11 @@
     "home.timer.seconds": "Секунды",
     "home.timer.remaining": "Осталось",
     "home.timer.deadline": "Крайний срок",
-
     "news.category_default": "Новости",
     "news.read_more": "Подробнее",
     "news.pager.previous": "Предыдущая",
     "news.pager.next": "Следующая",
     "news.pager.aria": "Навигация по страницам",
-
     "pager.aria": "Навигация по страницам",
     "pager.previous": "Предыдущая",
     "pager.next": "Следующая",
@@ -200,7 +176,6 @@
     "about_expo.cta.exhibitor_title": "Стать экспонентом",
     "about_expo.cta.exhibitor_text": "Выберите любой формат — от компактных стендов до крупных павильонов. Будь то официальная экспозиция, продуктовая демонстрация или креативная активация, мы предложим гибкие форматы и сопровождение в соответствии с вашими целями.",
     "about_expo.cta.participate_btn": "Принять участие",
-
     "about_forum.hero.title": "Туркмено-китайский бизнес-форум и выставка 2026",
     "about_forum.hero.subtitle": "Укрепление стратегического партнёрства ради устойчивого развития",
     "about_forum.intro.title": "Международный бизнес-форум Туркменистана",
@@ -221,13 +196,11 @@
     "about_forum.numbers.expected_attendance_value": "54+",
     "about_forum.numbers.exhibiting_companies": "Сессии",
     "about_forum.numbers.exhibiting_companies_value": "6",
-
     "sectors.detail.hero.section_fallback": "Сектор",
     "sectors.detail.hero.section_label": "Секторы Экспо",
     "sectors.detail.hero.detail_label": "Детали сектора",
     "sectors.detail.key_professions": "Ключевые профессии",
     "sectors.detail.types": "Типы",
-
     "sectors.list.hero.title": "Секторы Экспо",
     "sectors.list.hero.subtitle": "Откройте для себя сектора, движущие рост и сотрудничество",
     "sectors.list.hero.section_label": "Секторы Экспо",
@@ -235,13 +208,10 @@
     "sectors.list.card.coming_soon": "Скоро будет доступна дополнительная информация.",
     "sectors.list.card.open_title": "Открыть",
     "sectors.list.empty": "Секторы пока не опубликованы.",
-
     "faq.hero.title": "Частые вопросы",
     "faq.hero.subtitle": "Ответы на самые распространённые вопросы о событии.",
     "faq.hero.section_label": "Частые вопросы",
-
     "news.common.section_label": "Новости",
-
     "news.common.category_default": "Новости",
     "news.detail.hero.title": "Подробности новости",
     "news.detail.hero.subtitle": "Будьте в курсе последних объявлений, подведений итогов и новостей о гостях.",
@@ -249,7 +219,6 @@
     "news.detail.not_found": "Новость не найдена.",
     "news.detail.daily_tag": "ЕЖЕДНЕВНО",
     "common.details_coming_soon": "Подробности скоро появятся.",
-
     "news.list.hero.title": "Новости",
     "news.list.hero.subtitle": "Будьте в курсе последних объявлений, подведений итогов и новостей о гостях.",
     "news.list.search.aria": "Поиск по новостям",
@@ -257,7 +226,6 @@
     "news.list.search.placeholder": "Поиск ...",
     "news.list.search.btn_aria": "Поиск",
     "news.list.empty": "Новости не найдены.",
-
     "official.section_label": "Официальная поддержка",
     "official.hero.title": "Официальная поддержка",
     "official.hero.subtitle": "При поддержке государственных и деловых представителей",
@@ -267,9 +235,7 @@
     "official.body.p3": "Будущее зависит от того, как мы используем возможности настоящего. Осваивая технологии, инвестируя в образование и поощряя творчество, мы формируем устойчивое развитие и долгосрочный успех. Каждый шаг вперёд, каким бы малым он ни был, приближает к светлому завтрашнему дню.",
     "official.sign.left.name": "Merdan Atayev",
     "official.sign.right.name": "Merdan Atayev",
-
     "participant.detail.breadcrumb": "Детали участника",
-
     "participants.section_label": "Участники",
     "participants.hero.title": "Участники",
     "participants.hero.subtitle": "Изучите ключевых участников Форума и Экспо",
@@ -282,27 +248,24 @@
     "participants.card.more_info": "Больше информации",
     "participants.card.open_title_prefix": "Открыть",
     "participants.none": "Участники пока не опубликованы.",
-
     "privacy.section_label": "Политика конфиденциальности",
     "privacy.hero.title": "Политика конфиденциальности",
     "privacy.hero.subtitle": "Как мы собираем, используем и защищаем ваши данные.",
     "privacy.empty.title": "Политика конфиденциальности",
     "privacy.empty.subtitle": "Политика конфиденциальности пока не опубликована. Пожалуйста, зайдите позже.",
-
     "speaker.detail.breadcrumb": "Детали спикера",
     "speaker.card.label": "СПИКЕР",
     "speaker.bio.missing": "Биография скоро появится. Здесь будут представлены опыт спикера, ключевые достижения и основные темы выступления. Следите за обновлениями.",
-
     "speakers.section_label": "Все спикеры",
     "speakers.hero.title": "Выдающиеся спикеры",
     "speakers.hero.subtitle": "Лидеры, новаторы и эксперты отрасли",
     "speakers.search.placeholder": "Поиск ...",
     "speakers.search.aria": "Поиск спикеров",
     "speakers.none": "Спикеры пока не добавлены.",
-
     "terms.section_label": "Условия использования",
     "terms.hero.title": "Условия использования",
     "terms.hero.subtitle": "Правила использования нашего сайта и сервисов.",
     "terms.empty.title": "Условия использования",
-    "terms.empty.subtitle": "Условия использования пока недоступны."
+    "terms.empty.subtitle": "Условия использования пока недоступны.",
+    "participants.filters.gov": "Государственные"
 }

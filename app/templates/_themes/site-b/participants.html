@@ -55,6 +55,14 @@
                 {% endif %}">
                 {{ t('siteb.participants.filters.forum') }}
             </a>
+            <a href="/participants?role=gov" class="px-6 py-3 rounded-lg border-2 text-[18px] md:text-[20px] font-['Roboto'] font-semibold transition
+                {% if role == 'gov' %}
+                    bg-[rgba(32,48,108,0.12)] border-[#20306C] text-[#20306C]
+                {% else %}
+                    bg-white border-[#20306C] text-[#6E78A8] hover:text-[#20306C]
+                {% endif %}">
+                {{ t('siteb.participants.filters.gov') }}
+            </a>
         </div>
 
         <!-- Search box -->

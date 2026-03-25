@@ -25,7 +25,6 @@
     "nav.faq": "FAQ",
     "btn.read_more": "Read more",
     "btn.view_all": "View all",
-
     "footer.contact": "Contact",
     "footer.follow_us": "Follow us",
     "footer.rights": "© All rights reserved.",
@@ -40,17 +39,14 @@
     "footer.rights_year": "All rights reserved 2025",
     "footer.powered_by": "Powered by",
     "footer.register": "Register",
-
     "hero.section": "Section",
     "hero.go_home": "Go to homepage",
     "hero.refresh": "Refresh",
-
     "agenda.title": "Agenda",
     "agenda.hero_subtitle": "Explore the full program of the Turkmen–China Business Forum & Expo, featuring sessions, meetings, and events for networking and collaboration.",
     "agenda.program": "Program",
     "agenda.none": "No agenda yet.",
     "agenda.no_sessions": "No sessions for this day yet.",
-
     "weekday.monday": "Monday",
     "weekday.tuesday": "Tuesday",
     "weekday.wednesday": "Wednesday",
@@ -58,16 +54,13 @@
     "weekday.friday": "Friday",
     "weekday.saturday": "Saturday",
     "weekday.sunday": "Sunday",
-
     "common.read_more": "Read more",
     "common.hide": "Hide",
-
     "agenda.sponsors": "Sponsors",
     "agenda.moderator": "Moderator",
     "agenda.topic": "Topic",
     "agenda.speakers": "Speakers",
     "agenda.speakers_carousel": "Speakers carousel",
-
     "sponsor.unknown": "Sponsor",
     "sponsor.tier.general": "Sponsor",
     "sponsor.tier.gold": "Gold Sponsor",
@@ -76,9 +69,7 @@
     "sponsor.tier.platinum": "Platinum Sponsor",
     "sponsor.tier.diamond": "Diamond Sponsor",
     "sponsor.tier.premier": "Premier Sponsor",
-
     "agenda.no_speakers": "No speakers yet.",
-
     "index.about.band": "About the Event",
     "index.about.title": "International Expo & Forum",
     "index.about.forum.heading": "About the Forum",
@@ -91,12 +82,10 @@
     "index.about.video_alt": "Event preview",
     "index.about.video_play_aria": "Play video",
     "index.about.video_play_alt": "Play",
-
     "index.sectors.band": "Expo Sectors",
     "index.sectors.title": "Strategic Economic Sectors for Development",
     "index.sectors.more_info": "More information",
     "index.sectors.more_details": "More details",
-
     "index.faq.band": "FAQ",
     "index.faq.title": "Have Questions? We’ve Got Answers",
     "index.faq.search_placeholder": "Search...",
@@ -104,51 +93,40 @@
     "index.faq.center.body": "Let us answer the questions for you.",
     "index.faq.no_results.1": "No results for",
     "index.faq.no_results.2": "Try a different query.",
-
     "index.hero.title_line1": "Turkmen-China Business",
     "index.hero.title_line2": "Forum & Expo 2026",
     "index.hero.subtitle": "A business platform for representatives of Turkmenistan and China aimed at developing bilateral trade, investment, and sustainable partnerships.",
-
     "index.news.band": "News",
     "index.news.title": "Daily news",
     "index.news.read_more": "Read more",
     "index.news.more_details": "More details",
     "index.news.none": "No news yet",
-
     "index.organizers.band": "Organizers",
     "index.organizers.title": "Presented by the following organization:",
     "index.organizers.none": "No organizers added yet",
-
     "index.partners.band": "Partners",
     "index.partners.title": "Our official partners",
     "index.partners.none": "No partners added yet",
-
     "index.speakers.band": "Speakers",
     "index.speakers.title": "Our respected speakers",
     "index.speakers.body": "Discover knowledge and perspectives from prominent figures in their fields.",
     "index.speakers.more_details": "More details",
     "index.speakers.none": "No speakers yet.",
     "index.speakers.person_alt": "Speaker",
-
     "index.sponsors.ribbon": "Sponsors",
     "index.sponsors.title": "With Gratitude to Our Sponsors",
-
     "sponsors.carousel.empty": "No sponsors yet",
     "sponsors.common.sponsor": "Sponsor",
     "sponsors.common.opens_new_tab": "(opens in new tab)",
-
     "sponsors.top.empty": "No top sponsors yet",
-
     "home.sponsors.title_mini": "Sponsors",
     "home.sponsors.title_main": "With Gratitude to Our Sponsors",
-
     "home.stats.title_mini": "Statistics",
     "home.stats.title_main": "Key figures of our forum",
     "home.stats.sessions": "Sessions",
     "home.stats.delegates": "Delegates",
     "home.stats.speakers": "Speakers",
     "home.stats.companies": "Companies",
-
     "home.timer.title_mini": "Timer",
     "home.timer.title_main": "Countdown to the official start of the forum",
     "home.timer.default_event": "International Turkmenistan–China forum and exhibition",
@@ -158,17 +136,14 @@
     "home.timer.seconds": "Seconds",
     "home.timer.remaining": "The remaining",
     "home.timer.deadline": "Deadline",
-
     "news.category_default": "News",
     "news.read_more": "Read more",
     "news.pager.previous": "Previous",
     "news.pager.next": "Next",
     "news.pager.aria": "Pagination",
-
     "pager.aria": "Pagination",
     "pager.previous": "Previous",
     "pager.next": "Next",
-
     "about_expo.hero.title": "About the Expo",
     "about_expo.hero.subtitle": "Your guide to the International Turkmen–China Exhibition: goals, format, and opportunities for participants.",
     "about_expo.intro.ribbon": "About the Event",
@@ -202,7 +177,6 @@
     "about_expo.cta.exhibitor_title": "Become an Exhibitor",
     "about_expo.cta.exhibitor_text": "Choose any setup — from compact stands to large pavilions. Whether it’s a formal showcase, a product demo, or a creative activation, we provide flexible formats and support to match your goals.",
     "about_expo.cta.participate_btn": "Participate",
-
     "about_forum.hero.title": "Turkmen-China Business Forum & Expo 2026 ",
     "about_forum.hero.subtitle": "Strengthening strategic partnership for sustainable development",
     "about_forum.intro.title": "Turkmenistan International Business Forum",
@@ -223,13 +197,11 @@
     "about_forum.numbers.expected_attendance_value": "54+",
     "about_forum.numbers.exhibiting_companies": "Sessions",
     "about_forum.numbers.exhibiting_companies_value": "6",
-
     "sectors.detail.hero.section_fallback": "Sector",
     "sectors.detail.hero.section_label": "Expo Sectors",
     "sectors.detail.hero.detail_label": "Sector Details",
     "sectors.detail.key_professions": "Key Professions",
     "sectors.detail.types": "Types",
-
     "sectors.list.hero.title": "Expo Sectors",
     "sectors.list.hero.subtitle": "Discover the sectors driving growth and cooperation",
     "sectors.list.hero.section_label": "Expo Sectors",
@@ -237,13 +209,10 @@
     "sectors.list.card.coming_soon": "More information coming soon.",
     "sectors.list.card.open_title": "Open",
     "sectors.list.empty": "No sectors have been published yet.",
-
     "faq.hero.title": "FAQ",
     "faq.hero.subtitle": "Answers to the most common questions about the event.",
     "faq.hero.section_label": "FAQ",
-
     "news.common.section_label": "News",
-
     "news.common.category_default": "News",
     "news.detail.hero.title": "News Details",
     "news.detail.hero.subtitle": "Stay up to date with the latest announcements, highlights, and guest updates.",
@@ -251,7 +220,6 @@
     "news.detail.not_found": "News item not found.",
     "news.detail.daily_tag": "DAILY",
     "common.details_coming_soon": "Details coming soon.",
-
     "news.list.hero.title": "News",
     "news.list.hero.subtitle": "Stay up to date with the latest announcements, highlights, and guest updates.",
     "news.list.search.aria": "Search news",
@@ -259,7 +227,6 @@
     "news.list.search.placeholder": "Search ...",
     "news.list.search.btn_aria": "Search",
     "news.list.empty": "No news found.",
-
     "official.section_label": "Official Support",
     "official.hero.title": "Official Support",
     "official.hero.subtitle": "Backed by official governmental and business representatives",
@@ -269,9 +236,7 @@
     "official.body.p3": "The future depends on how we use today’s opportunities. By embracing technology, investing in education, and encouraging creativity, we prepare for sustainable development and long-term success. Every step forward, no matter how small, contributes to shaping a brighter tomorrow.",
     "official.sign.left.name": "Merdan Atayev",
     "official.sign.right.name": "Merdan Atayev",
-
     "participant.detail.breadcrumb": "Participant Details",
-
     "participants.section_label": "Participants",
     "participants.hero.title": "Participants",
     "participants.hero.subtitle": "Explore the key participants of the Forum & Expo",
@@ -284,27 +249,24 @@
     "participants.card.more_info": "More information",
     "participants.card.open_title_prefix": "Open",
     "participants.none": "No participants have been published yet.",
-
     "privacy.section_label": "Privacy Policy",
     "privacy.hero.title": "Privacy Policy",
     "privacy.hero.subtitle": "How we collect, use, and protect your data.",
     "privacy.empty.title": "Privacy Policy",
     "privacy.empty.subtitle": "No privacy policy has been published yet. Please check back later.",
-
     "speaker.detail.breadcrumb": "Speaker Details",
     "speaker.card.label": "SPEAKER",
     "speaker.bio.missing": "Biography coming soon. This section will include the speaker’s background, notable achievements, and session highlights. Check back for updates.",
-
     "speakers.section_label": "All Speakers",
     "speakers.hero.title": "Distinguished Speakers",
     "speakers.hero.subtitle": "Leaders, innovators, and experts from across the industry",
     "speakers.search.placeholder": "Search ...",
     "speakers.search.aria": "Search speakers",
     "speakers.none": "No speakers yet.",
-
     "terms.section_label": "Terms of Use",
     "terms.hero.title": "Terms of Use",
     "terms.hero.subtitle": "Rules for using our site and services.",
     "terms.empty.title": "Terms of Use",
-    "terms.empty.subtitle": "No Terms of Use available."
+    "terms.empty.subtitle": "No Terms of Use available.",
+    "participants.filters.gov": "Government"
 }

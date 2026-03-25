@@ -177,7 +177,6 @@
     "siteb.title_3_content": "6000 +",
     "siteb.title_4_header": "Expected number of companies in 2026:",
     "siteb.title_4_content": "100 +",
-
     "siteb.about_expo.hero.title": "TurkmenTravel Expo & Forum 2026",
     "siteb.about_expo.hero.subtitle": "Your guide to the international turkmentravel 2026 exhibition:goals format opportunities for participants",
     "siteb.about_expo.intro.ribbon": "About the Event",
@@ -226,5 +225,6 @@
     "siteb.about_forum.body.p4": "Participation offers industry professionals a unique opportunity for high-level dialogue, establishing valuable new business contacts, securing investments, and defining the strategic outlook for sustainable tourism development in the region.",
     "siteb.agenda.title": "Agenda",
     "siteb.agenda.hero_subtitle": "Explore the full program of the TurkmenTravel Expo & Forum, featuring sessions, meetings, and events for networking and collaboration.",
-    "siteb.timer.deadline_month_upper": "April"
+    "siteb.timer.deadline_month_upper": "April",
+    "siteb.participants.filters.gov": "Government"
 }
