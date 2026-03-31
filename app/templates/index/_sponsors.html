@@ -1,11 +1,8 @@
 <!-- sponsors section -->
-{% set gold_items = (gold and 'items' in gold and gold['items']) or [] %}
-{% set silver_items = (silver and 'items' in silver and silver['items']) or [] %}
-{% set bronze_items = (bronze and 'items' in bronze and bronze['items']) or [] %}
+{% set top_items = sponsors_top_view.get("items", []) %}
+{% set remaining_items = gold.get("items", []) + silver.get("items", []) + bronze.get("items", []) %}
 
-<!-- sponsors section -->
 <section id="sponsors" class="max-w-[var(--container)] mx-auto px-4 py-14 space-y-8">
-    <!-- make header sit above any overlapping content -->
     <header class="relative z-[1] text-center isolation-isolate">
         <div class="flex items-center justify-center gap-4">
             <span class="hidden sm:block h-px w-[44px] sm:w-[50px] bg-[var(--c-primary)]"></span>
@@ -14,16 +11,31 @@
             </span>
             <span class="hidden sm:block h-px w-[44px] sm:w-[50px] bg-[var(--c-primary)]"></span>
         </div>
-        <h2
-            class="font-['Montserrat'] text-[clamp(22px,4vw,60px)] leading-[1.2] font-medium mt-2 text-center text-[#1E1E1E]">
+        <h2 class="font-['Montserrat'] text-[clamp(22px,4vw,60px)] leading-[1.2] font-medium mt-2 text-center text-[#1E1E1E]">
             {{t('index.sponsors.title')}}
         </h2>
     </header>
 
-    <!-- Top Sponsors -->
-    <div id="sponsors-top" class="relative z-0 flex justify-center mt-4">
-        {% include "index/_sponsors_top.html" with context %}
+    {% if top_items %}
+    <!-- Row 1: Top tier sponsors (premier/general) -->
+    <div style="display:flex; gap:16px; overflow-x:auto; padding:8px 0; justify-content:center; flex-wrap:nowrap;">
+        {% for sp in top_items %}
+        {% set href = sp.website|default('') %}
+        {% set logo = sp.logo_url or '/static/img/img_placeholder.png' %}
+        {% set name = sp.name|default('Sponsor') %}
+        <div style="flex:0 0 auto; width:220px;">
+            {% if href %}
+            <a href="{{ href }}" target="_blank" rel="noopener noreferrer" style="display:block; text-decoration:none;">
+            {% endif %}
+                <div style="background:#fff; border-radius:12px; box-shadow:0 1px 6px rgba(0,0,0,0.08); padding:16px; display:flex; align-items:center; justify-content:center; height:160px;">
+                    <img src="{{ logo }}" alt="{{ name }}" title="{{ name }}"
+                        style="max-width:180px; max-height:120px; object-fit:contain;" draggable="false" />
+                </div>
+            {% if href %}</a>{% endif %}
+        </div>
+        {% endfor %}
     </div>
+    {% endif %}
 
     <!-- separator -->
     <div class="flex items-center justify-center gap-4 sm:gap-6 my-6">
@@ -32,22 +44,24 @@
         <div class="hidden sm:block h-px w-[180px] sm:w-[260px] lg:w-[300px] bg-[#F2C75C]"></div>
     </div>
 
-    <!-- Tier carousels -->
-    <div class="relative z-0 space-y-5 sm:space-y-6">
-        {% if gold["items"]|length > 0 %}
-        <div id="carousel-gold" class="w-full">
-            {% with data=gold %}{% include "index/_sponsors_carousel.html" %}{% endwith %}
+    {% if remaining_items %}
+    <!-- Row 2: Remaining sponsors (gold/silver/bronze) as single scrolling row -->
+    <div style="display:flex; gap:16px; overflow-x:auto; padding:8px 0; justify-content:center; flex-wrap:nowrap;">
+        {% for sp in remaining_items %}
+        {% set href = sp.website|default('') %}
+        {% set logo = sp.logo_url or '/static/img/img_placeholder.png' %}
+        {% set name = sp.name|default('Sponsor') %}
+        <div style="flex:0 0 auto; width:180px;">
+            {% if href %}
+            <a href="{{ href }}" target="_blank" rel="noopener noreferrer" style="display:block; text-decoration:none;">
+            {% endif %}
+                <div style="background:#fff; border-radius:12px; box-shadow:0 1px 4px rgba(0,0,0,0.06); padding:12px; display:flex; align-items:center; justify-content:center; height:120px;">
+                    <img src="{{ logo }}" alt="{{ name }}" title="{{ name }}"
+                        style="max-width:150px; max-height:90px; object-fit:contain;" draggable="false" />
+                </div>
+            {% if href %}</a>{% endif %}
         </div>
-        {% endif %}
-        {% if silver["items"]|length > 0 %}
-        <div id="carousel-silver" class="w-full">
-            {% with data=silver %}{% include "index/_sponsors_carousel.html" %}{% endwith %}
-        </div>
-        {% endif %}
-        {% if bronze["items"]|length > 0 %}
-        <div id="carousel-bronze" class="w-full">
-            {% with data=bronze %}{% include "index/_sponsors_carousel.html" %}{% endwith %}
-        </div>
-        {% endif %}
+        {% endfor %}
     </div>
+    {% endif %}
 </section>
