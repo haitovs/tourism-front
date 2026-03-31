@@ -220,6 +220,8 @@
     "news.detail.not_found": "News item not found.",
     "news.detail.daily_tag": "DAILY",
     "common.details_coming_soon": "Details coming soon.",
+    "nav.coming_soon_badge": "Coming soon",
+    "nav.coming_soon_hint": "This section will be available soon.",
     "news.list.hero.title": "News",
     "news.list.hero.subtitle": "Stay up to date with the latest announcements, highlights, and guest updates.",
     "news.list.search.aria": "Search news",

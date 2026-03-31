@@ -222,3 +222,47 @@ button:hover .nav-caret {
         overflow: visible !important;
     } /* ensure dropdowns can escape */
 }
+
+/* === Coming Soon nav items === */
+.nav-coming-soon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: not-allowed;
+    opacity: 0.55;
+    pointer-events: none;
+    padding: 8px 12px;
+    white-space: nowrap;
+    border-radius: 8px;
+}
+.nav-coming-soon:hover {
+    background: none;
+    transform: none;
+}
+
+.nav-coming-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Mobile drawer coming soon */
+.detailbar-mobile-sub-link.nav-coming-soon,
+.detailbar-mobile-link.nav-coming-soon {
+    color: rgba(255, 255, 255, 0.45);
+    pointer-events: none;
+}
+.detailbar-mobile-sub-link.nav-coming-soon .nav-coming-badge,
+.detailbar-mobile-link.nav-coming-soon .nav-coming-badge {
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.7);
+}

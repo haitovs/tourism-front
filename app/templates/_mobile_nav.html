@@ -1,3 +1,19 @@
+{% set _coming_soon_m = ['/meeting-request', '/brochure', '/visa', '/hotel', '/flight'] %}
+{% macro mobile_link(href, label, cls='detailbar-mobile-sub-link') %}
+{% if href in _coming_soon_m %}
+<span class="{{ cls }} nav-coming-soon" aria-disabled="true" tabindex="-1"
+    title="{{ t('nav.coming_soon_hint') }}">
+    {{ label }}
+    <span class="nav-coming-badge">
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M17 11V7a5 5 0 00-10 0v4M5 11h14a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        {{ t('nav.coming_soon_badge') }}
+    </span>
+</span>
+{% else %}
+<a href="{{ href }}" @click="mobileOpen = false" class="{{ cls }}">{{ label }}</a>
+{% endif %}
+{% endmacro %}
+
 <!-- Global mobile navigation overlay -->
 <div class="detailbar-mobile-layer" role="dialog" aria-modal="true" aria-labelledby="detailbar-mobile-title"
     x-cloak :class="{ 'is-active': mobileOpen }" :aria-hidden="(!mobileOpen).toString()"
@@ -41,18 +57,14 @@
                     <a href="/speakers" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
                         {{ t('nav.speakers') }}
                     </a>
-                    <a href="/meeting-request" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
-                        {{ t('nav.meeting_request') }}
-                    </a>
+                    {{ mobile_link('/meeting-request', t('nav.meeting_request')) }}
                     <a href="/about-the-expo" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
                         {{ t('nav.about_expo') }}
                     </a>
                     <a href="/official-support" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
                         {{ t('nav.official_support') }}
                     </a>
-                    <a href="/brochure" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
-                        {{ t('nav.brochure') }}
-                    </a>
+                    {{ mobile_link('/brochure', t('nav.brochure')) }}
                 </div>
             </div>
 
@@ -100,15 +112,9 @@
                     </svg>
                 </button>
                 <div id="{{ travel_menu_id }}" class="detailbar-mobile-sub" x-show="open" x-collapse>
-                    <a href="/visa" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
-                        {{ t('nav.apply_visa') }}
-                    </a>
-                    <a href="/hotel" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
-                        {{ t('nav.book_hotel') }}
-                    </a>
-                    <a href="/flight" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
-                        {{ t('nav.book_flight') }}
-                    </a>
+                    {{ mobile_link('/visa', t('nav.apply_visa')) }}
+                    {{ mobile_link('/hotel', t('nav.book_hotel')) }}
+                    {{ mobile_link('/flight', t('nav.book_flight')) }}
                     <a href="/faq" @click="mobileOpen = false" class="detailbar-mobile-sub-link">
                         {{ t('nav.faq') }}
                     </a>

@@ -1,3 +1,19 @@
+{% set _footer_coming_soon = ['/meeting-request', '/brochure', '/visa', '/hotel', '/flight'] %}
+{% macro footer_link(href, label) %}
+{% if href in _footer_coming_soon %}
+<span class="opacity-60 cursor-not-allowed inline-flex items-center gap-1.5" aria-disabled="true"
+    title="{{ t('nav.coming_soon_hint') }}">
+    {{ label }}
+    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white/15 text-[10px] font-semibold uppercase tracking-wide text-white/75">
+        <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none"><path d="M17 11V7a5 5 0 00-10 0v4M5 11h14a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        {{ t('nav.coming_soon_badge') }}
+    </span>
+</span>
+{% else %}
+<a href="{{ href }}" class="hover:underline opacity-90 hover:opacity-100">{{ label }}</a>
+{% endif %}
+{% endmacro %}
+
 <footer class="bg-[#007A3D] text-[#F4F4F2] font-['Roboto']" x-data="{ wechatOpen: false }">
 
     <div class="mx-auto w-full max-w-[1440px] px-6 sm:px-8 py-12">

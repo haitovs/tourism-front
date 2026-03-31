@@ -125,6 +125,24 @@
 
     <!-- NavPill -->
     {% set p = _path %}
+    {% set _coming_soon = ['/meeting-request', '/brochure', '/visa', '/hotel', '/flight'] %}
+
+    {# Macro: render a nav link or a disabled "coming soon" span #}
+    {% macro nav_link(href, label, cls='menu-item') %}
+    {% if href in _coming_soon %}
+    <span class="{{ cls }} nav-coming-soon" aria-disabled="true" tabindex="-1"
+        title="{{ t('nav.coming_soon_hint') }}">
+        {{ label }}
+        <span class="nav-coming-badge">
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M17 11V7a5 5 0 00-10 0v4M5 11h14a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            {{ t('nav.coming_soon_badge') }}
+        </span>
+    </span>
+    {% else %}
+    <a href="{{ href }}" class="{{ cls }}">{{ label }}</a>
+    {% endif %}
+    {% endmacro %}
+
     <div class="pill-rail detailbar-pill-desktop">
         <nav class="navpill navpill--mask px-4 md:px-6">
             <ul class="flex flex-nowrap items-center gap-3 md:gap-6 overflow-x-auto no-scrollbar
@@ -155,8 +173,7 @@
                                 <div class="menu-subcard">
                                     <a href="/agenda" class="menu-items-item menu-subitem">{{ t('nav.agenda') }}</a>
                                     <a href="/speakers" class="menu-items-item menu-subitem">{{ t('nav.speakers') }}</a>
-                                    <a href="/meeting-request" class="menu-items-item menu-subitem">{{
-                                        t('nav.meeting_request') }}</a>
+                                    {{ nav_link('/meeting-request', t('nav.meeting_request'), 'menu-items-item menu-subitem') }}
                                 </div>
                             </div>
 
@@ -165,7 +182,7 @@
                             <hr class="menu-sep" />
                             <a href="/official-support" class="menu-item">{{ t('nav.official_support') }}</a>
                             <hr class="menu-sep" />
-                            <a href="/brochure" class="menu-item">{{ t('nav.brochure') }}</a>
+                            {{ nav_link('/brochure', t('nav.brochure')) }}
                         </div>
                     </div>
                 </li>
@@ -208,11 +225,11 @@
                     <div x-show="m" x-cloak x-transition class="menu-dd" @click.away="m=false"
                         @keydown.escape.window="m=false">
                         <div class="glass menu-panel">
-                            <a href="/visa" class="menu-item">{{ t('nav.apply_visa') }}</a>
+                            {{ nav_link('/visa', t('nav.apply_visa')) }}
                             <hr class="menu-sep" />
-                            <a href="/hotel" class="menu-item">{{ t('nav.book_hotel') }}</a>
+                            {{ nav_link('/hotel', t('nav.book_hotel')) }}
                             <hr class="menu-sep" />
-                            <a href="/flight" class="menu-item">{{ t('nav.book_flight') }}</a>
+                            {{ nav_link('/flight', t('nav.book_flight')) }}
                             <hr class="menu-sep" />
                             <a href="/faq" class="menu-item">{{ t('nav.faq') }}</a>
                         </div>

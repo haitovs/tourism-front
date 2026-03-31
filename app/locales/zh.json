@@ -219,6 +219,8 @@
     "news.detail.not_found": "未找到该新闻。",
     "news.detail.daily_tag": "每日",
     "common.details_coming_soon": "详情即将推出。",
+    "nav.coming_soon_badge": "即将推出",
+    "nav.coming_soon_hint": "此部分即将开放。",
     "news.list.hero.title": "新闻",
     "news.list.hero.subtitle": "及时了解最新公告、亮点与嘉宾动态。",
     "news.list.search.aria": "搜索新闻",

@@ -219,6 +219,8 @@
     "news.detail.not_found": "Habar tapylmady.",
     "news.detail.daily_tag": "GÜNLÜK",
     "common.details_coming_soon": "Jikme-jikler ýakynda.",
+    "nav.coming_soon_badge": "Ýakynda",
+    "nav.coming_soon_hint": "Bu bölek ýakynda elýeterli bolar.",
     "news.list.hero.title": "Habarlar",
     "news.list.hero.subtitle": "Täzelikler we bildirişlerden habardar boluň.",
     "news.list.search.aria": "Habar gözlegi",

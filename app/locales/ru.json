@@ -219,6 +219,8 @@
     "news.detail.not_found": "Новость не найдена.",
     "news.detail.daily_tag": "ЕЖЕДНЕВНО",
     "common.details_coming_soon": "Подробности скоро появятся.",
+    "nav.coming_soon_badge": "Скоро",
+    "nav.coming_soon_hint": "Этот раздел скоро будет доступен.",
     "news.list.hero.title": "Новости",
     "news.list.hero.subtitle": "Будьте в курсе последних объявлений, подведений итогов и новостей о гостях.",
     "news.list.search.aria": "Поиск по новостям",
