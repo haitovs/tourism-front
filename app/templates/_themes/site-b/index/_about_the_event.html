@@ -36,14 +36,13 @@
         <!-- RIGHT: Media (SiteB video) -->
         <aside class="sb-about__media">
             <video id="aboutVideo" src="/static/video/about_event.mp4" preload="metadata" muted playsinline
-                poster="{{ theme('img/index/about-event.png') }}"
-                style="width:100%; height:100%; object-fit:cover;"></video>
-            <div id="videoOverlay" style="position:absolute; inset:0; background:rgba(0,0,0,0.2);"></div>
+                poster="{{ theme('img/index/about-event.png') }}"></video>
+            <div id="videoOverlay" style="position:absolute; inset:0; background:rgba(0,0,0,0.15); z-index:1;"></div>
 
             <!-- Play button styled per Figma -->
-            <button type="button" class="sb-about__play" aria-label="{{ t('siteb.about.video_play_aria') }}"
+            <button type="button" class="sb-about__play" style="z-index:2;" aria-label="{{ t('siteb.about.video_play_aria') }}"
                 onclick="var v=document.getElementById('aboutVideo'); var o=document.getElementById('videoOverlay'); v.muted=false; v.controls=true; v.play(); this.style.display='none'; o.style.display='none';">
-                <!-- triangle made in CSS; container has 5px white border + 0 20 20 0 radius -->
+                <!-- triangle made in CSS -->
             </button>
         </aside>
 

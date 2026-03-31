@@ -1,4 +1,6 @@
-{# Site B sponsors section: single carousel for all sponsors #}
+{# Site B sponsors section: Row 1 = top tiers, Row 2 = rest as carousel #}
+{% set remaining_items = gold.get("items", []) + silver.get("items", []) + bronze.get("items", []) %}
+
 <section id="sponsors" class="sb-sponsors max-w-[var(--container)] mx-auto px-4 py-14 space-y-8">
     <!-- stacked header cards -->
     <header class="sb-sp-head relative isolation-isolate">
@@ -11,8 +13,16 @@
         </div>
     </header>
 
-    <!-- Single carousel for all sponsors -->
-    <div class="relative z-0">
-        {% with data=all_sponsors %}{% include themed('index/_sponsors_carousel.html') %}{% endwith %}
+    <!-- Row 1: Top sponsors (premier / general tiers) -->
+    <div id="sponsors-top" class="relative z-0 flex justify-center mt-4">
+        {% include themed('index/_sponsors_top.html') with context %}
     </div>
+
+    <!-- Row 2: Remaining sponsors (gold/silver/bronze) as single carousel -->
+    {% if remaining_items|length > 0 %}
+    <div class="relative z-0">
+        {% set remaining_data = {"items": remaining_items, "layout": "marquee", "count": remaining_items|length, "card_base_class": gold.get("card_base_class", ""), "card_interactive_suffix": gold.get("card_interactive_suffix", ""), "link_interactive_class": gold.get("link_interactive_class", "")} %}
+        {% with data=remaining_data %}{% include themed('index/_sponsors_carousel.html') %}{% endwith %}
+    </div>
+    {% endif %}
 </section>
