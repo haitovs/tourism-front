@@ -252,6 +252,22 @@ async def get_homepage_bundle(
     gold = await list_all_sponsors_by_tier(tier="gold", lang=lang, site_id=site_id)
     silver = await list_all_sponsors_by_tier(tier="silver", lang=lang, site_id=site_id)
     bronze = await list_all_sponsors_by_tier(tier="bronze", lang=lang, site_id=site_id)
+    # Combine all sponsors into one carousel dataset
+    all_items = (
+        sponsors_top_flat
+        + gold.get("items", [])
+        + silver.get("items", [])
+        + bronze.get("items", [])
+    )
+    all_sponsors = {
+        "items": all_items,
+        "layout": "marquee" if all_items else "empty",
+        "count": len(all_items),
+        "card_base_class": gold.get("card_base_class", ""),
+        "card_interactive_suffix": gold.get("card_interactive_suffix", ""),
+        "link_interactive_class": gold.get("link_interactive_class", ""),
+    }
+
     return {
         "sponsors_top": sponsors_top,
         "sponsors_top_flat": sponsors_top_flat,
@@ -259,5 +275,6 @@ async def get_homepage_bundle(
         "gold": gold,
         "silver": silver,
         "bronze": bronze,
+        "all_sponsors": all_sponsors,
     }
 
