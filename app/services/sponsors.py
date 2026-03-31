@@ -96,7 +96,7 @@ def _project(sp: Sponsor) -> dict:
         "id": sp.id,
         "name": sp.name,
         "website": _normalize_website(sp.website),
-        "logo_url": _resolve_logo_url(sp.logo),
+        "logo_url": _resolve_logo_url(sp.logo) or "/static/img/img_placeholder.png",
         "tier": tier_val,
         "tier_label": tier_label(tier_val),
         "tier_class": tier_css_class(tier_val),
@@ -216,11 +216,8 @@ async def list_all_sponsors_by_tier(
         layout = "empty"
         rows_layout: list[list[dict]] = []
         marquee_rows: list[list[dict]] = []
-    elif count <= 10:
-        layout = "rows"
-        rows_layout = [projected[:5], projected[5:10]]
-        marquee_rows = []
     else:
+        # Always use marquee (carousel) layout
         layout = "marquee"
         marquee_rows = [projected[0::2], projected[1::2]]
         rows_layout = []
