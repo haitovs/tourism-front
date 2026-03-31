@@ -254,7 +254,7 @@ async def get_homepage_bundle(
     bronze = await list_all_sponsors_by_tier(tier="bronze", lang=lang, site_id=site_id)
     # Combine all sponsors into one carousel dataset
     all_items = (
-        sponsors_top_flat
+        sponsors_top_flat.get("items", [])
         + gold.get("items", [])
         + silver.get("items", [])
         + bronze.get("items", [])
