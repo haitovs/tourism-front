@@ -1,8 +1,8 @@
-{# app/templates/_organizers.html (Site-B / single row) #}
+{# app/templates/_organizers.html (Site-B / single row marquee) #}
 {% set all = (data and data.get('items')) or [] %}
 {% set count = all|length %}
 
-<section id="organizers" class=" w-[min(1450px,92vw)] mx-auto py-16">
+<section id="organizers" class="w-[min(1450px,92vw)] mx-auto py-16">
     <!-- Heading + 20px green bar (rounded on the right) -->
     <header class="mb-8">
         <h2 class="font-['Roboto'] font-semibold text-[clamp(24px,3.5vw,40px)] leading-[1] text-[#1E1E1E]">
@@ -29,34 +29,32 @@
     {% if count == 0 %}
     <div class="text-center text-slate-500">{{ t('index.organizers.none') }}</div>
     {% else %}
-    <!-- Single-row marquee. Viewport clips horizontal overflow to avoid white space to the right -->
-    <div class="relative overflow-x-clip w-full">
-        <div class="marquee" data-marquee data-speed="60" data-min="1" data-respect-rm="false" style="--gap:1.25rem">
-            <div class="marquee__viewport overflow-x-hidden !overflow-y-visible">
-                <ul class="marquee__track">
-                    {% for p in all %}
-                    <li class="marquee__item">
-                        {% set raw = (p.website|default('')|trim) %}
-                        {% set href = raw %}
-                        {% if raw and not raw.startswith('http://') and not raw.startswith('https://') and not
-                        raw.startswith('mailto:') %}
-                        {% set href = 'https://' ~ raw.lstrip('/') %}
-                        {% endif %}
+    {# Marquee carousel — infinite scroll #}
+    <div class="marquee [--gap:1.25rem]" data-marquee data-speed="60" data-min="1" data-respect-rm="false">
+        <div class="marquee__viewport overflow-x-hidden !overflow-y-visible">
+            <ul class="marquee__track">
+                {% for p in all %}
+                <li class="marquee__item">
+                    {% set raw = (p.website|default('')|trim) %}
+                    {% set href = raw %}
+                    {% if raw and not raw.startswith('http://') and not raw.startswith('https://') and not
+                    raw.startswith('mailto:') %}
+                    {% set href = 'https://' ~ raw.lstrip('/') %}
+                    {% endif %}
 
-                        {% if href %}
-                        <a href="{{ href }}" target="_blank" rel="noopener noreferrer nofollow"
-                            class="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#20306C] focus-visible:ring-offset-2"
-                            aria-label="{{ p.name }}">
-                            {{ organizer_card(p) }}
-                        </a>
-                        {% else %}
+                    {% if href %}
+                    <a href="{{ href }}" target="_blank" rel="noopener noreferrer nofollow"
+                        class="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#20306C] focus-visible:ring-offset-2"
+                        aria-label="{{ p.name }}">
                         {{ organizer_card(p) }}
-                        {% endif %}
+                    </a>
+                    {% else %}
+                    {{ organizer_card(p) }}
+                    {% endif %}
 
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
     {% endif %}
