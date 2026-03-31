@@ -1,8 +1,8 @@
-{# Site B sponsors section: Row 1 = top tiers, Row 2 = rest as carousel #}
+{# Site B sponsors section: Row 1 = top tier, Row 2 = rest, both as scrolling carousels #}
+{% set top_items = sponsors_top_view.get("items", []) %}
 {% set remaining_items = gold.get("items", []) + silver.get("items", []) + bronze.get("items", []) %}
 
 <section id="sponsors" class="sb-sponsors max-w-[var(--container)] mx-auto px-4 py-14 space-y-8">
-    <!-- stacked header cards -->
     <header class="sb-sp-head relative isolation-isolate">
         <div class="sb-stack">
             <div class="sb-rect sb-rect--back"></div>
@@ -13,16 +13,59 @@
         </div>
     </header>
 
-    <!-- Row 1: Top sponsors (premier / general tiers) -->
-    <div id="sponsors-top" class="relative z-0 flex justify-center mt-4">
-        {% include themed('index/_sponsors_top.html') with context %}
+    {% if top_items %}
+    <!-- Row 1: Top tier sponsors (premier/general) -->
+    <div style="display:flex; gap:16px; overflow-x:auto; padding:8px 0; justify-content:center; flex-wrap:wrap;">
+        {% for sp in top_items %}
+        {% set href = sp.website|default('') %}
+        {% set logo = sp.logo_url or '/static/img/img_placeholder.png' %}
+        {% set name = sp.name|default('Sponsor') %}
+        <div style="flex:0 0 auto; width:220px;">
+            {% if href %}
+            <a href="{{ href }}" target="_blank" rel="noopener noreferrer" style="display:block; text-decoration:none;">
+            {% endif %}
+                <div style="background:#fff; border-radius:12px; box-shadow:0 1px 6px rgba(0,0,0,0.08); padding:16px; display:flex; align-items:center; justify-content:center; height:160px;">
+                    <img src="{{ logo }}" alt="{{ name }}" title="{{ name }}"
+                        style="max-width:180px; max-height:120px; object-fit:contain;" draggable="false" />
+                </div>
+            {% if href %}</a>{% endif %}
+            {% if sp.tier_label %}
+            <div style="text-align:center; margin-top:6px; font-size:13px; color:#666;">{{ sp.tier_label }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Divider -->
+    <div style="display:flex; align-items:center; justify-content:center; gap:16px; padding:8px 0;">
+        <div style="flex:1; max-width:300px; height:1px; background:linear-gradient(to right, transparent, #c9a94e);"></div>
+        <img src="/static/img/wheat-divider.svg" alt="" style="width:80px; height:30px; opacity:0.7;"
+            onerror="this.style.display='none'" />
+        <div style="flex:1; max-width:300px; height:1px; background:linear-gradient(to left, transparent, #c9a94e);"></div>
     </div>
 
-    <!-- Row 2: Remaining sponsors (gold/silver/bronze) as single carousel -->
-    {% if remaining_items|length > 0 %}
-    <div class="relative z-0">
-        {% set remaining_data = {"items": remaining_items, "layout": "marquee", "count": remaining_items|length, "card_base_class": gold.get("card_base_class", ""), "card_interactive_suffix": gold.get("card_interactive_suffix", ""), "link_interactive_class": gold.get("link_interactive_class", "")} %}
-        {% with data=remaining_data %}{% include themed('index/_sponsors_carousel.html') %}{% endwith %}
+    {% if remaining_items %}
+    <!-- Row 2: Remaining sponsors (gold/silver/bronze) -->
+    <div style="display:flex; gap:16px; overflow-x:auto; padding:8px 0; justify-content:center; flex-wrap:wrap;">
+        {% for sp in remaining_items %}
+        {% set href = sp.website|default('') %}
+        {% set logo = sp.logo_url or '/static/img/img_placeholder.png' %}
+        {% set name = sp.name|default('Sponsor') %}
+        <div style="flex:0 0 auto; width:180px;">
+            {% if href %}
+            <a href="{{ href }}" target="_blank" rel="noopener noreferrer" style="display:block; text-decoration:none;">
+            {% endif %}
+                <div style="background:#fff; border-radius:12px; box-shadow:0 1px 4px rgba(0,0,0,0.06); padding:12px; display:flex; align-items:center; justify-content:center; height:120px;">
+                    <img src="{{ logo }}" alt="{{ name }}" title="{{ name }}"
+                        style="max-width:150px; max-height:90px; object-fit:contain;" draggable="false" />
+                </div>
+            {% if href %}</a>{% endif %}
+            {% if sp.tier_label %}
+            <div style="text-align:center; margin-top:4px; font-size:12px; color:#888;">{{ sp.tier_label }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
     </div>
     {% endif %}
 </section>
