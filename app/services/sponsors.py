@@ -183,8 +183,6 @@ async def build_top_sponsors_view(
     layout: Literal["empty", "grid", "marquee"]
     if count == 0:
         layout = "empty"
-    elif count < max_items:
-        layout = "grid"
     else:
         layout = "marquee"
 
