@@ -195,7 +195,6 @@ async def list_speakers_page(
     start = (page - 1) * per_page
     end = start + per_page
     page_items = items[start:end]
-    projected = [_row_to_dict(r) for r in page_items]
-    payload = (projected, total_pages, total_items)
+    payload = (page_items, total_pages, total_items)
     _PAGE_CACHE.set(cache_key, payload)
     return payload
