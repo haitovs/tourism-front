@@ -18,7 +18,7 @@ router = APIRouter()
 async def speakers_page(req: Request, page: int = 1):
     lang = getattr(req.state, "lang", settings.DEFAULT_LANG)
     q = req.query_params.get("q") or ""
-    items, total_pages, total_items = await speakers_srv.list_speakers_page(req, page=page, per_page=10)
+    items, total_pages, total_items = await speakers_srv.list_speakers_page(req, page=page, per_page=8)
     ctx = {"request": req, "lang": lang, "settings": settings, "speakers": items, "current_page": page, "total_pages": total_pages, "total_items": total_items, "q": q}
     template_name = themed_name(req, "speakers.html")
     return templates.TemplateResponse(template_name, ctx)
