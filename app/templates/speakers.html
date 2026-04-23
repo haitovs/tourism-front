@@ -68,7 +68,7 @@
                                     </div>
                                     {% if sp.position or sp.company %}
                                     <div class="mt-1 text-[14px] leading-[18px] line-clamp-2 opacity-95">
-                                        {{ sp.position }}{% if sp.company %}, {{ sp.company }}{% endif %}
+                                        {{ sp.position_line }}
                                     </div>
                                     {% endif %}
                                 </div>
@@ -105,7 +105,7 @@
                                     </div>
                                     {% if sp.position or sp.company %}
                                     <div class="mt-1 text-[14px] lg:text-[16px] leading-snug line-clamp-2 opacity-95">
-                                        {{ sp.position }}{% if sp.company %}, {{ sp.company }}{% endif %}
+                                        {{ sp.position_line }}
                                     </div>
                                     {% endif %}
                                 </div>

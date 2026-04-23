@@ -107,7 +107,7 @@
                             {{ mdesc }}
                             {% else %}
                             {% if mod.position or mod.company %}
-                            {{ mod.position }}{% if mod.company %}, {{ mod.company }}{% endif %}
+                            {{ mod.position_line }}
                             {% endif %}
                             {% endif %}
                         </p>
@@ -144,7 +144,7 @@
                                 </div>
                                 <div
                                     class="font-['Roboto'] font-semibold text-[12px] leading-[16px] text-[#6C6C6F] truncate">
-                                    {{ sp.position }}{% if sp.company %}, {{ sp.company }}{% endif %}
+                                    {{ sp.position_line }}
                                 </div>
                             </div>
                         </li>

@@ -54,8 +54,8 @@ else (speakers_data['items'] if (speakers_data is defined and speakers_data and 
                                         {% set role = sp.position or '' %}
                                         {% set comp = sp.company or '' %}
                                         <p class="mt-2 font-['Lato'] font-semibold text-[16px] leading-[19px] text-black/90 line-clamp-2"
-                                            title="{{ role ~ (', ' if comp else '') ~ comp }}">
-                                            {{ role }}{% if comp %}, {{ comp }}{% endif %}
+                                            title="{{ sp.position_line or (role ~ (', ' if comp else '') ~ comp) }}">
+                                            {{ sp.position_line }}
                                         </p>
                                     </div>
                                 </article>

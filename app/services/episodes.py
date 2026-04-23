@@ -10,6 +10,7 @@ from app.core.http import abs_media, api_get
 from app.core.settings import settings
 from app.models.episode_model import Episode
 from app.services.agenda import list_days, list_episodes_for_day
+from app.services.text_utils import compose_position_line, is_blank_text
 
 # ---------------- utils ----------------
 
@@ -181,18 +182,24 @@ def _flatten_person_like(x: dict) -> dict:
     fullname = merged.get("fullname") or f"{(merged.get('name') or '').strip()} {(merged.get('surname') or '').strip()}".strip()
     photo_url = _resolve_media(merged.get("photo_url") or merged.get("photo"))
     desc_plain, desc_html = _coalesce_description_fields(merged)
+    if is_blank_text(desc_plain):
+        desc_plain = ""
+    if is_blank_text(desc_html):
+        desc_html = ""
     desc_norm = _strip_md(desc_plain or desc_html)
+    position = merged.get("position") or ""
+    company = merged.get("company") or ""
     return {
         "id": _as_int(merged.get("id")),
         "fullname": fullname or "",
-        "position": merged.get("position") or "",
-        "company": merged.get("company") or "",
+        "position": position,
+        "company": company,
+        "position_line": compose_position_line(position, company),
         "description": desc_plain,
         "description_html": desc_html,
         "description_norm": desc_norm,
         "photo_url": photo_url,
     }
-
 
 def _flatten_sponsor_like(x: dict) -> dict:
     if not isinstance(x, dict):

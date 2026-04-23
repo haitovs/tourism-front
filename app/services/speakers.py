@@ -7,6 +7,7 @@ from typing import Optional
 from fastapi import Request
 
 from app.core.http import abs_media, api_get
+from app.services.text_utils import compose_position_line, is_blank_text
 from app.utils.timed_cache import TimedCache
 
 
@@ -34,14 +35,20 @@ def _row_to_dict(row: dict) -> dict:
     surname = (row.get("surname") or "").strip()
     full_name_db = (row.get("full_name") or "").strip()
 
+    company = row.get("company") or ""
+    position = row.get("position") or ""
+    description = row.get("description") or ""
+    if is_blank_text(description):
+        description = ""
     return {
         "id": row.get("id"),
         "fullname": _display_full_name(first, surname, full_name_db),
         "name": first,
         "surname": surname,
-        "company": row.get("company") or "",
-        "position": row.get("position") or "",
-        "description": row.get("description") or "",
+        "company": company,
+        "position": position,
+        "position_line": compose_position_line(position, company),
+        "description": description,
         "photo_url": _resolve_media(row.get("photo")),
         "company_photo_url": _resolve_media(row.get("company_photo")),
         "website": row.get("website") or "",
