@@ -201,17 +201,19 @@
                                     {{ t('sponsor.tier.' ~ tier_key) }}
                                 </div>
                             </div>
+                            {% if short or topic %}
                             <button type="button" class="mt-auto h-[36px] px-5 rounded-[10px] bg-[#20306C] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]
                                hover:bg-[#1B2A59] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8FA5F7]"
                                 @click="{{ expanded_var_name }} = {{ ep_id|tojson }}"
                                 :aria-expanded="({{ expanded_var_name }} === {{ ep_id|tojson }}) ? 'true' : 'false'">
                                 {{ t('btn.read_more') }}
                             </button>
+                            {% endif %}
                         </div>
                     </div>
                     {% endif %}
 
-                    {% if not top_sponsor %}
+                    {% if not top_sponsor and (short or topic) %}
                     <div class="flex items-end shrink-0">
                         <button type="button" class="h-[36px] px-5 rounded-[10px] bg-[#20306C] text-[#F1F1F6] font-['Roboto'] font-bold text-[14px]
                            hover:bg-[#1B2A59] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8FA5F7]"
