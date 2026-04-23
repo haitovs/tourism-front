@@ -82,16 +82,12 @@
 
                     <div class="mt-7 h-px bg-gradient-to-r from-[#d2dbff] via-[#bac9ff] to-transparent"></div>
 
+                    {% set _desc = speaker.description or '' %}
+                    {% if _desc %}
                     <section class="mt-7 space-y-4 font-['Roboto'] text-[16px] sm:text-[17px] leading-[1.7] text-[#1A2550]">
-                        {% set _desc = speaker.description or '' %}
-                        {% if _desc %}
                         <p class="whitespace-pre-line">{{ _desc }}</p>
-                        {% else %}
-                        <p class="text-[#3b4371]/85">
-                            {{ t('speaker.bio.missing') }}
-                        </p>
-                        {% endif %}
                     </section>
+                    {% endif %}
 
                     {% if speaker.body_html %}
                     <section class="mt-7 prose max-w-none prose-p:my-4 prose-headings:mt-6 prose-headings:mb-3

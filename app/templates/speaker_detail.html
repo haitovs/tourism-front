@@ -74,18 +74,14 @@
                 </div>
                 {% endif %}
 
+                {% set _desc = speaker.description or '' %}
+                {% if _desc %}
                 <section class="mt-5 sm:mt-6">
-                    {% set _desc = speaker.description or '' %}
-                    {% if _desc %}
                     <div class="font-['Roboto'] text-[17px] sm:text-[18px] leading-[1.7] text-black max-w-[780px] whitespace-pre-line">
                         {{ _desc }}
                     </div>
-                    {% else %}
-                    <p class="font-['Roboto'] text-[16px] sm:text-[17px] leading-[1.7] text-slate-800">
-                        {{ t('speaker.bio.missing') }}
-                    </p>
-                    {% endif %}
                 </section>
+                {% endif %}
             </article>
         </div>
     </section>
