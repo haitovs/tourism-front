@@ -42,6 +42,8 @@ class Settings(BaseSettings):
     SITE_MAP_RAW: str = ""
     ALLOW_SITE_OVERRIDE: bool = Field(default=False, alias="SITE_ALLOW_OVERRIDE")
 
+    INTERNAL_CACHE_TOKEN: str = ""
+
     _supported_langs_cache: Tuple[str, ...] | None = None
 
     @property

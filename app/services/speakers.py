@@ -1,6 +1,7 @@
 # app/services/speakers.py
 from __future__ import annotations
 
+import hashlib
 from typing import Optional
 
 from fastapi import Request
@@ -10,7 +11,15 @@ from app.utils.timed_cache import TimedCache
 
 
 def _resolve_media(path: str | None) -> str:
-    return abs_media(path)
+    url = abs_media(path)
+    if not url or not path:
+        return url
+    # Cache-bust tied to the stored path so browsers refetch when the backend
+    # swaps the file (the uploader generates a new unique name on replace,
+    # but the token is harmless insurance when the path doesn't change).
+    token = hashlib.md5(path.encode("utf-8")).hexdigest()[:8]
+    sep = "&" if "?" in url else "?"
+    return f"{url}{sep}v={token}"
 
 
 def _display_full_name(first: str, surname: str, full_name_db: str) -> str:
@@ -43,10 +52,17 @@ def _row_to_dict(row: dict) -> dict:
     }
 
 
-_FEATURED_CACHE = TimedCache(ttl_seconds=20.0)
-_LIST_CACHE = TimedCache(ttl_seconds=20.0)
-_PAGE_CACHE = TimedCache(ttl_seconds=20.0)
-_DETAIL_CACHE = TimedCache(ttl_seconds=30.0)
+_FEATURED_CACHE = TimedCache(ttl_seconds=10.0)
+_LIST_CACHE = TimedCache(ttl_seconds=10.0)
+_PAGE_CACHE = TimedCache(ttl_seconds=10.0)
+_DETAIL_CACHE = TimedCache(ttl_seconds=10.0)
+
+
+def invalidate_caches() -> None:
+    _FEATURED_CACHE.invalidate()
+    _LIST_CACHE.invalidate()
+    _PAGE_CACHE.invalidate()
+    _DETAIL_CACHE.invalidate()
 
 
 def _site_cache_key(req: Request) -> str:

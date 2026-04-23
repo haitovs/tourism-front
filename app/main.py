@@ -15,6 +15,7 @@ from app.routers.about_forum_router import router as about_forum_router
 from app.routers.agenda_router import router as agenda_router
 from app.routers.expo_sectors_router import router as expo_sectors_router
 from app.routers.faq_router import router as faq_router
+from app.routers.internal_cache_router import router as internal_cache_router
 from app.routers.news_router import router as news_router
 from app.routers.official_support_router import \
     router as official_support_router
@@ -77,4 +78,5 @@ app.include_router(terms_router)
 app.include_router(privacy_router)
 app.include_router(agenda_router)
 app.include_router(timer_router)
+app.include_router(internal_cache_router)
  
